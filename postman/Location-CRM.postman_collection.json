@@ -1,0 +1,1299 @@
+{
+  "info": {
+    "name": "Car Rental CRM API — Location Marrakech",
+    "description": "Complete REST API surface for the Marrakech car-rental CRM. Auth: POST login returns a Sanctum token that a test script stores into the collection variable `token`. Every other request reads it automatically. Default demo data is pre-seeded (cars 1-4, clients 1-3, extras 1-4, roles 1=admin / 2=manager / 3=agent / 4=finance).\n\nLogin: admin@location.ma / password (full permissions).\n\nFlow to try first: login → list cars → create a client → create a reservation → confirm → activate → add payment → complete.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000", "type": "string" },
+    { "key": "token", "value": "", "type": "string" },
+    { "key": "agency_id", "value": "1", "type": "string" },
+    { "key": "role_admin_id", "value": "1", "type": "string" },
+    { "key": "role_manager_id", "value": "2", "type": "string" },
+    { "key": "role_agent_id", "value": "3", "type": "string" },
+    { "key": "role_finance_id", "value": "4", "type": "string" },
+    { "key": "brand_id", "value": "1", "type": "string" },
+    { "key": "model_id", "value": "2", "type": "string" },
+    { "key": "category_id", "value": "1", "type": "string" },
+    { "key": "car_id", "value": "1", "type": "string" },
+    { "key": "client_id", "value": "1", "type": "string" },
+    { "key": "extra_id", "value": "1", "type": "string" },
+    { "key": "reservation_id", "value": "", "type": "string" },
+    { "key": "payment_id", "value": "", "type": "string" },
+    { "key": "expense_id", "value": "", "type": "string" },
+    { "key": "pricing_rule_id", "value": "", "type": "string" },
+    { "key": "user_id", "value": "", "type": "string" },
+    { "key": "role_id", "value": "", "type": "string" },
+    { "key": "notification_id", "value": "", "type": "string" },
+    { "key": "activity_log_id", "value": "", "type": "string" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{token}}", "type": "string" }
+    ]
+  },
+  "item": [
+    {
+      "name": "01 · Auth & Session",
+      "item": [
+        {
+          "name": "Login (get token)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@location.ma\",\n  \"password\": \"password\",\n  \"device_name\": \"Postman\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "login"]
+            },
+            "description": "Public. Returns { token, expires_at, user }. The test script stores the token into the collection variable automatically — run this once, then everything else works."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.token) { pm.collectionVariables.set('token', json.token); }"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Me (current user)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/me",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "me"]
+            },
+            "description": "Authenticated. Returns the current user with role + agency."
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "logout"]
+            },
+            "description": "Authenticated. Revokes the current token."
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 · Dashboard & Reports",
+      "item": [
+        {
+          "name": "Dashboard summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/dashboard/summary?from=2026-10-01&to=2026-10-31",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "dashboard", "summary"],
+              "query": [
+                { "key": "from", "value": "2026-10-01", "description": "optional (Y-m-d), defaults to first day of current month" },
+                { "key": "to", "value": "2026-10-31", "description": "optional (Y-m-d), defaults to today" }
+              ]
+            },
+            "description": "Permission: dashboard.view. At-a-glance KPIs (revenue, expenses, occupancy, counts)."
+          }
+        },
+        {
+          "name": "Reports · cash-flow timeline",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reports/timeline?months=6",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reports", "timeline"],
+              "query": [{ "key": "months", "value": "6", "description": "1-12, default 6" }]
+            },
+            "description": "Permission: reports.view. Monthly revenue / expenses / margin buckets."
+          }
+        },
+        {
+          "name": "Reports · per-car profitability",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reports/cars?from=2026-10-01&to=2026-10-31",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reports", "cars"],
+              "query": [
+                { "key": "from", "value": "2026-10-01", "description": "optional" },
+                { "key": "to", "value": "2026-10-31", "description": "optional" }
+              ]
+            },
+            "description": "Permission: reports.view. Revenue, expenses and margin per car."
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 · Clients",
+      "item": [
+        {
+          "name": "List clients",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/clients?q=&status=normal&source=whatsapp&is_active=true&city=&sort_by=created_at&sort_dir=desc&per_page=15",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "clients"],
+              "query": [
+                { "key": "q", "value": "", "description": "search first/last name, phone, email" },
+                { "key": "status", "value": "normal", "description": "normal | vip | blacklist" },
+                { "key": "source", "value": "whatsapp", "description": "facebook | whatsapp | referral | phone | walk_in | other" },
+                { "key": "is_active", "value": "true", "description": "true | false" },
+                { "key": "city", "value": "", "description": "optional" },
+                { "key": "sort_by", "value": "created_at", "description": "created_at | last_name | phone | last_reservation_at" },
+                { "key": "sort_dir", "value": "desc", "description": "asc | desc" },
+                { "key": "per_page", "value": "15", "description": "1-100, default 15" }
+              ]
+            },
+            "description": "Permission: clients.view. Paginated { data, meta } with paginator meta."
+          }
+        },
+        {
+          "name": "Create client",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Amina\",\n  \"last_name\": \"Benali\",\n  \"phone\": \"+212 663 333 333\",\n  \"secondary_phone\": null,\n  \"email\": \"amina.benali@example.ma\",\n  \"cin\": \"BE778899\",\n  \"passport_number\": null,\n  \"driving_license_number\": \"DL-77123\",\n  \"driving_license_expiry\": \"2028-05-01\",\n  \"birth_date\": \"1992-03-14\",\n  \"birth_place\": \"Casablanca\",\n  \"nationality\": \"Marocaine\",\n  \"address\": \"12 Av. Mohammed V, Agdal\",\n  \"city\": \"Rabat\",\n  \"country\": \"Morocco\",\n  \"notes\": \"Prefers WhatsApp.\",\n  \"source\": \"whatsapp\",\n  \"status\": \"normal\",\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/clients",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "clients"]
+            },
+            "description": "Permission: clients.create. Phone and email are unique per agency. 201 on success."
+          }
+        },
+        {
+          "name": "Show client",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/clients/{{client_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "clients", "{{client_id}}"]
+            },
+            "description": "Permission: clients.view."
+          }
+        },
+        {
+          "name": "Update client",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Amina\",\n  \"last_name\": \"Benali\",\n  \"phone\": \"+212 663 333 333\",\n  \"status\": \"vip\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/clients/{{client_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "clients", "{{client_id}}"]
+            },
+            "description": "Permission: clients.update. PATCH — only send the fields you change."
+          }
+        },
+        {
+          "name": "Delete client",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/clients/{{client_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "clients", "{{client_id}}"]
+            },
+            "description": "Permission: clients.delete. Soft delete — history is preserved."
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 · Fleet — Brands",
+      "item": [
+        {
+          "name": "List brands",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/fleet/brands?q=&sort_by=name&sort_dir=asc&per_page=15",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "fleet", "brands"],
+              "query": [
+                { "key": "q", "value": "" },
+                { "key": "sort_by", "value": "name", "description": "name | created_at" },
+                { "key": "sort_dir", "value": "asc" },
+                { "key": "per_page", "value": "15" }
+              ]
+            },
+            "description": "Permission: fleet.view. Brands are global master data (not per-agency)."
+          }
+        },
+        {
+          "name": "Create brand",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Toyota\"\n}" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/fleet/brands",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "fleet", "brands"]
+            },
+            "description": "Permission: fleet.create."
+          }
+        },
+        {
+          "name": "Show brand",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/fleet/brands/{{brand_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "fleet", "brands", "{{brand_id}}"]
+            },
+            "description": "Permission: fleet.view."
+          }
+        },
+        {
+          "name": "Update brand",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Toyota\"\n}" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/fleet/brands/{{brand_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "fleet", "brands", "{{brand_id}}"]
+            },
+            "description": "Permission: fleet.update."
+          }
+        },
+        {
+          "name": "Delete brand",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/fleet/brands/{{brand_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "fleet", "brands", "{{brand_id}}"]
+            },
+            "description": "Permission: fleet.delete. Blocked if models reference it."
+          }
+        },
+        {
+          "name": "Models of a brand",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/fleet/brands/{{brand_id}}/models",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "fleet", "brands", "{{brand_id}}", "models"]
+            },
+            "description": "Permission: fleet.view."
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 · Fleet — Models",
+      "item": [
+        {
+          "name": "List models",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/fleet/models?q=&brand_id=1&per_page=15",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "fleet", "models"],
+              "query": [
+                { "key": "q", "value": "" },
+                { "key": "brand_id", "value": "1", "description": "optional filter" },
+                { "key": "per_page", "value": "15" }
+              ]
+            },
+            "description": "Permission: fleet.view."
+          }
+        },
+        {
+          "name": "Create model",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{\n  \"brand_id\": 1,\n  \"name\": \"Corolla\"\n}" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/fleet/models",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "fleet", "models"]
+            },
+            "description": "Permission: fleet.create. Name must be unique within the brand."
+          }
+        },
+        {
+          "name": "Show model",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/fleet/models/{{model_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "fleet", "models", "{{model_id}}"]
+            },
+            "description": "Permission: fleet.view."
+          }
+        },
+        {
+          "name": "Update model",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Corolla 2024\"\n}" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/fleet/models/{{model_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "fleet", "models", "{{model_id}}"]
+            },
+            "description": "Permission: fleet.update."
+          }
+        },
+        {
+          "name": "Delete model",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/fleet/models/{{model_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "fleet", "models", "{{model_id}}"]
+            },
+            "description": "Permission: fleet.delete. Blocked if cars reference it."
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 · Fleet — Categories",
+      "item": [
+        {
+          "name": "List categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/fleet/categories?q=&sort_by=name&sort_dir=asc&per_page=15",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "fleet", "categories"],
+              "query": [
+                { "key": "q", "value": "" },
+                { "key": "sort_by", "value": "name", "description": "name | created_at" },
+                { "key": "sort_dir", "value": "asc" },
+                { "key": "per_page", "value": "15" }
+              ]
+            },
+            "description": "Permission: fleet.view."
+          }
+        },
+        {
+          "name": "Create category",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Minivan\",\n  \"description\": \"7-seaters for families.\"\n}" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/fleet/categories",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "fleet", "categories"]
+            },
+            "description": "Permission: fleet.create."
+          }
+        },
+        {
+          "name": "Show category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/fleet/categories/{{category_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "fleet", "categories", "{{category_id}}"]
+            },
+            "description": "Permission: fleet.view."
+          }
+        },
+        {
+          "name": "Update category",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{\n  \"description\": \"7-seaters, sliding doors.\"\n}" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/fleet/categories/{{category_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "fleet", "categories", "{{category_id}}"]
+            },
+            "description": "Permission: fleet.update."
+          }
+        },
+        {
+          "name": "Delete category",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/fleet/categories/{{category_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "fleet", "categories", "{{category_id}}"]
+            },
+            "description": "Permission: fleet.delete. Blocked if cars reference it."
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 · Cars",
+      "item": [
+        {
+          "name": "List cars",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/cars?q=&status=available&category_id=&brand_id=&fuel_type=&transmission_type=&seats_count=&is_active=true&sort_by=daily_price&sort_dir=asc&per_page=15",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "cars"],
+              "query": [
+                { "key": "q", "value": "", "description": "search registration, VIN, model" },
+                { "key": "status", "value": "available", "description": "available | reserved | rented | maintenance | inactive" },
+                { "key": "category_id", "value": "" },
+                { "key": "brand_id", "value": "" },
+                { "key": "fuel_type", "value": "", "description": "diesel | petrol | hybrid | electric" },
+                { "key": "transmission_type", "value": "", "description": "manual | automatic" },
+                { "key": "seats_count", "value": "" },
+                { "key": "is_active", "value": "true" },
+                { "key": "sort_by", "value": "daily_price", "description": "daily_price | year | created_at | registration_number" },
+                { "key": "sort_dir", "value": "asc" },
+                { "key": "per_page", "value": "15" }
+              ]
+            },
+            "description": "Permission: fleet.view."
+          }
+        },
+        {
+          "name": "Create car",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"brand_id\": 1,\n  \"model_id\": 2,\n  \"category_id\": 1,\n  \"registration_number\": \"56789-E-15\",\n  \"vin\": \"W0L00000000000001\",\n  \"year\": 2023,\n  \"color\": \"White\",\n  \"seats_count\": 5,\n  \"doors_count\": 4,\n  \"transmission_type\": \"manual\",\n  \"fuel_type\": \"diesel\",\n  \"daily_price\": 300.00,\n  \"purchase_price\": 160000.00,\n  \"initial_mileage\": 15000,\n  \"current_mileage\": 15000,\n  \"current_fuel_level\": 90,\n  \"insurance_company\": \"AXA Maroc\",\n  \"insurance_policy_number\": \"AXA-2026-112233\",\n  \"insurance_expiry_date\": \"2026-12-31\",\n  \"technical_inspection_expiry\": \"2026-11-30\",\n  \"next_service_mileage\": 30000,\n  \"last_maintenance_at\": null,\n  \"status\": \"available\",\n  \"is_active\": true,\n  \"notes\": null,\n  \"images\": [\n    { \"image\": \"https://example.com/cars/56789-E-15-front.jpg\", \"is_primary\": true, \"sort_order\": 1 }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/cars",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "cars"]
+            },
+            "description": "Permission: fleet.create. status only accepts available | maintenance | inactive (reserved/rented are engine-owned). 201 on success."
+          }
+        },
+        {
+          "name": "Show car",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/cars/{{car_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "cars", "{{car_id}}"]
+            },
+            "description": "Permission: fleet.view."
+          }
+        },
+        {
+          "name": "Update car",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"daily_price\": 320.00,\n  \"year\": 2024,\n  \"current_fuel_level\": 95\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/cars/{{car_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "cars", "{{car_id}}"]
+            },
+            "description": "Permission: fleet.update. PATCH — partial fields."
+          }
+        },
+        {
+          "name": "Delete car",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/cars/{{car_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "cars", "{{car_id}}"]
+            },
+            "description": "Permission: fleet.delete. Soft delete (retired); blocked while rented."
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 · Reservations",
+      "item": [
+        {
+          "name": "List reservations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reservations?status=&car_id=&client_id=&pickup_from=2026-10-01&pickup_to=2026-10-31&q=&sort_by=pickup_datetime&sort_dir=desc&per_page=15",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reservations"],
+              "query": [
+                { "key": "status", "value": "", "description": "pending | confirmed | active | completed | cancelled" },
+                { "key": "car_id", "value": "" },
+                { "key": "client_id", "value": "" },
+                { "key": "pickup_from", "value": "2026-10-01"},
+                { "key": "pickup_to", "value": "2026-10-31" },
+                { "key": "q", "value": "", "description": "search reservation number / client" },
+                { "key": "sort_by", "value": "pickup_datetime", "description": "pickup_datetime | expected_return_datetime | created_at | total_amount | status" },
+                { "key": "sort_dir", "value": "desc" },
+                { "key": "per_page", "value": "15" }
+              ]
+            },
+            "description": "Permission: reservations.view."
+          }
+        },
+        {
+          "name": "Check availability",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reservations/availability?car_id=1&pickup_datetime=2026-10-15%2010:00:00&expected_return_datetime=2026-10-20%2010:00:00",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reservations", "availability"],
+              "query": [
+                { "key": "car_id", "value": "1" },
+                { "key": "pickup_datetime", "value": "2026-10-15 10:00:00" },
+                { "key": "expected_return_datetime", "value": "2026-10-20 10:00:00" }
+              ]
+            },
+            "description": "Permission: reservations.view. Returns whether the car is free for the window."
+          }
+        },
+        {
+          "name": "Create reservation",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"car_id\": 1,\n  \"primary_client_id\": 1,\n  \"secondary_client_id\": null,\n  \"primary_driver_name\": \"Youssef El Amrani\",\n  \"primary_driver_phone\": \"+212 661 111 111\",\n  \"primary_driver_license\": \"DL-88412\",\n  \"pickup_location\": \"Guéliz, Marrakech\",\n  \"return_location\": \"Menara Airport\",\n  \"pickup_datetime\": \"2026-10-15 10:00:00\",\n  \"expected_return_datetime\": \"2026-10-20 10:00:00\",\n  \"daily_rate\": 250.00,\n  \"discount_amount\": 0,\n  \"deposit_amount\": 1000.00,\n  \"remarks\": \"Client picks up at the office.\",\n  \"extras\": [\n    { \"extra_id\": 1, \"quantity\": 1 },\n    { \"extra_id\": 2, \"quantity\": 1 }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/reservations",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reservations"]
+            },
+            "description": "Permission: reservations.create. daily_rate optional (falls back to the car's daily_price). 201 on success — copy the returned reservation.id into the collection variable {{reservation_id}}."
+          }
+        },
+        {
+          "name": "Show reservation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reservations/{{reservation_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reservations", "{{reservation_id}}"]
+            },
+            "description": "Permission: reservations.view."
+          }
+        },
+        {
+          "name": "Update reservation",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pickup_location\": \"Office Guéliz\",\n  \"return_location\": \"Office Guéliz\",\n  \"remarks\": \"Returning to the office instead of the airport.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/reservations/{{reservation_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reservations", "{{reservation_id}}"]
+            },
+            "description": "Permission: reservations.update. Only editable while pending/confirmed."
+          }
+        },
+        {
+          "name": "Confirm reservation",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{\n  \"reason\": \"Deposit received, client confirmed by phone.\"\n}" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/reservations/{{reservation_id}}/confirm",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reservations", "{{reservation_id}}", "confirm"]
+            },
+            "description": "Permission: reservations.confirm. pending → confirmed."
+          }
+        },
+        {
+          "name": "Activate reservation (car handed over)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{\n  \"pickup_mileage\": 25100,\n  \"pickup_fuel_level\": 100\n}" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/reservations/{{reservation_id}}/activate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reservations", "{{reservation_id}}", "activate"]
+            },
+            "description": "Permission: reservations.activate. confirmed → active; car becomes rented."
+          }
+        },
+        {
+          "name": "Complete reservation (car returned)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"return_mileage\": 25400,\n  \"return_fuel_level\": 60,\n  \"actual_return_datetime\": \"2026-10-20 10:00:00\",\n  \"reported_issues\": null\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/reservations/{{reservation_id}}/complete",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reservations", "{{reservation_id}}", "complete"]
+            },
+            "description": "Permission: reservations.complete. active → completed; car becomes available."
+          }
+        },
+        {
+          "name": "Extend reservation",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{\n  \"expected_return_datetime\": \"2026-10-22 10:00:00\",\n  \"reason\": \"Client extended the trip.\"\n}" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/reservations/{{reservation_id}}/extend",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reservations", "{{reservation_id}}", "extend"]
+            },
+            "description": "Permission: reservations.update. Only while pending/confirmed/active."
+          }
+        },
+        {
+          "name": "Cancel reservation",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{\n  \"reason\": \"Customer changed plans.\"\n}" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/reservations/{{reservation_id}}/cancel",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reservations", "{{reservation_id}}", "cancel"]
+            },
+            "description": "Permission: reservations.cancel. reason is required."
+          }
+        },
+        {
+          "name": "Reservation changes (audit trail of edits)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reservations/{{reservation_id}}/changes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reservations", "{{reservation_id}}", "changes"]
+            },
+            "description": "Permission: reservations.view. Type values: creation | status_change | extension | discount | date_change | manual_edit | pricing_update | payment."
+          }
+        },
+        {
+          "name": "All reservation changes (global feed)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reservation-changes?per_page=15",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reservation-changes"],
+              "query": [{ "key": "per_page", "value": "15" }]
+            },
+            "description": "Permission: reservations.view. Recent changes across all reservations."
+          }
+        }
+      ]
+    },
+    {
+      "name": "09 · Payments",
+      "item": [
+        {
+          "name": "List payments of a reservation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reservations/{{reservation_id}}/payments",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reservations", "{{reservation_id}}", "payments"]
+            },
+            "description": "Permission: payments.view."
+          }
+        },
+        {
+          "name": "Record payment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 1250.00,\n  \"method\": \"cash\",\n  \"status\": \"paid\",\n  \"payment_date\": \"2026-10-15\",\n  \"reference\": \"REC-001\",\n  \"notes\": \"Deposit 1000 + balance 250.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/reservations/{{reservation_id}}/payments",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reservations", "{{reservation_id}}", "payments"]
+            },
+            "description": "Permission: payments.create. method: cash | card | transfer. status: paid | pending (refunded is only via the refund endpoint). 201 — and a notification is pushed to every user who can see payments (except you)."
+          }
+        },
+        {
+          "name": "Confirm payment (pending → paid)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/{{payment_id}}/confirm",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "{{payment_id}}", "confirm"]
+            },
+            "description": "Permission: payments.confirm."
+          }
+        },
+        {
+          "name": "Refund payment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{\n  \"reason\": \"Reservation cancelled, full refund.\"\n}" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/{{payment_id}}/refund",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "{{payment_id}}", "refund"]
+            },
+            "description": "Permission: payments.refund. Marks the row refunded; reservation totals adjust."
+          }
+        },
+        {
+          "name": "Delete payment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reservations/{{reservation_id}}/payments/{{payment_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reservations", "{{reservation_id}}", "payments", "{{payment_id}}"]
+            },
+            "description": "Permission: payments.delete. Hard delete; reservation totals recompute."
+          }
+        }
+      ]
+    },
+    {
+      "name": "10 · Pricing",
+      "item": [
+        {
+          "name": "Quote price (no booking created)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"car_id\": 1,\n  \"pickup_datetime\": \"2026-10-15 10:00:00\",\n  \"expected_return_datetime\": \"2026-10-20 10:00:00\",\n  \"daily_rate\": 250.00,\n  \"discount_amount\": 50.00,\n  \"deposit_amount\": 1000.00,\n  \"extras\": [\n    { \"extra_id\": 1, \"quantity\": 1 }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/pricing/quote",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "pricing", "quote"]
+            },
+            "description": "Permission: pricing.quote. Dry-run of the pricing engine — returns the breakdown (base, extras, discounts, total) without creating anything."
+          }
+        },
+        {
+          "name": "List pricing rules",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/pricing/rules?per_page=15",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "pricing", "rules"],
+              "query": [{ "key": "per_page", "value": "15" }]
+            },
+            "description": "Permission: pricing.view."
+          }
+        },
+        {
+          "name": "Create rule (season)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Summer high season\",\n  \"rule_type\": \"season\",\n  \"starts_on\": \"2026-06-01\",\n  \"ends_on\": \"2026-08-31\",\n  \"adjustment_type\": \"percent\",\n  \"adjustment_value\": 20,\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/pricing/rules",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "pricing", "rules"]
+            },
+            "description": "Permission: pricing.create. rule_type: season | day_of_week. adjustment_type: percent (max 100) | fixed."
+          }
+        },
+        {
+          "name": "Create rule (day of week)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Weekend bump\",\n  \"rule_type\": \"day_of_week\",\n  \"days_of_week\": [6, 7],\n  \"adjustment_type\": \"fixed\",\n  \"adjustment_value\": 50.00,\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/pricing/rules",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "pricing", "rules"]
+            },
+            "description": "Permission: pricing.create. days_of_week: 1=Monday … 7=Sunday."
+          }
+        },
+        {
+          "name": "Show rule",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/pricing/rules/{{pricing_rule_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "pricing", "rules", "{{pricing_rule_id}}"]
+            },
+            "description": "Permission: pricing.view."
+          }
+        },
+        {
+          "name": "Update rule",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{\n  \"adjustment_value\": 25,\n  \"is_active\": false\n}" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/pricing/rules/{{pricing_rule_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "pricing", "rules", "{{pricing_rule_id}}"]
+            },
+            "description": "Permission: pricing.update."
+          }
+        },
+        {
+          "name": "Delete rule",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/pricing/rules/{{pricing_rule_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "pricing", "rules", "{{pricing_rule_id}}"]
+            },
+            "description": "Permission: pricing.delete."
+          }
+        }
+      ]
+    },
+    {
+      "name": "11 · Expenses",
+      "item": [
+        {
+          "name": "List expenses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/expenses?q=&status=pending&type=maintenance&car_id=1&due_from=&due_to=&sort_by=due_date&sort_dir=desc&per_page=15",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "expenses"],
+              "query": [
+                { "key": "q", "value": "", "description": "search title, vendor, or car plate" },
+                { "key": "status", "value": "pending", "description": "pending | paid | overdue (overdue is derived: pending + due date passed)" },
+                { "key": "type", "value": "maintenance", "description": "insurance | maintenance | repair | tax | oil_change | tires | inspection" },
+                { "key": "car_id", "value": "1" },
+                { "key": "due_from", "value": "" },
+                { "key": "due_to", "value": "" },
+                { "key": "sort_by", "value": "due_date", "description": "due_date | amount | created_at | title" },
+                { "key": "sort_dir", "value": "desc" },
+                { "key": "per_page", "value": "15" }
+              ]
+            },
+            "description": "Permission: expenses.view. Listing shows the expense even if its car was retired."
+          }
+        },
+        {
+          "name": "Create expense",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"car_id\": 1,\n  \"type\": \"maintenance\",\n  \"title\": \"Oil change + filters\",\n  \"description\": \"10,000 km service at the garage.\",\n  \"amount\": 650.00,\n  \"vendor\": \"Garage Atlas\",\n  \"start_date\": \"2026-10-06\",\n  \"due_date\": \"2026-10-20\",\n  \"paid_date\": null,\n  \"attachment\": null,\n  \"status\": \"pending\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/expenses",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "expenses"]
+            },
+            "description": "Permission: expenses.create. status: pending | paid. 201 on success."
+          }
+        },
+        {
+          "name": "Show expense",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/expenses/{{expense_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "expenses", "{{expense_id}}"]
+            },
+            "description": "Permission: expenses.view."
+          }
+        },
+        {
+          "name": "Update expense",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"paid\",\n  \"paid_date\": \"2026-10-07\",\n  \"amount\": 650.00\n}" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/expenses/{{expense_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "expenses", "{{expense_id}}"]
+            },
+            "description": "Permission: expenses.update. Full update (PUT-style body)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "12 · Users & Roles",
+      "item": [
+        {
+          "name": "List users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/users?q=&role_id=&is_active=true&sort_by=created_at&sort_dir=desc&per_page=15",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "users"],
+              "query": [
+                { "key": "q", "value": "" },
+                { "key": "role_id", "value": "" },
+                { "key": "is_active", "value": "true" },
+                { "key": "sort_by", "value": "created_at" },
+                { "key": "sort_dir", "value": "desc" },
+                { "key": "per_page", "value": "15" }
+              ]
+            },
+            "description": "Permission: users.view."
+          }
+        },
+        {
+          "name": "Create user",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Salma\",\n  \"last_name\": \"Idrissi\",\n  \"email\": \"salma.idrissi@location.ma\",\n  \"phone\": \"+212 664 444 444\",\n  \"password\": \"secret123\",\n  \"role_id\": 3,\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/users",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "users"]
+            },
+            "description": "Permission: users.create. role_id 1=admin, 2=manager, 3=agent, 4=finance. 201 on success."
+          }
+        },
+        {
+          "name": "Show user",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/users/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "users", "{{user_id}}"]
+            },
+            "description": "Permission: users.view."
+          }
+        },
+        {
+          "name": "Update user",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{\n  \"first_name\": \"Salma\",\n  \"role_id\": 2,\n  \"is_active\": true\n}" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/users/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "users", "{{user_id}}"]
+            },
+            "description": "Permission: users.update."
+          }
+        },
+        {
+          "name": "List roles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/roles?q=&is_active=true&per_page=15",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "roles"],
+              "query": [
+                { "key": "q", "value": "" },
+                { "key": "is_active", "value": "true" },
+                { "key": "per_page", "value": "15" }
+              ]
+            },
+            "description": "Permission: roles.view."
+          }
+        },
+        {
+          "name": "Permission catalog",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/roles/permissions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "roles", "permissions"]
+            },
+            "description": "Permission: roles.view. Returns the full permission catalog (module → verbs) — the source of truth for building role grants."
+          }
+        },
+        {
+          "name": "Create role",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Reception\",\n  \"permissions\": [\n    \"dashboard.view\",\n    \"clients.view\",\n    \"clients.create\",\n    \"reservations.view\",\n    \"reservations.create\",\n    \"notifications.view\"\n  ],\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/roles",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "roles"]
+            },
+            "description": "Permission: roles.manage. Permissions are validated against the catalog. 201 on success."
+          }
+        },
+        {
+          "name": "Show role",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/roles/{{role_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "roles", "{{role_id}}"]
+            },
+            "description": "Permission: roles.view."
+          }
+        },
+        {
+          "name": "Update role",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Reception\",\n  \"permissions\": [\"dashboard.view\", \"clients.view\", \"clients.create\", \"reservations.view\", \"reservations.create\", \"notifications.view\", \"expenses.view\"],\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/roles/{{role_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "roles", "{{role_id}}"]
+            },
+            "description": "Permission: roles.manage. Replace the whole permissions array."
+          }
+        }
+      ]
+    },
+    {
+      "name": "13 · Activity Logs",
+      "item": [
+        {
+          "name": "List activity log entries",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/activity-logs?module=&action=&user_id=&entity_type=&entity_id=&from=&to=&per_page=15",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "activity-logs"],
+              "query": [
+                { "key": "module", "value": "", "description": "e.g. reservations, payments, expenses, auth, notifications" },
+                { "key": "action", "value": "", "description": "e.g. created, confirmed, refunded, sent" },
+                { "key": "user_id", "value": "" },
+                { "key": "entity_type", "value": "" },
+                { "key": "entity_id", "value": "" },
+                { "key": "from", "value": "" },
+                { "key": "to", "value": "" },
+                { "key": "per_page", "value": "15" }
+              ]
+            },
+            "description": "Permission: activity_logs.view. Append-only audit trail of every business action."
+          }
+        },
+        {
+          "name": "Show log entry",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/activity-logs/{{activity_log_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "activity-logs", "{{activity_log_id}}"]
+            },
+            "description": "Permission: activity_logs.view."
+          }
+        }
+      ]
+    },
+    {
+      "name": "14 · Notifications",
+      "item": [
+        {
+          "name": "My notification feed",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/notifications?per_page=15",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "notifications"],
+              "query": [{ "key": "per_page", "value": "15" }]
+            },
+            "description": "Permission: notifications.view. Unread first, newest first. Try recording a payment first — the other users with payments.view (and the admin) get a 'payment' notification."
+          }
+        },
+        {
+          "name": "Unread count (badge)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/notifications/unread-count",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "notifications", "unread-count"]
+            },
+            "description": "Permission: notifications.view. Lightweight poll for the navbar badge."
+          }
+        },
+        {
+          "name": "Send announcement",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Office closed Friday\",\n  \"body\": \"The office will be closed Friday for maintenance. Weekend pickups move to Saturday morning.\",\n  \"send_to_all\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/notifications",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "notifications"]
+            },
+            "description": "Permission: notifications.send. Exactly one audience: send_to_all OR user_ids OR role_ids. Example user_ids: [1,2] — role_ids: [3]."
+          }
+        },
+        {
+          "name": "Mark one read",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": { "mode": "raw", "raw": "" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/notifications/read/{{notification_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "notifications", "read", "{{notification_id}}"]
+            },
+            "description": "Permission: notifications.view. Idempotent. Rows are resolved through your own inbox — another user's notification id returns 404."
+          }
+        },
+        {
+          "name": "Mark all read",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": { "mode": "raw", "raw": "" },
+            "url": {
+              "raw": "{{base_url}}/api/v1/notifications/read-all",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "notifications", "read-all"]
+            },
+            "description": "Permission: notifications.view. Returns { marked_count, unread_count }."
+          }
+        }
+      ]
+    }
+  ]
+}
