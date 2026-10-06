@@ -22,6 +22,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | API Token Lifetime
+    |--------------------------------------------------------------------------
+    | Sanctum personal access tokens expire after this many days. Expired
+    | tokens are rejected by the framework and cleaned up lazily.
+    */
+
+    'token_ttl_days' => (int) env('AUTH_TOKEN_TTL_DAYS', 7),
+
+    /*
+    |--------------------------------------------------------------------------
     | Authentication Guards
     |--------------------------------------------------------------------------
     |
