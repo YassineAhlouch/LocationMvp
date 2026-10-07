@@ -398,6 +398,40 @@ class FleetManagementTest extends TestCase
         $this->assertSame('Blue', $updated->new_values['color']);
     }
 
+    public function test_update_enforces_brand_model_pairing(): void
+    {
+        $actor = $this->actor(['fleet.*']);
+        $renault = $this->brand(['name' => 'Renault']);
+        $clio = CarModel::factory()->create(['brand_id' => $renault->id, 'name' => 'Clio']);
+        $dacia = $this->brand(['name' => 'Dacia']);
+        $duster = CarModel::factory()->create(['brand_id' => $dacia->id, 'name' => 'Duster']);
+        $category = $this->category(['name' => 'Economy']);
+
+        $id = $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/cars', $this->storePayload($renault, $clio, $category))
+            ->assertCreated()->json('id');
+
+        // A valid update carrying model_id passes — regression guard for the
+        // model-brands-brand check querying the wrong column (`key`).
+        $this->actingAs($actor, 'sanctum')
+            ->patchJson('/api/v1/cars/'.$id, [
+                'brand_id' => $renault->id,
+                'model_id' => $clio->id,
+                'daily_price' => 350,
+            ])
+            ->assertOk()
+            ->assertJsonPath('daily_price', 350);
+
+        // A Renault car cannot be moved onto a Dacia model.
+        $this->actingAs($actor, 'sanctum')
+            ->patchJson('/api/v1/cars/'.$id, [
+                'brand_id' => $renault->id,
+                'model_id' => $duster->id,
+            ])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['model_id']);
+    }
+
     public function test_destroy_soft_deletes_and_is_blocked_by_reservations(): void
     {
         $actor = $this->actor(['fleet.*']);

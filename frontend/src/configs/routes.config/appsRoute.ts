@@ -4,6 +4,133 @@ import { ADMIN, USER } from '@/constants/roles.constant'
 import type { Routes } from '@/@types/routes'
 
 const appsRoute: Routes = [
+    // +++++++++ NEW LINKS
+    // ===== DASHBOARD =====
+    {
+        key: 'gestion.dashboard',
+        path: `${APPS_PREFIX_PATH}/dashboard`,
+        component: lazy(() => import('@/views/location/LocationDashboard')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            // 'default' | 'gutterless' | 'contained'
+            pageContainerType: 'default',
+            footer: false,
+        },
+    },
+
+    // ===== RESERVATIONS =====
+    {
+        key: 'gestion.reservations.nouvelle',
+        path: `${APPS_PREFIX_PATH}/reservations/nouvelle`,
+        component: lazy(() => import('@/views/location/NouvelleReservation')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'gutterless',
+            footer: false,
+        },
+    },
+    {
+        key: 'gestion.reservations.liste',
+        path: `${APPS_PREFIX_PATH}/reservations/liste`,
+        component: lazy(() => import('@/views/location/Reservations')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'contained',
+            footer: false,
+        },
+    },
+
+    // ===== VEHICULES =====
+    {
+        key: 'gestion.vehicules.ajouter',
+        path: `${APPS_PREFIX_PATH}/vehicules/ajouter`,
+        component: lazy(() => import('@/views/location/AjouterVehicule')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'gutterless',
+            footer: false,
+        },
+    },
+    {
+        key: 'gestion.vehicules.liste',
+        path: `${APPS_PREFIX_PATH}/vehicules/liste`,
+        component: lazy(() => import('@/views/location/Cars')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'gutterless',
+            footer: false,
+        },
+    },
+
+    // ===== CLIENTS =====
+    {
+        key: 'gestion.clients.ajouter',
+        path: `${APPS_PREFIX_PATH}/clients/ajouter`,
+        component: lazy(() => import('@/views/location/AjouterClient')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'gutterless',
+            footer: false,
+        },
+    },
+    {
+        key: 'gestion.clients.liste',
+        path: `${APPS_PREFIX_PATH}/clients/liste`,
+        component: lazy(() => import('@/views/location/Clients')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'gutterless',
+            footer: false,
+        },
+    },
+
+    // ===== FINANCES =====
+    {
+        key: 'gestion.finances.depenses',
+        path: `${APPS_PREFIX_PATH}/finances/depenses`,
+        component: lazy(() => import('@/views/location/Expenses')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'contained',
+            footer: false,
+        },
+    },
+
+    // ===== UTILISATEURS =====
+    {
+        key: 'gestion.utilisateurs.ajouter',
+        path: `${APPS_PREFIX_PATH}/utilisateurs/ajouter`,
+        component: lazy(() => import('@/views/location/AjouterUtilisateur')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'gutterless',
+            footer: false,
+        },
+    },
+    {
+        key: 'gestion.utilisateurs.liste',
+        path: `${APPS_PREFIX_PATH}/utilisateurs/liste`,
+        component: lazy(() => import('@/views/location/ListeUtilisateurs')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'gutterless',
+            footer: false,
+        },
+    },
+
+    // ===== RAPPORTS ===== (planned: vehicules / clients / reservations / financiers)
+    // ===== OPERATIONS ===== (planned: maintenance / accidents)
+    // +++++ End NEW Links
     {
         key: 'apps.ai.chat',
         path: `${APPS_PREFIX_PATH}/ai/chat`,

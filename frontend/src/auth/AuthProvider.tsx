@@ -61,7 +61,13 @@ function AuthProvider({ children }: AuthProviderProps) {
         setSessionSignedIn(true)
 
         if (user) {
-            setUser(user)
+            // The header/profile dropdown expects userName + avatar keys,
+            // while the Laravel UserResource carries first_name/last_name.
+            setUser({
+                ...user,
+                userName: user.full_name || user.userName,
+                email: user.email || user.userName,
+            })
         }
     }
 

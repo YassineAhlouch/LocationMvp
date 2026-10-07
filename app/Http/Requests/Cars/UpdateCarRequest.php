@@ -33,7 +33,7 @@ class UpdateCarRequest extends FormRequest
                 'sometimes', 'integer',
                 function ($attribute, $value, $fail) use ($brandId): void {
                     $belongs = DB::table('car_models')
-                        ->whereKey($value)
+                        ->where('id', $value)
                         ->where('brand_id', $brandId)
                         ->exists();
 

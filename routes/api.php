@@ -36,6 +36,7 @@ Route::prefix('v1')
         require __DIR__.'/api/activity.php';
         require __DIR__.'/api/clients.php';
         require __DIR__.'/api/cars.php';
+        require __DIR__.'/api/uploads.php';
         require __DIR__.'/api/fleet.php';
         require __DIR__.'/api/users.php';
         require __DIR__.'/api/expenses.php';

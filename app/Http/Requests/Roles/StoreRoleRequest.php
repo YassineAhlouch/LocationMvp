@@ -23,6 +23,11 @@ class StoreRoleRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255', Rule::unique('roles', 'name')],
+            // Presentation metadata only — the frontend maps icon/color keys
+            // to components and falls back to a default for unknown ones.
+            'description' => ['sometimes', 'nullable', 'string', 'max:500'],
+            'icon' => ['sometimes', 'nullable', 'string', 'max:50'],
+            'color' => ['sometimes', 'nullable', 'string', 'max:50'],
             'permissions' => [
                 'required', 'array', 'min:1',
                 function ($attribute, $value, $fail): void {

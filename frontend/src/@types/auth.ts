@@ -1,17 +1,13 @@
 export type SignInCredential = {
     email: string
     password: string
+    device_name?: string
 }
 
 export type SignInResponse = {
     token: string
-    user: {
-        userId: string
-        userName: string
-        authority: string[]
-        avatar: string
-        email: string
-    }
+    expires_at: string
+    user: User
 }
 
 export type SignUpResponse = SignInResponse
@@ -37,11 +33,36 @@ export type AuthResult = Promise<{
     message: string
 }>
 
+/**
+ * Mirrors the Laravel UserResource returned by /auth/login, /auth/me and
+ * the users module. Fields are optional because the template constructs
+ * bare user objects and merges partial payloads from several sources
+ * (mock auth, firebase OAuth, localStorage rehydration).
+ */
 export type User = {
-    userId?: string | null
-    avatar?: string | null
-    userName?: string | null
+    id?: number
+    first_name?: string | null
+    last_name?: string | null
+    full_name?: string | null
     email?: string | null
+    phone?: string | null
+    avatar?: string | null
+    is_active?: boolean
+    role?: {
+        id: number
+        name: string
+        permissions: string[]
+    } | null
+    agency?: {
+        id: number
+        name: string
+    } | null
+    last_login_at?: string | null
+    created_at?: string | null
+
+    // Compatibility fields the template renders in the profile dropdown.
+    userId?: string | null
+    userName?: string | null
     authority?: string[]
 }
 

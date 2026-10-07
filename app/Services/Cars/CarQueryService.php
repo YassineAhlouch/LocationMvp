@@ -47,6 +47,7 @@ class CarQueryService
                 'brand:id,name',
                 'model:id,name',
                 'category:id,name',
+                'images',
             ])
             ->withCount('images')
             ->when($filters['status'] ?? null, fn ($query, $status) => $query->where('status', CarStatus::from($status)))

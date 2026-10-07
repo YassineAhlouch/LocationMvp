@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['name', 'permissions', 'is_active'])]
+#[Fillable(['name', 'description', 'icon', 'color', 'permissions', 'is_active'])]
 class Role extends Model
 {
     use HasFactory;

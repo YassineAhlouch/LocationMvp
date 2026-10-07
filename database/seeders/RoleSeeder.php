@@ -65,6 +65,36 @@ class RoleSeeder extends Seeder
     ];
 
     /**
+     * Presentation metadata per role: how the card reads and looks.
+     * Icon keys map to components and color keys to palette entries
+     * on the frontend (see views/location/roleMeta.tsx).
+     *
+     * @var array<string, array{description: string, icon: string, color: string}>
+     */
+    private const META = [
+        'admin' => [
+            'description' => 'Full access to every module and setting',
+            'icon' => 'shield',
+            'color' => 'blue',
+        ],
+        'manager' => [
+            'description' => 'Oversight of fleet, pricing, staff and reports',
+            'icon' => 'briefcase',
+            'color' => 'purple',
+        ],
+        'agent' => [
+            'description' => 'Day-to-day reservations, clients and fleet',
+            'icon' => 'userGroup',
+            'color' => 'emerald',
+        ],
+        'finance' => [
+            'description' => 'Payments, expenses and financial reporting',
+            'icon' => 'coin',
+            'color' => 'orange',
+        ],
+    ];
+
+    /**
      * Run the database seeds.
      */
     public function run(): void
@@ -72,7 +102,11 @@ class RoleSeeder extends Seeder
         foreach (self::GRANTS as $name => $permissions) {
             Role::firstOrCreate(
                 ['name' => $name],
-                ['permissions' => $permissions, 'is_active' => true],
+                [
+                    'permissions' => $permissions,
+                    'is_active' => true,
+                    ...self::META[$name],
+                ],
             );
         }
     }

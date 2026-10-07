@@ -10,11 +10,11 @@ export type AppConfig = {
 
 const appConfig: AppConfig = {
     apiPrefix: '/api',
-    authenticatedEntryPath: '/apps/sales/dashboard',
+    authenticatedEntryPath: '/apps/dashboard',
     unAuthenticatedEntryPath: '/sign-in',
     locale: 'en',
     accessTokenPersistStrategy: 'localStorage',
-    enableMock: true,
+    enableMock: false,
     activeNavTranslation: true,
 }
 

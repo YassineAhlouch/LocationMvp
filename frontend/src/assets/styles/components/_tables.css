@@ -30,6 +30,24 @@
     }
   }
 
+  /* Vehicle fleet listing: tighter rows and full artwork in the avatar. */
+  .table-vehicles {
+    > tbody {
+      > tr {
+        > td {
+          padding-inline: calc(0.1rem * 6);
+          padding-block: calc(0.1rem * 4);
+        }
+      }
+    }
+
+    .vehicle-avatar {
+      .avatar-img {
+        object-fit: contain;
+      }
+    }
+  }
+
   .table-flex {
     @apply min-w-full divide-y divide-x divide-gray-200 dark:divide-gray-700;
 

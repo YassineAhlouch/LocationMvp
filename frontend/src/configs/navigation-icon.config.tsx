@@ -27,6 +27,11 @@ import {
     LiBook,
     LiHome,
     LiBan,
+    LiCar,
+    LiSpeedometer,
+    LiProfiles,
+    LiCalendar,
+    LiWalletMoney,
 } from '@/icons'
 import type { JSX } from 'react'
 
@@ -59,6 +64,13 @@ const navigationIcon: NavigationIcons = {
     landing: <LiHome className={CLASS_NAME} />,
     accessDenied: <LiBan className={CLASS_NAME} />,
     guide: <LiBook className={CLASS_NAME} />,
+    location: <LiCar className={CLASS_NAME} />,
+    gestionDashboard: <LiSpeedometer className={CLASS_NAME} />,
+    gestionVehicules: <LiCar className={CLASS_NAME} />,
+    gestionClients: <LiProfiles className={CLASS_NAME} />,
+    gestionReservations: <LiCalendar className={CLASS_NAME} />,
+    gestionFinances: <LiWalletMoney className={CLASS_NAME} />,
+    gestionUtilisateurs: <LiUserCircle className={CLASS_NAME} />,
     documentation: <LiFileText className={CLASS_NAME} />,
     sharedComponentDoc: <LiLayer className={CLASS_NAME} />,
     utilsDoc: <LiZapCircle className={CLASS_NAME} />,
