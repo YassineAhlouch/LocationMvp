@@ -1,0 +1,128 @@
+{
+  "component_id": "input-001",
+  "name": "Input",
+  "display_name": "Text Input Field Component",
+  "category": "Form Elements / Input",
+  "import_path": "@/components/ui/Input",
+  "description": "A versatile input component supporting text, textarea, prefix/suffix elements, various sizes, and validation states for form data entry.",
+  "usage_guidelines": [
+    "Use for single-line text input in forms.",
+    "Set textArea prop for multi-line text input.",
+    "Use prefix/suffix for icons, labels, or units (e.g., currency symbols, search icons).",
+    "Set invalid prop to show error state with validation feedback.",
+    "Choose appropriate type for input purpose (text, email, password, number, etc.)."
+  ],
+  "props": {
+    "asElement": {
+      "type": "ElementType",
+      "required": false,
+      "default": "'input'",
+      "description": "Render as different element type."
+    },
+    "disabled": {
+      "type": "boolean",
+      "required": false,
+      "description": "Disables input interaction."
+    },
+    "invalid": {
+      "type": "boolean",
+      "required": false,
+      "description": "Shows error state styling."
+    },
+    "prefix": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Element displayed at the start of input (icons, labels)."
+    },
+    "rows": {
+      "type": "number",
+      "required": false,
+      "description": "Number of visible rows for textarea."
+    },
+    "size": {
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "description": "Input size variant."
+    },
+    "suffix": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Element displayed at the end of input (icons, units)."
+    },
+    "textArea": {
+      "type": "boolean",
+      "required": false,
+      "description": "Renders as textarea for multi-line input."
+    },
+    "type": {
+      "type": "HTMLInputTypeAttribute",
+      "required": false,
+      "default": "'text'",
+      "description": "HTML input type (text, email, password, number, etc.)."
+    },
+    "unstyle": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Removes default styling for custom implementations."
+    },
+    "readOnly": {
+      "type": "boolean",
+      "required": false,
+      "description": "Makes input read-only (visible but not editable)."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A rectangular input field with rounded corners, border, and focus ring. Prefix/suffix elements are positioned inside the input with appropriate spacing. Invalid state shows red border and focus ring. Disabled state has reduced opacity."
+  },
+  "best_practices": {
+    "Do": [
+      "Use appropriate input type for data validation",
+      "Provide clear labels and placeholders",
+      "Use prefix/suffix for contextual icons or units",
+      "Set invalid state with validation messages",
+      "Use textArea for multi-line content"
+    ],
+    "Dont": [
+      "Don't use for complex selections (use Select instead)",
+      "Don't forget to handle controlled value properly",
+      "Don't use both value and defaultValue",
+      "Don't make inputs too wide or too narrow for expected content"
+    ]
+  },
+  "code_examples": {
+    "Affix": {
+      "title": "Affix",
+      "code": "import Input from '@/components/ui/Input'\nimport Tooltip from '@/components/ui/Tooltip'\nimport { HiOutlineUser, HiOutlineExclamationCircle } from 'react-icons/hi'\n\nconst Affix = () => {\n    return (\n        <div>\n            <div className=\"mb-4\">\n                <Input\n                    placeholder=\"Enter your name\"\n                    prefix={<HiOutlineUser className=\"text-lg\" />}\n                />\n            </div>\n            <div className=\"mb-4\">\n                <Input\n                    placeholder=\"Enter your rate\"\n                    suffix={\n                        <Tooltip title=\"Field info\">\n                            <HiOutlineExclamationCircle className=\"text-lg cursor-pointer ml-1\" />\n                        </Tooltip>\n                    }\n                />\n            </div>\n            <div className=\"mb-4\">\n                <Input prefix=\"$\" suffix=\".00\" />\n            </div>\n        </div>\n    )\n}\n\nexport default Affix"
+    },
+    "Basic": {
+      "title": "Basic",
+      "code": "import Input from '@/components/ui/Input'\n\nconst Basic = () => {\n    return (\n        <div>\n            <Input placeholder=\"Basic usage\" />\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "ControlledInput": {
+      "title": "Controlled Input",
+      "code": "import { useState } from 'react'\nimport Input from '@/components/ui/Input'\nimport type { ChangeEvent } from 'react'\n\nconst ControlledInput = () => {\n    const [value, setValue] = useState('')\n    const handleChange = (e: ChangeEvent<HTMLInputElement>) =>\n        setValue(e.target.value)\n\n    return (\n        <div>\n            <Input\n                value={value}\n                onChange={handleChange}\n                placeholder=\"Sample placeholder\"\n            />\n        </div>\n    )\n}\n\nexport default ControlledInput"
+    },
+    "Disabled": {
+      "title": "Disabled",
+      "code": "import Input from '@/components/ui/Input'\n\nconst Disabled = () => {\n    return (\n        <div>\n            <Input placeholder=\"Disabled Input\" disabled />\n        </div>\n    )\n}\n\nexport default Disabled"
+    },
+    "Invalid": {
+      "title": "Invalid",
+      "code": "import { useState } from 'react'\nimport Input from '@/components/ui/Input'\nimport Button from '@/components/ui/Button'\nimport { HiExclamationCircle } from 'react-icons/hi'\n\nconst Invalid = () => {\n    const [invalid, setInvalid] = useState(false)\n\n    return (\n        <div>\n            <div className=\"mb-4\">\n                <Input\n                    invalid={invalid}\n                    placeholder=\"Invalid input\"\n                    suffix={\n                        invalid ? (\n                            <HiExclamationCircle className=\"text-red-500 text-xl\" />\n                        ) : null\n                    }\n                />\n            </div>\n            <div className=\"mb-4\">\n                <Input\n                    invalid={invalid}\n                    placeholder=\"Invalid text area\"\n                    textArea\n                />\n            </div>\n            <Button variant=\"solid\" onClick={() => setInvalid(!invalid)}>\n                Set {invalid ? 'Valid' : 'Invalid'}\n            </Button>\n        </div>\n    )\n}\n\nexport default Invalid"
+    },
+    "PasswordVisible": {
+      "title": "Password Visible",
+      "code": "import { useState } from 'react'\nimport Input from '@/components/ui/Input'\nimport { HiOutlineEyeOff, HiOutlineEye } from 'react-icons/hi'\nimport type { MouseEvent } from 'react'\n\nconst PasswordVisible = () => {\n    const [pwInputType, setPwInputType] = useState('password')\n\n    const onPasswordVisibleClick = (e: MouseEvent) => {\n        e.preventDefault()\n        setPwInputType(pwInputType === 'password' ? 'text' : 'password')\n    }\n\n    const inputIcon = (\n        <span\n            className=\"cursor-pointer\"\n            onClick={(e) => onPasswordVisibleClick(e)}\n        >\n            {pwInputType === 'password' ? (\n                <HiOutlineEyeOff />\n            ) : (\n                <HiOutlineEye />\n            )}\n        </span>\n    )\n\n    return (\n        <div>\n            <Input\n                type={pwInputType}\n                suffix={inputIcon}\n                placeholder=\"Password\"\n            />\n        </div>\n    )\n}\n\nexport default PasswordVisible"
+    },
+    "Sizes": {
+      "title": "Sizes",
+      "code": "import Input from '@/components/ui/Input'\n\nconst Sizes = () => {\n    return (\n        <div>\n            <div className=\"mb-4\">\n                <Input size=\"sm\" placeholder=\"Input sm\" />\n            </div>\n            <div className=\"mb-4\">\n                <Input placeholder=\"Input md\" />\n            </div>\n            <div className=\"mb-4\">\n                <Input size=\"lg\" placeholder=\"Input lg\" />\n            </div>\n        </div>\n    )\n}\n\nexport default Sizes"
+    },
+    "Textarea": {
+      "title": "Textarea",
+      "code": "import Input from '@/components/ui/Input'\n\nconst Textarea = () => {\n    return (\n        <div>\n            <Input placeholder=\"Text area example\" textArea />\n        </div>\n    )\n}\n\nexport default Textarea"
+    }
+  }
+}

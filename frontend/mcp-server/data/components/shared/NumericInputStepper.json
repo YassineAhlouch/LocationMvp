@@ -1,0 +1,78 @@
+{
+  "component_id": "numericinputstepper-001",
+  "name": "NumericInputStepper",
+  "display_name": "Numeric Input Stepper Controls",
+  "category": "Form Elements / Input",
+  "import_path": "@/components/shared/NumericInputStepper",
+  "description": "Increment/decrement buttons for numeric inputs with min/max constraints and step control.",
+  "usage_guidelines": [
+    "Use alongside numeric inputs for precise value adjustment.",
+    "Set min/max to constrain value range.",
+    "Set step for increment/decrement amount.",
+    "Typically positioned on the right side of input."
+  ],
+  "props": {
+    "value": {
+      "type": "number",
+      "required": false,
+      "default": "0",
+      "description": "Current numeric value."
+    },
+    "onChange": {
+      "type": "(value: number) => void",
+      "required": false,
+      "description": "Callback fired when value changes."
+    },
+    "min": {
+      "type": "number",
+      "required": false,
+      "default": "0",
+      "description": "Minimum allowed value."
+    },
+    "max": {
+      "type": "number",
+      "required": false,
+      "default": "Infinity",
+      "description": "Maximum allowed value."
+    },
+    "step": {
+      "type": "number",
+      "required": false,
+      "default": "1",
+      "description": "Increment/decrement step amount."
+    },
+    "disabled": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Disables stepper buttons."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Two stacked buttons (up/down arrows) with border. Buttons disable at min/max limits. Hover effects on enabled buttons."
+  },
+  "best_practices": {
+    "Do": [
+      "Use with numeric inputs",
+      "Set appropriate min/max/step",
+      "Disable at boundaries",
+      "Provide visual feedback"
+    ],
+    "Dont": [
+      "Don't use without numeric input",
+      "Don't forget to handle onChange",
+      "Don't set step too large"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import { useState } from 'react'\nimport NumericInputStepper from '@/components/shared/NumericInputStepper'\nimport Input from '@/components/ui/Input'\n\nconst Basic = () => {\n    const [value, setValue] = useState<number>(5)\n\n    return (\n        <Input\n            value={value}\n            readOnly\n            className=\"text-center\"\n            suffix={\n                <div className=\"ltr:-mr-2 rtl:-ml-2\">\n                    <NumericInputStepper value={value} onChange={setValue} />\n                </div>\n            }\n        />\n    )\n}\n\nexport default Basic"
+    },
+    "WithConstraints": {
+      "title": "With Constraints",
+      "code": "import { useState } from 'react'\nimport NumericInputStepper from '@/components/shared/NumericInputStepper'\nimport Input from '@/components/ui/Input'\n\nconst WithConstraints = () => {\n    const [value, setValue] = useState<number>(50)\n\n    return (\n        <div>\n            <Input\n                value={value}\n                readOnly\n                className=\"text-center\"\n                suffix={\n                    <div className=\"ltr:-mr-2 rtl:-ml-2\">\n                        <NumericInputStepper\n                            value={value}\n                            onChange={setValue}\n                            min={0}\n                            max={100}\n                            step={10}\n                        />\n                    </div>\n                }\n            />\n            <p className=\"mt-2 text-sm text-gray-500\">\n                Min: 0, Max: 100, Step: 10\n            </p>\n        </div>\n    )\n}\n\nexport default WithConstraints"
+    }
+  }
+}

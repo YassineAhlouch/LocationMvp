@@ -1,0 +1,50 @@
+{
+  "component_id": "util-paginate-001",
+  "name": "paginate",
+  "display_name": "Array Pagination Utility",
+  "category": "Utils / Data Manipulation",
+  "import_path": "@/utils/paginate",
+  "description": "Slices an array into pages for client-side pagination.",
+  "usage_guidelines": [
+    "Use for client-side pagination of arrays.",
+    "Specify page size and page number (1-indexed).",
+    "Returns subset of array for requested page."
+  ],
+  "params": [
+    {
+      "name": "array",
+      "type": "Array<any>",
+      "required": true,
+      "description": "Array to paginate."
+    },
+    {
+      "name": "pageSize",
+      "type": "number",
+      "required": true,
+      "description": "Number of items per page."
+    },
+    {
+      "name": "pageNumber",
+      "type": "number",
+      "required": true,
+      "description": "Page number (1-indexed)."
+    }
+  ],
+  "return_value": {
+    "type": "Array<any>",
+    "description": "Subset of array for the requested page."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for client-side pagination",
+      "Validate page numbers",
+      "Handle empty arrays",
+      "Use with Pagination component"
+    ],
+    "Dont": [
+      "Don't use for large datasets (use server-side)",
+      "Don't forget to calculate total pages",
+      "Don't use 0-indexed page numbers"
+    ]
+  }
+}

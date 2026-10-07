@@ -1,0 +1,63 @@
+{
+  "component_id": "hook-datatablestate-001",
+  "name": "useDataTableState",
+  "display_name": "Data Table State Management Hook",
+  "category": "Hooks / Data Tables",
+  "import_path": "@/utils/hooks/useDataTableState",
+  "description": "A comprehensive hook for managing data table state including pagination, sorting, and row selection with automatic state synchronization.",
+  "usage_guidelines": [
+    "Use with DataTable component for state management.",
+    "Handles pagination, page size, sorting, and row selection.",
+    "Automatically clears selection when pagination changes.",
+    "Provides handlers for all table interactions.",
+    "Works with both client-side and server-side data."
+  ],
+  "params": [
+    {
+      "name": "props",
+      "type": "DataTableStateProps<T>",
+      "required": true,
+      "description": "Configuration object with paging state, callbacks, and selection state."
+    }
+  ],
+  "return_value": {
+    "type": "object",
+    "description": "Object containing all table interaction handlers.",
+    "structure": {
+      "onPaginationChange": {
+        "type": "(page: number) => void",
+        "description": "Handler for page number changes."
+      },
+      "onPageSizeChange": {
+        "type": "(value: number) => void",
+        "description": "Handler for page size changes (resets to page 1)."
+      },
+      "onSort": {
+        "type": "(sort: {sortOrder, sortKey}) => void",
+        "description": "Handler for column sorting."
+      },
+      "onRowSelect": {
+        "type": "(checked: boolean, row: T) => void",
+        "description": "Handler for individual row selection."
+      },
+      "onAllRowSelect": {
+        "type": "(checked: boolean, rows: Row<T>[]) => void",
+        "description": "Handler for select all rows."
+      }
+    }
+  },
+  "best_practices": {
+    "Do": [
+      "Use with DataTable component",
+      "Handle all returned callbacks",
+      "Manage paging state externally",
+      "Clear selection on data changes",
+      "Use with server-side pagination"
+    ],
+    "Dont": [
+      "Don't mutate pagingState directly",
+      "Don't forget to handle selection state",
+      "Don't skip onPagingChange callback"
+    ]
+  }
+}

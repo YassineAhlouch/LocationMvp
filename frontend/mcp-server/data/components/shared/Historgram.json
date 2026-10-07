@@ -1,0 +1,59 @@
+{
+  "component_id": "histogram-001",
+  "name": "Historgram",
+  "display_name": "Histogram Chart Component",
+  "category": "Data Display / Charts",
+  "import_path": "@/components/shared/Historgram",
+  "description": "A simple histogram visualization component for displaying data distribution with range highlighting.",
+  "usage_guidelines": [
+    "Use for visualizing data distribution across bins.",
+    "Highlight specific range with active state.",
+    "Bars scale relative to maximum value.",
+    "Useful for range selectors and data analysis."
+  ],
+  "props": {
+    "data": {
+      "type": "Array<{value: number, label: string}>",
+      "required": true,
+      "description": "Array of data points with values and labels."
+    },
+    "range": {
+      "type": "[number, number]",
+      "required": true,
+      "description": "Active range to highlight [min, max]."
+    },
+    "min": {
+      "type": "number",
+      "required": true,
+      "description": "Minimum value of data range."
+    },
+    "max": {
+      "type": "number",
+      "required": true,
+      "description": "Maximum value of data range."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Vertical bars with heights proportional to values. Bars within active range use primary color, others use gray. Smooth color transitions."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for data distribution",
+      "Set appropriate min/max",
+      "Update range for interactivity",
+      "Keep bar count reasonable"
+    ],
+    "Dont": [
+      "Don't use for time series (use line chart)",
+      "Don't display too many bars",
+      "Don't forget to normalize data"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import { useState } from 'react'\nimport Histogram from '@/components/shared/Historgram'\nimport Slider from '@/components/ui/Slider'\n\nconst sampleData = [\n    { value: 5, label: '0-10' },\n    { value: 12, label: '10-20' },\n    { value: 25, label: '20-30' },\n    { value: 38, label: '30-40' },\n    { value: 45, label: '40-50' },\n    { value: 32, label: '50-60' },\n    { value: 28, label: '60-70' },\n    { value: 15, label: '70-80' },\n    { value: 8, label: '80-90' },\n    { value: 3, label: '90-100' },\n]\n\nconst Basic = () => {\n    const [range, setRange] = useState<[number, number]>([20, 70])\n\n    return (\n        <div className=\"w-full max-w-md\">\n            <Histogram data={sampleData} range={range} min={0} max={100} />\n            <div className=\"mt-4 space-y-4\">\n                <div className=\"text-sm\">\n                    Range: {range[0]} - {range[1]}\n                </div>\n                <div className=\"flex items-center gap-4\">\n                    <span className=\"text-sm w-10\">Min</span>\n                    <div className=\"flex-1\">\n                        <Slider\n                            min={0}\n                            max={100}\n                            value={range[0]}\n                            onChange={(value) =>\n                                setRange([value as number, range[1]])\n                            }\n                        />\n                    </div>\n                </div>\n                <div className=\"flex items-center gap-4\">\n                    <span className=\"text-sm w-10\">Max</span>\n                    <div className=\"flex-1\">\n                        <Slider\n                            min={0}\n                            max={100}\n                            value={range[1]}\n                            onChange={(value) =>\n                                setRange([range[0], value as number])\n                            }\n                        />\n                    </div>\n                </div>\n            </div>\n        </div>\n    )\n}\n\nexport default Basic"
+    }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "component_id": "emptystate-001",
+  "name": "EmptyState",
+  "display_name": "Empty State Component",
+  "category": "Data Display / Empty States",
+  "import_path": "@/components/shared/EmptyState",
+  "description": "A complete empty state component with decorative background patterns and customizable illustration placement. Provides a polished way to display empty states with visual hierarchy.",
+  "usage_guidelines": [
+    "Use for empty state displays (no data, no results, etc.).",
+    "Place illustration in the illustration prop - typically use IconFrame with an icon.",
+    "Use children for content below the background (title, description).",
+    "Use negative offset prop to pull content closer to the illustration.",
+    "Choose variant based on design aesthetic (wave, grid, dots)."
+  ],
+  "props": {
+    "variant": {
+      "type": "'wave' | 'grid' | 'dots'",
+      "required": false,
+      "default": "'wave'",
+      "description": "Background pattern style."
+    },
+    "size": {
+      "type": "number",
+      "required": false,
+      "default": "300",
+      "description": "Width and height of background in pixels."
+    },
+    "illustration": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Illustration or icon to display centered on the background. Typically use IconFrame with an icon."
+    },
+    "offset": {
+      "type": "number",
+      "required": false,
+      "default": "0",
+      "description": "Vertical offset (margin-top) for the content below the illustration. Use negative values to pull content up."
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Content to display below the background (title, description)."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with SVG",
+    "visual_description": "A vertically stacked layout with a decorative SVG background pattern containing the illustration, followed by content below. The offset prop allows fine-tuning the vertical spacing."
+  },
+  "best_practices": {
+    "Do": [
+      "Use IconFrame with icons for consistent illustration style",
+      "Use negative offset to create visual overlap",
+      "Choose appropriate variant for your design",
+      "Provide helpful empty state messages"
+    ],
+    "Dont": [
+      "Don't use for loading states",
+      "Don't make size too large",
+      "Don't forget to handle empty state logic"
+    ]
+  },
+  "examples": [
+    {
+      "title": "Basic Empty State",
+      "description": "Simple empty state with IconFrame illustration",
+      "code": "<EmptyState\n  size={200}\n  illustration={\n    <IconFrame size={72}>\n      <LiInbox className=\"text-xl heading-text\" />\n    </IconFrame>\n  }\n>\n  <div className=\"text-center\">\n    <h5>No data available</h5>\n  </div>\n</EmptyState>"
+    },
+    {
+      "title": "With Offset",
+      "description": "Empty state with negative offset to pull content closer",
+      "code": "<EmptyState\n  variant=\"dots\"\n  size={200}\n  offset={-10}\n  illustration={\n    <IconFrame size={72}>\n      <LiDocumentDownload className=\"text-xl heading-text\" />\n    </IconFrame>\n  }\n>\n  <div className=\"text-center\">\n    <h5>No documents uploaded</h5>\n  </div>\n</EmptyState>"
+    }
+  ],
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import EmptyState from '@/components/shared/EmptyState'\nimport IconFrame from '@/components/shared/IconFrame'\nimport { LiFolderOpen } from '@/icons'\n\nconst Basic = () => {\n    return (\n        <EmptyState\n            size={200}\n            illustration={\n                <IconFrame>\n                    <LiFolderOpen className=\"text-xl heading-text\" />\n                </IconFrame>\n            }\n        >\n            <div className=\"text-center\">\n                <h5>No data available</h5>\n            </div>\n        </EmptyState>\n    )\n}\n\nexport default Basic"
+    },
+    "Variants": {
+      "title": "Variants",
+      "code": "import EmptyState from '@/components/shared/EmptyState'\nimport IconFrame from '@/components/shared/IconFrame'\nimport { LiFolderOpen, LiDocument, LiSearch } from '@/icons'\n\nconst Variants = () => {\n    return (\n        <div className=\"flex flex-wrap gap-2 justify-center\">\n            <EmptyState\n                variant=\"wave\"\n                size={240}\n                illustration={\n                    <IconFrame>\n                        <LiFolderOpen className=\"text-xl heading-text\" />\n                    </IconFrame>\n                }\n            >\n                <p>Wave</p>\n            </EmptyState>\n            <EmptyState\n                variant=\"grid\"\n                size={240}\n                illustration={\n                    <IconFrame>\n                        <LiDocument className=\"text-xl heading-text\" />\n                    </IconFrame>\n                }\n            >\n                <p>Grid</p>\n            </EmptyState>\n            <EmptyState\n                variant=\"dots\"\n                size={240}\n                illustration={\n                    <IconFrame>\n                        <LiSearch className=\"text-xl heading-text\" />\n                    </IconFrame>\n                }\n            >\n                <p>Dots</p>\n            </EmptyState>\n        </div>\n    )\n}\n\nexport default Variants"
+    },
+    "WithOffset": {
+      "title": "With Offset",
+      "code": "import EmptyState from '@/components/shared/EmptyState'\nimport IconFrame from '@/components/shared/IconFrame'\nimport { LiDocumentDownload } from '@/icons'\n\nconst WithOffset = () => {\n    return (\n        <EmptyState\n            variant=\"dots\"\n            size={200}\n            offset={-10}\n            illustration={\n                <IconFrame>\n                    <LiDocumentDownload className=\"text-xl heading-text\" />\n                </IconFrame>\n            }\n        >\n            <div className=\"text-center\">\n                <h5>No documents uploaded</h5>\n            </div>\n        </EmptyState>\n    )\n}\n\nexport default WithOffset"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "component_id": "debounceinput-001",
+  "name": "DebouceInput",
+  "display_name": "Debounced Input Component",
+  "category": "Form Elements / Input",
+  "import_path": "@/components/shared/DebouceInput",
+  "description": "An input component that debounces onChange events to reduce the frequency of updates, ideal for search inputs and performance optimization.",
+  "usage_guidelines": [
+    "Use for search inputs to reduce API calls.",
+    "Use for inputs that trigger expensive operations.",
+    "Set appropriate wait time based on use case (default 500ms).",
+    "Inherits all Input component props and functionality."
+  ],
+  "props": {
+    "wait": {
+      "type": "number",
+      "required": false,
+      "default": "500",
+      "description": "Debounce delay in milliseconds before triggering onChange."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Identical to standard Input component. Debouncing is a behavioral enhancement, not visual."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for search/filter inputs",
+      "Set appropriate wait time (300-500ms for search)",
+      "Use for inputs triggering API calls",
+      "Combine with loading states"
+    ],
+    "Dont": [
+      "Don't use for critical immediate inputs",
+      "Don't set wait time too long",
+      "Don't use for simple form fields"
+    ]
+  },
+  "code_examples": {
+    "Example": {
+      "title": "Example",
+      "code": "import DebounceInput from '@/components/shared/DebouceInput';\n\nfunction Example() {\n    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {\n        window.alert(e.target.value);\n    };\n\n    return (\n        <DebounceInput\n            placeholder=\"Search...\"\n            onChange={handleSearch}\n            wait={1000}\n        />\n    );\n}\n\nexport default Example"
+    }
+  }
+}

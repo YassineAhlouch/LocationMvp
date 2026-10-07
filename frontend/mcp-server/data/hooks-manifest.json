@@ -1,0 +1,110 @@
+[
+  {
+    "name": "useDebounce",
+    "path": "src/utils/hooks/useDebounce.ts",
+    "category": "hook",
+    "docPath": "docs/hooks/useDebounce.md",
+    "jsonPath": "docs-json/hooks/useDebounce.json",
+    "tags": ["performance", "input", "api"],
+    "primaryUseCase": "Limiting function execution frequency during rapid calls"
+  },
+  {
+    "name": "useResponsive", 
+    "path": "src/utils/hooks/useResponsive.ts",
+    "category": "hook",
+    "docPath": "docs/hooks/useResponsive.md",
+    "jsonPath": "docs-json/hooks/useResponsive.json",
+    "tags": ["responsive", "breakpoints", "layout"],
+    "primaryUseCase": "Responsive behavior based on screen size breakpoints"
+  },
+  {
+    "name": "useAuthority",
+    "path": "src/utils/hooks/useAuthority.ts",
+    "category": "hook",
+    "docPath": "docs/hooks/useAuthority.md", 
+    "jsonPath": "docs-json/hooks/useAuthority.json",
+    "tags": ["auth", "permissions", "security"],
+    "primaryUseCase": "Role-based access control and permission checking"
+  },
+  {
+    "name": "useInterval",
+    "path": "src/utils/hooks/useInterval.ts",
+    "category": "hook",
+    "docPath": "docs/hooks/useInterval.md",
+    "jsonPath": "docs-json/hooks/useInterval.json",
+    "tags": ["timer", "polling", "recurring"],
+    "primaryUseCase": "Recurring tasks with automatic cleanup"
+  },
+  {
+    "name": "useDarkMode",
+    "path": "src/utils/hooks/useDarkMode.ts",
+    "category": "hook",
+    "docPath": "docs/hooks/useDarkMode.md",
+    "jsonPath": "docs-json/hooks/useDarkMode.json",
+    "tags": ["theme", "dark-mode", "preferences"],
+    "primaryUseCase": "Theme switching with system preference detection"
+  },
+  {
+    "name": "useLayout",
+    "path": "src/utils/hooks/useLayout.ts",
+    "category": "hook",
+    "docPath": "docs/hooks/useLayout.md",
+    "jsonPath": "docs-json/hooks/useLayout.json",
+    "tags": ["layout", "context", "template"],
+    "primaryUseCase": "Accessing layout configuration in template components"
+  },
+  {
+    "name": "useTranslation",
+    "path": "src/utils/hooks/useTranslation.ts",
+    "category": "hook",
+    "docPath": "docs/hooks/useTranslation.md",
+    "jsonPath": "docs-json/hooks/useTranslation.json",
+    "tags": ["i18n", "translation", "localization"],
+    "primaryUseCase": "Internationalization with placeholder mode support"
+  },
+  {
+    "name": "useDirection",
+    "path": "src/utils/hooks/useDirection.ts",
+    "category": "hook",
+    "docPath": "docs/hooks/useDirection.md",
+    "jsonPath": "docs-json/hooks/useDirection.json",
+    "tags": ["direction", "rtl", "internationalization"],
+    "primaryUseCase": "Managing text direction for RTL/LTR support"
+  },
+  {
+    "name": "useScrollTop",
+    "path": "src/utils/hooks/useScrollTop.ts",
+    "category": "hook",
+    "docPath": "docs/hooks/useScrollTop.md",
+    "jsonPath": "docs-json/hooks/useScrollTop.json",
+    "tags": ["scroll", "sticky", "ui-behavior"],
+    "primaryUseCase": "Tracking scroll position for sticky UI elements"
+  },
+  {
+    "name": "useRandomColor",
+    "path": "src/utils/hooks/useRandomColor.ts",
+    "category": "hook",
+    "docPath": "docs/hooks/useRandomColor.md",
+    "jsonPath": "docs-json/hooks/useRandomColor.json",
+    "tags": ["color", "visual", "generation"],
+    "primaryUseCase": "Generating consistent colors from string input"
+  },
+  {
+    "name": "useMenuActive",
+    "path": "src/utils/hooks/useMenuActive.ts",
+    "category": "hook",
+    "docPath": "docs/hooks/useMenuActive.md",
+    "jsonPath": "docs-json/hooks/useMenuActive.json",
+    "tags": ["navigation", "menu", "routing"],
+    "primaryUseCase": "Determining active menu items from navigation tree"
+  },
+  {
+    "name": "useTimeOutMessage",
+    "path": "src/utils/hooks/useTimeOutMessage.ts",
+    "category": "hook",
+    "docPath": "docs/hooks/useTimeOutMessage.md",
+    "jsonPath": "docs-json/hooks/useTimeOutMessage.json",
+    "tags": ["message", "timeout", "feedback"],
+    "primaryUseCase": "Managing temporary messages with auto-clear"
+  }
+]

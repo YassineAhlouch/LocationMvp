@@ -1,0 +1,948 @@
+[
+  {
+    "name": "ActionBar",
+    "path": "src/components/ui/ActionBar.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "layout",
+      "containers"
+    ],
+    "primaryUseCase": "A floating action bar component that appears at the bottom of the viewport for displaying contextual actions, typically used for batch operations on selected items."
+  },
+  {
+    "name": "Alert",
+    "path": "src/components/ui/Alert.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "feedback",
+      "notifications"
+    ],
+    "primaryUseCase": "A versatile alert component for displaying contextual feedback messages with multiple severity types, optional icons, and auto-dismiss functionality."
+  },
+  {
+    "name": "Avatar",
+    "path": "src/components/ui/Avatar.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "data display",
+      "user interface"
+    ],
+    "primaryUseCase": "A flexible avatar component for displaying user profile images, icons, or initials with various sizes and shapes."
+  },
+  {
+    "name": "Badge",
+    "path": "src/components/ui/Badge.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "data display",
+      "indicators"
+    ],
+    "primaryUseCase": "A small badge component for displaying notification counts, status indicators, or labels. Can be used standalone or as a wrapper around other elements."
+  },
+  {
+    "name": "Button",
+    "path": "src/components/ui/Button.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "user interaction",
+      "form elements"
+    ],
+    "primaryUseCase": "A versatile button component with multiple variants, sizes, states, and icon support for user interactions and form submissions."
+  },
+  {
+    "name": "Calendar",
+    "path": "src/components/ui/Calendar.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "form elements",
+      "date & time"
+    ],
+    "primaryUseCase": "A calendar component for selecting single or multiple dates with month/year navigation and date range restrictions."
+  },
+  {
+    "name": "Card",
+    "path": "src/components/ui/Card.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "layout",
+      "containers"
+    ],
+    "primaryUseCase": "A flexible card container component for grouping related content with optional header, footer, and interactive capabilities."
+  },
+  {
+    "name": "Carousel",
+    "path": "src/components/ui/Carousel.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "data display",
+      "carousel"
+    ],
+    "primaryUseCase": "A carousel component for cycling through content with touch/drag support, keyboard navigation, and smooth animations. Built without external dependencies, following shadcn/ui patterns."
+  },
+  {
+    "name": "Checkbox",
+    "path": "src/components/ui/Checkbox.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "form elements",
+      "input"
+    ],
+    "primaryUseCase": "A customizable checkbox component with support for controlled/uncontrolled states, indeterminate state, and checkbox groups."
+  },
+  {
+    "name": "Collapsible",
+    "path": "src/components/ui/Collapsible.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "layout",
+      "containers"
+    ],
+    "primaryUseCase": "A container component that manages collapsible/expandable content with controlled and uncontrolled state support."
+  },
+  {
+    "name": "ConfigProvider",
+    "path": "src/components/ui/ConfigProvider.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "context",
+      "configuration"
+    ],
+    "primaryUseCase": "A context provider that manages global UI configuration including theme, locale, direction (RTL/LTR), and default component sizes. Wraps the entire application to provide consistent configuration."
+  },
+  {
+    "name": "DatePicker",
+    "path": "src/components/ui/DatePicker.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "form elements",
+      "date & time"
+    ],
+    "primaryUseCase": "A comprehensive date picker component with calendar dropdown, keyboard navigation, manual input support, and extensive customization options."
+  },
+  {
+    "name": "Dialog",
+    "path": "src/components/ui/Dialog.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "overlay",
+      "modals"
+    ],
+    "primaryUseCase": "A modal dialog component with backdrop overlay, focus management, keyboard navigation, and smooth animations for displaying content that requires user attention."
+  },
+  {
+    "name": "Drawer",
+    "path": "src/components/ui/Drawer.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "overlay",
+      "navigation"
+    ],
+    "primaryUseCase": "A slide-out panel component that appears from screen edges with header, body, footer sections, and smooth animations for displaying supplementary content or navigation."
+  },
+  {
+    "name": "Dropdown",
+    "path": "src/components/ui/Dropdown.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "navigation",
+      "menus"
+    ],
+    "primaryUseCase": "A flexible dropdown menu component with nested menu support, keyboard navigation, and customizable triggers for displaying contextual actions and options."
+  },
+  {
+    "name": "Form",
+    "path": "src/components/ui/Form.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "form elements",
+      "container"
+    ],
+    "primaryUseCase": "A form component built on React Hook Form with compound pattern. Provides Form.Item for field-level validation display, label alignment, and consistent form layout with Zod schema integration."
+  },
+  {
+    "name": "Icons",
+    "path": "src/components/ui/Icons.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "data display",
+      "icons"
+    ],
+    "primaryUseCase": "A collection of SVG icon components for common UI elements including chevrons, status indicators, sorting arrows, and action icons."
+  },
+  {
+    "name": "Input",
+    "path": "src/components/ui/Input.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "form elements",
+      "input"
+    ],
+    "primaryUseCase": "A versatile input component supporting text, textarea, prefix/suffix elements, various sizes, and validation states for form data entry."
+  },
+  {
+    "name": "InputGroup",
+    "path": "src/components/ui/InputGroup.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "form elements",
+      "input"
+    ],
+    "primaryUseCase": "A component for grouping related input elements together with addons (prefix/suffix buttons, text, or icons) for a cohesive form control appearance."
+  },
+  {
+    "name": "Menu",
+    "path": "src/components/ui/Menu.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "navigation",
+      "menus"
+    ],
+    "primaryUseCase": "A flexible menu component for navigation with support for nested items, collapsible sections, active state management, and sidebar integration."
+  },
+  {
+    "name": "MultiValueInput",
+    "path": "src/components/ui/MultiValueInput.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "form elements",
+      "input"
+    ],
+    "primaryUseCase": "An input component that allows users to enter multiple values as tags/chips, with support for keyboard entry, removal, and custom separators."
+  },
+  {
+    "name": "Notification",
+    "path": "src/components/ui/Notification.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "feedback",
+      "notifications"
+    ],
+    "primaryUseCase": "A notification component for displaying temporary messages with various types, custom icons, auto-dismiss functionality, and close button support."
+  },
+  {
+    "name": "Pagination",
+    "path": "src/components/ui/Pagination.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "navigation",
+      "data display"
+    ],
+    "primaryUseCase": "A pagination component for navigating through large datasets with page numbers, previous/next buttons, and optional total count display."
+  },
+  {
+    "name": "Popover",
+    "path": "src/components/ui/Popover.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "overlay",
+      "tooltips"
+    ],
+    "primaryUseCase": "A floating popover component for displaying rich content in an overlay with customizable triggers, placement, and interaction modes."
+  },
+  {
+    "name": "Progress",
+    "path": "src/components/ui/Progress.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "feedback",
+      "progress"
+    ],
+    "primaryUseCase": "A progress indicator component supporting line and circle variants for visualizing task completion or loading states."
+  },
+  {
+    "name": "Radio",
+    "path": "src/components/ui/Radio.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "form elements",
+      "input"
+    ],
+    "primaryUseCase": "A radio button component for mutually exclusive selections with support for radio groups and controlled/uncontrolled states."
+  },
+  {
+    "name": "Segment",
+    "path": "src/components/ui/Segment.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "form elements",
+      "selection"
+    ],
+    "primaryUseCase": "A segmented control component for single or multiple selection with visual indicator and size variants."
+  },
+  {
+    "name": "Select",
+    "path": "src/components/ui/Select.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "form elements",
+      "input"
+    ],
+    "primaryUseCase": "A feature-rich select dropdown with search, keyboard navigation, custom options, grouped options, and creatable functionality."
+  },
+  {
+    "name": "Skeleton",
+    "path": "src/components/ui/Skeleton.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "feedback",
+      "loading"
+    ],
+    "primaryUseCase": "A skeleton placeholder component for indicating loading content with animated pulse effect."
+  },
+  {
+    "name": "Slider",
+    "path": "src/components/ui/Slider.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "form elements",
+      "input"
+    ],
+    "primaryUseCase": "An interactive slider component for selecting numeric values within a range with keyboard support, marks, and tooltips."
+  },
+  {
+    "name": "Spinner",
+    "path": "src/components/ui/Spinner.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "feedback",
+      "loading"
+    ],
+    "primaryUseCase": "A loading spinner component for indicating indeterminate loading or processing states."
+  },
+  {
+    "name": "StatusIcon",
+    "path": "src/components/ui/StatusIcon.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "data display",
+      "icons"
+    ],
+    "primaryUseCase": "A status icon component that displays contextual icons with appropriate colors for success, info, warning, and danger states."
+  },
+  {
+    "name": "Steps",
+    "path": "src/components/ui/Steps.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "navigation",
+      "progress"
+    ],
+    "primaryUseCase": "A step indicator component for displaying multi-step processes with current progress and status."
+  },
+  {
+    "name": "Switcher",
+    "path": "src/components/ui/Switcher.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "form elements",
+      "input"
+    ],
+    "primaryUseCase": "A toggle switch component for binary on/off states with loading support and custom content."
+  },
+  {
+    "name": "Table",
+    "path": "src/components/ui/Table.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "data display",
+      "tables"
+    ],
+    "primaryUseCase": "A flexible table component with support for borders, hover effects, compact mode, and overflow handling."
+  },
+  {
+    "name": "Tabs",
+    "path": "src/components/ui/Tabs.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "navigation",
+      "tabs"
+    ],
+    "primaryUseCase": "A tab navigation component for organizing content into switchable panels with underline or pill variants."
+  },
+  {
+    "name": "Tag",
+    "path": "src/components/ui/Tag.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "data display",
+      "labels"
+    ],
+    "primaryUseCase": "A tag component for labeling, categorizing, or highlighting content with optional prefix and suffix elements."
+  },
+  {
+    "name": "TimeInput",
+    "path": "src/components/ui/TimeInput.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "form elements",
+      "date & time"
+    ],
+    "primaryUseCase": "A time input component with separate fields for hours, minutes, seconds, and AM/PM with keyboard navigation support."
+  },
+  {
+    "name": "Timeline",
+    "path": "src/components/ui/Timeline.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "data display",
+      "timeline"
+    ],
+    "primaryUseCase": "A timeline component for displaying chronological events or activities with connecting lines."
+  },
+  {
+    "name": "toast",
+    "path": "src/components/ui/toast.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "feedback",
+      "notifications"
+    ],
+    "primaryUseCase": "A programmatic toast notification system for displaying temporary messages with customizable placement, transitions, and auto-dismiss functionality."
+  },
+  {
+    "name": "Tooltip",
+    "path": "src/components/ui/Tooltip.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "overlay",
+      "tooltips"
+    ],
+    "primaryUseCase": "A tooltip component for displaying helpful information on hover or focus with customizable placement."
+  },
+  {
+    "name": "Upload",
+    "path": "src/components/ui/Upload.tsx",
+    "category": "component",
+    "subType": "ui",
+    "tags": [
+      "form elements",
+      "input"
+    ],
+    "primaryUseCase": "A file upload component with drag-and-drop support, file list display, validation, and custom file item rendering."
+  },
+  {
+    "name": "ActionLink",
+    "path": "src/components/shared/ActionLink.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "navigation",
+      "links"
+    ],
+    "primaryUseCase": "A styled link component with theme color support for navigation and actions, supporting both internal routing and external links."
+  },
+  {
+    "name": "AdvancedFilterBuilder",
+    "path": "src/components/shared/AdvancedFilterBuilder.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "form elements",
+      "query builder"
+    ],
+    "primaryUseCase": "A sophisticated filter builder component for creating complex query conditions with field selection, operators, values, and nested logical grouping (AND/OR/NOT). Supports recursive rule groups, multiple field types (text, number, select, date, boolean), and query string generation/parsing."
+  },
+  {
+    "name": "Affix",
+    "path": "src/components/shared/Affix.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "layout",
+      "positioning"
+    ],
+    "primaryUseCase": "A component that makes its children stick to the viewport when scrolling past a certain point."
+  },
+  {
+    "name": "AuthorityCheck",
+    "path": "src/components/shared/AuthorityCheck.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "authorization",
+      "access control"
+    ],
+    "primaryUseCase": "A wrapper component that conditionally renders its children based on role-based access control. Compares user authorities against required authorities and only renders content when there's a match."
+  },
+  {
+    "name": "AutoComplete",
+    "path": "src/components/shared/AutoComplete.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "form elements",
+      "input"
+    ],
+    "primaryUseCase": "An autocomplete input component with dropdown suggestions, keyboard navigation, and custom option rendering."
+  },
+  {
+    "name": "Chart",
+    "path": "src/components/shared/Chart.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "charts"
+    ],
+    "primaryUseCase": "A comprehensive charting component built on Recharts, providing LineChart, AreaChart, BarChart, PieChart, RadarChart, and CohortChart components with consistent styling and configuration."
+  },
+  {
+    "name": "ClockProgress",
+    "path": "src/components/shared/ClockProgress.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "progress"
+    ],
+    "primaryUseCase": "A circular clock-style progress indicator that fills like a clock hand sweeping from 12 o'clock position."
+  },
+  {
+    "name": "ConfirmDialog",
+    "path": "src/components/shared/ConfirmDialog.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "overlay",
+      "dialogs"
+    ],
+    "primaryUseCase": "A confirmation dialog component with status icons, customizable buttons, and action handlers for user confirmations."
+  },
+  {
+    "name": "Container",
+    "path": "src/components/shared/Container.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "layout",
+      "containers"
+    ],
+    "primaryUseCase": "A responsive container component with predefined max-widths for consistent page layouts and content centering."
+  },
+  {
+    "name": "CustomFormatInput",
+    "path": "src/components/shared/CustomFormatInput.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "form elements",
+      "input"
+    ],
+    "primaryUseCase": "A specialized input component for custom number formatting (phone numbers, credit cards, etc.) using react-number-format."
+  },
+  {
+    "name": "DataTable",
+    "path": "src/components/shared/DataTable.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "tables"
+    ],
+    "primaryUseCase": "A feature-rich data table component built on TanStack Table with sorting, pagination, row selection, loading states, and skeleton loading support."
+  },
+  {
+    "name": "DebouceInput",
+    "path": "src/components/shared/DebouceInput.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "form elements",
+      "input"
+    ],
+    "primaryUseCase": "An input component that debounces onChange events to reduce the frequency of updates, ideal for search inputs and performance optimization."
+  },
+  {
+    "name": "Divider",
+    "path": "src/components/shared/Divider.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "layout",
+      "separators"
+    ],
+    "primaryUseCase": "A simple divider component for visually separating content with horizontal or vertical orientation."
+  },
+  {
+    "name": "EditorTools",
+    "path": "src/components/shared/EditorTools.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "form elements",
+      "editor tools"
+    ],
+    "primaryUseCase": "A comprehensive collection of toolbar button components for TipTap-based rich text editors. Provides formatting controls including text styling (bold, italic, strikethrough), headings, lists, code blocks, blockquotes, images, and history management (undo/redo). Each tool button integrates with TipTap editor instance and shows active states."
+  },
+  {
+    "name": "EmptyState",
+    "path": "src/components/shared/EmptyState.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "empty states"
+    ],
+    "primaryUseCase": "A complete empty state component with decorative background patterns and customizable illustration placement. Provides a polished way to display empty states with visual hierarchy."
+  },
+  {
+    "name": "FullCalendar",
+    "path": "src/components/shared/FullCalendar.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "calendar"
+    ],
+    "primaryUseCase": "A comprehensive, full-featured calendar component with multiple view modes (day, week, month, year, agenda), drag-and-drop event management, event resizing, customizable rendering, and extensive date utilities. Built with React context for state management and supports both single-day and multi-day events with intelligent positioning."
+  },
+  {
+    "name": "Gantt",
+    "path": "src/components/shared/Gantt.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "project management"
+    ],
+    "primaryUseCase": "A comprehensive Gantt chart component for project management with task scheduling, dependencies, progress tracking, drag-and-drop, resizing, and interactive timeline visualization. Supports multiple view modes (Hour, QuarterDay, HalfDay, Day, Week, Month, QuarterYear, Year), task types (task, milestone, project), and customizable columns for task list display."
+  },
+  {
+    "name": "GrowShrinkTag",
+    "path": "src/components/shared/GrowShrinkTag.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "indicators"
+    ],
+    "primaryUseCase": "A tag component that visually indicates positive or negative changes with color coding and directional icons."
+  },
+  {
+    "name": "GrowShrinkValue",
+    "path": "src/components/shared/GrowShrinkValue.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "indicators"
+    ],
+    "primaryUseCase": "A component for displaying numeric values with directional indicators and customizable positive/negative styling."
+  },
+  {
+    "name": "Historgram",
+    "path": "src/components/shared/Historgram.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "charts"
+    ],
+    "primaryUseCase": "A simple histogram visualization component for displaying data distribution with range highlighting."
+  },
+  {
+    "name": "IconFrame",
+    "path": "src/components/shared/IconFrame.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "icons"
+    ],
+    "primaryUseCase": "A container component for displaying icons with consistent styling. Supports multiple visual variants including default bordered, thick ring, layered, and layered with background styles. Useful for creating consistent icon presentations in cards, lists, and dashboards."
+  },
+  {
+    "name": "InfoBar",
+    "path": "src/components/shared/InfoBar.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "indicators"
+    ],
+    "primaryUseCase": "A visual indicator showing three levels (low, medium, high) with color-coded bars, similar to signal strength indicators."
+  },
+  {
+    "name": "loaders",
+    "path": "src/components/shared/loaders.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "feedback",
+      "loading"
+    ],
+    "primaryUseCase": "A collection of specialized skeleton loader components for common UI patterns including media items, table rows, and text blocks."
+  },
+  {
+    "name": "Loading",
+    "path": "src/components/shared/Loading.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "feedback",
+      "loading"
+    ],
+    "primaryUseCase": "A versatile loading component with two display modes: default (replaces content) and cover (overlays content)."
+  },
+  {
+    "name": "NavToggle",
+    "path": "src/components/shared/NavToggle.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "navigation",
+      "icons"
+    ],
+    "primaryUseCase": "A simple icon component that switches between open and close panel icons based on toggle state."
+  },
+  {
+    "name": "NumericInput",
+    "path": "src/components/shared/NumericInput.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "form elements",
+      "input"
+    ],
+    "primaryUseCase": "A specialized input component for numeric values with formatting support using react-number-format library."
+  },
+  {
+    "name": "NumericInputStepper",
+    "path": "src/components/shared/NumericInputStepper.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "form elements",
+      "input"
+    ],
+    "primaryUseCase": "Increment/decrement buttons for numeric inputs with min/max constraints and step control."
+  },
+  {
+    "name": "OtpInput",
+    "path": "src/components/shared/OtpInput.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "form",
+      "input"
+    ],
+    "primaryUseCase": "A one-time password input component that renders multiple single-character input fields. Supports auto-focus navigation, paste handling, keyboard navigation, and validation states."
+  },
+  {
+    "name": "OverflowTabs",
+    "path": "src/components/shared/OverflowTabs.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "navigation",
+      "tabs"
+    ],
+    "primaryUseCase": "An intelligent tabs component that automatically moves overflowing tabs into a dropdown menu based on available space."
+  },
+  {
+    "name": "PasswordInput",
+    "path": "src/components/shared/PasswordInput.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "form",
+      "input"
+    ],
+    "primaryUseCase": "An enhanced password input component that extends the base Input with a visibility toggle button. Allows users to show/hide password text with an eye icon toggle."
+  },
+  {
+    "name": "PatternInput",
+    "path": "src/components/shared/PatternInput.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "form",
+      "input"
+    ],
+    "primaryUseCase": "A formatted input component that applies pattern-based formatting to user input using react-number-format. Ideal for phone numbers, credit cards, dates, and other structured data entry with automatic formatting."
+  },
+  {
+    "name": "PopoverFilter",
+    "path": "src/components/shared/PopoverFilter.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "filtering"
+    ],
+    "primaryUseCase": "A popover-based multi-select filter component with search functionality. Displays a list of checkboxes within a popover, allowing users to filter data by selecting multiple options with real-time search."
+  },
+  {
+    "name": "ReactionEmojiPicker",
+    "path": "src/components/shared/ReactionEmojiPicker.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "user interaction",
+      "pickers"
+    ],
+    "primaryUseCase": "A popover-based emoji picker for quick reactions with customizable emoji set and trigger button."
+  },
+  {
+    "name": "RichTextEditor",
+    "path": "src/components/shared/RichTextEditor.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "form elements",
+      "text editor"
+    ],
+    "primaryUseCase": "A feature-rich WYSIWYG text editor built on TipTap with StarterKit extensions. Provides formatting tools including bold, italic, strikethrough, code, headings, lists, blockquotes, code blocks, and horizontal rules. Includes built-in toolbar with undo/redo functionality and supports custom toolbar configuration."
+  },
+  {
+    "name": "SegmentProgressBar",
+    "path": "src/components/shared/SegmentProgressBar.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "progress"
+    ],
+    "primaryUseCase": "A progress bar divided into discrete segments that fill based on percentage. Provides a visual representation of progress through distinct steps or stages rather than a continuous bar."
+  },
+  {
+    "name": "SelectInputWithPrefix",
+    "path": "src/components/shared/SelectInputWithPrefix.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "form elements",
+      "select"
+    ],
+    "primaryUseCase": "A display component for select input values with optional prefix icon or element."
+  },
+  {
+    "name": "SelectOptionWithPrefix",
+    "path": "src/components/shared/SelectOptionWithPrefix.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "form elements",
+      "select"
+    ],
+    "primaryUseCase": "A display component for select dropdown options with prefix icon and selection indicator."
+  },
+  {
+    "name": "StatisticCard",
+    "path": "src/components/shared/StatisticCard.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "cards"
+    ],
+    "primaryUseCase": "A flexible card component designed for displaying statistics and metrics. Supports two visual styles: default bordered card and inset card with nested appearance. Includes optional header and footer sections."
+  },
+  {
+    "name": "StickyRegion",
+    "path": "src/components/shared/StickyRegion.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "layout",
+      "positioning"
+    ],
+    "primaryUseCase": "A performant sticky container that fixes its children to the viewport when scrolling past a configurable threshold. Optimized to only trigger re-renders when crossing the sticky threshold, not on every scroll event."
+  },
+  {
+    "name": "SyntaxHighlighter",
+    "path": "src/components/shared/SyntaxHighlighter.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "code"
+    ],
+    "primaryUseCase": "A code syntax highlighting component using react-syntax-highlighter with oneDark theme."
+  },
+  {
+    "name": "ToggleDrawer",
+    "path": "src/components/shared/ToggleDrawer.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "overlay",
+      "navigation"
+    ],
+    "primaryUseCase": "A drawer component with built-in toggle button and imperative handle for programmatic control."
+  },
+  {
+    "name": "UsersAvatarGroup",
+    "path": "src/components/shared/UsersAvatarGroup.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "user interface"
+    ],
+    "primaryUseCase": "A specialized avatar group component for displaying multiple users with tooltips, random colors for initials, and click handling."
+  },
+  {
+    "name": "VectorMap",
+    "path": "src/components/shared/VectorMap.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "data display",
+      "maps"
+    ],
+    "primaryUseCase": "An SVG-based interactive vector map component for displaying geographic data. Supports hover tooltips, click handlers, and customizable layer styling."
+  },
+  {
+    "name": "Wizard",
+    "path": "src/components/shared/Wizard.tsx",
+    "category": "component",
+    "subType": "shared",
+    "tags": [
+      "navigation",
+      "wizards"
+    ],
+    "primaryUseCase": "A reusable, generic multi-step wizard component for guiding users through complex processes. Supports both horizontal and vertical layouts with smooth Framer Motion animations, click navigation between steps, custom icons, completed step indicators, and controlled component behavior. Perfect for onboarding flows, multi-step forms, and sequential processes."
+  }
+]

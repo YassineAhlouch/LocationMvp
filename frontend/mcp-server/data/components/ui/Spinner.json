@@ -1,0 +1,79 @@
+{
+  "component_id": "spinner-001",
+  "name": "Spinner",
+  "display_name": "Loading Spinner Component",
+  "category": "Feedback / Loading",
+  "import_path": "@/components/ui/Spinner",
+  "description": "A loading spinner component for indicating indeterminate loading or processing states.",
+  "usage_guidelines": [
+    "Use for indeterminate loading states.",
+    "Set appropriate size based on context.",
+    "Use enableTheme to apply theme colors.",
+    "Control animation with isSpining prop.",
+    "Provide custom indicator for branded spinners."
+  ],
+  "props": {
+    "indicator": {
+      "type": "ElementType",
+      "required": false,
+      "description": "Custom spinner icon component."
+    },
+    "isSpining": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Controls spin animation."
+    },
+    "size": {
+      "type": "string | number",
+      "required": false,
+      "default": "20",
+      "description": "Spinner size in pixels."
+    },
+    "enableTheme": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Applies theme color to spinner."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with SVG",
+    "visual_description": "A circular spinning icon with rotating animation. Default is a circle with partial stroke. Customizable size and color."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for indeterminate loading",
+      "Choose appropriate size for context",
+      "Center spinner in loading areas",
+      "Provide loading text for accessibility"
+    ],
+    "Dont": [
+      "Don't use for determinate progress (use Progress instead)",
+      "Don't make spinner too large or too small",
+      "Don't forget to remove when loading completes"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import Spinner from '@/components/ui/Spinner'\n\nconst Basic = () => {\n    return (\n        <div>\n            <Spinner />\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Color": {
+      "title": "Color",
+      "code": "import Spinner from '@/components/ui/Spinner'\n\nconst Color = () => {\n    return (\n        <div className=\"flex items-center\">\n            <Spinner className=\"mr-4 text-yellow-500\" size=\"40px\" />\n            <Spinner className=\"mr-4 text-green-500\" size=\"40px\" />\n        </div>\n    )\n}\n\nexport default Color"
+    },
+    "CustomIndicator": {
+      "title": "Custom Indicator",
+      "code": "import Spinner from '@/components/ui/Spinner'\nimport { ImSpinner9 } from 'react-icons/im'\n\nconst CustomIndicator = () => {\n    return (\n        <div>\n            <Spinner size={40} indicator={ImSpinner9} />\n        </div>\n    )\n}\n\nexport default CustomIndicator"
+    },
+    "Size": {
+      "title": "Size",
+      "code": "import Spinner from '@/components/ui/Spinner'\n\nexport const Size = () => {\n    return (\n        <div className=\"flex items-center\">\n            <Spinner className=\"mr-4\" size={30} />\n            <Spinner className=\"mr-4\" size=\"40px\" />\n            <Spinner size=\"3.25rem\" />\n        </div>\n    )\n}\n\nexport default Size"
+    },
+    "Static": {
+      "title": "Static",
+      "code": "import Spinner from '@/components/ui/Spinner'\n\nconst Static = () => {\n    return (\n        <div>\n            <Spinner isSpining={false} size=\"40px\" />\n        </div>\n    )\n}\n\nexport default Static"
+    }
+  }
+}

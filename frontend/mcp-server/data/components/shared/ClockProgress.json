@@ -1,0 +1,54 @@
+{
+  "component_id": "clockprogress-001",
+  "name": "ClockProgress",
+  "display_name": "Clock-Style Progress Indicator",
+  "category": "Data Display / Progress",
+  "import_path": "@/components/shared/ClockProgress",
+  "description": "A circular clock-style progress indicator that fills like a clock hand sweeping from 12 o'clock position.",
+  "usage_guidelines": [
+    "Use for time-based progress or completion percentages.",
+    "Set value between 0-100 to indicate progress.",
+    "Adjust size for different contexts.",
+    "Useful for timers, countdowns, or completion indicators."
+  ],
+  "props": {
+    "value": {
+      "type": "number",
+      "required": true,
+      "description": "Progress value from 0 to 100."
+    },
+    "size": {
+      "type": "number",
+      "required": false,
+      "default": "40",
+      "description": "Diameter of the clock circle in pixels."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with SVG",
+    "visual_description": "A circular indicator with a pie-slice fill that sweeps clockwise from the top. Background is light gray, filled portion is darker gray. Has a subtle border."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for time-based visualizations",
+      "Update value smoothly for animations",
+      "Choose appropriate size for context",
+      "Use for completion percentages"
+    ],
+    "Dont": [
+      "Don't use for non-percentage values",
+      "Don't make size too small (hard to see)",
+      "Don't update too frequently (causes jank)"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import ClockProgress from '@/components/shared/ClockProgress'\n\nconst Basic = () => {\n    return (\n        <div className=\"flex items-center gap-4\">\n            <ClockProgress value={0} />\n            <ClockProgress value={25} />\n            <ClockProgress value={50} />\n            <ClockProgress value={75} />\n            <ClockProgress value={100} />\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Sizes": {
+      "title": "Sizes",
+      "code": "import ClockProgress from '@/components/shared/ClockProgress'\n\nconst Sizes = () => {\n    return (\n        <div className=\"flex items-center gap-4\">\n            <ClockProgress value={60} size={24} />\n            <ClockProgress value={60} size={40} />\n            <ClockProgress value={60} size={56} />\n            <ClockProgress value={60} size={72} />\n        </div>\n    )\n}\n\nexport default Sizes"
+    }
+  }
+}

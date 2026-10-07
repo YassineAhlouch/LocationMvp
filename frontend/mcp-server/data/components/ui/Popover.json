@@ -1,0 +1,100 @@
+{
+  "component_id": "popover-001",
+  "name": "Popover",
+  "display_name": "Popover Overlay Component",
+  "category": "Overlay / Tooltips",
+  "import_path": "@/components/ui/Popover",
+  "description": "A floating popover component for displaying rich content in an overlay with customizable triggers, placement, and interaction modes.",
+  "usage_guidelines": [
+    "Use for displaying additional information or actions without navigating away.",
+    "Choose appropriate placement to avoid content overflow.",
+    "Use trigger prop to control interaction mode (click or hover).",
+    "Set modal to control focus trapping behavior.",
+    "Provide clear, concise content in popover."
+  ],
+  "props": {
+    "placement": {
+      "type": "'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'right' | 'right-start' | 'right-end' | 'left' | 'left-start' | 'left-end'",
+      "required": false,
+      "description": "Popover position relative to trigger element."
+    },
+    "modal": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Enables modal behavior with focus trapping."
+    },
+    "open": {
+      "type": "boolean",
+      "required": false,
+      "description": "Controlled open state."
+    },
+    "onOpenChange": {
+      "type": "(open: boolean) => void",
+      "required": false,
+      "description": "Callback fired when open state changes."
+    },
+    "trigger": {
+      "type": "'click' | 'hover'",
+      "required": false,
+      "description": "Interaction mode to open popover."
+    },
+    "width": {
+      "type": "number",
+      "required": false,
+      "default": "300",
+      "description": "Popover content width."
+    },
+    "renderTrigger": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Custom trigger element."
+    },
+    "title": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Popover trigger content."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with Floating UI",
+    "visual_description": "A floating card with shadow that appears near trigger element. Includes smooth fade and scale animations. Automatically repositions to stay in viewport."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for supplementary information",
+      "Choose appropriate placement",
+      "Keep content concise",
+      "Use click trigger for interactive content",
+      "Use hover trigger for quick info"
+    ],
+    "Dont": [
+      "Don't use for critical actions",
+      "Don't nest popovers",
+      "Don't use for large content",
+      "Don't add extra padding to content, as it already included in the card"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import Popover from '@/components/ui/Popover'\n\nconst Basic = () => {\n    return (\n        <div>\n            <Popover title=\"Click me\">\n                <div className=\"flex flex-col gap-y-4\">\n                    <div>\n                        <h6 className=\"mb-2\">Cumulative Growth Analysis</h6>\n                        <p>\n                            This report tracks the overall, long-term expansion\n                            of community engagement. A healthy community is\n                            expected to exhibit a consistent upward trend.\n                        </p>\n                    </div>\n                </div>\n            </Popover>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Controlled": {
+      "title": "Controlled",
+      "code": "import { useState } from \"react\"\nimport Popover from \"@/components/ui/Popover\"\nimport Calendar from \"@/components/ui/Calendar\"\n\nconst Controlled = () => {\n    const [open, setOpen] = useState(false)\n    const [date, setDate] = useState<Date | null>(null)\n\n    const handleCalendarChange = (date: Date | null) => {\n        setOpen(false)\n        setDate(date)\n    }\n\n    return (\n        <div>\n            <Popover\n                title={date ? date.toDateString() : \"Select a date\"}\n                open={open}\n                placement=\"bottom-start\"\n                onOpenChange={setOpen}\n                style={{ width: 280 }}\n            >\n                <Calendar value={date} onChange={handleCalendarChange} />\n            </Popover>\n        </div>\n    )\n}\n\nexport default Controlled"
+    },
+    "CustomizeTrigger": {
+      "title": "Customize Trigger",
+      "code": "import Popover from '@/components/ui/Popover'\nimport Button from '@/components/ui/Button'\n\nconst CustomizeTrigger = () => {\n    const Trigger = (\n        <Button>\n            <span>Custom Trigger</span>\n        </Button>\n    )\n\n    return (\n        <Popover title=\"Click me\" renderTrigger={Trigger}>\n            <div className=\"flex flex-col gap-y-4\">\n                <div>\n                    <h6 className=\"mb-2\">Cumulative Growth Analysis</h6>\n                    <p>\n                        This report tracks the overall, long-term expansion of\n                        community engagement. A healthy community is expected to\n                        exhibit a consistent upward trend.\n                    </p>\n                </div>\n            </div>\n        </Popover>\n    )\n}\n\nexport default CustomizeTrigger"
+    },
+    "Placement": {
+      "title": "Placement",
+      "code": "import Popover from '@/components/ui/Popover'\n\nconst Placement = () => {\n    const content = (\n        <div className=\"flex flex-col gap-y-4\">\n            <div>\n                <h6 className=\"mb-2\">Cumulative Growth Analysis</h6>\n                <p>\n                    This report tracks the overall, long-term expansion of\n                    community engagement. A healthy community is expected to\n                    exhibit a consistent upward trend.\n                </p>\n            </div>\n        </div>\n    )\n\n    return (\n        <div\n            style={{ maxWidth: 700 }}\n            className=\"grid grid-cols-1 md:grid-cols-5 gap-4\"\n        >\n            <div></div>\n            <Popover title=\"Top start\" placement=\"top-start\">\n                {content}\n            </Popover>\n            <Popover title=\"Top\" placement=\"top\">\n                {content}\n            </Popover>\n            <Popover title=\"Top end\" placement=\"top-end\">\n                {content}\n            </Popover>\n            <div></div>\n            <Popover title=\"Left start\" placement=\"left-start\">\n                {content}\n            </Popover>\n            <div></div>\n            <div></div>\n            <div></div>\n            <Popover title=\"Right start\" placement=\"right-start\">\n                {content}\n            </Popover>\n            <Popover title=\"Left\" placement=\"left\">\n                {content}\n            </Popover>\n            <div></div>\n            <div></div>\n            <div></div>\n            <Popover title=\"Right\" placement=\"right\">\n                {content}\n            </Popover>\n            <Popover title=\"Left end\" placement=\"left-end\">\n                {content}\n            </Popover>\n            <div></div>\n            <div></div>\n            <div></div>\n            <Popover title=\"Right end\" placement=\"right-end\">\n                {content}\n            </Popover>\n            <div></div>\n            <Popover title=\"Bottom start\" placement=\"bottom-start\">\n                {content}\n            </Popover>\n            <Popover title=\"Bottom\" placement=\"bottom\">\n                {content}\n            </Popover>\n            <Popover title=\"Bottom end\" placement=\"bottom-end\">\n                {content}\n            </Popover>\n            <div></div>\n        </div>\n    )\n}\n\nexport default Placement"
+    },
+    "Width": {
+      "title": "Width",
+      "code": "import Popover from '@/components/ui/Popover'\nimport { TbCalendar, TbMap, TbBell, TbMenu } from 'react-icons/tb'\nimport Avatar from '@/components/ui/Avatar'\nimport Button from '@/components/ui/Button'\n\nconst Width = () => {\n    return (\n        <Popover\n            title=\"Click me\"\n            style={{ width: 400 }}\n            placement=\"bottom-start\"\n        >\n            <div className=\"flex flex-col gap-y-4\">\n                <div>\n                    <h5 className=\"mb-4\">Daily standup call</h5>\n                    <div className=\"flex itams-center gap-2 font-medium\">\n                        <TbCalendar className=\"text-lg heading-text\" />\n                        <span>Today - 10:00 AM ~ 10.15 AM </span>\n                    </div>\n                </div>\n                <div className=\"flex flex-col gap-4\">\n                    <div className=\"flex gap-3 flex-1\">\n                        <div>\n                            <TbMap className=\"text-lg heading-text\" />\n                        </div>\n                        <p>Meeting room 1</p>\n                    </div>\n                    <div className=\"flex gap-3 flex-1\">\n                        <div>\n                            <TbBell className=\"text-lg heading-text\" />\n                        </div>\n                        <p>20 more minutes left</p>\n                    </div>\n                    <div className=\"flex gap-3 flex-1\">\n                        <div>\n                            <TbMenu className=\"text-lg heading-text\" />\n                        </div>\n                        <p>\n                            A Daily Standup is a short, time-boxed meeting\n                            (typically 10-15 minutes) where team members\n                            synchronize their work and share updates. It is\n                            commonly used in Agile and Scrum methodologies to\n                            promote transparency and collaboration.\n                        </p>\n                    </div>\n                </div>\n                <div className=\"flex items-center justify-between mt-2\">\n                    <Avatar.Group\n                        chained\n                        omittedAvatarTooltip\n                        maxCount={3}\n                        omittedAvatarProps={{ shape: 'circle', size: 'sm' }}\n                        onOmittedAvatarClick={() =>\n                            console.log('Omitted Avatar Clicked')\n                        }\n                    >\n                        <Avatar\n                            shape=\"circle\"\n                            size=\"sm\"\n                            src=\"/img/avatars/thumb-1.jpg\"\n                        />\n                        <Avatar\n                            shape=\"circle\"\n                            size=\"sm\"\n                            src=\"/img/avatars/thumb-2.jpg\"\n                        />\n                        <Avatar\n                            shape=\"circle\"\n                            size=\"sm\"\n                            src=\"/img/avatars/thumb-3.jpg\"\n                        />\n                        <Avatar\n                            shape=\"circle\"\n                            size=\"sm\"\n                            src=\"/img/avatars/thumb-4.jpg\"\n                        />\n                        <Avatar\n                            shape=\"circle\"\n                            size=\"sm\"\n                            src=\"/img/avatars/thumb-5.jpg\"\n                        />\n                    </Avatar.Group>\n                    <Button>Join Meeting</Button>\n                </div>\n            </div>\n        </Popover>\n    )\n}\n\nexport default Width"
+    }
+  }
+}

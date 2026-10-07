@@ -1,0 +1,221 @@
+{
+  "component_id": "advancedfilterbuilder-001",
+  "name": "AdvancedFilterBuilder",
+  "display_name": "Advanced Filter Builder",
+  "category": "Form Elements / Query Builder",
+  "import_path": "@/components/shared/AdvancedFilterBuilder",
+  "description": "A sophisticated filter builder component for creating complex query conditions with field selection, operators, values, and nested logical grouping (AND/OR/NOT). Supports recursive rule groups, multiple field types (text, number, select, date, boolean), and query string generation/parsing.",
+  "usage_guidelines": [
+    "Use for advanced search and filtering interfaces where users need complex query capabilities.",
+    "Define available fields with types and operators using the FieldConfig array.",
+    "Support nested rule groups with AND/OR/NOT logical operators for complex conditions.",
+    "Handle filter changes via onChange callback which provides both tree structure and query string.",
+    "Use onApply callback to execute the filter when user clicks Apply button.",
+    "Use onReset callback to handle filter reset actions.",
+    "Provide field-specific input components based on field type (text, number, select, date, boolean).",
+    "Export/import filter configurations using toQueryString and parseQueryString utilities."
+  ],
+  "props": {
+    "fields": {
+      "type": "FieldConfig[]",
+      "required": false,
+      "default": "DEFAULT_FIELDS",
+      "description": "Array of available fields for filtering. Each field has key, label, type, and optional options for select fields. Defaults to predefined fields including status, price, category, created_at, name, is_featured, and rating."
+    },
+    "value": {
+      "type": "FilterTree",
+      "required": false,
+      "description": "Controlled filter tree configuration. FilterTree is a RuleGroup containing nested rules and groups with logical operators."
+    },
+    "onChange": {
+      "type": "(tree: FilterTree, queryString: string) => void",
+      "required": false,
+      "description": "Callback fired when filter configuration changes. Receives both the tree structure and generated query string."
+    },
+    "onApply": {
+      "type": "(tree: FilterTree, queryString: string) => void",
+      "required": false,
+      "description": "Callback fired when user clicks Apply Filter button. Receives both the tree structure and generated query string."
+    },
+    "onReset": {
+      "type": "(tree: FilterTree, queryString: string) => void",
+      "required": false,
+      "description": "Callback fired when user clicks Reset button. Receives the reset tree structure and empty query string."
+    }
+  },
+  "types": {
+    "FieldConfig": {
+      "description": "Configuration for a filterable field",
+      "properties": {
+        "key": "string - Unique field identifier",
+        "label": "string - Display label for the field",
+        "type": "'text' | 'number' | 'select' | 'date' | 'boolean' - Field data type",
+        "options": "Array<{value: string, label: string}> - Options for select type fields"
+      }
+    },
+    "Rule": {
+      "description": "Individual filter rule",
+      "properties": {
+        "id": "string - Unique rule identifier",
+        "type": "'rule' - Node type identifier",
+        "field": "string - Field key being filtered",
+        "operator": "string - Comparison operator (is, is_not, contains, greater_than, etc.)",
+        "value": "string | number | boolean - Filter value",
+        "logicalOperator": "'AND' | 'OR' | 'NOT' - Logical operator connecting to previous rule"
+      }
+    },
+    "RuleGroup": {
+      "description": "Group of rules with logical condition",
+      "properties": {
+        "id": "string - Unique group identifier",
+        "type": "'group' - Node type identifier",
+        "condition": "'AND' | 'OR' - Default logical condition for children",
+        "children": "Array<Rule | RuleGroup> - Nested rules and groups",
+        "logicalOperator": "'AND' | 'OR' | 'NOT' - Logical operator connecting to previous group"
+      }
+    },
+    "FilterTree": {
+      "description": "Root filter tree structure (alias for RuleGroup)"
+    }
+  },
+  "operators": {
+    "text": [
+      "is",
+      "is_not",
+      "contains",
+      "not_contains",
+      "starts_with",
+      "ends_with"
+    ],
+    "number": [
+      "is",
+      "is_not",
+      "greater_than",
+      "less_than",
+      "greater_equal",
+      "less_equal"
+    ],
+    "select": [
+      "is",
+      "is_not"
+    ],
+    "date": [
+      "is",
+      "is_not",
+      "greater_than (after)",
+      "less_than (before)",
+      "greater_equal (on or after)",
+      "less_equal (on or before)"
+    ],
+    "boolean": [
+      "is"
+    ]
+  },
+  "utilities": {
+    "toQueryString": {
+      "description": "Converts FilterTree to query string format",
+      "signature": "(tree: FilterTree) => string",
+      "example": "status=active AND price>100"
+    },
+    "parseQueryString": {
+      "description": "Parses query string back to FilterTree structure",
+      "signature": "(query: string) => FilterTree",
+      "example": "Converts 'status=active AND (price>100 OR category=books)' to FilterTree"
+    },
+    "createEmptyRule": {
+      "description": "Creates a new empty rule with default values",
+      "signature": "(isFirst?: boolean) => Rule"
+    },
+    "createEmptyGroup": {
+      "description": "Creates a new empty rule group",
+      "signature": "(isFirst?: boolean) => RuleGroup"
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Hierarchical structure with nested rule groups. Each rule displays field selector, operator selector, value input, and delete button. Groups show with border and padding, containing multiple rules/groups. 'Where' label for first rule, logical operator selectors (AND/OR) for subsequent rules. Add Rule and Add Group buttons at bottom of each group. Apply Filter and Reset buttons in footer."
+  },
+  "sub_components": {
+    "RuleComponent": {
+      "description": "Individual rule row with field, operator, value selectors and delete button",
+      "file": "RuleComponent.tsx"
+    },
+    "InputField": {
+      "description": "Dynamic input field that renders appropriate input based on field type (text input, numeric input, select, date picker, boolean select)",
+      "file": "InputField.tsx"
+    }
+  },
+  "best_practices": {
+    "Do": [
+      "Define clear field types and appropriate operators for each type",
+      "Provide meaningful field labels for better user experience",
+      "Handle onChange to track filter state in parent component",
+      "Use onApply to execute actual filtering logic",
+      "Validate filter configurations before applying",
+      "Provide options array for select-type fields",
+      "Use toQueryString utility to generate API-compatible query strings",
+      "Use parseQueryString to restore saved filter configurations",
+      "Handle empty or invalid filter states gracefully",
+      "Provide clear visual hierarchy for nested groups"
+    ],
+    "Dont": [
+      "Don't allow infinite nesting (component handles this internally)",
+      "Don't forget to handle empty rules when applying filters",
+      "Don't use for simple filtering (use basic filter components instead)",
+      "Don't forget to validate field values before submission",
+      "Don't modify the FilterTree structure directly (use provided callbacks)",
+      "Don't forget to provide options for select-type fields",
+      "Don't use complex field keys with special characters in query strings"
+    ]
+  },
+  "examples": [
+    {
+      "title": "Basic Usage",
+      "code": "const [filterTree, setFilterTree] = useState<FilterTree>();\n\n<AdvancedFilterBuilder\n  fields={[\n    { key: 'name', label: 'Name', type: 'text' },\n    { key: 'age', label: 'Age', type: 'number' },\n    { key: 'status', label: 'Status', type: 'select', options: [\n      { value: 'active', label: 'Active' },\n      { value: 'inactive', label: 'Inactive' }\n    ]}\n  ]}\n  value={filterTree}\n  onChange={(tree, queryString) => {\n    setFilterTree(tree);\n    console.log('Query:', queryString);\n  }}\n  onApply={(tree, queryString) => {\n    // Execute filter with queryString\n    fetchData(queryString);\n  }}\n/>"
+    },
+    {
+      "title": "With Custom Fields",
+      "code": "const customFields: FieldConfig[] = [\n  { key: 'email', label: 'Email', type: 'text' },\n  { key: 'created_at', label: 'Created Date', type: 'date' },\n  { key: 'is_verified', label: 'Verified', type: 'boolean' },\n  { key: 'score', label: 'Score', type: 'number' }\n];\n\n<AdvancedFilterBuilder\n  fields={customFields}\n  onApply={(tree, queryString) => {\n    // Query string example: email~=@example.com AND created_at>=2024-01-01\n    applyFilter(queryString);\n  }}\n/>"
+    },
+    {
+      "title": "Parsing Saved Filters",
+      "code": "import { parseQueryString } from '@/components/shared/AdvancedFilterBuilder';\n\nconst savedQuery = 'status=active AND (price>100 OR category=books)';\nconst filterTree = parseQueryString(savedQuery);\n\n<AdvancedFilterBuilder\n  value={filterTree}\n  onApply={(tree, queryString) => {\n    // Save for later\n    localStorage.setItem('savedFilter', queryString);\n  }}\n/>"
+    }
+  ],
+  "query_string_format": {
+    "description": "Generated query strings use special operators for different comparison types",
+    "operators": {
+      "=": "equals (is)",
+      "!=": "not equals (is_not)",
+      "~=": "contains",
+      "!~=": "not contains",
+      "^=": "starts with",
+      "$=": "ends with",
+      ">": "greater than",
+      "<": "less than",
+      ">=": "greater or equal",
+      "<=": "less or equal"
+    },
+    "examples": [
+      "name=John - name is John",
+      "age>25 - age greater than 25",
+      "email~=@gmail.com - email contains @gmail.com",
+      "status=active AND price>100 - status is active AND price greater than 100",
+      "(status=active OR status=pending) AND price>100 - nested group with OR condition"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import { useState } from 'react'\nimport AdvancedFilterBuilder from '@/components/shared/AdvancedFilterBuilder'\nimport type { FilterTree } from '@/components/shared/AdvancedFilterBuilder/types'\n\nconst Basic = () => {\n    const [queryString, setQueryString] = useState('')\n    const [filterTree, setFilterTree] = useState<FilterTree | null>(null)\n\n    const handleApply = (tree: FilterTree, query: string) => {\n        setQueryString(query)\n        setFilterTree(tree)\n    }\n\n    const handleReset = () => {\n        setQueryString('')\n        setFilterTree(null)\n    }\n\n    return (\n        <div className=\"w-full\">\n            <AdvancedFilterBuilder\n                onApply={handleApply}\n                onReset={handleReset}\n            />\n            {queryString && (\n                <div className=\"mt-4 p-4 space-y-4\">\n                    <div>\n                        <div className=\"heading-text font-medium mb-2\">\n                            Generated Query:\n                        </div>\n                        <div className=\"bg-gray-50 dark:bg-gray-800 rounded-lg p-4\">\n                            <code className=\"text-xs break-all\">\n                                {queryString}\n                            </code>\n                        </div>\n                    </div>\n                    <div>\n                        <div className=\"heading-text font-medium mb-2\">\n                            Filter Tree Object:\n                        </div>\n                        <div className=\"bg-gray-50 dark:bg-gray-800 rounded-lg p-4\">\n                            <pre className=\"text-xs overflow-auto max-h-64\">\n                                {JSON.stringify(filterTree, null, 2)}\n                            </pre>\n                        </div>\n                    </div>\n                </div>\n            )}\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "WithCustomFields": {
+      "title": "With Custom Fields",
+      "code": "import { useState } from 'react'\nimport AdvancedFilterBuilder from '@/components/shared/AdvancedFilterBuilder'\nimport type {\n    FilterTree,\n    FieldConfig,\n} from '@/components/shared/AdvancedFilterBuilder/types'\n\nconst customFields: FieldConfig[] = [\n    { key: 'name', label: 'Name', type: 'text' },\n    { key: 'email', label: 'Email', type: 'text' },\n    { key: 'age', label: 'Age', type: 'number' },\n    {\n        key: 'status',\n        label: 'Status',\n        type: 'select',\n        options: [\n            { value: 'active', label: 'Active' },\n            { value: 'inactive', label: 'Inactive' },\n            { value: 'pending', label: 'Pending' },\n        ],\n    },\n    { key: 'createdAt', label: 'Created Date', type: 'date' },\n]\n\nconst WithCustomFields = () => {\n    const [queryString, setQueryString] = useState('')\n\n    const handleApply = (_tree: FilterTree, query: string) => {\n        setQueryString(query)\n    }\n\n    return (\n        <div className=\"w-full\">\n            <AdvancedFilterBuilder\n                fields={customFields}\n                onApply={handleApply}\n            />\n            {queryString && (\n                <div className=\"mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded\">\n                    <p className=\"text-sm font-medium mb-2\">Generated Query:</p>\n                    <code className=\"text-xs break-all\">{queryString}</code>\n                </div>\n            )}\n        </div>\n    )\n}\n\nexport default WithCustomFields"
+    },
+    "WithPopover": {
+      "title": "With Popover",
+      "code": "import { useState } from 'react'\nimport AdvancedFilterBuilder from '@/components/shared/AdvancedFilterBuilder'\nimport Popover from '@/components/ui/Popover'\nimport Button from '@/components/ui/Button'\nimport { LuFilter } from 'react-icons/lu'\n\nconst WithPopover = () => {\n    const [open, setOpen] = useState(false)\n\n    const handleApply = () => {\n        setOpen(false)\n    }\n\n    return (\n        <div className=\"w-full\">\n            <Popover\n                open={open}\n                onOpenChange={setOpen}\n                placement=\"bottom-start\"\n                width={500}\n                renderTrigger={<Button icon={<LuFilter />}>Filter</Button>}\n            >\n                <AdvancedFilterBuilder onApply={handleApply} />\n            </Popover>\n        </div>\n    )\n}\n\nexport default WithPopover"
+    }
+  }
+}

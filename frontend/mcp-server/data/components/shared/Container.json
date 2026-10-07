@@ -1,0 +1,52 @@
+{
+  "component_id": "container-001",
+  "name": "Container",
+  "display_name": "Layout Container Component",
+  "category": "Layout / Containers",
+  "import_path": "@/components/shared/Container",
+  "description": "A responsive container component with predefined max-widths for consistent page layouts and content centering.",
+  "usage_guidelines": [
+    "Use for page-level content containers.",
+    "Choose size based on content width needs (sm, md, lg).",
+    "Use 'lg' (default) for full-width responsive containers.",
+    "Use 'md' for medium-width content areas.",
+    "Use 'sm' for narrow content like articles or forms."
+  ],
+  "props": {
+    "asElement": {
+      "type": "ElementType",
+      "required": false,
+      "default": "'div'",
+      "description": "HTML element type to render."
+    },
+    "size": {
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "default": "'lg'",
+      "description": "Container max-width: sm (800px), md (1200px), lg (full-width)."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A centered container with horizontal margins and optional max-width constraints. Responsive padding adapts to screen size."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for main content areas",
+      "Choose appropriate size for content type",
+      "Use consistently across pages",
+      "Nest content within container"
+    ],
+    "Dont": [
+      "Don't nest containers within containers",
+      "Don't use for component-level layouts",
+      "Don't override max-width arbitrarily"
+    ]
+  },
+  "code_examples": {
+    "Example": {
+      "title": "Example",
+      "code": "import Container from '@/components/shared/Container'\n\nconst Example = () => {\n    return <Container>Content</Container>\n}\n\nexport default Example"
+    }
+  }
+}

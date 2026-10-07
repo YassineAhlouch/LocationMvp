@@ -1,0 +1,76 @@
+{
+  "component_id": "skeleton-001",
+  "name": "Skeleton",
+  "display_name": "Skeleton Loading Placeholder",
+  "category": "Feedback / Loading",
+  "import_path": "@/components/ui/Skeleton",
+  "description": "A skeleton placeholder component for indicating loading content with animated pulse effect.",
+  "usage_guidelines": [
+    "Use as placeholder while content is loading.",
+    "Match skeleton dimensions to actual content for smooth transition.",
+    "Use 'block' variant for rectangular content areas.",
+    "Use 'circle' variant for avatars or circular elements.",
+    "Enable animation for better loading feedback."
+  ],
+  "props": {
+    "animation": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Enables pulse animation effect."
+    },
+    "asElement": {
+      "type": "ElementType",
+      "required": false,
+      "default": "'span'",
+      "description": "HTML element type to render."
+    },
+    "height": {
+      "type": "string | number",
+      "required": false,
+      "description": "Skeleton height."
+    },
+    "variant": {
+      "type": "'block' | 'circle'",
+      "required": false,
+      "default": "'block'",
+      "description": "Skeleton shape style."
+    },
+    "width": {
+      "type": "string | number",
+      "required": false,
+      "description": "Skeleton width."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A gray placeholder with optional pulse animation. Block variant is rectangular, circle variant is circular. Smooth transition when replaced with actual content."
+  },
+  "best_practices": {
+    "Do": [
+      "Match skeleton size to actual content",
+      "Use multiple skeletons for complex layouts",
+      "Enable animation for better UX",
+      "Replace with actual content smoothly"
+    ],
+    "Dont": [
+      "Don't use for very short loading times",
+      "Don't mismatch skeleton and content dimensions",
+      "Don't forget to remove when content loads"
+    ]
+  },
+  "code_examples": {
+    "Animation": {
+      "title": "Animation",
+      "code": "import Skeleton from '@/components/ui/Skeleton'\n\nconst Animation = () => {\n    return <Skeleton animation={false} />\n}\n\nexport default Animation"
+    },
+    "Size": {
+      "title": "Size",
+      "code": "import Skeleton from '@/components/ui/Skeleton'\n\nconst Size = () => {\n    return (\n        <div className=\"flex flex-col gap-4\" style={{ maxWidth: 300 }}>\n            <Skeleton height={150} />\n            <div className=\"flex flex-auto items-center gap-2\">\n                <div>\n                    <Skeleton variant=\"circle\" height={35} width={35} />\n                </div>\n                <div className=\"flex flex-col gap-4 w-full\">\n                    <Skeleton height={10} />\n                    <Skeleton height={10} width=\"60%\" />\n                </div>\n            </div>\n        </div>\n    )\n}\n\nexport default Size"
+    },
+    "Variant": {
+      "title": "Variant",
+      "code": "import Skeleton from '@/components/ui/Skeleton'\n\nconst Variant = () => {\n    return (\n        <div className=\"flex items-center gap-4\">\n            <div>\n                <Skeleton variant=\"circle\" />\n            </div>\n            <Skeleton />\n        </div>\n    )\n}\n\nexport default Variant"
+    }
+  }
+}

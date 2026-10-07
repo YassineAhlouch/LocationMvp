@@ -1,0 +1,61 @@
+{
+  "component_id": "loading-001",
+  "name": "Loading",
+  "display_name": "Loading State Component",
+  "category": "Feedback / Loading",
+  "import_path": "@/components/shared/Loading",
+  "description": "A versatile loading component with two display modes: default (replaces content) and cover (overlays content).",
+  "usage_guidelines": [
+    "Use 'default' type to replace content while loading.",
+    "Use 'cover' type to overlay loading state on existing content.",
+    "Provide customLoader for branded loading experiences.",
+    "Set loading prop to control visibility."
+  ],
+  "props": {
+    "loading": {
+      "type": "boolean",
+      "required": true,
+      "description": "Controls loading state visibility."
+    },
+    "type": {
+      "type": "'default' | 'cover'",
+      "required": false,
+      "default": "'default'",
+      "description": "Loading display mode."
+    },
+    "asElement": {
+      "type": "ElementType",
+      "required": false,
+      "default": "'div'",
+      "description": "HTML element type to render."
+    },
+    "customLoader": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Custom loading indicator to replace default spinner."
+    },
+    "spinnerClass": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for spinner."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Default type: centered spinner. Cover type: semi-transparent overlay with centered spinner on top of content."
+  },
+  "best_practices": {
+    "Do": [
+      "Use 'default' for initial page loads",
+      "Use 'cover' for partial updates",
+      "Provide custom loaders for branding",
+      "Handle loading state properly",
+      "Show loading for async operations"
+    ],
+    "Dont": [
+      "Don't show loading for very fast operations",
+      "Don't forget to hide loading on error",
+      "Don't block entire UI unnecessarily"
+    ]
+  }
+}

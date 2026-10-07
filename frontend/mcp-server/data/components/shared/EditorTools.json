@@ -1,0 +1,246 @@
+{
+  "component_id": "editortools-001",
+  "name": "EditorTools",
+  "display_name": "Rich Text Editor Toolbar Components",
+  "category": "Form Elements / Editor Tools",
+  "import_path": "@/components/shared/EditorTools",
+  "description": "A comprehensive collection of toolbar button components for TipTap-based rich text editors. Provides formatting controls including text styling (bold, italic, strikethrough), headings, lists, code blocks, blockquotes, images, and history management (undo/redo). Each tool button integrates with TipTap editor instance and shows active states.",
+  "usage_guidelines": [
+    "Use with RichTextEditor or any TipTap-based editor implementation.",
+    "Pass the TipTap editor instance to each tool button component.",
+    "Compose custom toolbars by selecting specific tool buttons needed.",
+    "Tool buttons automatically show active states based on current selection.",
+    "Tool buttons are automatically disabled when actions are not available.",
+    "Group related tools logically in toolbar (e.g., text formatting, lists, blocks).",
+    "Use ToolButton base component for creating custom editor tools.",
+    "Handle image uploads with onUpload callback in ToolButtonImage."
+  ],
+  "base_component": {
+    "name": "ToolButton",
+    "description": "Base toolbar button component with active/disabled states and hover effects",
+    "props": {
+      "active": {
+        "type": "boolean",
+        "required": false,
+        "description": "Shows active state with background highlight"
+      },
+      "title": {
+        "type": "string",
+        "required": false,
+        "description": "Tooltip text for the button"
+      },
+      "className": {
+        "type": "string",
+        "required": false,
+        "description": "Additional CSS classes"
+      },
+      "disabled": {
+        "type": "boolean",
+        "required": false,
+        "description": "Disables button interaction"
+      },
+      "variant": {
+        "type": "'button' | 'input'",
+        "required": false,
+        "default": "'button'",
+        "description": "Button variant - 'input' for file upload buttons"
+      },
+      "children": {
+        "type": "ReactNode",
+        "required": false,
+        "description": "Button content (typically an icon)"
+      }
+    }
+  },
+  "tool_buttons": {
+    "ToolButtonBold": {
+      "description": "Bold text formatting (Ctrl+B)",
+      "icon": "TbBold",
+      "command": "editor.chain().focus().toggleBold().run()",
+      "active_when": "editor.isActive('bold')"
+    },
+    "ToolButtonItalic": {
+      "description": "Italic text formatting (Ctrl+I)",
+      "icon": "TbItalic",
+      "command": "editor.chain().focus().toggleItalic().run()",
+      "active_when": "editor.isActive('italic')"
+    },
+    "ToolButtonStrike": {
+      "description": "Strikethrough text formatting",
+      "icon": "TbStrikethrough",
+      "command": "editor.chain().focus().toggleStrike().run()",
+      "active_when": "editor.isActive('strike')"
+    },
+    "ToolButtonCode": {
+      "description": "Inline code formatting",
+      "icon": "TbCode",
+      "command": "editor.chain().focus().toggleCode().run()",
+      "active_when": "editor.isActive('code')"
+    },
+    "ToolButtonHeading": {
+      "description": "Heading levels (H1-H6) with dropdown selector",
+      "icon": "LuType",
+      "props": {
+        "headingLevel": {
+          "type": "HeadingLevel[]",
+          "default": "[1, 2, 3, 4, 5, 6]",
+          "description": "Array of heading levels to show in dropdown"
+        }
+      },
+      "command": "editor.chain().focus().toggleHeading({ level }).run()",
+      "active_when": "editor.isActive('heading')",
+      "note": "Renders as dropdown with options for H1-H6 and Paragraph"
+    },
+    "ToolButtonParagraph": {
+      "description": "Convert to paragraph formatting",
+      "icon": "LuType",
+      "command": "editor.chain().focus().setParagraph().run()",
+      "active_when": "editor.isActive('paragraph')"
+    },
+    "ToolButtonBulletList": {
+      "description": "Bullet list formatting",
+      "icon": "TbList",
+      "command": "editor.chain().focus().toggleBulletList().run()",
+      "active_when": "editor.isActive('bulletList')"
+    },
+    "ToolButtonOrderedList": {
+      "description": "Numbered list formatting",
+      "icon": "TbListNumbers",
+      "command": "editor.chain().focus().toggleOrderedList().run()",
+      "active_when": "editor.isActive('orderedList')"
+    },
+    "ToolButtonBlockquote": {
+      "description": "Blockquote formatting",
+      "icon": "TbQuote",
+      "command": "editor.chain().focus().toggleBlockquote().run()",
+      "active_when": "editor.isActive('blockquote')"
+    },
+    "ToolButtonCodeBlock": {
+      "description": "Code block formatting with syntax highlighting",
+      "icon": "TbCodeDots",
+      "command": "editor.chain().focus().toggleCodeBlock().run()",
+      "active_when": "editor.isActive('codeBlock')"
+    },
+    "ToolButtonHorizontalRule": {
+      "description": "Insert horizontal rule/divider",
+      "icon": "TbSeparatorHorizontal",
+      "command": "editor.chain().focus().setHorizontalRule().run()"
+    },
+    "ToolButtonHardBreak": {
+      "description": "Insert hard line break",
+      "icon": "TbArrowBarToDown",
+      "command": "editor.chain().focus().setHardBreak().run()"
+    },
+    "ToolButtonImage": {
+      "description": "Insert image with file upload support",
+      "icon": "LuImage",
+      "props": {
+        "onUpload": {
+          "type": "(file: File) => void",
+          "required": false,
+          "description": "Callback for handling image file uploads"
+        }
+      },
+      "command": "editor.chain().focus().setImage({ src: url }).run()",
+      "note": "Converts uploaded images to base64 by default. Use onUpload to handle custom upload logic."
+    },
+    "ToolButtonUndo": {
+      "description": "Undo last action (Ctrl+Z)",
+      "icon": "CgUndo",
+      "command": "editor.chain().focus().undo().run()",
+      "disabled_when": "!editor.can().chain().focus().undo().run()"
+    },
+    "ToolButtonRedo": {
+      "description": "Redo last undone action (Ctrl+Y)",
+      "icon": "CgRedo",
+      "command": "editor.chain().focus().redo().run()",
+      "disabled_when": "!editor.can().chain().focus().redo().run()"
+    }
+  },
+  "common_props": {
+    "editor": {
+      "type": "Editor",
+      "required": true,
+      "description": "TipTap editor instance from useEditor hook. All tool buttons require this prop."
+    }
+  },
+  "types": {
+    "BaseToolButtonProps": {
+      "description": "Base props for all tool buttons",
+      "properties": {
+        "editor": "Editor - TipTap editor instance"
+      }
+    },
+    "HeadingLevel": {
+      "description": "Heading level type",
+      "type": "1 | 2 | 3 | 4 | 5 | 6"
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Toolbar buttons with icons, rounded corners, and padding. Active state shows gray background highlight. Hover effects on non-disabled buttons. Disabled buttons have reduced opacity. Consistent sizing (text-lg, p-1.5) across all buttons."
+  },
+  "best_practices": {
+    "Do": [
+      "Always pass valid TipTap editor instance to tool buttons",
+      "Group related tools together in toolbar (formatting, lists, blocks, history)",
+      "Use Divider or spacing to separate tool groups visually",
+      "Provide tooltips via title prop for better UX",
+      "Handle image uploads with custom onUpload callback for server storage",
+      "Use ToolButtonHeading with appropriate heading levels for your content",
+      "Include undo/redo buttons for better user experience",
+      "Test tool button states with different editor content",
+      "Use consistent icon sizes across custom tools"
+    ],
+    "Dont": [
+      "Don't use without TipTap editor instance",
+      "Don't overload toolbar with too many tools (prioritize common actions)",
+      "Don't forget to handle tool state updates",
+      "Don't use for non-TipTap editor contexts",
+      "Don't modify editor state outside of tool button commands",
+      "Don't forget to configure required TipTap extensions for tools",
+      "Don't use ToolButtonImage without handling large file uploads properly"
+    ]
+  },
+  "examples": [
+    {
+      "title": "Basic Toolbar",
+      "code": "import { useEditor } from '@tiptap/react';\nimport StarterKit from '@tiptap/starter-kit';\nimport {\n  ToolButtonBold,\n  ToolButtonItalic,\n  ToolButtonStrike,\n  ToolButtonBulletList,\n  ToolButtonOrderedList,\n  ToolButtonUndo,\n  ToolButtonRedo\n} from '@/components/shared/EditorTools';\n\nconst editor = useEditor({\n  extensions: [StarterKit],\n  content: '<p>Hello World!</p>'\n});\n\nif (!editor) return null;\n\nreturn (\n  <div className=\"flex gap-1 p-2 border-b\">\n    <ToolButtonBold editor={editor} />\n    <ToolButtonItalic editor={editor} />\n    <ToolButtonStrike editor={editor} />\n    <div className=\"w-px h-6 bg-gray-300 mx-1\" />\n    <ToolButtonBulletList editor={editor} />\n    <ToolButtonOrderedList editor={editor} />\n    <div className=\"w-px h-6 bg-gray-300 mx-1\" />\n    <ToolButtonUndo editor={editor} />\n    <ToolButtonRedo editor={editor} />\n  </div>\n);"
+    },
+    {
+      "title": "Full Featured Toolbar",
+      "code": "import {\n  ToolButtonBold,\n  ToolButtonItalic,\n  ToolButtonStrike,\n  ToolButtonCode,\n  ToolButtonHeading,\n  ToolButtonBulletList,\n  ToolButtonOrderedList,\n  ToolButtonBlockquote,\n  ToolButtonCodeBlock,\n  ToolButtonImage,\n  ToolButtonHorizontalRule,\n  ToolButtonUndo,\n  ToolButtonRedo\n} from '@/components/shared/EditorTools';\n\nconst handleImageUpload = async (file: File) => {\n  const formData = new FormData();\n  formData.append('image', file);\n  const response = await fetch('/api/upload', {\n    method: 'POST',\n    body: formData\n  });\n  const { url } = await response.json();\n  return url;\n};\n\nreturn (\n  <div className=\"flex flex-wrap gap-1 p-2 border-b\">\n    {/* Text Formatting */}\n    <ToolButtonBold editor={editor} />\n    <ToolButtonItalic editor={editor} />\n    <ToolButtonStrike editor={editor} />\n    <ToolButtonCode editor={editor} />\n    \n    {/* Headings */}\n    <ToolButtonHeading editor={editor} headingLevel={[1, 2, 3]} />\n    \n    {/* Lists */}\n    <ToolButtonBulletList editor={editor} />\n    <ToolButtonOrderedList editor={editor} />\n    \n    {/* Blocks */}\n    <ToolButtonBlockquote editor={editor} />\n    <ToolButtonCodeBlock editor={editor} />\n    <ToolButtonHorizontalRule editor={editor} />\n    \n    {/* Media */}\n    <ToolButtonImage editor={editor} onUpload={handleImageUpload} />\n    \n    {/* History */}\n    <ToolButtonUndo editor={editor} />\n    <ToolButtonRedo editor={editor} />\n  </div>\n);"
+    },
+    {
+      "title": "Custom Tool Button",
+      "code": "import { ToolButton } from '@/components/shared/EditorTools';\nimport { LuHighlighter } from 'react-icons/lu';\nimport type { BaseToolButtonProps } from '@/components/shared/EditorTools/types';\n\nconst ToolButtonHighlight = ({ editor }: BaseToolButtonProps) => {\n  return (\n    <ToolButton\n      title=\"Highlight\"\n      active={editor.isActive('highlight')}\n      onClick={() => editor.chain().focus().toggleHighlight().run()}\n    >\n      <LuHighlighter />\n    </ToolButton>\n  );\n};"
+    }
+  ],
+  "required_extensions": {
+    "description": "TipTap extensions required for tool buttons to work",
+    "StarterKit": "Includes most basic formatting (bold, italic, strike, headings, lists, blockquote, code, codeBlock, hardBreak, horizontalRule, history)",
+    "Image": "Required for ToolButtonImage",
+    "Highlight": "Required if using custom highlight tool",
+    "TextAlign": "Required if using text alignment tools",
+    "Link": "Required if using link tools"
+  },
+  "integration_notes": [
+    "All tool buttons use TipTap's chain() API for command execution",
+    "Active states are determined by editor.isActive() method",
+    "Disabled states use editor.can() to check command availability",
+    "Tool buttons automatically focus editor before executing commands",
+    "Image tool converts files to base64 by default - implement custom upload for production",
+    "Heading tool renders as dropdown with configurable levels",
+    "All buttons support standard HTML button props (onClick, className, etc.)"
+  ],
+  "code_examples": {
+    "AllTools": {
+      "title": "All Tools",
+      "code": "import ToolButton from '@/components/shared/EditorTools/ToolButton'\nimport {\n    LuBold,\n    LuItalic,\n    LuCode,\n    LuHeading1,\n    LuHeading2,\n    LuList,\n    LuListOrdered,\n    LuQuote,\n    LuUndo,\n    LuRedo,\n    LuImage,\n    LuMinus,\n} from 'react-icons/lu'\n\nconst AllTools = () => {\n    return (\n        <div className=\"flex flex-wrap items-center gap-1 p-2 border border-gray-200 dark:border-gray-700 rounded\">\n            <ToolButton title=\"Bold\">\n                <LuBold />\n            </ToolButton>\n            <ToolButton title=\"Italic\">\n                <LuItalic />\n            </ToolButton>\n            <ToolButton title=\"Code\">\n                <LuCode />\n            </ToolButton>\n            <div className=\"w-px h-6 bg-gray-200 dark:bg-gray-700 mx-1\" />\n            <ToolButton title=\"Heading 1\">\n                <LuHeading1 />\n            </ToolButton>\n            <ToolButton title=\"Heading 2\">\n                <LuHeading2 />\n            </ToolButton>\n            <div className=\"w-px h-6 bg-gray-200 dark:bg-gray-700 mx-1\" />\n            <ToolButton title=\"Bullet List\">\n                <LuList />\n            </ToolButton>\n            <ToolButton title=\"Ordered List\">\n                <LuListOrdered />\n            </ToolButton>\n            <ToolButton title=\"Blockquote\">\n                <LuQuote />\n            </ToolButton>\n            <div className=\"w-px h-6 bg-gray-200 dark:bg-gray-700 mx-1\" />\n            <ToolButton title=\"Image\">\n                <LuImage />\n            </ToolButton>\n            <ToolButton title=\"Horizontal Rule\">\n                <LuMinus />\n            </ToolButton>\n            <div className=\"w-px h-6 bg-gray-200 dark:bg-gray-700 mx-1\" />\n            <ToolButton title=\"Undo\">\n                <LuUndo />\n            </ToolButton>\n            <ToolButton title=\"Redo\">\n                <LuRedo />\n            </ToolButton>\n        </div>\n    )\n}\n\nexport default AllTools"
+    },
+    "Basic": {
+      "title": "Basic",
+      "code": "import { useState } from 'react'\nimport ToolButton from '@/components/shared/EditorTools/ToolButton'\nimport { LuBold, LuItalic, LuUnderline, LuStrikethrough } from 'react-icons/lu'\n\nconst Basic = () => {\n    const [activeTools, setActiveTools] = useState<string[]>([])\n\n    const toggleTool = (tool: string) => {\n        setActiveTools((prev) =>\n            prev.includes(tool)\n                ? prev.filter((t) => t !== tool)\n                : [...prev, tool],\n        )\n    }\n\n    return (\n        <div className=\"flex items-center gap-1 p-2 border border-gray-200 dark:border-gray-700 rounded\">\n            <ToolButton\n                active={activeTools.includes('bold')}\n                onClick={() => toggleTool('bold')}\n                title=\"Bold\"\n            >\n                <LuBold />\n            </ToolButton>\n            <ToolButton\n                active={activeTools.includes('italic')}\n                onClick={() => toggleTool('italic')}\n                title=\"Italic\"\n            >\n                <LuItalic />\n            </ToolButton>\n            <ToolButton\n                active={activeTools.includes('underline')}\n                onClick={() => toggleTool('underline')}\n                title=\"Underline\"\n            >\n                <LuUnderline />\n            </ToolButton>\n            <ToolButton\n                active={activeTools.includes('strike')}\n                onClick={() => toggleTool('strike')}\n                title=\"Strikethrough\"\n            >\n                <LuStrikethrough />\n            </ToolButton>\n            <ToolButton disabled title=\"Disabled\">\n                <LuBold />\n            </ToolButton>\n        </div>\n    )\n}\n\nexport default Basic"
+    }
+  }
+}

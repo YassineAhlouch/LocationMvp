@@ -1,0 +1,301 @@
+[
+  {
+    "name": "acronym",
+    "path": "src/utils/acronym.ts",
+    "category": "utility",
+    "tags": [
+      "utils",
+      "string manipulation"
+    ],
+    "primaryUseCase": "Generates an acronym from a given name by extracting the first letter of each word."
+  },
+  {
+    "name": "classNames",
+    "path": "src/utils/classNames.ts",
+    "category": "utility",
+    "tags": [
+      "utils",
+      "styling"
+    ],
+    "primaryUseCase": "A utility function that combines classnames library with tailwind-merge to intelligently merge Tailwind CSS classes, resolving conflicts."
+  },
+  {
+    "name": "cookiesStorage",
+    "path": "src/utils/cookiesStorage.ts",
+    "category": "utility",
+    "tags": [
+      "utils",
+      "storage"
+    ],
+    "primaryUseCase": "A storage adapter implementing StateStorage interface for cookie-based persistence using js-cookie library."
+  },
+  {
+    "name": "fileSizeUnit",
+    "path": "src/utils/fileSizeUnit.ts",
+    "category": "utility",
+    "tags": [
+      "utils",
+      "formatting"
+    ],
+    "primaryUseCase": "Converts byte values to human-readable file size strings with appropriate units (KB, MB, GB, etc.)."
+  },
+  {
+    "name": "formatCurrency",
+    "path": "src/utils/formatCurrency.ts",
+    "category": "utility",
+    "tags": [
+      "utils",
+      "number formatting"
+    ],
+    "primaryUseCase": "Formats numbers as currency strings using Intl.NumberFormat with locale and currency support."
+  },
+  {
+    "name": "formatCurrencyCompact",
+    "path": "src/utils/formatCurrencyCompact.ts",
+    "category": "utility",
+    "tags": [
+      "utils",
+      "number formatting"
+    ],
+    "primaryUseCase": "Formats large currency values with K, M, B, T suffixes for compact display while maintaining currency context."
+  },
+  {
+    "name": "formatDate",
+    "path": "src/utils/formatDate.ts",
+    "category": "utility",
+    "tags": [
+      "utils",
+      "date & time"
+    ],
+    "primaryUseCase": "A collection of date formatting utilities using dayjs for consistent date display across the application."
+  },
+  {
+    "name": "formatNumber",
+    "path": "src/utils/formatNumber.ts",
+    "category": "utility",
+    "tags": [
+      "utils",
+      "number formatting"
+    ],
+    "primaryUseCase": "Formats large numbers with K, M, B, T suffixes for compact display while maintaining readability."
+  },
+  {
+    "name": "formatRelativeTime",
+    "path": "src/utils/formatRelativeTime.ts",
+    "category": "utility",
+    "tags": [
+      "utils",
+      "date & time"
+    ],
+    "primaryUseCase": "Formats dates as human-readable relative time strings (e.g., '2 hours ago', 'in 3 days') using Intl.RelativeTimeFormat."
+  },
+  {
+    "name": "getContrast",
+    "path": "src/utils/getContrast.ts",
+    "category": "utility",
+    "tags": [
+      "utils",
+      "color"
+    ],
+    "primaryUseCase": "Determines whether a color is light or dark using W3C perceived brightness formula, useful for choosing contrasting text colors."
+  },
+  {
+    "name": "highlightSearchMatch",
+    "path": "src/utils/highlightSearchMatch.ts",
+    "category": "utility",
+    "tags": [
+      "utils",
+      "search & display"
+    ],
+    "primaryUseCase": "Highlights search term matches within text by wrapping them in styled mark elements."
+  },
+  {
+    "name": "isLastChild",
+    "path": "src/utils/isLastChild.ts",
+    "category": "utility",
+    "tags": [
+      "utils",
+      "array helpers"
+    ],
+    "primaryUseCase": "Simple utility to check if an array index represents the last element."
+  },
+  {
+    "name": "paginate",
+    "path": "src/utils/paginate.ts",
+    "category": "utility",
+    "tags": [
+      "utils",
+      "data manipulation"
+    ],
+    "primaryUseCase": "Slices an array into pages for client-side pagination."
+  },
+  {
+    "name": "sleep",
+    "path": "src/utils/sleep.ts",
+    "category": "utility",
+    "tags": [
+      "utils",
+      "async"
+    ],
+    "primaryUseCase": "A promise-based delay utility for creating pauses in async functions."
+  },
+  {
+    "name": "sortBy",
+    "path": "src/utils/sortBy.ts",
+    "category": "utility",
+    "tags": [
+      "utils",
+      "data manipulation"
+    ],
+    "primaryUseCase": "Creates a comparison function for sorting arrays of objects by a specific field with optional value transformation."
+  },
+  {
+    "name": "wildCardSearch",
+    "path": "src/utils/wildCardSearch.ts",
+    "category": "utility",
+    "tags": [
+      "utils",
+      "search & filter"
+    ],
+    "primaryUseCase": "Performs case-insensitive wildcard search across object properties, useful for filtering lists and tables."
+  },
+  {
+    "name": "useAppendQueryParams",
+    "path": "src/utils/hooks/useAppendQueryParams.ts",
+    "category": "hook",
+    "tags": [
+      "hooks",
+      "routing"
+    ],
+    "primaryUseCase": "A hook for programmatically appending or updating URL query parameters with support for replace/push navigation and override modes."
+  },
+  {
+    "name": "useAuthority",
+    "path": "src/utils/hooks/useAuthority.ts",
+    "category": "hook",
+    "tags": [
+      "hooks",
+      "authorization"
+    ],
+    "primaryUseCase": "A hook for checking if user has required authority/permissions by comparing user roles against required roles."
+  },
+  {
+    "name": "useDarkMode",
+    "path": "src/utils/hooks/useDarkMode.ts",
+    "category": "hook",
+    "tags": [
+      "hooks",
+      "theme"
+    ],
+    "primaryUseCase": "A hook for managing dark mode state with support for system preference detection and manual mode switching."
+  },
+  {
+    "name": "useDataTableState",
+    "path": "src/utils/hooks/useDataTableState.ts",
+    "category": "hook",
+    "tags": [
+      "hooks",
+      "data tables"
+    ],
+    "primaryUseCase": "A comprehensive hook for managing data table state including pagination, sorting, and row selection with automatic state synchronization."
+  },
+  {
+    "name": "useDebounce",
+    "path": "src/utils/hooks/useDebounce.ts",
+    "category": "hook",
+    "tags": [
+      "hooks",
+      "performance"
+    ],
+    "primaryUseCase": "A hook that creates a debounced version of a function using lodash debounce, useful for optimizing expensive operations."
+  },
+  {
+    "name": "useDirection",
+    "path": "src/utils/hooks/useDirection.ts",
+    "category": "hook",
+    "tags": [
+      "hooks",
+      "internationalization"
+    ],
+    "primaryUseCase": "A hook for managing text direction (LTR/RTL) with automatic DOM attribute updates for internationalization support."
+  },
+  {
+    "name": "useInterval",
+    "path": "src/utils/hooks/useInterval.ts",
+    "category": "hook",
+    "tags": [
+      "hooks",
+      "timers"
+    ],
+    "primaryUseCase": "A hook for running a callback function at regular intervals with automatic cleanup and pause support."
+  },
+  {
+    "name": "useQueryParamTableState",
+    "path": "src/utils/hooks/useQueryParamTableState.ts",
+    "category": "hook",
+    "tags": [
+      "hooks",
+      "data tables"
+    ],
+    "primaryUseCase": "A hook that syncs data table state (pagination, sorting, filters) with URL query parameters for shareable and bookmarkable table states."
+  },
+  {
+    "name": "useRandomColor",
+    "path": "src/utils/hooks/useRandomColor.ts",
+    "category": "hook",
+    "tags": [
+      "hooks",
+      "styling"
+    ],
+    "primaryUseCase": "A hook that generates consistent random colors from a predefined palette based on string input, useful for avatars and tags."
+  },
+  {
+    "name": "useResponsive",
+    "path": "src/utils/hooks/useResponsive.ts",
+    "category": "hook",
+    "tags": [
+      "hooks",
+      "layout"
+    ],
+    "primaryUseCase": "A hook for detecting current viewport size and comparing against Tailwind CSS breakpoints for responsive behavior."
+  },
+  {
+    "name": "useScrollTop",
+    "path": "src/utils/hooks/useScrollTop.ts",
+    "category": "hook",
+    "tags": [
+      "hooks",
+      "scroll"
+    ],
+    "primaryUseCase": "A hook that tracks whether the page has been scrolled from the top, useful for sticky headers and scroll-based UI changes."
+  },
+  {
+    "name": "useThemeSchema",
+    "path": "src/utils/hooks/useThemeSchema.ts",
+    "category": "hook",
+    "tags": [
+      "hook"
+    ],
+    "primaryUseCase": "A hook that applies theme color variables to the document root based on the current theme schema and mode."
+  },
+  {
+    "name": "useTimeOutMessage",
+    "path": "src/utils/hooks/useTimeOutMessage.ts",
+    "category": "hook",
+    "tags": [
+      "hooks",
+      "state management"
+    ],
+    "primaryUseCase": "A hook for managing temporary messages that automatically clear after a specified interval, useful for success/error notifications."
+  },
+  {
+    "name": "useTranslation",
+    "path": "src/utils/hooks/useTranslation.ts",
+    "category": "hook",
+    "tags": [
+      "hooks",
+      "internationalization"
+    ],
+    "primaryUseCase": "A wrapper hook around react-i18next for internationalization with optional placeholder mode for development."
+  }
+]

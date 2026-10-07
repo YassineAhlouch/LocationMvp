@@ -1,0 +1,38 @@
+{
+  "component_id": "util-sleep-001",
+  "name": "sleep",
+  "display_name": "Sleep Delay Utility",
+  "category": "Utils / Async",
+  "import_path": "@/utils/sleep",
+  "description": "A promise-based delay utility for creating pauses in async functions.",
+  "usage_guidelines": [
+    "Use with async/await for delays in async operations.",
+    "Useful for testing, animations, or rate limiting.",
+    "Returns a promise that resolves after specified milliseconds."
+  ],
+  "params": [
+    {
+      "name": "ms",
+      "type": "number",
+      "required": true,
+      "description": "Delay duration in milliseconds."
+    }
+  ],
+  "return_value": {
+    "type": "Promise<void>",
+    "description": "Promise that resolves after the specified delay."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for testing delays",
+      "Use for animation sequencing",
+      "Use for rate limiting",
+      "Use with async/await"
+    ],
+    "Dont": [
+      "Don't use for production delays (use proper async patterns)",
+      "Don't block critical user interactions",
+      "Don't use for precise timing"
+    ]
+  }
+}

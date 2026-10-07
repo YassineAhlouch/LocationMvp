@@ -1,0 +1,46 @@
+{
+  "component_id": "util-formatcurrencycompact-001",
+  "name": "formatCurrencyCompact",
+  "display_name": "Compact Currency Formatter",
+  "category": "Utils / Number Formatting",
+  "import_path": "@/utils/formatCurrencyCompact",
+  "description": "Formats large currency values with K, M, B, T suffixes for compact display while maintaining currency context.",
+  "usage_guidelines": [
+    "Use for displaying large monetary values in dashboards.",
+    "Automatically applies suffixes for values >= 1000.",
+    "Falls back to full currency format for smaller values.",
+    "Maintains 2 decimal places for abbreviated values."
+  ],
+  "params": [
+    {
+      "name": "value",
+      "type": "number",
+      "required": true,
+      "description": "Currency value to format."
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "required": false,
+      "default": "'USD'",
+      "description": "ISO 4217 currency code."
+    }
+  ],
+  "return_value": {
+    "type": "string",
+    "description": "Formatted currency string with suffix (e.g., '1.5M', '2.3B') or full format for small values."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for large monetary displays",
+      "Provide tooltips with full amounts",
+      "Use consistently across dashboards",
+      "Set appropriate currency code"
+    ],
+    "Dont": [
+      "Don't use for precise financial calculations",
+      "Don't use for small amounts (< 1000)",
+      "Don't forget to show full value on hover"
+    ]
+  }
+}

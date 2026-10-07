@@ -1,0 +1,142 @@
+{
+  "component_id": "steps-001",
+  "name": "Steps",
+  "display_name": "Step Progress Indicator",
+  "category": "Navigation / Progress",
+  "import_path": "@/components/ui/Steps",
+  "description": "A step indicator component for displaying multi-step processes with current progress and status.",
+  "usage_guidelines": [
+    "Use for multi-step forms, wizards, or processes.",
+    "Set current to indicate active step (0-indexed).",
+    "Use status to show overall process state.",
+    "Compose with StepItem components for each step.",
+    "Handle onChange for step navigation.",
+    "Use vertical prop for vertical layouts."
+  ],
+  "props": {
+    "current": {
+      "type": "number",
+      "required": false,
+      "default": "0",
+      "description": "Current active step index (0-based)."
+    },
+    "onChange": {
+      "type": "(index: number) => void",
+      "required": false,
+      "description": "Callback fired when step is clicked."
+    },
+    "status": {
+      "type": "'complete' | 'pending' | 'in-progress' | 'error'",
+      "required": false,
+      "default": "'in-progress'",
+      "description": "Overall process status."
+    },
+    "vertical": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Vertical layout orientation."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A horizontal or vertical sequence of steps with connecting lines. Completed steps show checkmarks, current step is highlighted, pending steps are muted. Error state shows red indicator."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for 3-7 steps (optimal range)",
+      "Provide clear step titles",
+      "Update current as user progresses",
+      "Handle onChange for navigation",
+      "Use vertical for mobile layouts"
+    ],
+    "Dont": [
+      "Don't use for too many steps (>7)",
+      "Don't allow skipping required steps",
+      "Don't forget to validate before progressing"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import Steps from '@/components/ui/Steps'\n\nconst Basic = () => {\n    return (\n        <div>\n            <Steps current={1}>\n                <Steps.Item />\n                <Steps.Item />\n                <Steps.Item />\n                <Steps.Item />\n            </Steps>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Clickable": {
+      "title": "Clickable",
+      "code": "import { useState } from 'react'\nimport Steps from '@/components/ui/Steps'\n\nconst Clickable = () => {\n    const [step, setStep] = useState(1)\n\n    const onStepChange = (index: number) => {\n        setStep(index)\n    }\n\n    return (\n        <div>\n            <Steps current={step} onChange={(index) => onStepChange(index)}>\n                <Steps.Item title=\"Login\" />\n                <Steps.Item title=\"Order Placed\" />\n                <Steps.Item title=\"In Review\" />\n                <Steps.Item title=\"Approved\" />\n            </Steps>\n        </div>\n    )\n}\n\nexport default Clickable"
+    },
+    "Controlled": {
+      "title": "Controlled",
+      "code": "import { useState } from 'react'\nimport Steps from '@/components/ui/Steps'\nimport Button from '@/components/ui/Button'\n\nconst Controlled = () => {\n    const [step, setStep] = useState(0)\n\n    const onChange = (nextStep: number) => {\n        if (nextStep < 0) {\n            setStep(0)\n        } else if (nextStep > 3) {\n            setStep(3)\n        } else {\n            setStep(nextStep)\n        }\n    }\n\n    const onNext = () => onChange(step + 1)\n\n    const onPrevious = () => onChange(step - 1)\n\n    return (\n        <div>\n            <Steps current={step}>\n                <Steps.Item title=\"Login\" />\n                <Steps.Item title=\"Order Placed\" />\n                <Steps.Item title=\"In Review\" />\n                <Steps.Item title=\"Approved\" />\n            </Steps>\n            <div className=\"mt-6 h-40 bg-gray-50 dark:bg-gray-700 rounded flex items-center justify-center\">\n                <h6>Step {`${step + 1}`} content</h6>\n            </div>\n            <div className=\"mt-4 text-right\">\n                <Button\n                    className=\"mx-2\"\n                    disabled={step === 0}\n                    onClick={onPrevious}\n                >\n                    Previous\n                </Button>\n                <Button disabled={step === 3} variant=\"solid\" onClick={onNext}>\n                    {step === 3 ? 'Completed' : 'Next'}\n                </Button>\n            </div>\n        </div>\n    )\n}\n\nexport default Controlled"
+    },
+    "CustomIcon": {
+      "title": "Custom Icon",
+      "code": "import Steps from '@/components/ui/Steps'\nimport Spinner from '@/components/ui/Spinner'\nimport {\n    HiOutlineLogin,\n    HiOutlineDocumentSearch,\n    HiOutlineClipboardCheck,\n} from 'react-icons/hi'\n\nconst CustomIcon = () => {\n    return (\n        <div>\n            <Steps current={1}>\n                <Steps.Item title=\"Login\" customIcon={<HiOutlineLogin />} />\n                <Steps.Item title=\"Order Placed\" customIcon={<Spinner />} />\n                <Steps.Item\n                    title=\"In Review\"\n                    customIcon={<HiOutlineDocumentSearch />}\n                />\n                <Steps.Item\n                    title=\"Approved\"\n                    customIcon={<HiOutlineClipboardCheck />}\n                />\n            </Steps>\n        </div>\n    )\n}\n\nexport default CustomIcon"
+    },
+    "Description": {
+      "title": "Description",
+      "code": "import Steps from '@/components/ui/Steps'\n\nconst Description = () => {\n    return (\n        <div className=\"mb-6\">\n            <Steps vertical current={2}>\n                <Steps.Item title=\"Login\" description=\"Login to your account\" />\n                <Steps.Item\n                    title=\"Place Order\"\n                    description=\"Start placing an order\"\n                />\n                <Steps.Item\n                    title=\"In Review\"\n                    description=\"We will review the order\"\n                />\n                <Steps.Item title=\"Approved\" description=\"Order approved\" />\n            </Steps>\n        </div>\n    )\n}\n\nexport default Description"
+    },
+    "Error": {
+      "title": "Error",
+      "code": "import Steps from '@/components/ui/Steps'\n\nconst Error = () => {\n    return (\n        <div>\n            <Steps current={1} status=\"error\">\n                <Steps.Item title=\"Login\" />\n                <Steps.Item title=\"Order Placed\" />\n                <Steps.Item title=\"In Review\" />\n                <Steps.Item title=\"Approved\" />\n            </Steps>\n        </div>\n    )\n}\n\nexport default Error"
+    },
+    "Title": {
+      "title": "Title",
+      "code": "import Steps from '@/components/ui/Steps'\n\nconst Title = () => {\n    return (\n        <div>\n            <Steps current={1}>\n                <Steps.Item title=\"Login\" />\n                <Steps.Item title=\"Order Placed\" />\n                <Steps.Item title=\"In Review\" />\n                <Steps.Item title=\"Approved\" />\n            </Steps>\n        </div>\n    )\n}\n\nexport default Title"
+    },
+    "Vertical": {
+      "title": "Vertical",
+      "code": "import Steps from '@/components/ui/Steps'\n\nconst Vertical = () => {\n    return (\n        <div>\n            <Steps vertical current={1}>\n                <Steps.Item title=\"Login\" />\n                <Steps.Item title=\"Order Placed\" />\n                <Steps.Item title=\"In Review\" />\n                <Steps.Item title=\"Approved\" />\n            </Steps>\n        </div>\n    )\n}\n\nexport default Vertical"
+    }
+  },
+  "compound_components": {
+    "Steps": {
+      "description": "Root component that manages step progress state.",
+      "props": {
+        "current": {
+          "type": "number",
+          "required": true,
+          "description": "Current active step (0-indexed)."
+        },
+        "status": {
+          "type": "'complete' | 'pending' | 'in-progress' | 'error'",
+          "required": false,
+          "default": "'in-progress'",
+          "description": "Current step status."
+        },
+        "vertical": {
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Vertical orientation."
+        },
+        "onChange": {
+          "type": "(index: number) => void",
+          "required": false,
+          "description": "Callback when a step is clicked."
+        }
+      }
+    },
+    "Steps.Item": {
+      "description": "Individual step in the progress indicator.",
+      "props": {
+        "title": {
+          "type": "string",
+          "required": false,
+          "description": "Step title text."
+        },
+        "description": {
+          "type": "string",
+          "required": false,
+          "description": "Step description."
+        },
+        "customIcon": {
+          "type": "ReactNode",
+          "required": false,
+          "description": "Custom icon for the step."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "component_id": "drawer-001",
+  "name": "Drawer",
+  "display_name": "Slide-out Drawer Panel",
+  "category": "Overlay / Navigation",
+  "import_path": "@/components/ui/Drawer",
+  "description": "A slide-out panel component that appears from screen edges with header, body, footer sections, and smooth animations for displaying supplementary content or navigation.",
+  "usage_guidelines": [
+    "Use for navigation menus, filters, or detailed information panels.",
+    "Choose placement based on content type (right for details, left for navigation).",
+    "Provide title for clear context of drawer content.",
+    "Use footer for action buttons or additional controls.",
+    "Set appropriate width/height based on content needs."
+  ],
+  "props": {
+    "bodyClass": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for the drawer body section."
+    },
+    "closable": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Shows close button in header."
+    },
+    "contentClassName": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for the drawer content container."
+    },
+    "footer": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Footer content (typically action buttons)."
+    },
+    "footerClass": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for the footer section."
+    },
+    "headerClass": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for the header section."
+    },
+    "height": {
+      "type": "string | number",
+      "required": false,
+      "default": "400",
+      "description": "Drawer height for top/bottom placements."
+    },
+    "isOpen": {
+      "type": "boolean",
+      "required": false,
+      "description": "Controls drawer visibility."
+    },
+    "lockScroll": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Prevents body scrolling when drawer is open."
+    },
+    "onClose": {
+      "type": "(close: boolean) => void",
+      "required": false,
+      "description": "Callback fired when drawer is closed."
+    },
+    "onOpen": {
+      "type": "(open: boolean) => void",
+      "required": false,
+      "description": "Callback fired when drawer is opened."
+    },
+    "overlayClassName": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for the backdrop overlay."
+    },
+    "placement": {
+      "type": "'top' | 'right' | 'bottom' | 'left'",
+      "required": false,
+      "default": "'right'",
+      "description": "Edge from which drawer slides in."
+    },
+    "shouldCloseOnOverlayClick": {
+      "type": "boolean",
+      "required": false,
+      "description": "Closes drawer when clicking outside."
+    },
+    "shouldCloseOnEsc": {
+      "type": "boolean",
+      "required": false,
+      "description": "Closes drawer when pressing Escape key."
+    },
+    "width": {
+      "type": "number",
+      "required": false,
+      "default": "400",
+      "description": "Drawer width for left/right placements."
+    },
+    "title": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Drawer header title."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with Floating UI",
+    "visual_description": "A panel that slides in from screen edges with smooth animation. Includes header with title and close button, scrollable body content, and optional footer. Backdrop overlay dims the background."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for supplementary content that doesn't require full attention",
+      "Provide clear title in header",
+      "Use appropriate placement for content type",
+      "Include action buttons in footer when needed",
+      "Set reasonable width/height for content"
+    ],
+    "Dont": [
+      "Don't use for critical actions (use Dialog instead)",
+      "Don't make drawers too wide (blocks too much content)",
+      "Don't nest drawers within drawers",
+      "Don't forget to handle onClose callback",
+      "Don't define space css to the drawer, as its already come with 16px spacing for the body, header & footer"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport Drawer from '@/components/ui/Drawer'\n\nconst Basic = () => {\n    const [isOpen, setIsOpen] = useState(false)\n\n    const openDrawer = () => {\n        setIsOpen(true)\n    }\n\n    const onDrawerClose = (currentState: boolean) => {\n        console.log('onDrawerClose', currentState)\n        setIsOpen(false)\n    }\n\n    return (\n        <div>\n            <Button onClick={() => openDrawer()}>Open Drawer</Button>\n            <Drawer\n                title=\"Drawer Title\"\n                isOpen={isOpen}\n                onClose={onDrawerClose}\n            >\n                Drawer Content\n            </Drawer>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Closable": {
+      "title": "Closable",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport Drawer from '@/components/ui/Drawer'\n\nconst Closable = () => {\n    const [isOpen, setIsOpen] = useState(false)\n\n    const openDrawer = () => {\n        setIsOpen(true)\n    }\n\n    const onDrawerClose = (currentState: boolean) => {\n        console.log('onDrawerClose', currentState)\n        setIsOpen(false)\n    }\n\n    return (\n        <div>\n            <Button onClick={() => openDrawer()}>Open Drawer</Button>\n            <Drawer\n                title=\"Drawer Title\"\n                isOpen={isOpen}\n                closable={false}\n                onClose={onDrawerClose}\n            >\n                Drawer Content\n            </Drawer>\n        </div>\n    )\n}\n\nexport default Closable"
+    },
+    "CustomStyle": {
+      "title": "Custom Style",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport Drawer from '@/components/ui/Drawer'\n\nconst CustomStyle = () => {\n    const [isOpen, setIsOpen] = useState(false)\n\n    const openDrawer = () => {\n        setIsOpen(true)\n    }\n\n    const onDrawerClose = () => {\n        setIsOpen(false)\n    }\n\n    const Footer = (\n        <div className=\"flex w-full items-start\">\n            <Button block className=\"mx-2\" onClick={() => onDrawerClose()}>\n                Cancel\n            </Button>\n            <Button\n                block\n                className=\"mx-2\"\n                variant=\"solid\"\n                onClick={() => onDrawerClose()}\n            >\n                Confirm\n            </Button>\n        </div>\n    )\n\n    const Title = (\n        <div>\n            <h4 className=\"mb-2\">Drawer Title</h4>\n            <p>To iterate is human, to recurse divine.</p>\n        </div>\n    )\n\n    return (\n        <div>\n            <Button onClick={() => openDrawer()}>Open Drawer</Button>\n            <Drawer\n                title={Title}\n                isOpen={isOpen}\n                footer={Footer}\n                headerClass=\"items-start! bg-gray-100! dark:bg-gray-900!\"\n                footerClass=\"border-t-0! p-3!\"\n                onClose={onDrawerClose}\n            >\n                Drawer Content\n            </Drawer>\n        </div>\n    )\n}\n\nexport default CustomStyle"
+    },
+    "Footer": {
+      "title": "Footer",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport Drawer from '@/components/ui/Drawer'\n\nconst Footer = () => {\n    const [isOpen, setIsOpen] = useState(false)\n\n    const openDrawer = () => {\n        setIsOpen(true)\n    }\n\n    const onDrawerClose = () => {\n        setIsOpen(false)\n    }\n\n    const Footer = (\n        <div className=\"text-right w-full\">\n            <Button size=\"sm\" className=\"mr-2\" onClick={() => onDrawerClose()}>\n                Cancel\n            </Button>\n            <Button size=\"sm\" variant=\"solid\" onClick={() => onDrawerClose()}>\n                Confirm\n            </Button>\n        </div>\n    )\n\n    return (\n        <div>\n            <Button variant=\"solid\" onClick={() => openDrawer()}>\n                Open Drawer\n            </Button>\n            <Drawer\n                title=\"Drawer Title\"\n                isOpen={isOpen}\n                footer={Footer}\n                onClose={onDrawerClose}\n            >\n                Drawer Content\n            </Drawer>\n        </div>\n    )\n}\n\nexport default Footer"
+    },
+    "Placement": {
+      "title": "Placement",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport Radio from '@/components/ui/Radio'\nimport Drawer from '@/components/ui/Drawer'\n\ntype Direction = 'top' | 'right' | 'bottom' | 'left'\n\nconst placementList: {\n    name: string\n    value: Direction\n}[] = [\n    { name: 'Top', value: 'top' },\n    { name: 'Right', value: 'right' },\n    { name: 'Bottom', value: 'bottom' },\n    { name: 'Left', value: 'left' },\n]\n\nconst Placement = () => {\n    const [isOpen, setIsOpen] = useState(false)\n    const [placement, setPlacement] = useState<Direction>(\n        placementList[1].value,\n    )\n\n    const openDrawer = () => {\n        setIsOpen(true)\n    }\n\n    const onDrawerClose = (currentState: boolean) => {\n        console.log('onDrawerClose', currentState)\n        setIsOpen(false)\n    }\n\n    const onPlacementChange = (val: Direction) => {\n        setPlacement(val)\n    }\n\n    return (\n        <div className=\"flex-wrap inline-flex xl:flex items-center gap-2\">\n            <Radio.Group value={placement} onChange={onPlacementChange}>\n                {placementList.map((item) => (\n                    <Radio key={item.value} value={item.value} id={item.value}>\n                        {item.name}\n                    </Radio>\n                ))}\n            </Radio.Group>\n            <Button onClick={() => openDrawer()}>Open Drawer</Button>\n            <Drawer\n                title=\"Drawer Title\"\n                isOpen={isOpen}\n                placement={placement}\n                onClose={onDrawerClose}\n            >\n                Drawer Content\n            </Drawer>\n        </div>\n    )\n}\n\nexport default Placement"
+    },
+    "WidthHeight": {
+      "title": "Width Height",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport Drawer from '@/components/ui/Drawer'\n\nconst WidthHeight = () => {\n    const [verticalOpen, setVerticalOpen] = useState(false)\n    const [horizontalOpen, setHorizontalOpen] = useState(false)\n\n    const onVerticalOpen = () => {\n        setVerticalOpen(true)\n    }\n\n    const onHorizontalOpen = () => {\n        setHorizontalOpen(true)\n    }\n\n    const onDrawerClose = () => {\n        setVerticalOpen(false)\n        setHorizontalOpen(false)\n    }\n\n    return (\n        <div>\n            <Button className=\"mx-2\" onClick={() => onVerticalOpen()}>\n                Vertical Drawer\n            </Button>\n            <Button onClick={() => onHorizontalOpen()}>\n                Horizontal Drawer\n            </Button>\n            <Drawer\n                title=\"Vertical Drawer\"\n                isOpen={verticalOpen}\n                placement=\"right\"\n                width={600}\n                onClose={onDrawerClose}\n            >\n                Drawer Content\n            </Drawer>\n            <Drawer\n                title=\"Horizontal Drawer\"\n                isOpen={horizontalOpen}\n                placement=\"bottom\"\n                height={300}\n                onClose={onDrawerClose}\n            >\n                Drawer Content\n            </Drawer>\n        </div>\n    )\n}\n\nexport default WidthHeight"
+    }
+  },
+  "compound_components": {
+    "Drawer": {
+      "description": "Root slide-out panel component.",
+      "props": {
+        "isOpen": {
+          "type": "boolean",
+          "required": true,
+          "description": "Controls drawer visibility."
+        },
+        "onClose": {
+          "type": "() => void",
+          "required": true,
+          "description": "Callback when drawer should close."
+        },
+        "placement": {
+          "type": "'left' | 'right' | 'top' | 'bottom'",
+          "required": false,
+          "default": "'right'",
+          "description": "Slide direction."
+        },
+        "width": {
+          "type": "number",
+          "required": false,
+          "default": "400",
+          "description": "Drawer width (for left/right)."
+        },
+        "closable": {
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Show close button."
+        },
+        "title": {
+          "type": "ReactNode",
+          "required": false,
+          "description": "Drawer header title."
+        },
+        "footer": {
+          "type": "ReactNode",
+          "required": false,
+          "description": "Drawer footer content."
+        },
+        "showBackdrop": {
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Show backdrop overlay."
+        },
+        "lockScroll": {
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Lock body scroll when open."
+        }
+      }
+    }
+  }
+}

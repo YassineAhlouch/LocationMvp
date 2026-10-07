@@ -1,0 +1,97 @@
+{
+  "component_id": "avatar-001",
+  "name": "Avatar",
+  "display_name": "User Avatar Component",
+  "category": "Data Display / User Interface",
+  "import_path": "@/components/ui/Avatar",
+  "description": "A flexible avatar component for displaying user profile images, icons, or initials with various sizes and shapes.",
+  "usage_guidelines": [
+    "Use to represent users or entities visually in the interface.",
+    "Provide src for image avatars, icon for icon-based avatars, or text children for initial-based avatars.",
+    "Choose appropriate size based on context (sm for lists, md for cards, lg for profiles).",
+    "Use shape prop to match your design system (round for users, square for organizations).",
+    "Always provide alt text for accessibility when using images."
+  ],
+  "props": {
+    "alt": {
+      "type": "string",
+      "required": false,
+      "description": "Alternative text for the avatar image (accessibility)."
+    },
+    "icon": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Icon element to display instead of image or text."
+    },
+    "onClick": {
+      "type": "() => void",
+      "required": false,
+      "description": "Click handler for interactive avatars."
+    },
+    "size": {
+      "type": "'lg' | 'md' | 'sm' | number",
+      "required": false,
+      "default": "'md'",
+      "description": "Avatar size. Use predefined sizes or custom pixel value."
+    },
+    "shape": {
+      "type": "'round' | 'circle' | 'square'",
+      "required": false,
+      "default": "'round'",
+      "description": "Avatar shape style."
+    },
+    "src": {
+      "type": "string",
+      "required": false,
+      "description": "Image source URL for avatar."
+    },
+    "srcSet": {
+      "type": "string",
+      "required": false,
+      "description": "Responsive image source set for different screen densities."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A circular or square container displaying either an image, icon, or text initials. Text automatically scales to fit the container. Images are cropped to fill the shape with lazy loading."
+  },
+  "best_practices": {
+    "Do": [
+      "Provide alt text for image avatars",
+      "Use consistent sizes across similar contexts",
+      "Provide fallback content (initials) when image fails to load",
+      "Use appropriate shape for the entity type"
+    ],
+    "Dont": [
+      "Don't use very large custom sizes that dominate the layout",
+      "Don't forget to handle missing images gracefully",
+      "Don't use onClick without visual indication of interactivity"
+    ]
+  },
+  "code_examples": {
+    "Color": {
+      "title": "Color",
+      "code": "import Avatar from '@/components/ui/Avatar'\nimport { TbUser } from 'react-icons/tb'\n\nconst Color = () => {\n    return (\n        <div className=\"flex items-center\">\n            <Avatar className=\"mr-4 bg-blue-100 dark:bg-blue-500/20 border-blue-100 dark:border-blue-500/20 text-blue-600  dark:text-indigo-100\">\n                A\n            </Avatar>\n            <Avatar\n                className=\"mr-4 bg-purple-500 border-purple-500 text-white\"\n                icon={<TbUser />}\n            />\n        </div>\n    )\n}\n\nexport default Color"
+    },
+    "Group": {
+      "title": "Group",
+      "code": "import Avatar from '@/components/ui/Avatar'\n\nconst Group = () => {\n    return (\n        <Avatar.Group\n            chained\n            omittedAvatarTooltip\n            maxCount={4}\n            omittedAvatarProps={{ shape: 'circle' }}\n            onOmittedAvatarClick={() => console.log('Omitted Avatar Clicked')}\n        >\n            <Avatar shape=\"circle\" src=\"/img/avatars/thumb-1.jpg\" />\n            <Avatar shape=\"circle\" src=\"/img/avatars/thumb-2.jpg\" />\n            <Avatar shape=\"circle\" src=\"/img/avatars/thumb-3.jpg\" />\n            <Avatar shape=\"circle\" src=\"/img/avatars/thumb-4.jpg\" />\n            <Avatar shape=\"circle\" src=\"/img/avatars/thumb-5.jpg\" />\n            <Avatar shape=\"circle\" src=\"/img/avatars/thumb-6.jpg\" />\n        </Avatar.Group>\n    )\n}\n\nexport default Group"
+    },
+    "Shape": {
+      "title": "Shape",
+      "code": "import Avatar from '@/components/ui/Avatar'\nimport { TbUser } from 'react-icons/tb'\n\nconst Shape = () => {\n    return (\n        <div className=\"flex\">\n            <Avatar shape=\"square\" className=\"mr-4\" icon={<TbUser />} />\n            <Avatar shape=\"round\" className=\"mr-4\" icon={<TbUser />} />\n            <Avatar className=\"mr-4\" icon={<TbUser />} />\n        </div>\n    )\n}\n\nexport default Shape"
+    },
+    "Size": {
+      "title": "Size",
+      "code": "import Avatar from '@/components/ui/Avatar'\nimport { TbUser } from 'react-icons/tb'\n\nconst Size = () => {\n    return (\n        <div className=\"flex items-center\">\n            <Avatar size=\"sm\" className=\"mr-4\" icon={<TbUser />} />\n            <Avatar className=\"mr-4\" icon={<TbUser />} />\n            <Avatar size=\"lg\" className=\"mr-4\" icon={<TbUser />} />\n            <Avatar size={60} className=\"mr-4\" icon={<TbUser />} />\n        </div>\n    )\n}\n\nexport default Size"
+    },
+    "Status": {
+      "title": "Status",
+      "code": "import Avatar from '@/components/ui/Avatar'\nimport Badge from '@/components/ui/Badge'\nimport { TbUser } from 'react-icons/tb'\n\nconst Status = () => {\n    return (\n        <div className=\"flex items-center\">\n            <Badge\n                className=\"mr-4 rounded-full\"\n                badgeStyle={{ top: '7px', right: '5px' }}\n            >\n                <Avatar icon={<TbUser />} />\n            </Badge>\n            <Badge className=\"mr-4\">\n                <Avatar icon={<TbUser />} />\n            </Badge>\n            <Badge className=\"mr-4\" innerClass=\"bg-emerald-500\">\n                <Avatar icon={<TbUser />} />\n            </Badge>\n            <Badge className=\"mr-4\" content={99}>\n                <Avatar icon={<TbUser />} />\n            </Badge>\n        </div>\n    )\n}\n\nexport default Status"
+    },
+    "Type": {
+      "title": "Type",
+      "code": "import Avatar from '@/components/ui/Avatar'\nimport { TbUser } from 'react-icons/tb'\n\nconst Type = () => {\n    return (\n        <div className=\"flex items-center\">\n            <Avatar className=\"mr-4\">AT</Avatar>\n            <Avatar className=\"mr-4\" icon={<TbUser />} />\n            <Avatar className=\"mr-4\" src=\"/img/avatars/thumb-1.jpg\" />\n        </div>\n    )\n}\n\nexport default Type"
+    }
+  }
+}

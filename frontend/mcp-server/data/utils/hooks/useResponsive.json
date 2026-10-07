@@ -1,0 +1,46 @@
+{
+  "component_id": "hook-responsive-001",
+  "name": "useResponsive",
+  "display_name": "Responsive Breakpoint Hook",
+  "category": "Hooks / Layout",
+  "import_path": "@/utils/hooks/useResponsive",
+  "description": "A hook for detecting current viewport size and comparing against Tailwind CSS breakpoints for responsive behavior.",
+  "usage_guidelines": [
+    "Use for conditional rendering based on screen size.",
+    "Access breakpoint comparisons via larger/smaller objects.",
+    "Automatically updates on window resize.",
+    "Breakpoints match Tailwind CSS defaults (xs, sm, md, lg, xl, 2xl)."
+  ],
+  "params": [],
+  "return_value": {
+    "type": "{windowWidth: number, larger: Record<string, boolean>, smaller: Record<string, boolean>}",
+    "description": "Object with current window width and breakpoint comparisons.",
+    "structure": {
+      "windowWidth": {
+        "type": "number",
+        "description": "Current window width in pixels."
+      },
+      "larger": {
+        "type": "Record<'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl', boolean>",
+        "description": "Boolean map indicating if viewport is larger than each breakpoint."
+      },
+      "smaller": {
+        "type": "Record<'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl', boolean>",
+        "description": "Boolean map indicating if viewport is smaller than each breakpoint."
+      }
+    }
+  },
+  "best_practices": {
+    "Do": [
+      "Use for responsive component behavior",
+      "Combine with CSS media queries",
+      "Use for conditional feature rendering",
+      "Debounce expensive operations on resize"
+    ],
+    "Dont": [
+      "Don't use for simple CSS-solvable layouts",
+      "Don't trigger expensive operations on every resize",
+      "Don't forget SSR considerations"
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "component_id": "hook-authority-001",
+  "name": "useAuthority",
+  "display_name": "Authority Check Hook",
+  "category": "Hooks / Authorization",
+  "import_path": "@/utils/hooks/useAuthority",
+  "description": "A hook for checking if user has required authority/permissions by comparing user roles against required roles.",
+  "usage_guidelines": [
+    "Use for role-based access control in components.",
+    "Pass user's authority array and required authority array.",
+    "Returns true if user has at least one matching role.",
+    "Set emptyCheck to control behavior when arrays are empty.",
+    "Use for conditional rendering of protected features."
+  ],
+  "params": [
+    {
+      "name": "userAuthority",
+      "type": "string[]",
+      "required": false,
+      "default": "[]",
+      "description": "Array of user's current roles/permissions."
+    },
+    {
+      "name": "authority",
+      "type": "string[]",
+      "required": false,
+      "default": "[]",
+      "description": "Array of required roles/permissions."
+    },
+    {
+      "name": "emptyCheck",
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "If true, returns false when arrays are empty; if false, returns true."
+    }
+  ],
+  "return_value": {
+    "type": "boolean",
+    "description": "True if user has at least one matching role, false otherwise."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for conditional feature rendering",
+      "Check authority at component level",
+      "Handle empty authority arrays",
+      "Combine with route guards",
+      "Use consistent role naming"
+    ],
+    "Dont": [
+      "Don't rely solely on client-side checks",
+      "Don't forget server-side validation",
+      "Don't hardcode role strings"
+    ]
+  }
+}

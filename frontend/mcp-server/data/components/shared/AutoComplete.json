@@ -1,0 +1,71 @@
+{
+  "component_id": "autocomplete-001",
+  "name": "AutoComplete",
+  "display_name": "AutoComplete Input Component",
+  "category": "Form Elements / Input",
+  "import_path": "@/components/shared/AutoComplete",
+  "description": "An autocomplete input component with dropdown suggestions, keyboard navigation, and custom option rendering.",
+  "usage_guidelines": [
+    "Use for inputs with predictable options (search, tags, locations).",
+    "Provide data array with all available options.",
+    "Implement optionKey to extract searchable text from objects.",
+    "Use renderOption for custom option display.",
+    "Handle onInputChange for filtering and onOptionSelected for selection."
+  ],
+  "props": {
+    "data": {
+      "type": "Array<T>",
+      "required": true,
+      "description": "Array of available options."
+    },
+    "optionKey": {
+      "type": "(obj: T) => string",
+      "required": true,
+      "description": "Function to extract searchable key from option object."
+    },
+    "value": {
+      "type": "string",
+      "required": true,
+      "description": "Current input value."
+    },
+    "onInputChange": {
+      "type": "(value: string) => void",
+      "required": true,
+      "description": "Callback fired when input value changes."
+    },
+    "onOptionSelected": {
+      "type": "(option: T) => void",
+      "required": true,
+      "description": "Callback fired when option is selected."
+    },
+    "renderOption": {
+      "type": "(option: T) => ReactNode",
+      "required": true,
+      "description": "Function to render each option in dropdown."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with Floating UI",
+    "visual_description": "An input field with dropdown menu showing filtered suggestions. Active option is highlighted. Supports keyboard navigation (arrow keys, Enter)."
+  },
+  "best_practices": {
+    "Do": [
+      "Filter options based on input value",
+      "Provide clear option rendering",
+      "Handle keyboard navigation",
+      "Limit displayed options for performance",
+      "Show 'No results' message when appropriate"
+    ],
+    "Dont": [
+      "Don't load too many options at once",
+      "Don't forget to handle empty states",
+      "Don't block input while filtering"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import { useState } from 'react'\nimport AutoComplete from '@/components/shared/AutoComplete'\n\ntype Country = {\n    name: string\n    code: string\n}\n\nconst countries: Country[] = [\n    { name: 'United States', code: 'US' },\n    { name: 'United Kingdom', code: 'UK' },\n    { name: 'Canada', code: 'CA' },\n    { name: 'Australia', code: 'AU' },\n    { name: 'Germany', code: 'DE' },\n    { name: 'France', code: 'FR' },\n    { name: 'Japan', code: 'JP' },\n    { name: 'China', code: 'CN' },\n    { name: 'India', code: 'IN' },\n    { name: 'Brazil', code: 'BR' },\n]\n\nconst Basic = () => {\n    const [value, setValue] = useState('')\n    const [selected, setSelected] = useState<Country | null>(null)\n\n    return (\n        <div className=\"w-full max-w-xs\">\n            <AutoComplete\n                data={countries}\n                optionKey={(country) => country.name}\n                value={value}\n                onInputChange={setValue}\n                onOptionSelected={setSelected}\n                renderOption={(country) => (\n                    <div\n                        className=\"flex items-center gap-2 p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer mx-1\"\n                        role=\"button\"\n                    >\n                        <span className=\"font-medium heading-text\">\n                            {country.name}\n                        </span>\n                        <span>({country.code})</span>\n                    </div>\n                )}\n                placeholder=\"Search countries...\"\n            />\n            {selected && (\n                <p className=\"mt-2 text-sm text-gray-500\">\n                    Selected: {selected.name}\n                </p>\n            )}\n        </div>\n    )\n}\n\nexport default Basic"
+    }
+  }
+}

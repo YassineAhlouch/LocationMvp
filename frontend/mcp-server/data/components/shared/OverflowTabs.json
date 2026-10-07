@@ -1,0 +1,64 @@
+{
+  "component_id": "overflowtabs-001",
+  "name": "OverflowTabs",
+  "display_name": "Overflow Tabs Component",
+  "category": "Navigation / Tabs",
+  "import_path": "@/components/shared/OverflowTabs",
+  "description": "An intelligent tabs component that automatically moves overflowing tabs into a dropdown menu based on available space.",
+  "usage_guidelines": [
+    "Use when tab count may exceed available width.",
+    "Automatically calculates visible tabs based on container width.",
+    "Overflow tabs appear in 'More' dropdown.",
+    "Responsive to window resize events."
+  ],
+  "props": {
+    "tabList": {
+      "type": "Array<{label: string | ReactNode, value: string}>",
+      "required": true,
+      "description": "Array of tab configurations."
+    },
+    "value": {
+      "type": "string",
+      "required": false,
+      "description": "Currently active tab value."
+    },
+    "onChange": {
+      "type": "(value: string) => void",
+      "required": false,
+      "description": "Callback fired when tab changes."
+    },
+    "tabListClass": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for tab list container."
+    },
+    "tabNavClass": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for individual tab nav items."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with dynamic calculation",
+    "visual_description": "Standard tabs with automatic overflow handling. Excess tabs move to dropdown with count indicator. Responsive to container width changes."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for dynamic tab counts",
+      "Test with various screen sizes",
+      "Provide clear tab labels",
+      "Handle onChange properly"
+    ],
+    "Dont": [
+      "Don't use for fixed small tab counts",
+      "Don't nest inside flex containers without constraints",
+      "Don't forget to test responsive behavior"
+    ]
+  },
+  "code_examples": {
+    "Example": {
+      "title": "Example",
+      "code": "import { useState } from 'react'\nimport OverflowTabs from '@/components/shared/OverflowTabs'\n\nconst tabList = [\n    { label: 'Overview', value: 'overview' },\n    { label: 'Analytics', value: 'analytics' },\n    { label: 'Reports', value: 'reports' },\n    { label: 'Notifications', value: 'notifications' },\n    { label: 'Settings', value: 'settings' },\n    { label: 'Integrations', value: 'integrations' },\n    { label: 'Security', value: 'security' },\n    { label: 'Billing', value: 'billing' },\n]\n\nconst Example = () => {\n    const [activeTab, setActiveTab] = useState('overview')\n\n    return (\n        <div className=\"w-full\">\n            <OverflowTabs\n                tabList={tabList}\n                value={activeTab}\n                onChange={setActiveTab}\n            />\n            <div className=\"mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded\">\n                <p>Active tab: {activeTab}</p>\n            </div>\n        </div>\n    )\n}\n\nexport default Example"
+    }
+  }
+}

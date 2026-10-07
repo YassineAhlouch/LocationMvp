@@ -1,0 +1,60 @@
+{
+  "component_id": "selectinputwithprefix-001",
+  "name": "SelectInputWithPrefix",
+  "display_name": "Select Input Display with Prefix",
+  "category": "Form Elements / Select",
+  "import_path": "@/components/shared/SelectInputWithPrefix",
+  "description": "A display component for select input values with optional prefix icon or element.",
+  "usage_guidelines": [
+    "Use with Select component's customInputDisplay prop.",
+    "Shows prefix icon/element alongside selected label.",
+    "Control prefix visibility with showPrefix prop."
+  ],
+  "props": {
+    "label": {
+      "type": "string | ReactNode",
+      "required": true,
+      "description": "Selected value label to display."
+    },
+    "prefix": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Prefix icon or element."
+    },
+    "showPrefix": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Controls prefix visibility."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Horizontal flex layout with prefix and label. Prefix and label are vertically centered with gap."
+  },
+  "best_practices": {
+    "Do": [
+      "Use with Select customInputDisplay",
+      "Provide consistent prefix styling",
+      "Use icons for visual context"
+    ],
+    "Dont": [
+      "Don't use outside Select component",
+      "Don't make prefix too large"
+    ]
+  },
+  "code_examples": {
+    "Combined": {
+      "title": "Combined",
+      "code": "import { useState } from 'react'\nimport Select from '@/components/ui/Select'\nimport SelectInputWithPrefix from '@/components/shared/SelectInputWithPrefix'\nimport SelectOptionWithPrefix from '@/components/shared/SelectOptionWithPrefix'\nimport { LuUser, LuSettings, LuBell, LuShield } from 'react-icons/lu'\n\ntype Option = {\n    value: string\n    label: string\n    icon: React.ReactNode\n}\n\nconst options: Option[] = [\n    {\n        value: 'profile',\n        label: 'Profile',\n        icon: <LuUser className=\"text-lg\" />,\n    },\n    {\n        value: 'settings',\n        label: 'Settings',\n        icon: <LuSettings className=\"text-lg\" />,\n    },\n    {\n        value: 'notifications',\n        label: 'Notifications',\n        icon: <LuBell className=\"text-lg\" />,\n    },\n    {\n        value: 'security',\n        label: 'Security',\n        icon: <LuShield className=\"text-lg\" />,\n    },\n]\n\nconst Combined = () => {\n    const [value, setValue] = useState<Option | null>(null)\n\n    return (\n        <Select<Option>\n            value={value}\n            placeholder=\"Select an option\"\n            options={options}\n            onChange={(option) => setValue(option)}\n            customInputDisplay={(option) => (\n                <SelectInputWithPrefix\n                    prefix={option?.icon}\n                    label={option?.label || ''}\n                />\n            )}\n            customOption={({ option, selected, CheckIcon }) => (\n                <SelectOptionWithPrefix\n                    prefix={option.icon}\n                    label={option.label}\n                    selected={selected}\n                    checkIcon={CheckIcon}\n                />\n            )}\n        />\n    )\n}\n\nexport default Combined"
+    },
+    "CustomInputDisplay": {
+      "title": "Custom Input Display",
+      "code": "import { useState } from 'react'\nimport Select from '@/components/ui/Select'\nimport SelectInputWithPrefix from '@/components/shared/SelectInputWithPrefix'\nimport { LuUser, LuMail, LuPhone } from 'react-icons/lu'\n\ntype Option = {\n    value: string\n    label: string\n    icon: React.ReactNode\n}\n\nconst options: Option[] = [\n    { value: 'john', label: 'John Doe', icon: <LuUser className=\"text-lg\" /> },\n    {\n        value: 'email',\n        label: 'john@example.com',\n        icon: <LuMail className=\"text-lg\" />,\n    },\n    {\n        value: 'phone',\n        label: '+1 234 567 890',\n        icon: <LuPhone className=\"text-lg\" />,\n    },\n]\n\nconst CustomInputDisplay = () => {\n    const [value, setValue] = useState<Option | null>(options[0])\n\n    return (\n        <Select<Option>\n            value={value}\n            options={options}\n            onChange={(option) => setValue(option)}\n            customInputDisplay={(option) => (\n                <SelectInputWithPrefix\n                    prefix={option?.icon}\n                    label={option?.label || ''}\n                />\n            )}\n        />\n    )\n}\n\nexport default CustomInputDisplay"
+    },
+    "CustomOption": {
+      "title": "Custom Option",
+      "code": "import { useState } from 'react'\nimport Select from '@/components/ui/Select'\nimport SelectOptionWithPrefix from '@/components/shared/SelectOptionWithPrefix'\nimport { LuUser, LuSettings, LuBell } from 'react-icons/lu'\n\ntype Option = {\n    value: string\n    label: string\n    icon: React.ReactNode\n}\n\nconst options: Option[] = [\n    {\n        value: 'profile',\n        label: 'Profile',\n        icon: <LuUser className=\"text-lg\" />,\n    },\n    {\n        value: 'settings',\n        label: 'Settings',\n        icon: <LuSettings className=\"text-lg\" />,\n    },\n    {\n        value: 'notifications',\n        label: 'Notifications',\n        icon: <LuBell className=\"text-lg\" />,\n    },\n]\n\nconst CustomOption = () => {\n    const [value, setValue] = useState<Option | null>(null)\n\n    return (\n        <Select<Option>\n            value={value}\n            placeholder=\"Select an option\"\n            options={options}\n            onChange={(option) => setValue(option)}\n            customOption={({ option, selected, CheckIcon }) => (\n                <SelectOptionWithPrefix\n                    prefix={option.icon}\n                    label={option.label}\n                    selected={selected}\n                    checkIcon={CheckIcon}\n                />\n            )}\n        />\n    )\n}\n\nexport default CustomOption"
+    }
+  }
+}

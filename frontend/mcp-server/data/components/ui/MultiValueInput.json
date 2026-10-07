@@ -1,0 +1,78 @@
+{
+  "component_id": "multivalueinput-001",
+  "name": "MultiValueInput",
+  "display_name": "Multi-Value Input Component",
+  "category": "Form Elements / Input",
+  "import_path": "@/components/ui/MultiValueInput",
+  "description": "An input component that allows users to enter multiple values as tags/chips, with support for keyboard entry, removal, and custom separators.",
+  "usage_guidelines": [
+    "Use for entering multiple email addresses, tags, or keywords.",
+    "Press Enter or comma to add a new value.",
+    "Click the remove button on a tag to delete it."
+  ],
+  "props": {
+    "value": {
+      "type": "string[]",
+      "required": false,
+      "description": "Controlled array of values."
+    },
+    "defaultValue": {
+      "type": "string[]",
+      "required": false,
+      "description": "Initial values for uncontrolled mode."
+    },
+    "onChange": {
+      "type": "(val: string[]) => void",
+      "required": false,
+      "description": "Callback when values change."
+    },
+    "separator": {
+      "type": "string | RegExp",
+      "required": false,
+      "default": "','",
+      "description": "Separator character to split input."
+    },
+    "disabled": {
+      "type": "boolean",
+      "required": false,
+      "description": "Disable input."
+    },
+    "invalid": {
+      "type": "boolean",
+      "required": false,
+      "description": "Show invalid state."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Input field with inline tag/chip elements that can be individually removed."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for multi-value entries like emails or tags",
+      "Provide clear visual feedback for added values"
+    ],
+    "Dont": [
+      "Don't use for single value input",
+      "Don't use when a Select with multi-select is more appropriate"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import MultiValueInput from '@/components/ui/MultiValueInput'\n\nconst Basic = () => {\n    return (\n        <div className=\"max-w-md mx-auto\">\n            <MultiValueInput\n                placeholder=\"Type and press Enter to add tags\"\n                defaultValue={['React', 'TypeScript']}\n            />\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Controlled": {
+      "title": "Controlled",
+      "code": "import { useState } from 'react'\nimport MultiValueInput from '@/components/ui/MultiValueInput'\n\nconst Controlled = () => {\n    const [tags, setTags] = useState<string[]>(['JavaScript', 'CSS'])\n\n    return (\n        <div className=\"max-w-md mx-auto\">\n            <MultiValueInput\n                value={tags}\n                onChange={setTags}\n                placeholder=\"Add skills...\"\n            />\n            <p className=\"mt-4 text-sm text-gray-500\">\n                Current tags: {tags.join(', ') || 'None'}\n            </p>\n        </div>\n    )\n}\n\nexport default Controlled"
+    },
+    "MaxTags": {
+      "title": "Max Tags",
+      "code": "import MultiValueInput from '@/components/ui/MultiValueInput'\n\nconst MaxTags = () => {\n    return (\n        <div className=\"max-w-md mx-auto\">\n            <MultiValueInput\n                placeholder=\"Add up to 5 tags...\"\n                maxTags={5}\n                defaultValue={['Tag 1', 'Tag 2', 'Tag 3']}\n            />\n            <p className=\"mt-2 text-sm text-gray-500\">Maximum 5 tags allowed</p>\n        </div>\n    )\n}\n\nexport default MaxTags"
+    },
+    "WithValidation": {
+      "title": "With Validation",
+      "code": "import { useState } from 'react'\nimport MultiValueInput from '@/components/ui/MultiValueInput'\n\nconst WithValidation = () => {\n    const [error, setError] = useState<string>('')\n\n    const validateEmail = (tag: string) => {\n        const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/\n        const isValid = emailRegex.test(tag)\n        if (!isValid) {\n            setError('Please enter a valid email address')\n            setTimeout(() => setError(''), 2000)\n        }\n        return isValid\n    }\n\n    return (\n        <div className=\"max-w-md mx-auto\">\n            <MultiValueInput\n                placeholder=\"Enter email addresses...\"\n                validate={validateEmail}\n                defaultValue={['user@example.com']}\n            />\n            {error && (\n                <p className=\"mt-2 text-sm text-red-500\">{error}</p>\n            )}\n        </div>\n    )\n}\n\nexport default WithValidation"
+    }
+  }
+}

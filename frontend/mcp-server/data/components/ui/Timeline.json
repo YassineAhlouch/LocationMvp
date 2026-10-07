@@ -1,0 +1,44 @@
+{
+  "component_id": "timeline-001",
+  "name": "Timeline",
+  "display_name": "Timeline Component",
+  "category": "Data Display / Timeline",
+  "import_path": "@/components/ui/Timeline",
+  "description": "A timeline component for displaying chronological events or activities with connecting lines.",
+  "usage_guidelines": [
+    "Use for displaying chronological events or history.",
+    "Compose with TimelineItem components for each event.",
+    "Provide clear timestamps and descriptions.",
+    "Use for activity feeds or process histories.",
+    "Consider vertical layout for better readability."
+  ],
+  "props": {},
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A vertical list of events connected by a line. Each item has a marker dot, timestamp, and content. Last item has no connecting line below."
+  },
+  "best_practices": {
+    "Do": [
+      "Display events in chronological order",
+      "Provide clear timestamps",
+      "Use descriptive event titles",
+      "Keep content concise",
+      "Use icons for event types"
+    ],
+    "Dont": [
+      "Don't use for non-chronological data",
+      "Don't overload with too much detail",
+      "Don't forget to handle empty states"
+    ]
+  },
+  "code_examples": {
+    "Advance": {
+      "title": "Advance",
+      "code": "import Timeline from '@/components/ui/Timeline'\nimport Avatar from '@/components/ui/Avatar'\nimport Badge from '@/components/ui/Badge'\nimport Card from '@/components/ui/Card'\nimport Tag from '@/components/ui/Tag'\nimport { HiTag } from 'react-icons/hi'\nimport type { AvatarProps } from '@/components/ui/Avatar'\n\ntype TimelineAvatarProps = AvatarProps\n\nconst TimelineAvatar = ({ children, ...rest }: TimelineAvatarProps) => {\n    return (\n        <Avatar {...rest} size={25} shape=\"circle\">\n            {children}\n        </Avatar>\n    )\n}\n\nconst Advance = () => {\n    return (\n        <div className=\"max-w-[700px]\">\n            <Timeline>\n                <Timeline.Item\n                    media={\n                        <TimelineAvatar className=\"bg-amber-500\">\n                            C\n                        </TimelineAvatar>\n                    }\n                >\n                    <p className=\"my-1 flex items-center\">\n                        <span className=\"font-semibold text-gray-900 dark:text-gray-100\">\n                            Angelina Gotelli{' '}\n                        </span>\n                        <span className=\"mx-2\">has change the status to </span>\n                        <Badge className=\"bg-emerald-500\" />\n                        <span className=\"ml-1 rtl:mr-1 font-semibold text-gray-900 dark:text-gray-100\">\n                            Completed\n                        </span>\n                        <span className=\"ml-3 rtl:mr-3\">6h ago</span>\n                    </p>\n                </Timeline.Item>\n                <Timeline.Item\n                    media={\n                        <TimelineAvatar\n                            src=\"/img/avatars/thumb-3.jpg\"\n                            className=\"bg-amber-500\"\n                        />\n                    }\n                >\n                    <p className=\"my-1 flex items-center\">\n                        <span className=\"font-semibold text-gray-900 dark:text-gray-100\">\n                            Max Alexander\n                        </span>\n                        <span className=\"mx-2\">comment on your </span>\n                        <span className=\"font-semibold text-gray-900 dark:text-gray-100\">\n                            Post\n                        </span>\n                        <span className=\"ml-3 rtl:mr-3\">2d ago</span>\n                    </p>\n                    <Card className=\"mt-4\">\n                        <p>\n                            Fine, Java MIGHT be a good example of what a\n                            programming language should be like. But Java\n                            applications are good examples of what applications\n                            SHOULDN&apos;T be like.\n                        </p>\n                    </Card>\n                </Timeline.Item>\n                <Timeline.Item\n                    media={\n                        <TimelineAvatar className=\"text-gray-700 bg-gray-200 dark:text-gray-100\">\n                            <HiTag />\n                        </TimelineAvatar>\n                    }\n                >\n                    <p className=\"flex items-center\">\n                        <span className=\"font-semibold text-gray-900 dark:text-gray-100\">\n                            Eugene Stewart{' '}\n                        </span>\n                        <span className=\"mx-2\">added tags </span>\n                        <Tag\n                            prefix\n                            className=\"mr-2 rtl:ml-2 cursor-pointer\"\n                            prefixClass=\"bg-rose-500\"\n                        >\n                            Live Issue\n                        </Tag>\n                        <Tag\n                            prefix\n                            className=\"mr-2 rtl:ml-2 cursor-pointer\"\n                            prefixClass=\"bg-blue-600\"\n                        >\n                            Backend\n                        </Tag>\n                        <span className=\"ml-3 rtl:mr-3\">2d ago</span>\n                    </p>\n                </Timeline.Item>\n            </Timeline>\n        </div>\n    )\n}\n\nexport default Advance"
+    },
+    "Basic": {
+      "title": "Basic",
+      "code": "import Timeline from '@/components/ui/Timeline'\n\nconst Basic = () => {\n    return (\n        <div>\n            <Timeline>\n                <Timeline.Item>Breakfast - 09:00</Timeline.Item>\n                <Timeline.Item>Lunch - 12:30</Timeline.Item>\n                <Timeline.Item>Dinner - 7:00</Timeline.Item>\n            </Timeline>\n        </div>\n    )\n}\n\nexport default Basic"
+    }
+  }
+}

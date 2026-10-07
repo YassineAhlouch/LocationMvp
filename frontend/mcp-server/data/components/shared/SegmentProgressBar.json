@@ -1,0 +1,79 @@
+{
+  "component_id": "segmentprogressbar-001",
+  "name": "SegmentProgressBar",
+  "display_name": "Segmented Progress Bar Component",
+  "category": "Data Display / Progress",
+  "import_path": "@/components/shared/SegmentProgressBar",
+  "description": "A progress bar divided into discrete segments that fill based on percentage. Provides a visual representation of progress through distinct steps or stages rather than a continuous bar.",
+  "usage_guidelines": [
+    "Use for step-based progress visualization.",
+    "Set segments to match your workflow steps.",
+    "Use percent (0-100) to indicate completion.",
+    "Customize filled segment color via filledClass.",
+    "Adjust gap and height for visual preferences."
+  ],
+  "props": {
+    "segments": {
+      "type": "number",
+      "required": true,
+      "description": "Total number of segments to display in the progress bar."
+    },
+    "percent": {
+      "type": "number",
+      "required": true,
+      "description": "Completion percentage (0-100). Determines how many segments are filled."
+    },
+    "filledClass": {
+      "type": "string",
+      "required": false,
+      "default": "'bg-emerald-500'",
+      "description": "Tailwind CSS class for filled segment background color."
+    },
+    "className": {
+      "type": "string",
+      "required": false,
+      "description": "Additional CSS classes applied to each segment."
+    },
+    "gap": {
+      "type": "number",
+      "required": false,
+      "default": "4",
+      "description": "Gap between segments in pixels."
+    },
+    "height": {
+      "type": "number",
+      "required": false,
+      "default": "16",
+      "description": "Height of each segment in pixels."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A horizontal row of rounded rectangular segments with equal width. Filled segments use the filledClass color (default emerald-500), unfilled segments are gray-200 (gray-700 in dark mode). Segments have rounded corners and configurable gaps."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for multi-step processes or wizards",
+      "Match segment count to actual workflow steps",
+      "Use semantic colors for different states",
+      "Keep segment count reasonable (3-10)",
+      "Combine with step labels for clarity"
+    ],
+    "Dont": [
+      "Don't use for continuous progress (use Progress component)",
+      "Don't use too many segments (becomes hard to read)",
+      "Don't forget to update percent as steps complete",
+      "Don't use without context about what segments represent"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import SegmentProgressBar from '@/components/shared/SegmentProgressBar'\n\nconst Basic = () => {\n    return (\n        <div className=\"w-full max-w-md mx-auto space-y-4\">\n            <div>\n                <p className=\"mb-2\">0%</p>\n                <SegmentProgressBar segments={40} percent={0} />\n            </div>\n            <div>\n                <p className=\"mb-2\">40%</p>\n                <SegmentProgressBar segments={40} percent={40} />\n            </div>\n            <div>\n                <p className=\"mb-2\">80%</p>\n                <SegmentProgressBar segments={40} percent={80} />\n            </div>\n            <div>\n                <p className=\"mb-2\">100%</p>\n                <SegmentProgressBar segments={40} percent={100} />\n            </div>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "CustomStyles": {
+      "title": "Custom Styles",
+      "code": "import SegmentProgressBar from '@/components/shared/SegmentProgressBar'\n\nconst CustomStyles = () => {\n    return (\n        <div className=\"w-full max-w-md mx-auto space-y-2\">\n            <div>Custom height and gap</div>\n            <SegmentProgressBar\n                segments={50}\n                percent={70}\n                height={32}\n                gap={2}\n                filledClass=\"bg-primary\"\n            />\n        </div>\n    )\n}\n\nexport default CustomStyles"
+    }
+  }
+}

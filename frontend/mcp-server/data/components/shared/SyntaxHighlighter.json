@@ -1,0 +1,49 @@
+{
+  "component_id": "syntaxhighlighter-001",
+  "name": "SyntaxHighlighter",
+  "display_name": "Code Syntax Highlighter Component",
+  "category": "Data Display / Code",
+  "import_path": "@/components/shared/SyntaxHighlighter",
+  "description": "A code syntax highlighting component using react-syntax-highlighter with oneDark theme.",
+  "usage_guidelines": [
+    "Use for displaying code snippets with syntax highlighting.",
+    "Supports multiple programming languages.",
+    "Uses Prism highlighter with oneDark theme.",
+    "Specify language prop for proper highlighting."
+  ],
+  "props": {
+    "language": {
+      "type": "string",
+      "required": false,
+      "description": "Programming language for syntax highlighting (e.g., 'javascript', 'python')."
+    },
+    "showLineNumbers": {
+      "type": "boolean",
+      "required": false,
+      "description": "Shows line numbers in code block."
+    }
+  },
+  "styling_info": {
+    "method": "react-syntax-highlighter with oneDark theme",
+    "visual_description": "Code block with dark background and syntax-colored text. Small font size with proper code formatting."
+  },
+  "best_practices": {
+    "Do": [
+      "Specify language for accurate highlighting",
+      "Use for code examples and documentation",
+      "Keep code snippets concise",
+      "Provide copy button for user convenience"
+    ],
+    "Dont": [
+      "Don't use for very long code blocks",
+      "Don't forget to specify language",
+      "Don't use for non-code content"
+    ]
+  },
+  "code_examples": {
+    "Example": {
+      "title": "Example",
+      "code": "import SyntaxHighlighter from '@/components/shared/SyntaxHighlighter'\n\nconst Example = () => {\n    return (\n        <SyntaxHighlighter language=\"tsx\">{`import React from 'react'\n\t\t \nconst HelloWorld = () =>\n{\n\treturn <h1>Hello World!</h1>\n}\n\t\nexport default HelloWorld`}</SyntaxHighlighter>\n    )\n}\n\nexport default Example"
+    }
+  }
+}

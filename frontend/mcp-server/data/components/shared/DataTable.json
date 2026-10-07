@@ -1,0 +1,128 @@
+{
+  "component_id": "datatable-001",
+  "name": "DataTable",
+  "display_name": "Advanced Data Table Component",
+  "category": "Data Display / Tables",
+  "import_path": "@/components/shared/DataTable",
+  "description": "A feature-rich data table component built on TanStack Table with sorting, pagination, row selection, loading states, and skeleton loading support.",
+  "usage_guidelines": [
+    "Use for displaying and managing tabular data with advanced features.",
+    "Define columns using TanStack Table ColumnDef format.",
+    "Enable selectable for row selection with checkboxes.",
+    "Handle sorting, pagination, and selection via callbacks.",
+    "Provide pagingData for server-side pagination.",
+    "Use loading prop to show skeleton or overlay loading states.",
+    "Customize skeleton appearance with skeletonAvatarColumns."
+  ],
+  "props": {
+    "columns": {
+      "type": "ColumnDef<T>[]",
+      "required": true,
+      "description": "TanStack Table column definitions."
+    },
+    "data": {
+      "type": "T[]",
+      "required": false,
+      "default": "[]",
+      "description": "Array of data objects to display."
+    },
+    "loading": {
+      "type": "boolean",
+      "required": false,
+      "description": "Shows loading state (skeleton for empty, overlay for populated)."
+    },
+    "noData": {
+      "type": "boolean",
+      "required": false,
+      "description": "Shows no data message when true."
+    },
+    "selectable": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Enables row selection with checkboxes."
+    },
+    "pagingData": {
+      "type": "{total: number, pageIndex: number, pageSize: number}",
+      "required": false,
+      "default": "{total: 0, pageIndex: 1, pageSize: 10}",
+      "description": "Pagination state for server-side pagination."
+    },
+    "onSort": {
+      "type": "(sort: {sortOrder, sortKey}) => void",
+      "required": false,
+      "description": "Callback fired when column sorting changes."
+    },
+    "onPaginationChange": {
+      "type": "(page: number) => void",
+      "required": false,
+      "description": "Callback fired when page changes."
+    },
+    "onPageSizeChange": {
+      "type": "(num: number) => void",
+      "required": false,
+      "description": "Callback fired when page size changes."
+    },
+    "onRowSelect": {
+      "type": "(checked: boolean, row: T) => void",
+      "required": false,
+      "description": "Callback fired when individual row is selected."
+    },
+    "onAllRowSelect": {
+      "type": "(checked: boolean, rows: Row<T>[]) => void",
+      "required": false,
+      "description": "Callback fired when all rows are selected/deselected."
+    },
+    "columnPinning": {
+      "type": "ColumnPinningState",
+      "required": false,
+      "description": "TanStack Table column pinning configuration."
+    },
+    "skeletonAvatarColumns": {
+      "type": "number[]",
+      "required": false,
+      "description": "Column indices that should show avatar skeletons."
+    },
+    "pageSizes": {
+      "type": "number[]",
+      "required": false,
+      "default": "[10, 25, 50, 100]",
+      "description": "Available page size options."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with TanStack Table",
+    "visual_description": "Full-featured table with sortable columns, row selection checkboxes, pagination controls, and page size selector. Shows skeleton loading for empty state and overlay loading for populated state."
+  },
+  "best_practices": {
+    "Do": [
+      "Use TanStack Table ColumnDef format",
+      "Handle all callback props for interactivity",
+      "Provide pagingData for server-side pagination",
+      "Use loading states appropriately",
+      "Define column widths for better layout",
+      "Use selectable for batch operations",
+      "Provide custom no data message"
+    ],
+    "Dont": [
+      "Don't forget to handle sorting callback",
+      "Don't use client-side pagination for large datasets",
+      "Don't forget to reset selection on data changes",
+      "Don't block interactions during loading"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import { useState, useEffect, useMemo } from 'react'\nimport Button from '@/components/ui/Button'\nimport DataTable from '@/components/shared/DataTable'\nimport { apiGetCustomersList } from '@/services/CustomersService'\nimport type { ColumnDef, OnSortParam } from '@/components/shared/DataTable'\n\ntype Customer = {\n    id: string\n    name: string\n    email: string\n}\n\nconst Basic = () => {\n    const [data, setData] = useState<Customer[]>([])\n    const [loading, setLoading] = useState(false)\n    const [tableData, setTableData] = useState<{\n        pageIndex: number\n        pageSize: number\n        sort: {\n            order: '' | 'asc' | 'desc'\n            key: string | number\n        }\n        query: string\n        total: number\n    }>({\n        total: 0,\n        pageIndex: 1,\n        pageSize: 10,\n        query: '',\n        sort: {\n            order: '',\n            key: '',\n        },\n    })\n\n    const columns: ColumnDef<Customer>[] = useMemo(() => {\n        return [\n            {\n                header: 'Name',\n                accessorKey: 'name',\n            },\n            {\n                header: 'Email',\n                accessorKey: 'email',\n            },\n            {\n                header: '',\n                id: 'action',\n                cell: (props) => (\n                    <Button\n                        size=\"sm\"\n                        onClick={() => console.log('Action clicked', props)}\n                    >\n                        Action\n                    </Button>\n                ),\n            },\n        ]\n    }, [])\n\n    const handlePaginationChange = (pageIndex: number) => {\n        setTableData((prevData) => ({ ...prevData, ...{ pageIndex } }))\n    }\n\n    const handleSelectChange = (pageSize: number) => {\n        setTableData((prevData) => ({ ...prevData, ...{ pageSize } }))\n    }\n\n    const handleSort = ({ sortKey, sortOrder }: OnSortParam) => {\n        setTableData((prevData) => ({\n            ...prevData,\n            sort: { order: sortOrder, key: sortKey },\n        }))\n    }\n\n    useEffect(() => {\n        const fetchData = async () => {\n            setLoading(true)\n            const response = await apiGetCustomersList<\n                { list: Customer[]; total: number },\n                NonNullable<unknown>\n            >(tableData)\n            if (response) {\n                setData(response.list)\n                setLoading(false)\n                setTableData((prevData) => ({\n                    ...prevData,\n                    ...{ total: response.total },\n                }))\n            }\n        }\n        fetchData()\n        // eslint-disable-next-line react-hooks/exhaustive-deps\n    }, [tableData.pageIndex, tableData.sort, tableData.pageSize])\n\n    return (\n        <DataTable<Customer>\n            columns={columns}\n            data={data}\n            loading={loading}\n            pagingData={{\n                total: tableData.total,\n                pageIndex: tableData.pageIndex,\n                pageSize: tableData.pageSize,\n            }}\n            onPaginationChange={handlePaginationChange}\n            onPageSizeChange={handleSelectChange}\n            onSort={handleSort}\n        />\n    )\n}\n\nexport default Basic"
+    },
+    "Checkable": {
+      "title": "Checkable",
+      "code": "import { useState, useEffect, useMemo } from 'react'\nimport Button from '@/components/ui/Button'\nimport DataTable from '@/components/shared/DataTable'\nimport { apiGetCustomersList } from '@/services/CustomersService'\nimport type {\n    ColumnDef,\n    OnSortParam,\n    CellContext,\n    Row,\n} from '@/components/shared/DataTable'\n\ntype Customer = {\n    id: string\n    name: string\n    email: string\n}\n\nconst Checkable = () => {\n    const [data, setData] = useState<Customer[]>([])\n    const [loading, setLoading] = useState(false)\n    const [selectedRows, setSelectedRows] = useState<string[]>([])\n    const [tableData, setTableData] = useState<{\n        pageIndex: number\n        pageSize: number\n        sort: {\n            sortOrder: '' | 'asc' | 'desc'\n            sortKey: string | number\n        }\n        query: string\n        total: number\n    }>({\n        total: 0,\n        pageIndex: 1,\n        pageSize: 10,\n        query: '',\n        sort: {\n            sortOrder: '',\n            sortKey: '',\n        },\n    })\n\n    const handleAction = (cellProps: CellContext<Customer, unknown>) => {\n        console.log('Action clicked', cellProps)\n    }\n\n    const handleBatchAction = () => {\n        console.log('selectedRows', selectedRows)\n    }\n\n    const columns: ColumnDef<Customer>[] = useMemo(\n        () => [\n            {\n                header: 'Name',\n                accessorKey: 'name',\n            },\n            {\n                header: 'Email',\n                accessorKey: 'email',\n            },\n            {\n                header: '',\n                id: 'action',\n                cell: (props) => (\n                    <Button size=\"sm\" onClick={() => handleAction(props)}>\n                        Action\n                    </Button>\n                ),\n            },\n        ],\n        [],\n    )\n\n    const handlePaginationChange = (pageIndex: number) => {\n        setTableData((prevData) => ({ ...prevData, ...{ pageIndex } }))\n    }\n\n    const handleSelectChange = (pageSize: number) => {\n        setTableData((prevData) => ({ ...prevData, ...{ pageSize } }))\n    }\n\n    const handleSort = ({ sortKey, sortOrder }: OnSortParam) => {\n        setTableData((prevData) => ({\n            ...prevData,\n            sort: { sortOrder, sortKey },\n        }))\n    }\n\n    const handleRowSelect = (checked: boolean, row: Customer) => {\n        console.log('row', row)\n        if (checked) {\n            setSelectedRows((prevData) => {\n                if (!prevData.includes(row.name)) {\n                    return [...prevData, ...[row.name]]\n                }\n                return prevData\n            })\n        } else {\n            setSelectedRows((prevData) => {\n                if (prevData.includes(row.name)) {\n                    return prevData.filter((id) => id !== row.name)\n                }\n                return prevData\n            })\n        }\n    }\n\n    const handleAllRowSelect = (checked: boolean, rows: Row<Customer>[]) => {\n        console.log('rows', rows)\n        if (checked) {\n            const originalRows = rows.map((row) => row.original)\n            const selectedIds: string[] = []\n            originalRows.forEach((row) => {\n                selectedIds.push(row.name)\n            })\n            setSelectedRows(selectedIds)\n        } else {\n            setSelectedRows([])\n        }\n    }\n\n    useEffect(() => {\n        const fetchData = async () => {\n            setLoading(true)\n            const response = await apiGetCustomersList<\n                { list: Customer[]; total: number },\n                NonNullable<unknown>\n            >(tableData)\n            if (response.list) {\n                setData(response.list)\n                setLoading(false)\n                setTableData((prevData) => ({\n                    ...prevData,\n                    ...{ total: response.total },\n                }))\n            }\n        }\n        fetchData()\n        // eslint-disable-next-line react-hooks/exhaustive-deps\n    }, [tableData.pageIndex, tableData.sort, tableData.pageSize])\n\n    return (\n        <>\n            {selectedRows.length > 0 && (\n                <div className=\"flex justify-end mb-4\">\n                    <Button\n                        size=\"sm\"\n                        variant=\"solid\"\n                        onClick={handleBatchAction}\n                    >\n                        Batch Action\n                    </Button>\n                </div>\n            )}\n            <DataTable<Customer>\n                selectable\n                columns={columns}\n                data={data}\n                loading={loading}\n                pagingData={tableData}\n                onPaginationChange={handlePaginationChange}\n                onPageSizeChange={handleSelectChange}\n                onSort={handleSort}\n                onRowSelect={handleRowSelect}\n                onAllRowSelect={handleAllRowSelect}\n            />\n        </>\n    )\n}\n\nexport default Checkable"
+    },
+    "Query": {
+      "title": "Query",
+      "code": "import { useState, useEffect, useRef, ChangeEvent } from 'react'\nimport Button from '@/components/ui/Button'\nimport Input from '@/components/ui/Input'\nimport DataTable from '@/components/shared/DataTable'\nimport debounce from 'lodash/debounce'\nimport { apiGetCustomersList } from '@/services/CustomersService'\nimport type {\n    ColumnDef,\n    OnSortParam,\n    CellContext,\n} from '@/components/shared/DataTable'\n\ntype Customer = {\n    id: string\n    name: string\n    email: string\n}\n\nconst Query = () => {\n    const [data, setData] = useState<Customer[]>([])\n    const [loading, setLoading] = useState(false)\n    const [tableData, setTableData] = useState<{\n        pageIndex: number\n        pageSize: number\n        sort: {\n            sortOrder: '' | 'asc' | 'desc'\n            sortKey: string | number\n        }\n        query: string\n        total: number\n    }>({\n        total: 0,\n        pageIndex: 1,\n        pageSize: 10,\n        query: '',\n        sort: {\n            sortOrder: '',\n            sortKey: '',\n        },\n    })\n\n    const inputRef = useRef(null)\n\n    const debounceFn = debounce(handleDebounceFn, 500)\n\n    function handleDebounceFn(val: string) {\n        if (typeof val === 'string' && (val.length > 1 || val.length === 0)) {\n            setTableData((prevData) => ({\n                ...prevData,\n                ...{ query: val, pageIndex: 1 },\n            }))\n        }\n    }\n\n    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {\n        debounceFn(e.target.value)\n    }\n\n    const handleAction = (cellProps: CellContext<Customer, unknown>) => {\n        console.log('Action clicked', cellProps)\n    }\n\n    const columns: ColumnDef<Customer>[] = [\n        {\n            header: 'Name',\n            accessorKey: 'name',\n        },\n        {\n            header: 'Email',\n            accessorKey: 'email',\n        },\n        {\n            header: '',\n            id: 'action',\n            cell: (props) => (\n                <Button size=\"sm\" onClick={() => handleAction(props)}>\n                    Action\n                </Button>\n            ),\n        },\n    ]\n\n    const handlePaginationChange = (pageIndex: number) => {\n        setTableData((prevData) => ({ ...prevData, ...{ pageIndex } }))\n    }\n\n    const handleSelectChange = (pageSize: number) => {\n        setTableData((prevData) => ({ ...prevData, ...{ pageSize } }))\n    }\n\n    const handleSort = ({ sortKey, sortOrder }: OnSortParam) => {\n        setTableData((prevData) => ({\n            ...prevData,\n            sort: { sortOrder, sortKey },\n        }))\n    }\n\n    useEffect(() => {\n        const fetchData = async () => {\n            setLoading(true)\n            const response = await apiGetCustomersList<\n                { list: Customer[]; total: number },\n                NonNullable<unknown>\n            >(tableData)\n            if (response) {\n                setData(response.list)\n                setLoading(false)\n                setTableData((prevData) => ({\n                    ...prevData,\n                    ...{ total: response.total },\n                }))\n            }\n        }\n        fetchData()\n        // eslint-disable-next-line react-hooks/exhaustive-deps\n    }, [\n        tableData.pageIndex,\n        tableData.sort,\n        tableData.pageSize,\n        tableData.query,\n    ])\n\n    return (\n        <>\n            <div className=\"flex justify-end mb-4\">\n                <Input\n                    ref={inputRef}\n                    placeholder=\"Search...\"\n                    size=\"sm\"\n                    className=\"lg:w-52\"\n                    onChange={handleChange}\n                />\n            </div>\n            <DataTable\n                columns={columns}\n                data={data}\n                loading={loading}\n                pagingData={tableData}\n                onPaginationChange={handlePaginationChange}\n                onPageSizeChange={handleSelectChange}\n                onSort={handleSort}\n            />\n        </>\n    )\n}\n\nexport default Query"
+    }
+  }
+}

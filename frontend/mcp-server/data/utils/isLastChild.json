@@ -1,0 +1,42 @@
+{
+  "component_id": "util-islastchild-001",
+  "name": "isLastChild",
+  "display_name": "Last Child Checker Utility",
+  "category": "Utils / Array Helpers",
+  "import_path": "@/utils/isLastChild",
+  "description": "Simple utility to check if an array index represents the last element.",
+  "usage_guidelines": [
+    "Use in array mapping to identify last item.",
+    "Useful for conditional rendering (separators, borders, etc.).",
+    "Common in list and menu rendering."
+  ],
+  "params": [
+    {
+      "name": "arr",
+      "type": "Array<unknown>",
+      "required": true,
+      "description": "Array to check."
+    },
+    {
+      "name": "index",
+      "type": "number",
+      "required": true,
+      "description": "Current index to check."
+    }
+  ],
+  "return_value": {
+    "type": "boolean",
+    "description": "True if index is the last element, false otherwise."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for conditional rendering",
+      "Use for separator logic",
+      "Use in map functions"
+    ],
+    "Dont": [
+      "Don't use for empty arrays without checking",
+      "Don't use for complex logic (inline is clearer)"
+    ]
+  }
+}

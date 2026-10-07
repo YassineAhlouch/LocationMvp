@@ -1,0 +1,80 @@
+{
+  "component_id": "vectormap-001",
+  "name": "VectorMap",
+  "display_name": "Interactive Vector Map Component",
+  "category": "Data Display / Maps",
+  "import_path": "@/components/shared/VectorMap",
+  "description": "An SVG-based interactive vector map component for displaying geographic data. Supports hover tooltips, click handlers, and customizable layer styling.",
+  "usage_guidelines": [
+    "Use for displaying geographic/regional data visualizations.",
+    "Provide layers array with SVG path data for each region.",
+    "Use layerProps function to customize individual layer styling.",
+    "Add hover tooltips via layerProps hover.tooltipContent.",
+    "Handle region clicks via layerProps onClick callback."
+  ],
+  "props": {
+    "id": {
+      "type": "string",
+      "required": true,
+      "description": "Unique identifier for the SVG map element."
+    },
+    "name": {
+      "type": "string",
+      "required": true,
+      "description": "Accessible name for the map (used in aria-label)."
+    },
+    "viewBox": {
+      "type": "string",
+      "required": true,
+      "description": "SVG viewBox attribute defining the coordinate system."
+    },
+    "layers": {
+      "type": "VectorMapLayer[]",
+      "required": true,
+      "description": "Array of layer objects with id, name, and d (SVG path data)."
+    },
+    "tabIndex": {
+      "type": "number",
+      "required": false,
+      "default": "0",
+      "description": "Tab index for keyboard navigation."
+    },
+    "layerProps": {
+      "type": "(layer: VectorMapLayer) => LayerProps",
+      "required": false,
+      "description": "Function returning props for each layer including className, onClick, and hover config."
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Additional SVG elements to render inside the map."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "SVG map with path elements for each region. Default fill is gray-300 (gray-600 dark mode). Hover tooltips appear as dark floating cards near cursor."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for regional data visualization",
+      "Provide meaningful tooltips",
+      "Use consistent color schemes",
+      "Handle click events for interactivity"
+    ],
+    "Dont": [
+      "Don't use without proper viewBox",
+      "Don't forget accessibility labels",
+      "Don't use for non-geographic data"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import VectorMap from '@/components/shared/VectorMap'\nimport worldJson from '@/assets/data/maps/world.json'\n\nconst Basic = () => {\n    return (\n        <div className=\"flex justify-center\">\n            <VectorMap className=\"h-[400px]\" {...worldJson} />\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "WithTooltip": {
+      "title": "With Tooltip",
+      "code": "import VectorMap from '@/components/shared/VectorMap'\nimport worldJson from '@/assets/data/maps/world.json'\n\nconst WithTooltip = () => {\n    const getLayerProps = (layer: { id: string; name: string; d: string }) => {\n        return {\n            className:\n                'fill-gray-300 dark:fill-gray-600 hover:fill-primary transition-colors',\n            hover: {\n                tooltipContent: <div className=\"font-medium\">{layer.name}</div>,\n            },\n        }\n    }\n\n    return (\n        <div className=\"flex justify-center\">\n            <VectorMap\n                layerProps={(layer) => getLayerProps(layer)}\n                className=\"h-[400px]\"\n                {...worldJson}\n            />\n        </div>\n    )\n}\n\nexport default WithTooltip"
+    }
+  }
+}

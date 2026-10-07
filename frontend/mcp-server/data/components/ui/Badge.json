@@ -1,0 +1,77 @@
+{
+  "component_id": "badge-001",
+  "name": "Badge",
+  "display_name": "Badge Indicator Component",
+  "category": "Data Display / Indicators",
+  "import_path": "@/components/ui/Badge",
+  "description": "A small badge component for displaying notification counts, status indicators, or labels. Can be used standalone or as a wrapper around other elements.",
+  "usage_guidelines": [
+    "Use to display notification counts, unread messages, or status indicators.",
+    "Wrap around other components (like icons or avatars) to show contextual information.",
+    "Use content prop for numeric badges, omit for dot indicators.",
+    "Set maxCount to prevent very large numbers from breaking layout.",
+    "Use standalone (without children) for simple labels or counts."
+  ],
+  "props": {
+    "badgeStyle": {
+      "type": "CSSProperties",
+      "required": false,
+      "description": "Custom inline styles for the badge element."
+    },
+    "content": {
+      "type": "string | number",
+      "required": false,
+      "description": "Badge content (text or number). Omit for dot-style badge."
+    },
+    "innerClass": {
+      "type": "string",
+      "required": false,
+      "description": "Additional CSS classes for the badge inner element."
+    },
+    "maxCount": {
+      "type": "number",
+      "required": false,
+      "default": "99",
+      "description": "Maximum count to display. Numbers exceeding this show as 'maxCount+'."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A small circular or pill-shaped indicator, typically positioned at the top-right corner of wrapped elements. Can be a small dot or contain text/numbers. Uses primary color by default."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for notification counts and status indicators",
+      "Set appropriate maxCount for numeric badges",
+      "Position badges consistently across your application",
+      "Use dot badges for simple presence indicators"
+    ],
+    "Dont": [
+      "Don't use for large amounts of text",
+      "Don't use without children for positioned badges",
+      "Don't set maxCount too high (defeats the purpose)"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import Avatar from '@/components/ui/Avatar'\nimport Badge from '@/components/ui/Badge'\nimport { TbUser } from 'react-icons/tb'\n\nconst Basic = () => {\n    return (\n        <div className=\"flex items-center\">\n            <Badge className=\"mr-4\" content={9}>\n                <Avatar icon={<TbUser />} />\n            </Badge>\n            <Badge className=\"mr-4\" content={'New'}>\n                <Avatar icon={<TbUser />} />\n            </Badge>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Color": {
+      "title": "Color",
+      "code": "import Badge from '@/components/ui/Badge'\n\nconst Color = () => {\n    return (\n        <div>\n            <div className=\"flex items-center\">\n                <Badge className=\"mr-4\" innerClass=\"bg-blue-500\" />\n                <Badge\n                    className=\"mr-4\"\n                    content={9}\n                    innerClass=\"bg-emerald-500\"\n                />\n                <Badge\n                    className=\"mr-4 font-semibold\"\n                    content={99}\n                    innerClass=\"bg-red-50 text-red-500\"\n                />\n                <Badge\n                    className=\"mr-4 border border-gray-400\"\n                    content={'New'}\n                    innerClass=\"bg-white text-gray-500\"\n                />\n            </div>\n        </div>\n    )\n}\n\nexport default Color"
+    },
+    "CountOverflow": {
+      "title": "Count Overflow",
+      "code": "import Avatar from '@/components/ui/Avatar'\nimport Badge from '@/components/ui/Badge'\nimport { TbUser } from 'react-icons/tb'\n\nconst CountOverflow = () => {\n    return (\n        <div className=\"flex\">\n            <Badge className=\"mr-5\" content={10} maxCount={9}>\n                <Avatar icon={<TbUser />} />\n            </Badge>\n            <Badge className=\"mr-4\" content={100}>\n                <Avatar icon={<TbUser />} />\n            </Badge>\n        </div>\n    )\n}\n\nexport default CountOverflow"
+    },
+    "Dot": {
+      "title": "Dot",
+      "code": "import Avatar from '@/components/ui/Avatar'\nimport Badge from '@/components/ui/Badge'\nimport { TbUser } from 'react-icons/tb'\n\nconst Dot = () => {\n    return (\n        <div className=\"flex\">\n            <Badge className=\"mr-4\">\n                <Avatar icon={<TbUser />} />\n            </Badge>\n        </div>\n    )\n}\n\nexport default Dot"
+    },
+    "Inline": {
+      "title": "Inline",
+      "code": "import Badge from '@/components/ui/Badge'\n\nconst Inline = () => {\n    return (\n        <div className=\"flex items-center\">\n            <Badge className=\"mr-4\" />\n            <Badge className=\"mr-4\" content={9} />\n            <Badge className=\"mr-4\" content={99} />\n            <Badge content={'New'} />\n        </div>\n    )\n}\n\nexport default Inline"
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "component_id": "usersavatargroup-001",
+  "name": "UsersAvatarGroup",
+  "display_name": "Users Avatar Group Component",
+  "category": "Data Display / User Interface",
+  "import_path": "@/components/shared/UsersAvatarGroup",
+  "description": "A specialized avatar group component for displaying multiple users with tooltips, random colors for initials, and click handling.",
+  "usage_guidelines": [
+    "Use for displaying lists of users (collaborators, participants, etc.).",
+    "Automatically generates colors for users without images.",
+    "Shows user names in tooltips on hover.",
+    "Supports click handling for user selection.",
+    "Uses acronym utility for initials."
+  ],
+  "props": {
+    "users": {
+      "type": "Array<Record<string, string>>",
+      "required": false,
+      "default": "[]",
+      "description": "Array of user objects."
+    },
+    "imgKey": {
+      "type": "string",
+      "required": false,
+      "default": "'img'",
+      "description": "Object key for user image URL."
+    },
+    "nameKey": {
+      "type": "string",
+      "required": false,
+      "default": "'name'",
+      "description": "Object key for user name."
+    },
+    "onAvatarClick": {
+      "type": "(avatar: User) => void",
+      "required": false,
+      "description": "Callback fired when avatar is clicked."
+    },
+    "avatarProps": {
+      "type": "AvatarProps",
+      "required": false,
+      "description": "Props passed to each Avatar component."
+    },
+    "avatarGroupProps": {
+      "type": "AvatarGroupProps",
+      "required": false,
+      "description": "Props passed to Avatar.Group component."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Overlapping circular avatars with images or colored initials. Tooltips show names on hover. Chained layout with omitted avatar count."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for user lists",
+      "Provide user images when available",
+      "Handle avatar clicks appropriately",
+      "Use consistent user object structure",
+      "Show tooltips for identification"
+    ],
+    "Dont": [
+      "Don't display too many users (use +N indicator)",
+      "Don't forget to handle missing images",
+      "Don't use for non-user entities"
+    ]
+  },
+  "code_examples": {
+    "Example": {
+      "title": "Example",
+      "code": "import UsersAvatarGroup from '@/components/shared/UsersAvatarGroup'\n\nconst data = [\n    {\n        userName: 'Ron Vargas',\n        avatarImg: '/img/avatars/thumb-3.jpg',\n    },\n    {\n        userName: 'Carolyn Hanson',\n        avatarImg: '/img/avatars/thumb-9.jpg',\n    },\n    {\n        userName: 'Samantha Phillips',\n        avatarImg: '/img/avatars/thumb-6.jpg',\n    },\n    {\n        userName: 'Ella Robinson',\n        avatarImg: '/img/avatars/thumb-15.jpg',\n    },\n]\n\nconst Example = () => {\n    return (\n        <UsersAvatarGroup\n            nameKey=\"userName\"\n            imgKey=\"avatarImg\"\n            avatarProps={{ size: 25 }}\n            users={data}\n        />\n    )\n}\n\nexport default Example"
+    }
+  }
+}

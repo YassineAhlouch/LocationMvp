@@ -1,0 +1,142 @@
+{
+  "component_id": "timeinput-001",
+  "name": "TimeInput",
+  "display_name": "Time Input Component",
+  "category": "Form Elements / Date & Time",
+  "import_path": "@/components/ui/TimeInput",
+  "description": "A time input component with separate fields for hours, minutes, seconds, and AM/PM with keyboard navigation support.",
+  "usage_guidelines": [
+    "Use for time selection in forms.",
+    "Set format to '12' or '24' based on locale.",
+    "Enable showSeconds when precision is needed.",
+    "Use clearable for optional time fields.",
+    "Handle onChange to update form state."
+  ],
+  "props": {
+    "amLabel": {
+      "type": "string",
+      "required": false,
+      "default": "'am'",
+      "description": "Label for AM period."
+    },
+    "amPmPlaceholder": {
+      "type": "string",
+      "required": false,
+      "default": "'am'",
+      "description": "Placeholder for AM/PM field."
+    },
+    "clearable": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Shows clear button."
+    },
+    "defaultValue": {
+      "type": "Date | null",
+      "required": false,
+      "description": "Default time value."
+    },
+    "disabled": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Disables time input."
+    },
+    "format": {
+      "type": "'12' | '24'",
+      "required": false,
+      "default": "'24'",
+      "description": "Time format (12-hour or 24-hour)."
+    },
+    "onChange": {
+      "type": "(value: Date | null) => void",
+      "required": false,
+      "description": "Callback fired when time changes."
+    },
+    "pmLabel": {
+      "type": "string",
+      "required": false,
+      "default": "'pm'",
+      "description": "Label for PM period."
+    },
+    "showSeconds": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Shows seconds field."
+    },
+    "size": {
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "default": "'md'",
+      "description": "Input size."
+    },
+    "timeFieldPlaceholder": {
+      "type": "string",
+      "required": false,
+      "default": "'--'",
+      "description": "Placeholder for time fields."
+    },
+    "value": {
+      "type": "Date | null",
+      "required": false,
+      "description": "Controlled time value."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "An input with separate fields for hours, minutes, optional seconds, and AM/PM. Fields are separated by colons. Includes clock icon and optional clear button."
+  },
+  "best_practices": {
+    "Do": [
+      "Use appropriate format for locale",
+      "Enable showSeconds when needed",
+      "Handle onChange for form updates",
+      "Provide clear labels",
+      "Support keyboard navigation"
+    ],
+    "Dont": [
+      "Don't forget to validate time ranges",
+      "Don't use for date selection (use DatePicker)",
+      "Don't disable without feedback"
+    ]
+  },
+  "code_examples": {
+    "Affix": {
+      "title": "Affix",
+      "code": "import TimeInput from '@/components/ui/TimeInput'\nimport { HiOutlineClock, HiClock } from 'react-icons/hi'\n\nconst Affix = () => {\n    return (\n        <div className=\"flex flex-col gap-5\">\n            <TimeInput\n                prefix={<HiOutlineClock className=\"text-lg\" />}\n                suffix={null}\n            />\n            <TimeInput suffix={<HiClock className=\"text-lg\" />} />\n        </div>\n    )\n}\n\nexport default Affix"
+    },
+    "AmPm": {
+      "title": "Am Pm",
+      "code": "import TimeInput from '@/components/ui/TimeInput'\n\nconst AmPm = () => {\n    return <TimeInput format=\"12\" defaultValue={new Date()} />\n}\n\nexport default AmPm"
+    },
+    "Basic": {
+      "title": "Basic",
+      "code": "import TimeInput from '@/components/ui/TimeInput'\n\nconst Basic = () => {\n    return <TimeInput />\n}\n\nexport default Basic"
+    },
+    "Controlled": {
+      "title": "Controlled",
+      "code": "import { useState } from 'react'\nimport TimeInput from '@/components/ui/TimeInput'\nimport dayjs from 'dayjs'\n\nconst { TimeInputRange } = TimeInput\n\nconst Controlled = () => {\n    const [timeValue, setTimeValue] = (useState < Date) | (null > new Date())\n\n    const [timeRangeValue, setTimeRangeValue] =\n        useState <\n        [Date | null, Date | null] >\n        [new Date(), dayjs(new Date()).add(60, 'minutes').toDate()]\n\n    return (\n        <div className=\"flex flex-col gap-5\">\n            <TimeInput value={timeValue} onChange={setTimeValue} />\n            <TimeInputRange\n                value={timeRangeValue}\n                onChange={setTimeRangeValue}\n            />\n        </div>\n    )\n}\n\nexport default Controlled"
+    },
+    "Disabled": {
+      "title": "Disabled",
+      "code": "import TimeInput from '@/components/ui/TimeInput'\n\nconst Disabled = () => {\n    return (\n        <div className=\"flex flex-col gap-5\">\n            <TimeInput disabled />\n        </div>\n    )\n}\n\nexport default Disabled"
+    },
+    "Invalid": {
+      "title": "Invalid",
+      "code": "import TimeInput from '@/components/ui/TimeInput'\n\nconst Invalid = () => {\n    return <TimeInput invalid />\n}\n\nexport default Invalid"
+    },
+    "Seconds": {
+      "title": "Seconds",
+      "code": "import TimeInput from '@/components/ui/TimeInput'\n\nconst Seconds = () => {\n    return <TimeInput showSeconds defaultValue={new Date()} />\n}\n\nexport default Seconds"
+    },
+    "Sizes": {
+      "title": "Sizes",
+      "code": "import TimeInput from '@/components/ui/TimeInput'\n\nconst Sizes = () => {\n    return (\n        <div className=\"flex flex-col gap-5\">\n            <TimeInput size=\"sm\" />\n            <TimeInput />\n            <TimeInput size=\"lg\" />\n        </div>\n    )\n}\n\nexport default Sizes"
+    },
+    "TimeRangeInput": {
+      "title": "Time Range Input",
+      "code": "import TimeInput from '@/components/ui/TimeInput'\nimport dayjs from 'dayjs'\n\nconst TimeRangeInput = () => {\n    return (\n        <TimeInput.TimeInputRange\n            clearable\n            defaultValue={[\n                new Date(),\n                dayjs(new Date()).add(60, 'minutes').toDate(),\n            ]}\n        />\n    )\n}\n\nexport default TimeRangeInput"
+    }
+  }
+}

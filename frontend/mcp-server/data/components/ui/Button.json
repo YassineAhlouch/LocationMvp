@@ -1,0 +1,149 @@
+{
+  "component_id": "button-001",
+  "name": "Button",
+  "display_name": "Versatile Action Button",
+  "category": "User Interaction / Form Elements",
+  "import_path": "@/components/ui/Button",
+  "description": "A versatile button component with multiple variants, sizes, states, and icon support for user interactions and form submissions.",
+  "usage_guidelines": [
+    "Use for triggering actions, navigation, or form submissions.",
+    "Choose variant based on visual hierarchy: 'solid' for primary actions, 'default' for secondary, 'ghost' for tertiary.",
+    "Use loading state during async operations to prevent duplicate submissions.",
+    "Set disabled for unavailable actions with proper ARIA attributes.",
+    "Use icon prop with iconAlignment to add visual context to button actions."
+  ],
+  "props": {
+    "asElement": {
+      "type": "ElementType",
+      "required": false,
+      "default": "'button'",
+      "description": "Render as a different HTML element (e.g., 'a' for links)."
+    },
+    "active": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Active state styling for toggle buttons."
+    },
+    "block": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Makes button full width (block level element)."
+    },
+    "className": {
+      "type": "string | ((state: {active: boolean, unclickable: boolean}) => string)",
+      "required": false,
+      "description": "CSS classes or function returning classes based on button state."
+    },
+    "clickFeedback": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Enable click animation feedback effect."
+    },
+    "disabled": {
+      "type": "boolean",
+      "required": false,
+      "description": "Disables button interaction and applies proper ARIA attributes."
+    },
+    "icon": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Icon to display in the button."
+    },
+    "loading": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Shows a loading spinner and disables interaction."
+    },
+    "onClick": {
+      "type": "(e: MouseEvent<HTMLButtonElement>) => void",
+      "required": false,
+      "description": "Click handler function."
+    },
+    "shape": {
+      "type": "'round' | 'circle' | 'none'",
+      "required": false,
+      "default": "'round'",
+      "description": "Border radius style."
+    },
+    "size": {
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "default": "md",
+      "description": "Button size."
+    },
+    "variant": {
+      "type": "'solid' | 'subtle' | 'default' | 'ghost' | 'link'",
+      "required": false,
+      "default": "'default'",
+      "description": "Visual style variant: solid (filled), subtle (muted), default (border), ghost (minimal), link (text-only)."
+    },
+    "iconAlignment": {
+      "type": "'start' | 'end'",
+      "required": false,
+      "default": "'start'",
+      "description": "Icon position relative to button text."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A rectangular button with rounded corners by default. Variants include: solid (filled with primary color), subtle (muted background), default (bordered), ghost (transparent), and link (text-only). Includes hover states, active states, and press feedback animation."
+  },
+  "best_practices": {
+    "Do": [
+      "Use solid variant for primary actions",
+      "Use loading state during async operations",
+      "Provide clear, action-oriented button text",
+      "Use appropriate size for context",
+      "Use icon with text for better clarity"
+    ],
+    "Dont": [
+      "Don't use for pure navigation (use Link component instead)",
+      "Don't use when you need complex interactive content inside",
+      "Don't forget to disable during loading states",
+      "Don't use too many solid buttons in one view",
+      "Don't define button size without any reason, as the default size already covers most use cases"
+    ]
+  },
+  "code_examples": {
+    "Block": {
+      "title": "Block",
+      "code": "import Button from '@/components/ui/Button'\n\nconst Block = () => {\n    return (\n        <div>\n            <Button className=\"mb-5\" block>\n                Block\n            </Button>\n            <Button variant=\"solid\" block>\n                Another Block\n            </Button>\n        </div>\n    )\n}\n\nexport default Block"
+    },
+    "ButtonWithIcon": {
+      "title": "Button With Icon",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport {\n    HiOutlineCog,\n    HiOutlinePencil,\n    HiOutlineInboxIn,\n    HiArrowNarrowRight,\n} from 'react-icons/hi'\n\nconst ButtonWithIcon = () => {\n    const [loading, setLoading] = useState(false)\n\n    const onClick = () => {\n        setLoading(true)\n\n        setTimeout(() => {\n            setLoading(false)\n        }, 3000)\n    }\n\n    return (\n        <div className=\"flex-wrap inline-flex xl:flex items-center gap-2\">\n            <Button className=\"mr-2\" icon={<HiOutlinePencil />}>\n                <span>Edit</span>\n            </Button>\n            <Button className=\"mr-2\" icon={<HiOutlineCog />}>\n                <span>\n                    <span>Settings</span>\n                </span>\n            </Button>\n            <Button\n                iconAlignment=\"end\"\n                className=\"mr-2\"\n                icon={<HiArrowNarrowRight />}\n            >\n                <span>Next</span>\n            </Button>\n            <Button\n                className=\"mr-2\"\n                variant=\"solid\"\n                loading={loading}\n                icon={<HiOutlineInboxIn />}\n                onClick={onClick}\n            >\n                <span>With Loading (Click to trigger)</span>\n            </Button>\n        </div>\n    )\n}\n\nexport default ButtonWithIcon"
+    },
+    "Color": {
+      "title": "Color",
+      "code": "import Button from '@/components/ui/Button'\nimport classNames from 'classnames'\n\nconst Custom = () => {\n    return (\n        <div className=\"inline-flex gap-2\">\n            <Button\n                clickFeedback={false}\n                className={({ active, unclickable }) =>\n                    classNames(\n                        'text-gray-100 hover:text-gray-50 dark:hover:bg-red-500 border-0 hover:ring-0',\n                        active ? 'bg-red-700' : 'bg-red-500',\n                        unclickable && 'opacity-50 cursor-not-allowed',\n                        !active && !unclickable && 'hover:bg-red-400',\n                    )\n                }\n            >\n                Custom color\n            </Button>\n            <Button\n                clickFeedback={false}\n                className={({ active, unclickable }) =>\n                    classNames(\n                        'bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500  border-0 hover:ring-0 p-0.5',\n                        active\n                            ? 'bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600'\n                            : '',\n                        unclickable && 'opacity-50 cursor-not-allowed',\n                        !active &&\n                            !unclickable &&\n                            'hover:bg-gradient-to-r hover:from-pink-400 hover:via-purple-400 hover:to-blue-400',\n                    )\n                }\n            >\n                <span className=\"relative px-5 h-full w-full flex items-center transition-all bg-white dark:bg-gray-900 rounded-md text-gray-900 dark:text-gray-100\">\n                    Gradient\n                </span>\n            </Button>\n        </div>\n    )\n}\n\nexport default Custom"
+    },
+    "Disabled": {
+      "title": "Disabled",
+      "code": "import Button from '@/components/ui/Button'\n\nconst Disabled = () => {\n    return (\n        <div className=\"flex items-center gap-2\">\n            <Button disabled variant=\"default\">\n                Default\n            </Button>\n            <Button disabled variant=\"solid\">\n                Solid\n            </Button>\n            <Button disabled variant=\"subtle\">\n                Plain\n            </Button>\n        </div>\n    )\n}\n\nexport default Disabled"
+    },
+    "Icon": {
+      "title": "Icon",
+      "code": "import Button from '@/components/ui/Button'\nimport { HiPhone } from 'react-icons/hi'\n\nconst Icon = () => {\n    return (\n        <>\n            <div className=\"flex-wrap inline-flex xl:flex items-center gap-2\">\n                <Button shape=\"circle\" size=\"sm\" icon={<HiPhone />} />\n                <Button shape=\"circle\" size=\"sm\" icon={<HiPhone />} />\n                <Button shape=\"circle\" icon={<HiPhone />} />\n                <Button shape=\"circle\" size=\"lg\" icon={<HiPhone />} />\n            </div>\n            <br />\n            <div className=\"flex-wrap inline-flex xl:flex items-center gap-2\">\n                <Button size=\"sm\" icon={<HiPhone />} />\n                <Button size=\"sm\" icon={<HiPhone />} />\n                <Button icon={<HiPhone />} />\n                <Button size=\"lg\" icon={<HiPhone />} />\n            </div>\n        </>\n    )\n}\n\nexport default Icon"
+    },
+    "Loading": {
+      "title": "Loading",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport { HiPhone } from 'react-icons/hi'\n\nconst Loading = () => {\n    const [loading, setLoading] = useState(false)\n\n    const onClick = () => {\n        setLoading(true)\n\n        setTimeout(() => {\n            setLoading(false)\n        }, 3000)\n    }\n\n    return (\n        <div className=\"flex-wrap inline-flex xl:flex items-center gap-2\">\n            <Button loading>Loading</Button>\n            <Button shape=\"circle\" loading icon={<HiPhone />} />\n            <Button variant=\"solid\" loading={loading} onClick={onClick}>\n                Click Me!\n            </Button>\n        </div>\n    )\n}\n\nexport default Loading"
+    },
+    "Shape": {
+      "title": "Shape",
+      "code": "import Button from '@/components/ui/Button'\n\nconst Shape = () => {\n    return (\n        <div className=\"flex-wrap inline-flex xl:flex items-center gap-2\">\n            <Button>Rounded</Button>\n            <Button shape=\"none\">None</Button>\n            <Button shape=\"circle\">Circle</Button>\n        </div>\n    )\n}\n\nexport default Shape"
+    },
+    "Size": {
+      "title": "Size",
+      "code": "import Button from '@/components/ui/Button'\n\nconst Size = () => {\n    return (\n        <div className=\"xl:flex items-center gap-2\">\n            <Button size=\"sm\">Extra Small (xs)</Button>\n            <Button size=\"sm\">Small (sm)</Button>\n            <Button>Medium (md)</Button>\n            <Button size=\"lg\">Large (lg)</Button>\n        </div>\n    )\n}\n\nexport default Size"
+    },
+    "Variant": {
+      "title": "Variant",
+      "code": "import Button from '@/components/ui/Button'\n\nconst Variant = () => {\n    return (\n        <div className=\"inline-flex flex-wrap xl:flex gap-2\">\n            <Button>Default</Button>\n            <Button variant=\"solid\">Solid</Button>\n            <Button variant=\"subtle\">Muted</Button>\n            <Button variant=\"link\">Link</Button>\n        </div>\n    )\n}\n\nexport default Variant"
+    }
+  }
+}

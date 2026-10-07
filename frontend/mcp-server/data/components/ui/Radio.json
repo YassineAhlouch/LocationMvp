@@ -1,0 +1,106 @@
+{
+  "component_id": "radio-001",
+  "name": "Radio",
+  "display_name": "Radio Button Component",
+  "category": "Form Elements / Input",
+  "import_path": "@/components/ui/Radio",
+  "description": "A radio button component for mutually exclusive selections with support for radio groups and controlled/uncontrolled states.",
+  "usage_guidelines": [
+    "Use for mutually exclusive options where only one can be selected.",
+    "Group related radio buttons using RadioGroup component.",
+    "Provide clear labels as children for accessibility.",
+    "Use controlled (checked prop) or uncontrolled (defaultChecked) based on needs.",
+    "Set value prop when using within RadioGroup."
+  ],
+  "props": {
+    "checked": {
+      "type": "boolean",
+      "required": false,
+      "description": "Controlled checked state."
+    },
+    "radioClass": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for radio input element."
+    },
+    "defaultChecked": {
+      "type": "boolean",
+      "required": false,
+      "description": "Default checked state for uncontrolled component."
+    },
+    "disabled": {
+      "type": "boolean",
+      "required": false,
+      "description": "Disables radio interaction."
+    },
+    "name": {
+      "type": "string",
+      "required": false,
+      "description": "Input name attribute for form submission."
+    },
+    "onChange": {
+      "type": "(value: any, e: ChangeEvent<HTMLInputElement>) => void",
+      "required": false,
+      "description": "Callback fired when radio state changes."
+    },
+    "readOnly": {
+      "type": "boolean",
+      "required": false,
+      "description": "Makes radio read-only."
+    },
+    "value": {
+      "type": "RadioValue",
+      "required": false,
+      "description": "Radio value used in radio groups."
+    },
+    "vertical": {
+      "type": "boolean",
+      "required": false,
+      "description": "Vertical layout for radio group."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A circular radio button with inner dot when selected. Uses primary color for checked state. Includes smooth transitions and hover effects."
+  },
+  "best_practices": {
+    "Do": [
+      "Always provide descriptive labels",
+      "Use for mutually exclusive options",
+      "Group related radios using RadioGroup",
+      "Handle onChange for controlled components",
+      "Provide at least 2 options"
+    ],
+    "Dont": [
+      "Don't use for multi-select (use Checkbox instead)",
+      "Don't forget labels for accessibility",
+      "Don't use both checked and defaultChecked"
+    ]
+  },
+  "code_examples": {
+    "Color": {
+      "title": "Color",
+      "code": "import Radio from '@/components/ui/Radio'\n\nconst Color = () => {\n    return (\n        <div>\n            <Radio defaultChecked radioClass=\"text-green-500\">\n                Radio\n            </Radio>\n            <div className=\"mt-4\">\n                <Radio.Group\n                    radioClass=\"text-yellow-500\"\n                    value={'Apple'}\n                    name=\"radioColorGroup\"\n                >\n                    <Radio radioClass=\"text-blue-600\" value={'Apple'}>\n                        Apple\n                    </Radio>\n                    <Radio value={'Banana'}>Banana</Radio>\n                    <Radio value={'Cherry'}>Cherry</Radio>\n                </Radio.Group>\n            </div>\n        </div>\n    )\n}\n\nexport default Color"
+    },
+    "Controlled": {
+      "title": "Controlled",
+      "code": "import { useState } from 'react'\nimport Radio from '@/components/ui/Radio'\n\nconst Controlled = () => {\n\n    const [value, setValue] = useState('Banana')\n\n    const onChange = (val: string) => {\n        setValue(val)\n    }\n\n    return (\n        <div>\n            <Radio.Group value={value} onChange={onChange}>\n                <Radio value={'Apple'}>Apple</Radio>\n                <Radio value={'Banana'}>Banana</Radio>\n                <Radio value={'Cherry'}>Cherry</Radio>\n            </Radio.Group>\n        </div>\n    )\n}\n\nexport default Controlled"
+    },
+    "Disabled": {
+      "title": "Disabled",
+      "code": "import Radio from '@/components/ui/Radio'\n\nconst Disabled = () => {\n    return (\n        <div>\n            <Radio disabled className=\"mr-4\">\n                Disabled Radio\n            </Radio>\n            <Radio disabled checked>\n                Disabled Checked Radio\n            </Radio>\n            <div className=\"mt-4\">\n                <Radio.Group value={'Apple'} disabled>\n                    <Radio value={'Apple'}>Apple</Radio>\n                    <Radio value={'Banana'}>Banana</Radio>\n                    <Radio value={'Cherry'}>Cherry</Radio>\n                </Radio.Group>\n            </div>\n        </div>\n    )\n}\n\nexport default Disabled"
+    },
+    "Group": {
+      "title": "Group",
+      "code": "import { useState } from 'react'\nimport Radio from '@/components/ui/Radio'\n\nconst Group = () => {\n    const [value, setValue] = useState('Banana')\n\n    const onChange = (val: string) => {\n        setValue(val)\n    }\n\n    return (\n        <div>\n            <Radio.Group value={value} onChange={onChange}>\n                <Radio value={'Apple'}>Apple</Radio>\n                <Radio value={'Banana'}>Banana</Radio>\n                <Radio value={'Cherry'}>Cherry</Radio>\n            </Radio.Group>\n        </div>\n    )\n}\n\nexport default Group"
+    },
+    "Simple": {
+      "title": "Simple",
+      "code": "import Radio from '@/components/ui/Radio'\n\nconst Simple = () => {\n    return (\n        <div>\n            <Radio className=\"mr-4\" name=\"simpleRadioExample\">\n                Radio\n            </Radio>\n            <Radio defaultChecked name=\"simpleRadioExample\">\n                Checked Radio\n            </Radio>\n        </div>\n    )\n}\n\nexport default Simple"
+    },
+    "Vertical": {
+      "title": "Vertical",
+      "code": "import { useState } from 'react'\nimport Radio from '@/components/ui/Radio'\n\nconst Vertical = () => {\n    const [value, setValue] = useState('Banana')\n\n    const onChange = (val: string) => {\n        setValue(val)\n    }\n\n    return (\n        <div>\n            <div className=\"mt-4\">\n                <Radio.Group vertical value={value} onChange={onChange}>\n                    <Radio value={'Apple'}>Apple</Radio>\n                    <Radio value={'Banana'}>Banana</Radio>\n                    <Radio value={'Cherry'}>Cherry</Radio>\n                </Radio.Group>\n            </div>\n        </div>\n    )\n}\n\nexport default Vertical"
+    }
+  }
+}

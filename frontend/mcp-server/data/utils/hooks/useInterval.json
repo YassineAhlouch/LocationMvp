@@ -1,0 +1,46 @@
+{
+  "component_id": "hook-interval-001",
+  "name": "useInterval",
+  "display_name": "Interval Hook",
+  "category": "Hooks / Timers",
+  "import_path": "@/utils/hooks/useInterval",
+  "description": "A hook for running a callback function at regular intervals with automatic cleanup and pause support.",
+  "usage_guidelines": [
+    "Use for polling, auto-refresh, or periodic updates.",
+    "Set delay to null to pause the interval.",
+    "Automatically cleans up on component unmount.",
+    "Callback updates are handled safely without recreating interval."
+  ],
+  "params": [
+    {
+      "name": "callback",
+      "type": "() => void",
+      "required": true,
+      "description": "Function to execute at each interval."
+    },
+    {
+      "name": "delay",
+      "type": "number | null",
+      "required": true,
+      "description": "Interval delay in milliseconds. Set to null to pause."
+    }
+  ],
+  "return_value": {
+    "type": "React.MutableRefObject<number | null>",
+    "description": "Ref to the interval ID for manual control if needed."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for polling APIs",
+      "Use for auto-refresh features",
+      "Set delay to null to pause",
+      "Clean up properly on unmount",
+      "Use reasonable intervals (not too frequent)"
+    ],
+    "Dont": [
+      "Don't use for animations (use requestAnimationFrame)",
+      "Don't set very short delays (< 100ms)",
+      "Don't forget to pause when not needed"
+    ]
+  }
+}

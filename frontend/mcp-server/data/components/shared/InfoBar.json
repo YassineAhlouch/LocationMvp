@@ -1,0 +1,54 @@
+{
+  "component_id": "infobar-001",
+  "name": "InfoBar",
+  "display_name": "Info Level Indicator Bar",
+  "category": "Data Display / Indicators",
+  "import_path": "@/components/shared/InfoBar",
+  "description": "A visual indicator showing three levels (low, medium, high) with color-coded bars, similar to signal strength indicators.",
+  "usage_guidelines": [
+    "Use for displaying levels, strength, or intensity.",
+    "Three levels: low (red), medium (yellow), high (green).",
+    "Bars fill progressively based on level.",
+    "Useful for password strength, signal strength, etc."
+  ],
+  "props": {
+    "level": {
+      "type": "'low' | 'medium' | 'high'",
+      "required": true,
+      "description": "Current level to display."
+    },
+    "height": {
+      "type": "number",
+      "required": false,
+      "default": "15",
+      "description": "Height of indicator in pixels."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Three vertical bars of increasing height. Active bars show level color (red/yellow/green), inactive bars are gray. Smooth transitions."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for strength/level indicators",
+      "Provide clear level meanings",
+      "Use consistent across application",
+      "Combine with text labels"
+    ],
+    "Dont": [
+      "Don't use for precise measurements",
+      "Don't use for more than 3 levels",
+      "Don't forget to explain level meanings"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import InfoBar from '@/components/shared/InfoBar'\n\nconst Basic = () => {\n    return (\n        <div className=\"flex items-center gap-8\">\n            <div className=\"flex items-center gap-2\">\n                <span className=\"text-sm\">Low:</span>\n                <InfoBar level=\"low\" />\n            </div>\n            <div className=\"flex items-center gap-2\">\n                <span className=\"text-sm\">Medium:</span>\n                <InfoBar level=\"medium\" />\n            </div>\n            <div className=\"flex items-center gap-2\">\n                <span className=\"text-sm\">High:</span>\n                <InfoBar level=\"high\" />\n            </div>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Levels": {
+      "title": "Levels",
+      "code": "import InfoBar from '@/components/shared/InfoBar'\n\nconst Levels = () => {\n    return (\n        <div className=\"flex items-center gap-8\">\n            <div className=\"flex items-center gap-2\">\n                <InfoBar level=\"low\" height={20} />\n                <span className=\"text-sm text-error\">Weak signal</span>\n            </div>\n            <div className=\"flex items-center gap-2\">\n                <InfoBar level=\"medium\" height={20} />\n                <span className=\"text-sm text-warning\">Moderate signal</span>\n            </div>\n            <div className=\"flex items-center gap-2\">\n                <InfoBar level=\"high\" height={20} />\n                <span className=\"text-sm text-success\">Strong signal</span>\n            </div>\n        </div>\n    )\n}\n\nexport default Levels"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "component_id": "navtoggle-001",
+  "name": "NavToggle",
+  "display_name": "Navigation Toggle Icon",
+  "category": "Navigation / Icons",
+  "import_path": "@/components/shared/NavToggle",
+  "description": "A simple icon component that switches between open and close panel icons based on toggle state.",
+  "usage_guidelines": [
+    "Use for sidebar or navigation panel toggle buttons.",
+    "Icon changes based on toggled prop.",
+    "Typically used with Drawer or sidebar components."
+  ],
+  "props": {
+    "toggled": {
+      "type": "boolean",
+      "required": false,
+      "description": "Toggle state determining which icon to show."
+    }
+  },
+  "styling_info": {
+    "method": "React Icons",
+    "visual_description": "Shows panel-right-open icon when not toggled, panel-right-close when toggled."
+  },
+  "best_practices": {
+    "Do": [
+      "Use with sidebar toggles",
+      "Update toggled state on click",
+      "Provide accessible labels"
+    ],
+    "Dont": [
+      "Don't use for other toggle purposes",
+      "Don't forget to handle click events"
+    ]
+  },
+  "code_examples": {
+    "Example": {
+      "title": "Example",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport NavToggle from '@/components/shared/NavToggle'\n\nconst Example = () => {\n    const [collapsed, setCollapsed] = useState(false)\n\n    return (\n        <Button\n            icon={<NavToggle toggled={collapsed} />}\n            onClick={() => setCollapsed(!collapsed)}\n        />\n    )\n}\n\nexport default Example"
+    }
+  }
+}

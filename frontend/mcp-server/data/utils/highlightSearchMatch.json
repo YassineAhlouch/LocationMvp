@@ -1,0 +1,46 @@
+{
+  "component_id": "util-highlightsearchmatch-001",
+  "name": "highlightSearchMatch",
+  "display_name": "Search Match Highlighter Utility",
+  "category": "Utils / Search & Display",
+  "import_path": "@/utils/highlightSearchMatch",
+  "description": "Highlights search term matches within text by wrapping them in styled mark elements.",
+  "usage_guidelines": [
+    "Use for highlighting search results in lists and tables.",
+    "Case-insensitive matching for better UX.",
+    "Returns React nodes with highlighted matches.",
+    "Escapes special regex characters safely."
+  ],
+  "params": [
+    {
+      "name": "text",
+      "type": "string",
+      "required": true,
+      "description": "Text to search within."
+    },
+    {
+      "name": "searchTerm",
+      "type": "string",
+      "required": true,
+      "description": "Search term to highlight."
+    }
+  ],
+  "return_value": {
+    "type": "React.ReactNode",
+    "description": "Text with search matches wrapped in <mark> elements, or original text if no matches."
+  },
+  "best_practices": {
+    "Do": [
+      "Use in search result displays",
+      "Use in autocomplete options",
+      "Handle empty search terms",
+      "Use consistent highlight styling",
+      "Escape special characters"
+    ],
+    "Dont": [
+      "Don't use for very long texts (performance)",
+      "Don't forget to handle special characters",
+      "Don't highlight in sensitive content"
+    ]
+  }
+}

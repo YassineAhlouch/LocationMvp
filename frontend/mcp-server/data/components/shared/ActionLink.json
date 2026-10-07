@@ -1,0 +1,71 @@
+{
+  "component_id": "actionlink-001",
+  "name": "ActionLink",
+  "display_name": "Styled Action Link Component",
+  "category": "Navigation / Links",
+  "import_path": "@/components/shared/ActionLink",
+  "description": "A styled link component with theme color support for navigation and actions, supporting both internal routing and external links.",
+  "usage_guidelines": [
+    "Use for text links that trigger navigation or actions.",
+    "Use 'to' prop for internal React Router navigation.",
+    "Use 'href' prop for external links.",
+    "Set themeColor to false for custom styling.",
+    "Use reloadDocument for full page reloads."
+  ],
+  "props": {
+    "themeColor": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Applies primary theme color to link."
+    },
+    "to": {
+      "type": "string",
+      "required": false,
+      "description": "Internal route path for React Router navigation."
+    },
+    "href": {
+      "type": "string",
+      "required": false,
+      "default": "''",
+      "description": "External URL for standard anchor links."
+    },
+    "reloadDocument": {
+      "type": "boolean",
+      "required": false,
+      "description": "Forces full page reload on navigation."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A text link with primary color (when themeColor is true) and underline on hover. Inherits text styling from parent."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for text-based navigation",
+      "Use 'to' for internal routes",
+      "Use 'href' for external links",
+      "Provide descriptive link text",
+      "Use themeColor for consistency"
+    ],
+    "Dont": [
+      "Don't use for primary actions (use Button instead)",
+      "Don't use both 'to' and 'href' simultaneously",
+      "Don't forget accessibility attributes for external links"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import ActionLink from '@/components/shared/ActionLink'\n\nconst Basic = () => {\n    return (\n        <ActionLink to=\"/docs/documentation/introduction\">Navigate</ActionLink>\n    )\n}\n\nexport default Basic"
+    },
+    "Hyperlink": {
+      "title": "Hyperlink",
+      "code": "import ActionLink from '@/components/shared/ActionLink'\n\nconst Hyperlink = () => {\n    return (\n        <ActionLink reloadDocument to=\"https://www.google.com/\" target=\"_blank\">\n            Navigate\n        </ActionLink>\n    )\n}\n\nexport default Hyperlink"
+    },
+    "ThemeColor": {
+      "title": "Theme Color",
+      "code": "import ActionLink from '@/components/shared/ActionLink'\n\nconst ThemeColor = () => {\n    return (\n        <ActionLink to=\"/docs/documentation/introduction\" themeColor={false}>\n            Navigate\n        </ActionLink>\n    )\n}\n\nexport default ThemeColor"
+    }
+  }
+}

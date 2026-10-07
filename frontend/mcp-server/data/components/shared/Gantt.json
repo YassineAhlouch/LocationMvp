@@ -1,0 +1,461 @@
+{
+  "component_id": "gantt-001",
+  "name": "Gantt",
+  "display_name": "Gantt Chart Component",
+  "category": "Data Display / Project Management",
+  "import_path": "@/components/shared/Gantt",
+  "description": "A comprehensive Gantt chart component for project management with task scheduling, dependencies, progress tracking, drag-and-drop, resizing, and interactive timeline visualization. Supports multiple view modes (Hour, QuarterDay, HalfDay, Day, Week, Month, QuarterYear, Year), task types (task, milestone, project), and customizable columns for task list display.",
+  "usage_guidelines": [
+    "Use for project management, task scheduling, and timeline visualization interfaces.",
+    "Provide tasks array with id, type, name, start, end, progress, and optional dependencies.",
+    "Handle task interactions via callbacks (onClick, onDoubleClick, onSelect, onDateChange, onProgressChange).",
+    "Configure timeline scale with viewMode (Hour to Year granularity).",
+    "Enable task editing with drag-and-drop and resize functionality (built-in).",
+    "Display task relationships with dependency arrows.",
+    "Customize task list columns with columns prop for additional task information.",
+    "Use customBarContent for custom task bar rendering.",
+    "Handle task expansion/collapse with onExpanderClick for hierarchical tasks."
+  ],
+  "props": {
+    "tasks": {
+      "type": "Task<T>[]",
+      "required": true,
+      "description": "Array of tasks with id, type, name, start/end dates, progress, and optional dependencies, project, styles, and custom data."
+    },
+    "columns": {
+      "type": "Columns<T>[] | null",
+      "required": false,
+      "default": "[]",
+      "description": "Custom columns for task list. Set to null to hide task list. Each column has header, cell renderer, and optional width."
+    },
+    "customBarContent": {
+      "type": "(barTask: BarTask<T>) => ReactNode",
+      "required": false,
+      "description": "Custom renderer for task bar content. Receives processed bar task with positioning data."
+    },
+    "viewMode": {
+      "type": "ViewMode",
+      "required": false,
+      "default": "'Day'",
+      "description": "Timeline scale granularity: 'Hour', 'QuarterDay', 'HalfDay', 'Day', 'Week', 'Month', 'QuarterYear', 'Year'."
+    },
+    "viewDate": {
+      "type": "Date",
+      "required": false,
+      "description": "Date to scroll to in the timeline view."
+    },
+    "locale": {
+      "type": "string",
+      "required": false,
+      "default": "'en-GB'",
+      "description": "Locale for date formatting (e.g., 'en-US', 'fr-FR')."
+    },
+    "rtl": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Right-to-left layout mode."
+    },
+    "headerHeight": {
+      "type": "number",
+      "required": false,
+      "default": "70",
+      "description": "Height of calendar header in pixels."
+    },
+    "gridColumnsWidth": {
+      "type": "number",
+      "required": false,
+      "default": "100",
+      "description": "Width of each timeline column in pixels."
+    },
+    "rowHeight": {
+      "type": "number",
+      "required": false,
+      "default": "50",
+      "description": "Height of each task row in pixels."
+    },
+    "ganttHeight": {
+      "type": "number",
+      "required": false,
+      "default": "0",
+      "description": "Fixed height for Gantt chart. 0 for auto height based on tasks."
+    },
+    "barFill": {
+      "type": "number",
+      "required": false,
+      "default": "60",
+      "description": "Percentage of row height filled by task bar (0-100)."
+    },
+    "barCornerRadius": {
+      "type": "number",
+      "required": false,
+      "default": "4",
+      "description": "Border radius of task bars in pixels."
+    },
+    "handleWidth": {
+      "type": "number",
+      "required": false,
+      "default": "8",
+      "description": "Width of drag handles on task bars in pixels."
+    },
+    "barProgressClass": {
+      "type": "string",
+      "required": false,
+      "default": "'#286cf0'",
+      "description": "Color for task progress indicator."
+    },
+    "barWrapperClass": {
+      "type": "string",
+      "required": false,
+      "default": "'#b8c2cc'",
+      "description": "Background color for task bars."
+    },
+    "projectProgressClass": {
+      "type": "string",
+      "required": false,
+      "default": "'#286cf0'",
+      "description": "Color for project progress indicator."
+    },
+    "projectWrapperClass": {
+      "type": "string",
+      "required": false,
+      "default": "'#b8c2cc'",
+      "description": "Background color for project bars."
+    },
+    "milestoneClass": {
+      "type": "string",
+      "required": false,
+      "default": "'#286cf0'",
+      "description": "Background color for milestone markers."
+    },
+    "todayColor": {
+      "type": "string",
+      "required": false,
+      "default": "'#fafafa'",
+      "description": "Background color for today's date column."
+    },
+    "arrowClass": {
+      "type": "string",
+      "required": false,
+      "default": "'grey'",
+      "description": "CSS class for dependency arrows."
+    },
+    "arrowIndent": {
+      "type": "number",
+      "required": false,
+      "default": "20",
+      "description": "Indentation for dependency arrows in pixels."
+    },
+    "timeStep": {
+      "type": "number",
+      "required": false,
+      "default": "300000",
+      "description": "Time step for drag operations in milliseconds (default: 5 minutes)."
+    },
+    "preStepsCount": {
+      "type": "number",
+      "required": false,
+      "default": "1",
+      "description": "Number of time periods to show before first task."
+    },
+    "onSelect": {
+      "type": "(task: Task<T>, isSelected: boolean) => void",
+      "required": false,
+      "description": "Callback fired when task selection changes."
+    },
+    "onClick": {
+      "type": "(task: Task<T>) => void",
+      "required": false,
+      "description": "Callback fired when task is clicked."
+    },
+    "onDoubleClick": {
+      "type": "(task: Task<T>) => void",
+      "required": false,
+      "description": "Callback fired when task is double-clicked."
+    },
+    "onDateChange": {
+      "type": "(task: Task<T>, children: Task<T>[]) => void | boolean | Promise<void> | Promise<boolean>",
+      "required": false,
+      "description": "Callback fired when task dates are changed via drag/resize. Return false to reject change."
+    },
+    "onProgressChange": {
+      "type": "(task: Task<T>, children: Task<T>[]) => void | boolean | Promise<void> | Promise<boolean>",
+      "required": false,
+      "description": "Callback fired when task progress is updated. Return false to reject change."
+    },
+    "onDelete": {
+      "type": "(task: Task<T>) => void | boolean | Promise<void> | Promise<boolean>",
+      "required": false,
+      "description": "Callback fired when task is deleted. Return false to reject deletion."
+    },
+    "onExpanderClick": {
+      "type": "(task: Task<T>) => void",
+      "required": false,
+      "description": "Callback fired when task expander is clicked (for hierarchical tasks)."
+    },
+    "TooltipContent": {
+      "type": "React.FC<{ task: Task }>",
+      "required": false,
+      "description": "Custom tooltip component for task hover."
+    },
+    "TaskListHeader": {
+      "type": "React.FC<{ headerHeight: number, rowWidth: string }>",
+      "required": false,
+      "description": "Custom task list header component."
+    },
+    "TaskListTable": {
+      "type": "React.FC<TaskListTableProps>",
+      "required": false,
+      "description": "Custom task list table component."
+    }
+  },
+  "types": {
+    "Task<T>": {
+      "description": "Task object with optional generic type for custom data",
+      "properties": {
+        "id": "string - Unique task identifier",
+        "type": "'task' | 'milestone' | 'project' - Task type",
+        "name": "string - Task name/title",
+        "start": "Date - Task start date",
+        "end": "Date - Task end date",
+        "progress": "number - Task completion percentage (0-100)",
+        "styles": "{ backgroundColor?: string, progressColor?: string } - Custom task colors",
+        "isDisabled": "boolean - Disables task interactions",
+        "project": "string - Parent project ID for grouping",
+        "dependencies": "string[] - Array of task IDs this task depends on",
+        "hideChildren": "boolean - Hides child tasks in hierarchy",
+        "displayOrder": "number - Custom display order"
+      },
+      "note": "Can be extended with custom properties via generic type T"
+    },
+    "ViewMode": {
+      "description": "Timeline scale options",
+      "values": [
+        "'Hour'",
+        "'QuarterDay'",
+        "'HalfDay'",
+        "'Day'",
+        "'Week'",
+        "'Month'",
+        "'QuarterYear'",
+        "'Year'"
+      ]
+    },
+    "TaskType": {
+      "description": "Task type options",
+      "values": [
+        "'task'",
+        "'milestone'",
+        "'project'"
+      ]
+    },
+    "Columns<T>": {
+      "description": "Column configuration for task list",
+      "properties": {
+        "header": "string | ReactNode - Column header content",
+        "cell": "(task: Task<T> & { expander: ReactNode }) => string | ReactNode - Cell renderer function",
+        "width": "string | number - Column width (CSS value or pixels)"
+      }
+    },
+    "BarTask<T>": {
+      "description": "Processed task with positioning data for rendering",
+      "properties": {
+        "...Task<T>": "All task properties",
+        "index": "number - Task index in list",
+        "x1": "number - Bar start X position",
+        "x2": "number - Bar end X position",
+        "y": "number - Bar Y position",
+        "height": "number - Bar height",
+        "progressX": "number - Progress bar X position",
+        "progressWidth": "number - Progress bar width",
+        "barCornerRadius": "number - Bar corner radius",
+        "handleWidth": "number - Drag handle width",
+        "barChildren": "BarTask<T>[] - Child tasks"
+      }
+    }
+  },
+  "task_types": {
+    "task": {
+      "description": "Standard task with start/end dates and progress bar",
+      "visual": "Horizontal bar with progress indicator and drag handles"
+    },
+    "milestone": {
+      "description": "Point-in-time marker (start and end dates should be same)",
+      "visual": "Diamond shape marker on timeline"
+    },
+    "project": {
+      "description": "Parent task grouping multiple sub-tasks",
+      "visual": "Bar with brackets showing project span, calculated from child tasks"
+    }
+  },
+  "view_modes": {
+    "Hour": "Hourly timeline scale",
+    "QuarterDay": "6-hour intervals",
+    "HalfDay": "12-hour intervals",
+    "Day": "Daily timeline scale (default)",
+    "Week": "Weekly timeline scale",
+    "Month": "Monthly timeline scale",
+    "QuarterYear": "Quarterly timeline scale",
+    "Year": "Yearly timeline scale"
+  },
+  "features": {
+    "drag_and_drop": {
+      "description": "Drag task bars to reschedule",
+      "triggers": "onDateChange callback"
+    },
+    "resize": {
+      "description": "Drag task bar handles to adjust duration",
+      "triggers": "onDateChange callback"
+    },
+    "progress_adjustment": {
+      "description": "Drag progress handle to update completion",
+      "triggers": "onProgressChange callback"
+    },
+    "dependencies": {
+      "description": "Visual arrows showing task dependencies",
+      "configuration": "Set dependencies array on tasks"
+    },
+    "hierarchical_tasks": {
+      "description": "Parent-child task relationships with expand/collapse",
+      "configuration": "Set project property and use onExpanderClick"
+    },
+    "custom_columns": {
+      "description": "Configurable task list columns with custom renderers",
+      "configuration": "Provide columns array with header and cell functions"
+    },
+    "tooltips": {
+      "description": "Hover tooltips showing task details",
+      "customization": "Provide TooltipContent component"
+    },
+    "keyboard_navigation": {
+      "description": "Arrow keys to navigate timeline",
+      "keys": "Arrow Up/Down (vertical), Arrow Left/Right (horizontal)"
+    },
+    "scrolling": {
+      "description": "Horizontal and vertical scrolling with mouse wheel",
+      "note": "Shift + wheel for horizontal scroll"
+    }
+  },
+  "styling_info": {
+    "method": "Inline styles with SVG rendering",
+    "visual_description": "Split view with task list on left (optional) and timeline chart on right. Tasks appear as horizontal bars with progress indicators. Dependency arrows connect related tasks. Calendar header shows date labels. Scrollable timeline with fixed header. Drag handles on bar edges for resizing."
+  },
+  "sub_components": {
+    "TaskGantt": {
+      "description": "Main Gantt chart SVG rendering component"
+    },
+    "EventList": {
+      "description": "Task list table on left side with custom columns"
+    },
+    "Grid": {
+      "description": "Timeline grid with date columns"
+    },
+    "Calendar": {
+      "description": "Calendar header with date labels"
+    },
+    "Bar": {
+      "description": "Task bar rendering with progress and handles"
+    },
+    "MileStone": {
+      "description": "Milestone marker rendering"
+    },
+    "Project": {
+      "description": "Project bar rendering with brackets"
+    },
+    "Arrow": {
+      "description": "Dependency arrow rendering"
+    },
+    "Tooltip": {
+      "description": "Task hover tooltip"
+    },
+    "HorizontalScroll": {
+      "description": "Horizontal scrollbar component"
+    },
+    "VerticalScroll": {
+      "description": "Vertical scrollbar component"
+    }
+  },
+  "best_practices": {
+    "Do": [
+      "Provide complete task data with valid Date objects",
+      "Handle all interaction callbacks (onDateChange, onProgressChange, etc.)",
+      "Use appropriate view mode for project timeline duration",
+      "Validate task dependencies to avoid circular references",
+      "Show progress indicators for better project tracking",
+      "Use milestones for key project events",
+      "Implement proper error handling for date operations",
+      "Use custom columns to show relevant task information",
+      "Test drag-and-drop and resize functionality",
+      "Provide meaningful task types for categorization",
+      "Use project type for grouping related tasks",
+      "Handle async operations in callbacks (return Promise)"
+    ],
+    "Dont": [
+      "Don't create circular dependencies between tasks",
+      "Don't use for simple scheduling (use Calendar component)",
+      "Don't forget to handle date validation",
+      "Don't overload with too many tasks (implement pagination/filtering)",
+      "Don't mutate task objects directly (use callbacks)",
+      "Don't forget to handle timezone considerations",
+      "Don't use invalid date ranges (end before start)",
+      "Don't forget to provide unique task IDs",
+      "Don't ignore callback return values (false rejects changes)",
+      "Don't use extremely small timeStep values (performance impact)"
+    ]
+  },
+  "examples": [
+    {
+      "title": "Basic Usage",
+      "code": "import Gantt from '@/components/shared/Gantt';\nimport type { Task } from '@/components/shared/Gantt';\n\nconst tasks: Task[] = [\n  {\n    id: '1',\n    type: 'task',\n    name: 'Design Phase',\n    start: new Date(2024, 0, 1),\n    end: new Date(2024, 0, 15),\n    progress: 75,\n    styles: {\n      backgroundColor: '#286cf0',\n      progressColor: '#1a4d9f'\n    }\n  },\n  {\n    id: '2',\n    type: 'task',\n    name: 'Development',\n    start: new Date(2024, 0, 16),\n    end: new Date(2024, 1, 28),\n    progress: 30,\n    dependencies: ['1']\n  },\n  {\n    id: '3',\n    type: 'milestone',\n    name: 'Launch',\n    start: new Date(2024, 2, 1),\n    end: new Date(2024, 2, 1),\n    progress: 0,\n    dependencies: ['2']\n  }\n];\n\n<Gantt\n  tasks={tasks}\n  viewMode=\"Day\"\n  onClick={(task) => console.log('Clicked:', task.name)}\n/>"
+    },
+    {
+      "title": "With Custom Columns",
+      "code": "import type { Columns } from '@/components/shared/Gantt';\n\ntype CustomTask = {\n  assignee: string;\n  priority: 'high' | 'medium' | 'low';\n};\n\nconst columns: Columns<CustomTask>[] = [\n  {\n    header: 'Task Name',\n    cell: (task) => (\n      <div className=\"flex items-center gap-2\">\n        {task.expander}\n        <span>{task.name}</span>\n      </div>\n    ),\n    width: 200\n  },\n  {\n    header: 'Assignee',\n    cell: (task) => task.assignee,\n    width: 150\n  },\n  {\n    header: 'Priority',\n    cell: (task) => (\n      <Badge color={task.priority === 'high' ? 'red' : 'blue'}>\n        {task.priority}\n      </Badge>\n    ),\n    width: 100\n  },\n  {\n    header: 'Progress',\n    cell: (task) => `${task.progress}%`,\n    width: 80\n  }\n];\n\nconst tasks: Task<CustomTask>[] = [\n  {\n    id: '1',\n    type: 'task',\n    name: 'Backend API',\n    start: new Date(2024, 0, 1),\n    end: new Date(2024, 0, 15),\n    progress: 60,\n    assignee: 'John Doe',\n    priority: 'high'\n  }\n];\n\n<Gantt<CustomTask>\n  tasks={tasks}\n  columns={columns}\n  viewMode=\"Week\"\n/>"
+    },
+    {
+      "title": "With Event Handlers",
+      "code": "const handleDateChange = async (task: Task, children: Task[]) => {\n  // Validate date change\n  if (task.end < task.start) {\n    toast.error('End date cannot be before start date');\n    return false; // Reject change\n  }\n  \n  // Update backend\n  try {\n    await updateTaskDates(task.id, task.start, task.end);\n    toast.success('Task updated');\n    return true; // Accept change\n  } catch (error) {\n    toast.error('Failed to update task');\n    return false; // Reject change\n  }\n};\n\nconst handleProgressChange = async (task: Task, children: Task[]) => {\n  await updateTaskProgress(task.id, task.progress);\n};\n\n<Gantt\n  tasks={tasks}\n  onDateChange={handleDateChange}\n  onProgressChange={handleProgressChange}\n  onDoubleClick={(task) => openTaskModal(task)}\n  onDelete={async (task) => {\n    const confirmed = await confirmDelete(task.name);\n    if (confirmed) {\n      await deleteTask(task.id);\n      return true;\n    }\n    return false;\n  }}\n/>"
+    },
+    {
+      "title": "Hierarchical Tasks with Projects",
+      "code": "const [tasks, setTasks] = useState<Task[]>([\n  {\n    id: 'proj-1',\n    type: 'project',\n    name: 'Website Redesign',\n    start: new Date(2024, 0, 1),\n    end: new Date(2024, 2, 31),\n    progress: 45,\n    hideChildren: false\n  },\n  {\n    id: 'task-1',\n    type: 'task',\n    name: 'Design Mockups',\n    start: new Date(2024, 0, 1),\n    end: new Date(2024, 0, 15),\n    progress: 100,\n    project: 'proj-1'\n  },\n  {\n    id: 'task-2',\n    type: 'task',\n    name: 'Frontend Development',\n    start: new Date(2024, 0, 16),\n    end: new Date(2024, 1, 28),\n    progress: 60,\n    project: 'proj-1',\n    dependencies: ['task-1']\n  }\n]);\n\nconst handleExpanderClick = (task: Task) => {\n  setTasks(tasks.map(t => \n    t.id === task.id \n      ? { ...t, hideChildren: !t.hideChildren }\n      : t\n  ));\n};\n\n<Gantt\n  tasks={tasks}\n  onExpanderClick={handleExpanderClick}\n/>"
+    }
+  ],
+  "performance_notes": [
+    "Task positioning calculated once per render",
+    "Uses SVG for efficient rendering",
+    "Implements virtual scrolling for large task lists",
+    "Dependency arrows calculated on demand",
+    "Consider pagination for 100+ tasks",
+    "Use React.memo for custom column renderers",
+    "Debounce drag operations for better performance"
+  ],
+  "integration_notes": [
+    "Uses SVG for chart rendering",
+    "Date calculations use native Date objects",
+    "Supports generic types for custom task data",
+    "Callbacks can return boolean or Promise<boolean> to accept/reject changes",
+    "Automatic calculation of project dates from child tasks",
+    "Built-in drag-and-drop with mouse and touch support",
+    "Keyboard navigation with arrow keys",
+    "RTL (right-to-left) layout support"
+  ],
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import { useState } from 'react'\nimport Gantt from '@/components/shared/Gantt'\nimport { ViewMode } from '@/components/shared/Gantt/constants'\nimport type { Task } from '@/components/shared/Gantt'\n\nconst currentDate = new Date()\n\nconst initialTasks: Task[] = [\n    {\n        id: 'ProjectSample',\n        name: 'Some Project',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),\n        progress: 25,\n        type: 'project',\n        hideChildren: false,\n        displayOrder: 1,\n    },\n    {\n        id: 'Task 0',\n        name: 'Idea',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),\n        end: new Date(\n            currentDate.getFullYear(),\n            currentDate.getMonth(),\n            2,\n            12,\n            28,\n        ),\n        progress: 45,\n        type: 'task',\n        project: 'ProjectSample',\n        displayOrder: 2,\n    },\n    {\n        id: 'Task 1',\n        name: 'Research',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 2),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 4),\n        progress: 25,\n        type: 'task',\n        project: 'ProjectSample',\n        dependencies: ['Task 0'],\n        displayOrder: 3,\n    },\n    {\n        id: 'Task 2',\n        name: 'Discussion with team',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 4),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 8),\n        progress: 10,\n        type: 'task',\n        project: 'ProjectSample',\n        dependencies: ['Task 1'],\n        displayOrder: 4,\n    },\n    {\n        id: 'Task 3',\n        name: 'Developing',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 8),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 9),\n        progress: 27,\n        type: 'task',\n        project: 'ProjectSample',\n        dependencies: ['Task 2'],\n        displayOrder: 5,\n    },\n    {\n        id: 'Task 4',\n        name: 'Review',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 8),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 10),\n        progress: 70,\n        type: 'task',\n        project: 'ProjectSample',\n        dependencies: ['Task 2'],\n        displayOrder: 6,\n    },\n    {\n        id: 'Task 5',\n        name: 'Release',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),\n        progress: 0,\n        type: 'milestone',\n        project: 'ProjectSample',\n        dependencies: ['Task 4'],\n        displayOrder: 7,\n    },\n]\n\nconst Example = () => {\n    const [tasks, setTasks] = useState<Task[]>(initialTasks)\n\n    const handleDateChange = (task: Task) => {\n        setTasks(tasks.map((t) => (t.id === task.id ? task : t)))\n    }\n\n    const handleProgressChange = (task: Task) => {\n        setTasks(tasks.map((t) => (t.id === task.id ? task : t)))\n    }\n\n    const handleExpanderClick = (task: Task) => {\n        setTasks(tasks.map((t) => (t.id === task.id ? task : t)))\n    }\n\n    return (\n        <div className=\"border border-gray-200 dark:border-gray-700 rounded-lg\">\n            <Gantt\n                tasks={tasks}\n                viewMode={ViewMode.Day}\n                onDateChange={handleDateChange}\n                onProgressChange={handleProgressChange}\n                onExpanderClick={handleExpanderClick}\n            />\n        </div>\n    )\n}\n\nexport default Example"
+    },
+    "CustomRender": {
+      "title": "Custom Render",
+      "code": "import { useState } from 'react'\nimport Gantt from '@/components/shared/Gantt'\nimport { ViewMode } from '@/components/shared/Gantt/constants'\nimport type { Task, BarTask } from '@/components/shared/Gantt/types'\n\ntype TaskMeta = {\n    indicatorColor?: string\n}\n\nconst currentDate = new Date()\n\nconst initialTasks: Task<TaskMeta>[] = [\n    {\n        id: 'ProjectSample',\n        name: 'Website Redesign',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 22),\n        progress: 45,\n        type: 'project',\n        hideChildren: false,\n        displayOrder: 1,\n        styles: {\n            progressClass: 'fill-indigo-500',\n            wrapperClass: 'fill-indigo-100',\n        },\n    },\n    {\n        id: 'Task 1',\n        name: 'Design Phase',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 5),\n        progress: 85,\n        type: 'task',\n        project: 'ProjectSample',\n        displayOrder: 2,\n        indicatorColor: '#3b82f6',\n        styles: {\n            progressClass: 'fill-white stroke-gray-300',\n            wrapperClass: 'fill-gray-100 stroke-gray-300',\n        },\n    },\n    {\n        id: 'Task 2',\n        name: 'Development',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 5),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 12),\n        progress: 65,\n        type: 'task',\n        project: 'ProjectSample',\n        dependencies: ['Task 1'],\n        displayOrder: 3,\n        indicatorColor: '#10b981',\n        styles: {\n            progressClass: 'fill-white stroke-gray-300',\n            wrapperClass: 'fill-gray-100 stroke-gray-300',\n        },\n    },\n    {\n        id: 'Task 3',\n        name: 'Code Review',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 10),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 14),\n        progress: 35,\n        type: 'task',\n        project: 'ProjectSample',\n        displayOrder: 4,\n        indicatorColor: '#f59e0b',\n        styles: {\n            progressClass: 'fill-white stroke-gray-300',\n            wrapperClass: 'fill-gray-100 stroke-gray-300',\n        },\n    },\n    {\n        id: 'Task 4',\n        name: 'Testing',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 14),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 18),\n        progress: 20,\n        type: 'task',\n        project: 'ProjectSample',\n        dependencies: ['Task 2', 'Task 3'],\n        displayOrder: 5,\n        indicatorColor: '#8b5cf6',\n        styles: {\n            progressClass: 'fill-white stroke-gray-300',\n            wrapperClass: 'fill-gray-100 stroke-gray-300',\n        },\n    },\n    {\n        id: 'Task 5',\n        name: 'Documentation',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 16),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 20),\n        progress: 15,\n        type: 'task',\n        project: 'ProjectSample',\n        displayOrder: 6,\n        indicatorColor: '#ec4899',\n        styles: {\n            progressClass: 'fill-white stroke-gray-300',\n            wrapperClass: 'fill-gray-100 stroke-gray-300',\n        },\n    },\n    {\n        id: 'Task 6',\n        name: 'Launch',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 22),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 22),\n        progress: 50,\n        type: 'milestone',\n        project: 'ProjectSample',\n        dependencies: ['Task 4', 'Task 5'],\n        displayOrder: 7,\n    },\n]\n\nconst CustomRender = () => {\n    const [tasks, setTasks] = useState<Task<TaskMeta>[]>(initialTasks)\n\n    const handleDateChange = (task: Task<TaskMeta>) => {\n        setTasks(tasks.map((t) => (t.id === task.id ? task : t)))\n    }\n\n    const handleProgressChange = (task: Task<TaskMeta>) => {\n        setTasks(tasks.map((t) => (t.id === task.id ? task : t)))\n    }\n\n    const handleExpanderClick = (task: Task<TaskMeta>) => {\n        setTasks(tasks.map((t) => (t.id === task.id ? task : t)))\n    }\n\n    const customBarContent = (barTask: BarTask<TaskMeta>) => {\n        if (barTask.type === 'milestone' || barTask.type === 'project') {\n            return null\n        }\n\n        return (\n            <div className=\"flex items-center gap-1\">\n                <span\n                    className=\"h-2.5 w-2.5 rounded-full\"\n                    style={{ backgroundColor: barTask.indicatorColor }}\n                />\n                <div className=\"font-medium heading-text text-nowrap text-xs truncate select-none\">\n                    {barTask.name}\n                </div>\n            </div>\n        )\n    }\n\n    return (\n        <div className=\"border border-gray-200 dark:border-gray-700 rounded-lg\">\n            <Gantt<TaskMeta>\n                tasks={tasks}\n                viewMode={ViewMode.Day}\n                customBarContent={customBarContent}\n                onDateChange={handleDateChange}\n                onProgressChange={handleProgressChange}\n                onExpanderClick={handleExpanderClick}\n                todayColor=\"rgba(40, 108, 240, 0.1)\"\n                milestoneClass=\"fill-rose-500\"\n            />\n        </div>\n    )\n}\n\nexport default CustomRender"
+    },
+    "ViewModes": {
+      "title": "View Modes",
+      "code": "import { useState } from 'react'\nimport Gantt from '@/components/shared/Gantt'\nimport { ViewMode } from '@/components/shared/Gantt/constants'\nimport Button from '@/components/ui/Button'\nimport InputGroup from '@/components/ui/InputGroup'\nimport type { Task } from '@/components/shared/Gantt/types'\n\nconst currentDate = new Date()\n\nconst initialTasks: Task[] = [\n    {\n        id: 'Project1',\n        name: 'Product Launch',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),\n        end: new Date(\n            currentDate.getFullYear(),\n            currentDate.getMonth() + 2,\n            15,\n        ),\n        progress: 35,\n        type: 'project',\n        hideChildren: false,\n        displayOrder: 1,\n    },\n    {\n        id: 'Task 1',\n        name: 'Market Research',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 20),\n        progress: 100,\n        type: 'task',\n        project: 'Project1',\n        displayOrder: 2,\n    },\n    {\n        id: 'Task 2',\n        name: 'Product Design',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),\n        end: new Date(\n            currentDate.getFullYear(),\n            currentDate.getMonth() + 1,\n            10,\n        ),\n        progress: 60,\n        type: 'task',\n        project: 'Project1',\n        dependencies: ['Task 1'],\n        displayOrder: 3,\n    },\n    {\n        id: 'Task 3',\n        name: 'Development',\n        start: new Date(\n            currentDate.getFullYear(),\n            currentDate.getMonth() + 1,\n            5,\n        ),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 1),\n        progress: 20,\n        type: 'task',\n        project: 'Project1',\n        dependencies: ['Task 2'],\n        displayOrder: 4,\n    },\n    {\n        id: 'Task 4',\n        name: 'Beta Testing',\n        start: new Date(\n            currentDate.getFullYear(),\n            currentDate.getMonth() + 2,\n            1,\n        ),\n        end: new Date(\n            currentDate.getFullYear(),\n            currentDate.getMonth() + 2,\n            10,\n        ),\n        progress: 0,\n        type: 'task',\n        project: 'Project1',\n        dependencies: ['Task 3'],\n        displayOrder: 5,\n    },\n    {\n        id: 'Task 5',\n        name: 'Launch Day',\n        start: new Date(\n            currentDate.getFullYear(),\n            currentDate.getMonth() + 2,\n            15,\n        ),\n        end: new Date(\n            currentDate.getFullYear(),\n            currentDate.getMonth() + 2,\n            15,\n        ),\n        progress: 0,\n        type: 'milestone',\n        project: 'Project1',\n        dependencies: ['Task 4'],\n        displayOrder: 6,\n    },\n]\n\nconst viewModeOptions = [\n    { label: 'Day', value: ViewMode.Day },\n    { label: 'Week', value: ViewMode.Week },\n    { label: 'Month', value: ViewMode.Month },\n]\n\nconst ViewModes = () => {\n    const [tasks, setTasks] = useState<Task[]>(initialTasks)\n    const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.Week)\n\n    const handleDateChange = (task: Task) => {\n        setTasks(tasks.map((t) => (t.id === task.id ? task : t)))\n    }\n\n    const handleProgressChange = (task: Task) => {\n        setTasks(tasks.map((t) => (t.id === task.id ? task : t)))\n    }\n\n    const handleExpanderClick = (task: Task) => {\n        setTasks(tasks.map((t) => (t.id === task.id ? task : t)))\n    }\n\n    return (\n        <div className=\"space-y-4\">\n            <InputGroup>\n                {viewModeOptions.map((option) => (\n                    <Button\n                        key={option.value}\n                        active={viewMode === option.value}\n                        onClick={() => setViewMode(option.value)}\n                    >\n                        {option.label}\n                    </Button>\n                ))}\n            </InputGroup>\n            <div className=\"border border-gray-200 dark:border-gray-700 rounded-lg\">\n                <Gantt\n                    tasks={tasks}\n                    viewMode={viewMode}\n                    onDateChange={handleDateChange}\n                    onProgressChange={handleProgressChange}\n                    onExpanderClick={handleExpanderClick}\n                />\n            </div>\n        </div>\n    )\n}\n\nexport default ViewModes"
+    },
+    "WithColumns": {
+      "title": "With Columns",
+      "code": "import { useState, useMemo, useCallback } from 'react'\nimport Gantt from '@/components/shared/Gantt'\nimport { ViewMode } from '@/components/shared/Gantt/constants'\nimport Avatar from '@/components/ui/Avatar'\nimport Tag from '@/components/ui/Tag'\nimport type { Task, Columns, BarTask } from '@/components/shared/Gantt/types'\nimport classNames from '@/utils/classNames'\n\ntype TaskMeta = {\n    assignee?: {\n        name: string\n        img?: string\n    }\n    status?: 'To Do' | 'In Progress' | 'Done'\n    priority?: 'Low' | 'Medium' | 'High'\n}\n\nconst statusColors: Record<string, string> = {\n    'To Do': 'bg-gray-500',\n    'In Progress': 'bg-blue-500',\n    Done: 'bg-emerald-500',\n}\n\nconst priorityColors: Record<string, string> = {\n    Low: 'bg-gray-100 text-gray-600',\n    Medium: 'bg-amber-100 text-amber-600',\n    High: 'bg-red-100 text-red-600',\n}\n\nconst currentDate = new Date()\n\nconst initialTasks: Task<TaskMeta>[] = [\n    {\n        id: 'Project1',\n        name: 'Q1 Sprint',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 25),\n        progress: 55,\n        type: 'project',\n        hideChildren: false,\n        displayOrder: 1,\n    },\n    {\n        id: 'Task 1',\n        name: 'User Authentication',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 6),\n        progress: 100,\n        type: 'task',\n        project: 'Project1',\n        displayOrder: 2,\n        assignee: { name: 'John Doe', img: '/img/avatars/thumb-1.jpg' },\n        status: 'Done',\n        priority: 'High',\n    },\n    {\n        id: 'Task 2',\n        name: 'Dashboard UI',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 5),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 12),\n        progress: 80,\n        type: 'task',\n        project: 'Project1',\n        dependencies: ['Task 1'],\n        displayOrder: 3,\n        assignee: { name: 'Jane Smith', img: '/img/avatars/thumb-2.jpg' },\n        status: 'In Progress',\n        priority: 'High',\n    },\n    {\n        id: 'Task 3',\n        name: 'API Integration',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 10),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 18),\n        progress: 40,\n        type: 'task',\n        project: 'Project1',\n        displayOrder: 4,\n        assignee: { name: 'Bob Wilson' },\n        status: 'In Progress',\n        priority: 'Medium',\n    },\n    {\n        id: 'Task 4',\n        name: 'Documentation',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 18),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 22),\n        progress: 0,\n        type: 'task',\n        project: 'Project1',\n        dependencies: ['Task 2', 'Task 3'],\n        displayOrder: 5,\n        assignee: { name: 'Alice Brown', img: '/img/avatars/thumb-3.jpg' },\n        status: 'To Do',\n        priority: 'Low',\n    },\n    {\n        id: 'Task 5',\n        name: 'Release',\n        start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 25),\n        end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 25),\n        progress: 0,\n        type: 'milestone',\n        project: 'Project1',\n        dependencies: ['Task 4'],\n        displayOrder: 6,\n    },\n]\n\nconst WithColumns = () => {\n    const [tasks, setTasks] = useState<Task<TaskMeta>[]>(initialTasks)\n\n    const handleExpanderClick = useCallback((task: Task<TaskMeta>) => {\n        setTasks((prev) =>\n            prev.map((t) =>\n                t.id === task.id\n                    ? { ...t, hideChildren: !task.hideChildren }\n                    : t,\n            ),\n        )\n    }, [])\n\n    const columns: Columns<TaskMeta>[] = useMemo(\n        () => [\n            {\n                header: 'Task',\n                cell: (task) =>\n                    task.expander ? (\n                        <button\n                            className=\"flex items-center gap-2 px-2 heading-text absolute left-0 top-0 h-full w-full\"\n                            onClick={() => handleExpanderClick(task)}\n                        >\n                            {task.expander}\n                            <span className=\"font-medium\">{task.name}</span>\n                        </button>\n                    ) : (\n                        <div className=\"flex items-center gap-2 px-2\">\n                            <span className=\"font-medium ltr:pl-4 rtl:pr-4\">\n                                {task.name}\n                            </span>\n                        </div>\n                    ),\n                width: 200,\n            },\n            {\n                header: 'Assignee',\n                cell: (task) => {\n                    const assignee = task.assignee\n                    if (!assignee) return <span className=\"px-2\">—</span>\n                    return (\n                        <div className=\"flex items-center gap-2 px-2\">\n                            <Avatar size={24} shape=\"circle\" src={assignee.img}>\n                                {assignee.name.charAt(0)}\n                            </Avatar>\n                            <span className=\"heading-text\">\n                                {assignee.name}\n                            </span>\n                        </div>\n                    )\n                },\n                width: 160,\n            },\n            {\n                header: 'Status',\n                cell: (task) => {\n                    const status = task.status\n                    if (!status) return null\n                    return (\n                        <div className=\"flex items-center gap-1.5 px-2\">\n                            <span\n                                className={classNames(\n                                    'h-2 w-2 rounded-full',\n                                    statusColors[status],\n                                )}\n                            />\n                            <span>{status}</span>\n                        </div>\n                    )\n                },\n                width: 120,\n            },\n            {\n                header: 'Priority',\n                cell: (task) => {\n                    const priority = task.priority\n                    if (!priority) return null\n                    return (\n                        <div className=\"px-2\">\n                            <Tag\n                                className={classNames(\n                                    'border-0',\n                                    priorityColors[priority],\n                                )}\n                            >\n                                {priority}\n                            </Tag>\n                        </div>\n                    )\n                },\n                width: 100,\n            },\n        ],\n        [handleExpanderClick],\n    )\n\n    const handleDateChange = (task: Task<TaskMeta>) => {\n        setTasks(tasks.map((t) => (t.id === task.id ? task : t)))\n    }\n\n    const customBarContent = (barTask: BarTask<TaskMeta>) => {\n        if (barTask.type === 'milestone' || barTask.type === 'project') {\n            return null\n        }\n        return (\n            <div className=\"font-medium text-white text-nowrap text-xs truncate select-none\">\n                {barTask.name}\n            </div>\n        )\n    }\n\n    return (\n        <div className=\"border border-gray-200 dark:border-gray-700 rounded-lg\">\n            <Gantt<TaskMeta>\n                tasks={tasks}\n                columns={columns}\n                viewMode={ViewMode.Day}\n                customBarContent={customBarContent}\n                onDateChange={handleDateChange}\n                onExpanderClick={handleExpanderClick}\n            />\n        </div>\n    )\n}\n\nexport default WithColumns"
+    }
+  }
+}

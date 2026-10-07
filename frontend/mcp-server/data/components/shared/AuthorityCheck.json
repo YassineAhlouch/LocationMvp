@@ -1,0 +1,53 @@
+{
+  "component_id": "authoritycheck-001",
+  "name": "AuthorityCheck",
+  "display_name": "Role-Based Authority Check Component",
+  "category": "Authorization / Access Control",
+  "import_path": "@/components/shared/AuthorityCheck",
+  "description": "A wrapper component that conditionally renders its children based on role-based access control. Compares user authorities against required authorities and only renders content when there's a match.",
+  "usage_guidelines": [
+    "Use to protect UI elements based on user roles.",
+    "Wrap any component or content that should be role-restricted.",
+    "Pass the current user's roles via userAuthority prop.",
+    "Pass required roles via authority prop.",
+    "Returns null when no role match is found."
+  ],
+  "props": {
+    "userAuthority": {
+      "type": "string[]",
+      "required": true,
+      "default": "[]",
+      "description": "Array of role strings representing the current user's authorities/permissions."
+    },
+    "authority": {
+      "type": "string[]",
+      "required": true,
+      "default": "[]",
+      "description": "Array of role strings that are required to view the wrapped content."
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Content to render when authority check passes."
+    }
+  },
+  "styling_info": {
+    "method": "None",
+    "visual_description": "This is a logical wrapper component with no visual styling. It simply renders or hides its children based on role matching."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for hiding UI elements based on user roles",
+      "Combine with backend authorization for security",
+      "Pass accurate user roles from auth context",
+      "Use descriptive role names for clarity",
+      "Nest multiple AuthorityCheck components for complex permissions"
+    ],
+    "Dont": [
+      "Don't rely solely on this for security (always validate on backend)",
+      "Don't use empty authority arrays (renders children by default)",
+      "Don't use for non-role-based conditional rendering",
+      "Don't forget to handle loading states for user roles"
+    ]
+  }
+}

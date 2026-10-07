@@ -1,0 +1,44 @@
+{
+  "component_id": "hook-darkmode-001",
+  "name": "useDarkMode",
+  "display_name": "Dark Mode Hook",
+  "category": "Hooks / Theme",
+  "import_path": "@/utils/hooks/useDarkMode",
+  "description": "A hook for managing dark mode state with support for system preference detection and manual mode switching.",
+  "usage_guidelines": [
+    "Use for implementing dark mode toggle functionality.",
+    "Automatically detects system color scheme preference.",
+    "Syncs mode with theme store for persistence.",
+    "Updates document root class for CSS styling.",
+    "Supports three modes: light, dark, and system."
+  ],
+  "params": [],
+  "return_value": {
+    "type": "[isEnabled: boolean, onModeChange: (mode: Mode) => void]",
+    "description": "Tuple with current dark mode state and mode change function.",
+    "structure": {
+      "isEnabled": {
+        "type": "boolean",
+        "description": "True if dark mode is currently active."
+      },
+      "onModeChange": {
+        "type": "(mode: Mode) => void",
+        "description": "Function to change mode ('light', 'dark', or 'system')."
+      }
+    }
+  },
+  "best_practices": {
+    "Do": [
+      "Use for theme toggle components",
+      "Respect system preferences",
+      "Persist user's choice",
+      "Update UI immediately on change",
+      "Provide all three mode options"
+    ],
+    "Dont": [
+      "Don't force mode without user consent",
+      "Don't forget to handle system mode",
+      "Don't block rendering on mode detection"
+    ]
+  }
+}

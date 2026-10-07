@@ -1,0 +1,42 @@
+{
+  "component_id": "file-icon-001",
+  "name": "FileIcon",
+  "display_name": "File Icon",
+  "category": "Display / Icons",
+  "import_path": "@/components/shared/FileIcon",
+  "description": "Renders an SVG icon that corresponds to a given file type or extension. Falls back to a generic file icon for unrecognised types.",
+  "usage_guidelines": [
+    "Pass the file extension string (e.g. 'pdf', 'docx') as the type prop.",
+    "Use the size prop to scale the icon uniformly — it sets both width and height.",
+    "Use 'directory' as the type to render a folder icon.",
+    "Unrecognised extensions render a generic file icon automatically."
+  ],
+  "props": {
+    "type": {
+      "type": "string",
+      "required": true,
+      "description": "File extension or type key. Supported values: 'pdf', 'xlsx', 'docx', 'ppt', 'jpg', 'jpeg', 'png', 'directory'. Any other value renders the generic file icon."
+    },
+    "size": {
+      "type": "number",
+      "required": false,
+      "default": 30,
+      "description": "Width and height of the icon in pixels."
+    }
+  },
+  "styling_info": {
+    "method": "SVG props (width / height)",
+    "visual_description": "Each file type maps to a distinct coloured SVG icon. The directory type renders a folder icon. All other types fall back to a neutral file icon."
+  },
+  "best_practices": {
+    "Do": [
+      "Use lowercase extension strings to match the switch cases",
+      "Set an appropriate size relative to surrounding text or list items",
+      "Use 'directory' for folder entries in file-tree UIs"
+    ],
+    "Dont": [
+      "Don't pass a full filename — extract the extension first",
+      "Don't rely on the component for access control or MIME validation"
+    ]
+  }
+}

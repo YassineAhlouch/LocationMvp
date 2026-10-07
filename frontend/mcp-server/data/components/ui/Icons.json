@@ -1,0 +1,65 @@
+{
+  "component_id": "icons-001",
+  "name": "Icons",
+  "display_name": "Icon Component Library",
+  "category": "Data Display / Icons",
+  "import_path": "@/components/ui/Icons",
+  "description": "A collection of SVG icon components for common UI elements including chevrons, status indicators, sorting arrows, and action icons.",
+  "usage_guidelines": [
+    "Import specific icons from the Icons module.",
+    "Icons inherit current text color via currentColor.",
+    "Size controlled by font-size (1em by default).",
+    "Use for navigation, status indicators, and UI actions.",
+    "All icons support standard SVG props for customization."
+  ],
+  "props": {
+    "SVGProps": {
+      "type": "SVGProps<SVGSVGElement>",
+      "required": false,
+      "description": "Standard SVG element props (className, style, onClick, etc.)."
+    }
+  },
+  "return_value": {
+    "type": "object",
+    "description": "Collection of icon components.",
+    "structure": {
+      "ChevronRight": {"type": "Component", "description": "Right-pointing chevron"},
+      "ChevronLeft": {"type": "Component", "description": "Left-pointing chevron"},
+      "ChevronDown": {"type": "Component", "description": "Down-pointing chevron"},
+      "ChevronUp": {"type": "Component", "description": "Up-pointing chevron"},
+      "ChevronRightDouble": {"type": "Component", "description": "Double right chevron"},
+      "ChevronLeftDouble": {"type": "Component", "description": "Double left chevron"},
+      "DotsHorizontal": {"type": "Component", "description": "Three horizontal dots menu"},
+      "Check": {"type": "Component", "description": "Checkmark icon"},
+      "Cross": {"type": "Component", "description": "X/close icon"},
+      "ClockIcon": {"type": "Component", "description": "Clock/time icon"},
+      "Success": {"type": "Component", "description": "Success status icon (circle with check)"},
+      "Warning": {"type": "Component", "description": "Warning status icon (triangle with exclamation)"},
+      "Danger": {"type": "Component", "description": "Danger status icon (circle with X)"},
+      "Info": {"type": "Component", "description": "Info status icon (circle with i)"},
+      "Unsort": {"type": "Component", "description": "Unsorted state icon"},
+      "SortUp": {"type": "Component", "description": "Sort ascending icon"},
+      "SortDown": {"type": "Component", "description": "Sort descending icon"}
+    }
+  },
+  "styling_info": {
+    "method": "SVG with currentColor",
+    "visual_description": "Inline SVG icons that inherit text color and size. Consistent stroke width and styling across all icons."
+  },
+  "best_practices": {
+    "Do": [
+      "Use semantic icon names",
+      "Control size via font-size or className",
+      "Use status icons with appropriate colors",
+      "Provide aria-labels for accessibility",
+      "Use chevrons for navigation",
+      "Use sort icons with table headers"
+    ],
+    "Dont": [
+      "Don't hardcode colors (use currentColor)",
+      "Don't use icons without context",
+      "Don't make icons too small (< 12px)",
+      "Don't forget accessibility"
+    ]
+  }
+}

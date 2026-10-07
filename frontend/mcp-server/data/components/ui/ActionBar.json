@@ -1,0 +1,64 @@
+{
+  "component_id": "actionbar-001",
+  "name": "ActionBar",
+  "display_name": "Action Bar Component",
+  "category": "Layout / Containers",
+  "import_path": "@/components/ui/ActionBar",
+  "description": "A floating action bar component that appears at the bottom of the viewport for displaying contextual actions, typically used for batch operations on selected items.",
+  "usage_guidelines": [
+    "Use for batch actions when multiple items are selected.",
+    "Position at bottom of viewport for easy access.",
+    "Show/hide based on selection state.",
+    "Include clear action buttons and selection count."
+  ],
+  "props": {
+    "isOpen": {
+      "type": "boolean",
+      "required": true,
+      "description": "Controls visibility of the action bar."
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "Action bar content (buttons, text, etc)."
+    },
+    "className": {
+      "type": "string",
+      "required": false,
+      "description": "Additional CSS classes."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A fixed bottom bar with smooth slide-up/down animation, backdrop blur, and subtle shadow for visual prominence."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for batch operations on selected items",
+      "Show selection count with clear actions",
+      "Animate entry/exit for smooth UX"
+    ],
+    "Dont": [
+      "Don't use for permanent navigation",
+      "Don't overload with too many actions"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport ActionBar from '@/components/ui/ActionBar'\n\nconst Basic = () => {\n    const [open, setOpen] = useState(false)\n\n    const handleClose = () => setOpen(false)\n\n    return (\n        <div>\n            <Button onClick={() => setOpen(true)}>Click Me</Button>\n            <ActionBar open={open}>\n                <div className=\"flex items-center justify-between\">\n                    <span className=\"font-medium\">\n                        <span className=\"heading-text font-semibold\">\n                            1 Items\n                        </span>{' '}\n                        selected\n                    </span>\n                    <div className=\"flex items-center gap-2\">\n                        <Button onClick={handleClose}>Cancel</Button>\n                        <Button variant=\"solid\" onClick={handleClose}>\n                            Confirm\n                        </Button>\n                    </div>\n                </div>\n            </ActionBar>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Checkbox": {
+      "title": "Checkbox",
+      "code": "import { useState } from 'react'\nimport Checkbox from '@/components/ui/Checkbox'\nimport ActionBar from \"@/components/ui/ActionBar\"\nimport Button from \"@/components/ui/Button\"\n\nconst CheckboxExample = () => {\n\n    const [checkboxList, setCheckboxList] = useState<(string)[]>([])\n\n    const onCheckboxChange = (\n        options: string[],\n    ) => {\n        setCheckboxList(options)\n    }\n\n    return (\n        <div>\n            <Checkbox.Group value={checkboxList} onChange={onCheckboxChange}>\n                <Checkbox value=\"Selection A\">Selection A </Checkbox>\n                <Checkbox value=\"Selection B\">Selection B </Checkbox>\n                <Checkbox value=\"Selection C\">Selection C </Checkbox>\n            </Checkbox.Group>\n            <ActionBar open={checkboxList.length > 0}>\n                <div className=\"flex items-center justify-between\">\n                    <span className=\"font-medium\">\n                        <span className=\"heading-text font-semibold\">{checkboxList.length} Items</span> selected\n                    </span>\n                    <div className=\"flex items-center gap-2\">\n                        <Button onClick={() => setCheckboxList([])}>\n                            Clear All\n                        </Button>\n                    </div>\n                </div>\n            </ActionBar>\n        </div>\n    )\n}\n\nexport default CheckboxExample"
+    },
+    "Escape": {
+      "title": "Escape",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport ActionBar from '@/components/ui/ActionBar'\n\nconst Escape = () => {\n    const [open, setOpen] = useState(false)\n\n    const handleClose = () => setOpen(false)\n\n    return (\n        <div>\n            <Button onClick={() => setOpen(true)}>Click Me</Button>\n            <ActionBar\n                open={open}\n                onOpenChange={(open) => {\n                    if (!open) {\n                        handleClose()\n                    }\n                }}\n                shouldCloseOnEsc\n            >\n                <div className=\"flex items-center justify-between\">\n                    <span className=\"font-medium\">\n                        <span className=\"heading-text font-semibold\">\n                            1 Items\n                        </span>{' '}\n                        selected\n                    </span>\n                    <div className=\"flex items-center gap-2\">\n                        <Button onClick={handleClose}>Cancel</Button>\n                        <Button variant=\"solid\" onClick={handleClose}>\n                            Confirm\n                        </Button>\n                    </div>\n                </div>\n            </ActionBar>\n        </div>\n    )\n}\n\nexport default Escape"
+    },
+    "Width": {
+      "title": "Width",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport ActionBar from '@/components/ui/ActionBar'\n\nconst Width = () => {\n    const [open, setOpen] = useState(false)\n\n    const handleClose = () => setOpen(false)\n\n    return (\n        <div>\n            <Button onClick={() => setOpen(true)}>Click Me</Button>\n            <ActionBar open={open} width={700}>\n                <div className=\"flex items-center justify-between\">\n                    <span className=\"font-medium\">\n                        <span className=\"heading-text font-semibold\">\n                            1 Items\n                        </span>{' '}\n                        selected\n                    </span>\n                    <div className=\"flex items-center gap-2\">\n                        <Button onClick={handleClose}>Cancel</Button>\n                        <Button variant=\"solid\" onClick={handleClose}>\n                            Confirm\n                        </Button>\n                    </div>\n                </div>\n            </ActionBar>\n        </div>\n    )\n}\n\nexport default Width"
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "component_id": "hook-debounce-001",
+  "name": "useDebounce",
+  "display_name": "Debounce Hook",
+  "category": "Hooks / Performance",
+  "import_path": "@/utils/hooks/useDebounce",
+  "description": "A hook that creates a debounced version of a function using lodash debounce, useful for optimizing expensive operations.",
+  "usage_guidelines": [
+    "Use for search inputs to reduce API calls.",
+    "Apply to resize/scroll handlers for performance.",
+    "Use for form validation that triggers on input.",
+    "Set appropriate wait time based on use case.",
+    "Consider leading option for immediate first call."
+  ],
+  "params": [
+    {
+      "name": "func",
+      "type": "T extends (...args: any) => any",
+      "required": true,
+      "description": "The function to debounce."
+    },
+    {
+      "name": "wait",
+      "type": "number | undefined",
+      "required": true,
+      "description": "Milliseconds to wait before invoking function."
+    },
+    {
+      "name": "options",
+      "type": "DebounceSettingsLeading",
+      "required": false,
+      "description": "Lodash debounce options (leading, trailing, maxWait)."
+    }
+  ],
+  "return_value": {
+    "type": "DebouncedFunc<T>",
+    "description": "Debounced version of the function with cancel and flush methods."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for search/filter inputs (300-500ms)",
+      "Use for resize handlers (150-250ms)",
+      "Use for expensive computations",
+      "Clean up on component unmount",
+      "Set appropriate wait times"
+    ],
+    "Dont": [
+      "Don't use for critical immediate actions",
+      "Don't set wait time too long",
+      "Don't forget to cancel on unmount"
+    ]
+  }
+}
