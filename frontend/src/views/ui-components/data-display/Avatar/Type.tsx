@@ -1,0 +1,14 @@
+import Avatar from '@/components/ui/Avatar'
+import { TbUser } from 'react-icons/tb'
+
+const Type = () => {
+    return (
+        <div className="flex items-center">
+            <Avatar className="mr-4">AT</Avatar>
+            <Avatar className="mr-4" icon={<TbUser />} />
+            <Avatar className="mr-4" src="/img/avatars/thumb-1.jpg" />
+        </div>
+    )
+}
+
+export default Type

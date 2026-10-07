@@ -1,0 +1,68 @@
+import {
+    LiChartSquare,
+    LiChart,
+    LiSetting,
+    LiStore,
+    LiBitcoin,
+    LiUserCircle,
+    LiAlertTriangle,
+    LiMainComponent,
+    LiColorSwatch,
+    LiDesktop,
+    LiReceiptEdit,
+    LiMapPin,
+    LiChip,
+    LiUserSquare,
+    LiRefresh,
+    LiKey,
+    LiOtp,
+    LiLockPassword,
+    LiAddCircle,
+    LiShield,
+    LiElement3,
+    LiFileText,
+    LiLayer,
+    LiZapCircle,
+    LiNote,
+    LiBook,
+    LiHome,
+    LiBan,
+} from '@/icons'
+import type { JSX } from 'react'
+
+export type NavigationIcons = Record<string, JSX.Element>
+
+const CLASS_NAME = 'text-xl'
+
+const navigationIcon: NavigationIcons = {
+    apps: <LiElement3 className={CLASS_NAME} />,
+    authentication: <LiShield className={CLASS_NAME} />,
+    ai: <LiChip className={CLASS_NAME} />,
+    customers: <LiUserCircle className={CLASS_NAME} />,
+    projects: <LiChart className={CLASS_NAME} />,
+    sales: <LiStore className={CLASS_NAME} />,
+    analytics: <LiChartSquare className={CLASS_NAME} />,
+    crypto: <LiBitcoin className={CLASS_NAME} />,
+    hrm: <LiUserSquare className={CLASS_NAME} />,
+    accounts: <LiSetting className={CLASS_NAME} />,
+    uiComponents: <LiMainComponent className={CLASS_NAME} />,
+    common: <LiColorSwatch className={CLASS_NAME} />,
+    feedback: <LiAlertTriangle className={CLASS_NAME} />,
+    dataDisplay: <LiDesktop className={CLASS_NAME} />,
+    forms: <LiReceiptEdit className={CLASS_NAME} />,
+    navigation: <LiMapPin className={CLASS_NAME} />,
+    signIn: <LiKey className={CLASS_NAME} />,
+    signUp: <LiAddCircle className={CLASS_NAME} />,
+    forgotPassword: <LiLockPassword className={CLASS_NAME} />,
+    resetPassword: <LiRefresh className={CLASS_NAME} />,
+    otpVerification: <LiOtp className={CLASS_NAME} />,
+    landing: <LiHome className={CLASS_NAME} />,
+    accessDenied: <LiBan className={CLASS_NAME} />,
+    guide: <LiBook className={CLASS_NAME} />,
+    documentation: <LiFileText className={CLASS_NAME} />,
+    sharedComponentDoc: <LiLayer className={CLASS_NAME} />,
+    utilsDoc: <LiZapCircle className={CLASS_NAME} />,
+    changeLog: <LiNote className={CLASS_NAME} />,
+}
+
+export default navigationIcon

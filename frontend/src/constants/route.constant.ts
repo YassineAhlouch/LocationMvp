@@ -1,0 +1,6 @@
+export const ROOT = '/'
+export const AUTH_PREFIX_PATH = '/auth'
+export const UI_COMPONENTS_PREFIX_PATH = '/ui-components'
+export const APPS_PREFIX_PATH = '/apps'
+export const OTHERS_PREFIX_PATH = '/others'
+export const GUIDE_PREFIX_PATH = '/guide'
