@@ -317,6 +317,23 @@ export type DashboardSummary = {
     occupancy: { booked_days: number; available_days: number; rate: number }
 }
 
+export type DashboardTimeline = {
+    months: string[]
+    revenue: number[]
+    expenses: number[]
+}
+
+export type CarReport = {
+    car_id: number
+    registration_number: string
+    brand: string | null
+    model: string | null
+    revenue: number
+    expenses: number
+    margin: number
+    booked_days: number
+}
+
 export type SelectOption<T = number | string> = { value: T; label: string }
 
 export type UserRole = {

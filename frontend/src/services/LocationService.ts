@@ -5,9 +5,11 @@ import type {
     CarCategory,
     CarModel,
     CarPayload,
+    CarReport,
     Client,
     ClientPayload,
     DashboardSummary,
+    DashboardTimeline,
     Expense,
     ExpensePayload,
     Paginated,
@@ -34,6 +36,20 @@ export const apiGetDashboardSummary = (params?: {
 }) =>
     ApiService.fetchDataWithAxios<DashboardSummary>({
         url: '/v1/dashboard/summary',
+        method: 'get',
+        params,
+    })
+
+export const apiGetDashboardTimeline = (params?: { months?: number }) =>
+    ApiService.fetchDataWithAxios<DashboardTimeline>({
+        url: '/v1/reports/timeline',
+        method: 'get',
+        params,
+    })
+
+export const apiGetCarReports = (params?: { from?: string; to?: string }) =>
+    ApiService.fetchDataWithAxios<CarReport[]>({
+        url: '/v1/reports/cars',
         method: 'get',
         params,
     })
