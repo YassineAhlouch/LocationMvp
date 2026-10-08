@@ -90,6 +90,23 @@ const appsNavigationConfig: NavigationTree[] = [
                         },
                         subMenu: [],
                     },
+                    {
+                        key: 'gestion.reservations.calendrier',
+                        path: `${APPS_PREFIX_PATH}/reservations/calendrier`,
+                        title: 'Calendar',
+                        translateKey: 'nav.gestion.reservationsCalendrier',
+                        icon: 'gestionReservations',
+                        type: NAV_ITEM_TYPE_ITEM,
+                        authority: [ADMIN, USER],
+                        meta: {
+                            description: {
+                                translateKey:
+                                    'nav.gestion.reservationsCalendrierDesc',
+                                label: 'Reservations calendar',
+                            },
+                        },
+                        subMenu: [],
+                    },
                 ],
             },
             // ===== VEHICULES =====
@@ -224,6 +241,23 @@ const appsNavigationConfig: NavigationTree[] = [
                                 translateKey:
                                     'nav.gestion.financesDepensesDesc',
                                 label: 'Car expenses',
+                            },
+                        },
+                        subMenu: [],
+                    },
+                    {
+                        key: 'gestion.finances.paiements',
+                        path: `${APPS_PREFIX_PATH}/finances/paiements`,
+                        title: 'Payments',
+                        translateKey: 'nav.gestion.financesPaiements',
+                        icon: 'gestionFinances',
+                        type: NAV_ITEM_TYPE_ITEM,
+                        authority: [ADMIN, USER],
+                        meta: {
+                            description: {
+                                translateKey:
+                                    'nav.gestion.financesPaiementsDesc',
+                                label: 'Customer payments',
                             },
                         },
                         subMenu: [],

@@ -3,7 +3,9 @@ import type {
     Brand,
     Car,
     CarCategory,
+    CarHistoryEntry,
     CarModel,
+    CarOverview,
     CarPayload,
     CarReport,
     Client,
@@ -12,9 +14,16 @@ import type {
     DashboardTimeline,
     Expense,
     ExpensePayload,
+    Extra,
     Paginated,
+    Payment,
+    PaymentOverview,
+    PaymentRecordPayload,
     PermissionModule,
+    PricingQuote,
     Reservation,
+    ReservationCalendarItem,
+    ReservationChange,
     ReservationPayload,
     Role,
     RolePayload,
@@ -66,6 +75,18 @@ export const apiGetCars = (params?: Record<string, unknown>) =>
 export const apiGetCar = (id: number) =>
     ApiService.fetchDataWithAxios<Car>({
         url: `/v1/cars/${id}`,
+        method: 'get',
+    })
+
+export const apiGetCarOverview = (id: number) =>
+    ApiService.fetchDataWithAxios<CarOverview>({
+        url: `/v1/cars/${id}/overview`,
+        method: 'get',
+    })
+
+export const apiGetCarHistory = (id: number) =>
+    ApiService.fetchDataWithAxios<CarHistoryEntry[]>({
+        url: `/v1/cars/${id}/history`,
         method: 'get',
     })
 
@@ -150,6 +171,19 @@ export const apiGetReservation = (id: number) =>
         method: 'get',
     })
 
+export const apiGetReservationCalendar = (params?: Record<string, unknown>) =>
+    ApiService.fetchDataWithAxios<ReservationCalendarItem[]>({
+        url: '/v1/reservations/calendar',
+        method: 'get',
+        params,
+    })
+
+export const apiGetReservationChanges = (id: number) =>
+    ApiService.fetchDataWithAxios<ReservationChange[]>({
+        url: `/v1/reservations/${id}/changes`,
+        method: 'get',
+    })
+
 export const apiCreateReservation = (data: ReservationPayload) =>
     ApiService.fetchDataWithAxios<Reservation>({
         url: '/v1/reservations',
@@ -176,6 +210,40 @@ export const apiConfirmReservation = (id: number) =>
 export const apiCancelReservation = (id: number, data?: { reason: string }) =>
     ApiService.fetchDataWithAxios<Reservation>({
         url: `/v1/reservations/${id}/cancel`,
+        method: 'post',
+        data,
+    })
+
+export const apiMarkReservationNoShow = (
+    id: number,
+    data: { reason: string },
+) =>
+    ApiService.fetchDataWithAxios<Reservation>({
+        url: `/v1/reservations/${id}/no-show`,
+        method: 'post',
+        data,
+    })
+
+export const apiActivateReservation = (
+    id: number,
+    data?: { pickup_mileage?: number; pickup_fuel_level?: number },
+) =>
+    ApiService.fetchDataWithAxios<Reservation>({
+        url: `/v1/reservations/${id}/activate`,
+        method: 'post',
+        data,
+    })
+
+export const apiCompleteReservation = (
+    id: number,
+    data?: {
+        return_mileage?: number
+        return_fuel_level?: number
+        reported_issues?: string
+    },
+) =>
+    ApiService.fetchDataWithAxios<Reservation>({
+        url: `/v1/reservations/${id}/complete`,
         method: 'post',
         data,
     })
@@ -228,6 +296,89 @@ export const apiGetCategories = () =>
     ApiService.fetchDataWithAxios<Paginated<CarCategory>>({
         url: '/v1/fleet/categories',
         method: 'get',
+    })
+
+// ---- Extras catalog (drives reservation form extra pickers) --------------
+
+export const apiGetExtras = (params?: Record<string, unknown>) =>
+    ApiService.fetchDataWithAxios<Paginated<Extra>>({
+        url: '/v1/extras',
+        method: 'get',
+        params,
+    })
+
+// ---- Payments ledger (per reservation) -------------------------------------
+
+/** Payments index returns a bare array (no pagination wrapper). */
+export const apiGetPayments = (reservationId: number) =>
+    ApiService.fetchDataWithAxios<Payment[]>({
+        url: `/v1/reservations/${reservationId}/payments`,
+        method: 'get',
+    })
+
+export const apiCreatePayment = (
+    reservationId: number,
+    payload: PaymentRecordPayload,
+) =>
+    ApiService.fetchDataWithAxios<Payment>({
+        url: `/v1/reservations/${reservationId}/payments`,
+        method: 'post',
+        data: payload,
+    })
+
+// ---- Payments ledger (agency-wide) -----------------------------------------
+
+/** Every payment across reservations, paginated and filterable. */
+export const apiGetPaymentsLedger = (params?: Record<string, unknown>) =>
+    ApiService.fetchDataWithAxios<Paginated<Payment>>({
+        url: '/v1/payments',
+        method: 'get',
+        params,
+    })
+
+/** Period totals, counts and daily trend for the payments page. */
+export const apiGetPaymentsOverview = (params?: { from?: string; to?: string }) =>
+    ApiService.fetchDataWithAxios<PaymentOverview>({
+        url: '/v1/payments/overview',
+        method: 'get',
+        params,
+    })
+
+/** pending → paid: the transfer landed. */
+export const apiConfirmPayment = (paymentId: number) =>
+    ApiService.fetchDataWithAxios<Payment>({
+        url: `/v1/payments/${paymentId}/confirm`,
+        method: 'post',
+    })
+
+/** paid → refunded: money returned, reason mandatory (audit trail). */
+export const apiRefundPayment = (paymentId: number, reason: string) =>
+    ApiService.fetchDataWithAxios<Payment>({
+        url: `/v1/payments/${paymentId}/refund`,
+        method: 'post',
+        data: { reason },
+    })
+
+/** Only pending rows are deletable — committed money is immutable. */
+export const apiDeletePayment = (reservationId: number, paymentId: number) =>
+    ApiService.fetchDataWithAxios<null>({
+        url: `/v1/reservations/${reservationId}/payments/${paymentId}`,
+        method: 'delete',
+    })
+
+// ---- Pricing quote (drives the live reservation total) ---------------------
+
+export const apiQuoteReservation = (payload: {
+    car_id: number
+    pickup_datetime: string
+    expected_return_datetime: string
+    daily_rate?: number
+    discount_amount?: number
+}) =>
+    ApiService.fetchDataWithAxios<PricingQuote>({
+        url: '/v1/pricing/quote',
+        method: 'post',
+        data: payload,
     })
 
 // ---- Users & Roles (team) -------------------------------------------------

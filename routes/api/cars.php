@@ -25,6 +25,14 @@ Route::get('cars/{car}', [CarController::class, 'show'])
     ->middleware('permission:fleet.view')
     ->name('cars.show');
 
+Route::get('cars/{car}/overview', [CarController::class, 'overview'])
+    ->middleware('permission:fleet.view')
+    ->name('cars.overview');
+
+Route::get('cars/{car}/history', [CarController::class, 'history'])
+    ->middleware('permission:fleet.view')
+    ->name('cars.history');
+
 Route::patch('cars/{car}', [CarController::class, 'update'])
     ->middleware('permission:fleet.update')
     ->name('cars.update');

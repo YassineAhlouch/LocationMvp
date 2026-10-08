@@ -160,12 +160,13 @@ const statusChartColors: Record<string, string> = {
     // reservation statuses
     pending: colors.yellow.chart,
     confirmed: colors.blue.chart,
+    reserved: colors.purple.chart, // reservation reserved (also fleet "reserved")
     active: colors.emerald.chart,
     completed: colors.cyan.chart,
     cancelled: colors.red.chart,
+    no_show: colors.gray.chart,
     // car/fleet statuses
     available: colors.emerald.chart,
-    reserved: colors.blue.chart,
     rented: colors.yellow.chart,
     maintenance: colors.red.chart,
     inactive: colors.gray.chart,

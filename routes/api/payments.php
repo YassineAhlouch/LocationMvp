@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Route;
 | deletable. Read and write verbs carry their own permission gates.
 */
 
+// Agency-wide ledger + analytics (payments page).
+Route::get('payments', [PaymentController::class, 'ledger'])
+    ->middleware('permission:payments.view')
+    ->name('payments.ledger');
+
+Route::get('payments/overview', [PaymentController::class, 'overview'])
+    ->middleware('permission:payments.view')
+    ->name('payments.overview');
+
 Route::get('reservations/{reservation}/payments', [PaymentController::class, 'index'])
     ->middleware('permission:payments.view')
     ->name('payments.index');

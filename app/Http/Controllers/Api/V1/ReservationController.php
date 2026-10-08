@@ -8,17 +8,22 @@ use App\Actions\Reservations\CompleteReservationAction;
 use App\Actions\Reservations\ConfirmReservationAction;
 use App\Actions\Reservations\CreateReservationAction;
 use App\Actions\Reservations\ExtendReservationAction;
+use App\Actions\Reservations\NoShowReservationAction;
 use App\Actions\Reservations\UpdateReservationAction;
+use App\Exceptions\PermissionDeniedException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Reservations\ActivateReservationRequest;
 use App\Http\Requests\Reservations\AvailabilityCheckRequest;
+use App\Http\Requests\Reservations\CalendarReservationRequest;
 use App\Http\Requests\Reservations\CancelReservationRequest;
 use App\Http\Requests\Reservations\CompleteReservationRequest;
 use App\Http\Requests\Reservations\ConfirmReservationRequest;
 use App\Http\Requests\Reservations\ExtendReservationRequest;
 use App\Http\Requests\Reservations\IndexReservationRequest;
+use App\Http\Requests\Reservations\NoShowReservationRequest;
 use App\Http\Requests\Reservations\StoreReservationRequest;
 use App\Http\Requests\Reservations\UpdateReservationRequest;
+use App\Http\Resources\ReservationCalendarResource;
 use App\Http\Resources\ReservationChangeResource;
 use App\Http\Resources\ReservationResource;
 use App\Models\Car;
@@ -47,6 +52,16 @@ class ReservationController extends Controller
     }
 
     /**
+     * Calendar feed: every reservation whose rental window overlaps the
+     * optional [from, to] bounds. The full record is fetched lazily when an
+     * event is opened for editing, so only a small projection ships here.
+     */
+    public function calendar(CalendarReservationRequest $request): AnonymousResourceCollection
+    {
+        return ReservationCalendarResource::collection($this->queries->calendar($request->validated()));
+    }
+
+    /**
      * Availability probe for the booking form: is this car free in the window?
      */
     public function availability(AvailabilityCheckRequest $request): JsonResponse
@@ -67,6 +82,13 @@ class ReservationController extends Controller
 
     public function store(StoreReservationRequest $request, CreateReservationAction $action): JsonResponse
     {
+        // An initial payment is a ledger write: accept it only when the same
+        // permission the dedicated payments endpoint enforces is granted.
+        if (($request->has('payment') || $request->has('payments'))
+            && ! $request->user()->hasPermission('payments.create')) {
+            throw new PermissionDeniedException('payments.create');
+        }
+
         $reservation = $action->handle($request->validated(), $request->user());
 
         return (new ReservationResource($reservation))
@@ -146,6 +168,16 @@ class ReservationController extends Controller
         Reservation $reservation,
         CancelReservationRequest $request,
         CancelReservationAction $action,
+    ): ReservationResource {
+        return new ReservationResource(
+            $action->handle($reservation, $request->validated('reason'), $request->user()),
+        );
+    }
+
+    public function noShow(
+        Reservation $reservation,
+        NoShowReservationRequest $request,
+        NoShowReservationAction $action,
     ): ReservationResource {
         return new ReservationResource(
             $action->handle($reservation, $request->validated('reason'), $request->user()),

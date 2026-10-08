@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router'
 import Container from '@/components/shared/Container'
 import Button from '@/components/ui/Button'
 import Tag from '@/components/ui/Tag'
@@ -19,7 +20,8 @@ import type { ColumnDef, Row } from '@/components/shared/DataTable'
 import { CSVLink } from 'react-csv'
 import { NumericFormat } from 'react-number-format'
 import { LuPlus, LuSearch } from 'react-icons/lu'
-import { LiCar, LiDownload, LiEdit2, LiSetting4, LiTrash } from '@/icons'
+import { LiCar, LiDownload, LiEdit2, LiEye, LiSetting4, LiTrash } from '@/icons'
+import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 import { apiGetCars, apiDeleteCar } from '@/services/LocationService'
 import type { Car, CarStatus } from '@/@types/location'
 import CarForm from './forms/CarForm'
@@ -61,21 +63,36 @@ const VehicleColumn = ({ car }: { car: Car }) => {
                 {...(cover ? { src: cover } : { icon: <LiCar /> })}
             />
             <span className="font-semibold heading-text">
-                {name || car.registration_number}
+                <Link
+                    to={`${APPS_PREFIX_PATH}/vehicules/${car.id}/overview`}
+                    className="hover:text-primary"
+                >
+                    {name || car.registration_number}
+                </Link>
             </span>
         </div>
     )
 }
 
 const ActionColumn = ({
+    car,
     onEdit,
     onDelete,
 }: {
+    car: Car
     onEdit: () => void
     onDelete: () => void
 }) => {
     return (
         <div className="flex items-center justify-end gap-1">
+            <Tooltip title="View details">
+                <Link
+                    to={`${APPS_PREFIX_PATH}/vehicules/${car.id}/overview`}
+                    className="cursor-pointer select-none font-medium text-gray-500 hover:text-primary"
+                >
+                    <LiEye className="text-base" />
+                </Link>
+            </Tooltip>
             <Tooltip title="Edit">
                 <Button
                     className="text-xl cursor-pointer select-none font-medium"
@@ -465,6 +482,7 @@ const Cars = () => {
                 id: 'actions',
                 cell: (props) => (
                     <ActionColumn
+                        car={props.row.original}
                         onEdit={() => {
                             setEditing(props.row.original)
                             setDialogOpen(true)

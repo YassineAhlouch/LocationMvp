@@ -2,31 +2,36 @@
 
 namespace App\Actions\Reservations;
 
+use App\Actions\Payments\Concerns\SyncsReservationPaymentStatus;
 use App\Actions\Reservations\Concerns\InteractsWithReservationLifecycle;
 use App\Actions\Reservations\Concerns\StoresExtrasSnapshots;
 use App\Enums\CarStatus;
+use App\Enums\PaymentRecordStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\ReservationChangeType;
 use App\Enums\ReservationStatus;
 use App\Exceptions\Domain\CarNotRentableException;
 use App\Models\Car;
 use App\Models\Client;
+use App\Models\Payment;
 use App\Models\Reservation;
 use App\Models\User;
 use App\Services\Pricing\PricingService;
 use App\Services\Reservations\AvailabilityService;
+use App\Services\Reservations\CarLifecycleService;
 use App\Services\Reservations\ReservationNumberGenerator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class CreateReservationAction
 {
-    use InteractsWithReservationLifecycle, StoresExtrasSnapshots;
+    use InteractsWithReservationLifecycle, StoresExtrasSnapshots, SyncsReservationPaymentStatus;
 
     public function __construct(
         private readonly AvailabilityService $availability,
         private readonly PricingService $pricing,
         private readonly ReservationNumberGenerator $numbers,
+        private readonly CarLifecycleService $lifecycle,
     ) {}
 
     /**
@@ -100,31 +105,104 @@ class CreateReservationAction
 
             $this->snapshotExtras($reservation, $extras, $quote['rental_days'], $this->pricing);
 
+            $status = ReservationStatus::tryFrom($data['status'] ?? null) ?? ReservationStatus::Pending;
+
             $this->recordChange(
                 $reservation,
                 'status',
                 ReservationChangeType::Creation,
                 null,
-                ReservationStatus::Pending->value,
+                $status->value,
                 null,
                 $actor,
             );
+
+            if (in_array($status, [ReservationStatus::Confirmed, ReservationStatus::Reserved], strict: true)) {
+                $reservation->status = $status;
+                $reservation->save();
+
+                // Same lifecycle step as ConfirmReservationAction: the car
+                // becomes reserved while this transaction holds its lock.
+                $this->lifecycle->onConfirmed($car);
+
+                $this->recordChange(
+                    $reservation,
+                    'status',
+                    ReservationChangeType::StatusChange,
+                    ReservationStatus::Pending->value,
+                    $status->value,
+                    null,
+                    $actor,
+                );
+            }
+
+            // Optional initial payments: each is recorded as a real ledger
+            // row, and the reservation's payment_status (unpaid/partial/paid)
+            // derives from the paid sum versus total — never from this payload.
+            $paymentLines = isset($data['payment'])
+                ? [$data['payment']]
+                : ($data['payments'] ?? []);
+
+            $paymentRecorded = false;
+            foreach ($paymentLines as $i => $line) {
+                if (! isset($line['amount'])) {
+                    continue;
+                }
+
+                $payment = Payment::create([
+                    'agency_id' => $reservation->agency_id,
+                    'reservation_id' => $reservation->id,
+                    'payment_date' => $line['payment_date'] ?? now(),
+                    'amount' => $line['amount'],
+                    'method' => $line['method'],
+                    'reference' => $line['reference'] ?? null,
+                    'status' => $line['status'] ?? PaymentRecordStatus::Paid,
+                    'notes' => $line['notes'] ?? null,
+                    'created_by' => $actor->id,
+                ]);
+
+                $this->logActivity(
+                    module: 'payments',
+                    action: 'recorded',
+                    entity: $payment,
+                    actor: $actor,
+                    description: sprintf(
+                        '%s payment of %s recorded via %s',
+                        $i === 0 ? 'Initial' : 'Additional',
+                        number_format((float) $payment->amount, 2, '.', ''),
+                        $payment->method->value,
+                    ),
+                    newValues: [
+                        'amount' => number_format((float) $payment->amount, 2, '.', ''),
+                        'method' => $payment->method->value,
+                        'status' => $payment->status->value,
+                    ],
+                );
+
+                $paymentRecorded = true;
+            }
+
+            if ($paymentRecorded) {
+                $this->settlePaymentEffects($reservation, 0.0, $actor, 'Initial payment at booking');
+            }
 
             $this->logActivity(
                 module: 'reservations',
                 action: 'created',
                 entity: $reservation,
                 actor: $actor,
-                description: "Reservation {$reservation->reservation_number} created",
+                description: "Reservation {$reservation->reservation_number} created"
+                    .($paymentRecorded ? ' with initial payment' : ''),
                 newValues: [
-                    'status' => ReservationStatus::Pending->value,
+                    'status' => $reservation->status->value,
+                    'payment_status' => $reservation->payment_status?->value,
                     'total_amount' => number_format((float) $reservation->total_amount, 2, '.', ''),
                     'pickup_datetime' => $pickup->toDateTimeString(),
                     'expected_return_datetime' => $return->toDateTimeString(),
                 ],
             );
 
-            return $reservation->load(['car', 'primaryClient', 'extras', 'createdBy']);
+            return $reservation->load(['car', 'primaryClient', 'secondaryClient', 'extras', 'createdBy']);
         });
     }
 }

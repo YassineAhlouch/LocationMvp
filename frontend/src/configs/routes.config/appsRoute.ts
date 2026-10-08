@@ -32,6 +32,17 @@ const appsRoute: Routes = [
         },
     },
     {
+        key: 'gestion.reservations.modifier',
+        path: `${APPS_PREFIX_PATH}/reservations/:id/modifier`,
+        component: lazy(() => import('@/views/location/EditReservation')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'gutterless',
+            footer: false,
+        },
+    },
+    {
         key: 'gestion.reservations.liste',
         path: `${APPS_PREFIX_PATH}/reservations/liste`,
         component: lazy(() => import('@/views/location/Reservations')),
@@ -39,6 +50,17 @@ const appsRoute: Routes = [
         access: 'protected',
         meta: {
             pageContainerType: 'contained',
+            footer: false,
+        },
+    },
+    {
+        key: 'gestion.reservations.calendrier',
+        path: `${APPS_PREFIX_PATH}/reservations/calendrier`,
+        component: lazy(() => import('@/views/location/ReservationCalendar')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'gutterless',
             footer: false,
         },
     },
@@ -63,6 +85,17 @@ const appsRoute: Routes = [
         access: 'protected',
         meta: {
             pageContainerType: 'gutterless',
+            footer: false,
+        },
+    },
+    {
+        key: 'gestion.vehicules.details',
+        path: `${APPS_PREFIX_PATH}/vehicules/:id/*`,
+        component: lazy(() => import('@/views/location/CarDetails')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'contained',
             footer: false,
         },
     },
@@ -99,7 +132,18 @@ const appsRoute: Routes = [
         authority: [ADMIN, USER],
         access: 'protected',
         meta: {
-            pageContainerType: 'contained',
+            pageContainerType: 'gutterless',
+            footer: false,
+        },
+    },
+    {
+        key: 'gestion.finances.paiements',
+        path: `${APPS_PREFIX_PATH}/finances/paiements`,
+        component: lazy(() => import('@/views/location/Payments')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'default',
             footer: false,
         },
     },

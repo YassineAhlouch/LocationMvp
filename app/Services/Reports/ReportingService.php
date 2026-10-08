@@ -118,6 +118,42 @@ final class ReportingService
     }
 
     /**
+     * Payment-centric overview for the payments ledger page: period totals,
+     * per-status counts and a zero-filled daily trend (cash basis, bucketed
+     * by payment_date). Same money conventions as summary().
+     *
+     * @return array<string, mixed>
+     */
+    public function paymentOverview(CarbonInterface $from, CarbonInterface $to): array
+    {
+        $range = [$from->copy()->startOfDay(), $to->copy()->endOfDay()];
+
+        $totals = [
+            'paid' => $this->sumPayments(PaymentRecordStatus::Paid, $range),
+            'pending' => $this->sumPayments(PaymentRecordStatus::Pending, $range),
+            'refunded' => $this->sumPayments(PaymentRecordStatus::Refunded, $range),
+        ];
+        $totals['net'] = round($totals['paid'] - $totals['refunded'], 2);
+
+        $counts = [
+            'paid' => $this->countPayments(PaymentRecordStatus::Paid, $range),
+            'pending' => $this->countPayments(PaymentRecordStatus::Pending, $range),
+            'refunded' => $this->countPayments(PaymentRecordStatus::Refunded, $range),
+        ];
+        $counts['total'] = array_sum($counts);
+
+        return [
+            'period' => [
+                'from' => $from->toDateString(),
+                'to' => $to->toDateString(),
+            ],
+            'totals' => $totals,
+            'counts' => $counts,
+            'trend' => $this->dailyPaymentTrend($from, $to),
+        ];
+    }
+
+    /**
      * Per-car profitability for the period — every agency car, zero-filled,
      * ranked by margin so the owner sees at a glance which cars earn.
      *
@@ -227,6 +263,7 @@ final class ReportingService
             ->whereIn('status', [
                 ReservationStatus::Pending,
                 ReservationStatus::Confirmed,
+                ReservationStatus::Reserved,
                 ReservationStatus::Active,
                 ReservationStatus::Completed,
             ])
@@ -275,6 +312,62 @@ final class ReportingService
     private function money(float $value): float
     {
         return round($value, 2);
+    }
+
+    /**
+     * @param  array{CarbonInterface, CarbonInterface}  $range
+     */
+    private function countPayments(PaymentRecordStatus $status, array $range): int
+    {
+        return Payment::query()
+            ->where('status', $status)
+            ->whereBetween('payment_date', $range)
+            ->count();
+    }
+
+    /**
+     * Per-day totals by status across the range, zero-filled so the chart
+     * gets one continuous series. Grouping happens in PHP so MySQL and the
+     * SQLite test runner stay in lockstep.
+     *
+     * @return array{labels: array<int, string>, paid: array<int, float>, pending: array<int, float>, refunded: array<int, float>}
+     */
+    private function dailyPaymentTrend(CarbonInterface $from, CarbonInterface $to): array
+    {
+        $labels = [];
+        $cursor = $from->copy()->startOfDay();
+        $end = $to->copy()->startOfDay();
+
+        while ($cursor->lte($end)) {
+            $labels[] = $cursor->format('Y-m-d');
+            $cursor->addDay();
+        }
+
+        $index = array_flip($labels);
+        $series = [
+            'paid' => array_fill(0, count($labels), 0.0),
+            'pending' => array_fill(0, count($labels), 0.0),
+            'refunded' => array_fill(0, count($labels), 0.0),
+        ];
+
+        foreach (Payment::query()
+            ->whereBetween('payment_date', [$from->copy()->startOfDay(), $to->copy()->endOfDay()])
+            ->get(['payment_date', 'amount', 'status']) as $payment) {
+            $day = $payment->payment_date->format('Y-m-d');
+
+            if (! isset($index[$day])) {
+                continue;
+            }
+
+            $series[$payment->status->value][$index[$day]] += (float) $payment->amount;
+        }
+
+        return [
+            'labels' => $labels,
+            'paid' => array_map(fn (float $value) => round($value, 2), $series['paid']),
+            'pending' => array_map(fn (float $value) => round($value, 2), $series['pending']),
+            'refunded' => array_map(fn (float $value) => round($value, 2), $series['refunded']),
+        ];
     }
 
     /**
@@ -354,6 +447,7 @@ final class ReportingService
             ->whereIn('status', [
                 ReservationStatus::Pending,
                 ReservationStatus::Confirmed,
+                ReservationStatus::Reserved,
                 ReservationStatus::Active,
                 ReservationStatus::Completed,
             ])

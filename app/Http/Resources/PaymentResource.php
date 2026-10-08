@@ -15,6 +15,14 @@ class PaymentResource extends JsonResource
         return [
             'id' => $this->id,
             'reservation_id' => $this->reservation_id,
+            'reservation' => $this->whenLoaded('reservation', fn () => $this->reservation === null ? null : [
+                'id' => $this->reservation->id,
+                'reservation_number' => $this->reservation->reservation_number,
+                'primary_client' => $this->reservation->primaryClient !== null ? [
+                    'id' => $this->reservation->primaryClient->id,
+                    'full_name' => $this->reservation->primaryClient->full_name,
+                ] : null,
+            ]),
             'payment_date' => $this->payment_date?->toIso8601String(),
             'amount' => (float) $this->amount,
             'method' => $this->method?->value,

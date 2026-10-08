@@ -2,11 +2,13 @@
 
 namespace App\Services\Reservations;
 
+use App\Enums\PaymentStatus;
 use App\Enums\ReservationChangeType;
 use App\Enums\ReservationStatus;
 use App\Models\Reservation;
 use App\Models\ReservationChange;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 
 /**
@@ -32,6 +34,7 @@ class ReservationQueryService
     /**
      * @param  array{
      *     status?: string,
+     *     payment_status?: string,
      *     car_id?: int,
      *     client_id?: int,
      *     pickup_from?: string,
@@ -51,8 +54,10 @@ class ReservationQueryService
                 'secondaryClient:id,first_name,last_name,phone',
                 'createdBy:id,first_name,last_name',
                 'approvedBy:id,first_name,last_name',
+                'extras',
             ])
             ->when($filters['status'] ?? null, fn ($query, $status) => $query->where('status', ReservationStatus::from($status)))
+            ->when($filters['payment_status'] ?? null, fn ($query, $paymentStatus) => $query->where('payment_status', PaymentStatus::from($paymentStatus)))
             ->when($filters['car_id'] ?? null, fn ($query, $carId) => $query->where('car_id', $carId))
             ->when($filters['client_id'] ?? null, function ($query, $clientId) {
                 $query->where(fn ($builder) => $builder
@@ -65,6 +70,30 @@ class ReservationQueryService
             ->orderBy(self::sortBy($filters['sort_by'] ?? null), self::sortDir($filters['sort_dir'] ?? null))
             ->orderByDesc('id')
             ->paginate(min((int) ($filters['per_page'] ?? 15), 100));
+    }
+
+    /**
+     * Calendar feed: reservations whose rental window overlaps [from, to].
+     * Overlap is `pickup <= to AND expected_return >= from`, so a rental
+     * that started before the window but returns inside it is still drawn.
+     * With no bounds the whole agency schedule is returned, ordered by
+     * pickup so the calendar can render any month in one round-trip.
+     *
+     * @param  array{from?: string, to?: string}  $filters
+     * @return Collection<int, Reservation>
+     */
+    public function calendar(array $filters): Collection
+    {
+        return Reservation::query()
+            ->with([
+                'car:id,registration_number',
+                'primaryClient:id,first_name,last_name',
+            ])
+            ->when($filters['from'] ?? null, fn ($query, $from) => $query->where('expected_return_datetime', '>=', $from))
+            ->when($filters['to'] ?? null, fn ($query, $to) => $query->where('pickup_datetime', '<=', $to))
+            ->orderBy('pickup_datetime')
+            ->orderBy('id')
+            ->get();
     }
 
     /**

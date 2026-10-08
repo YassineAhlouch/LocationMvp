@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Reservations;
 
+use App\Enums\PaymentStatus;
 use App\Enums\ReservationStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -20,6 +21,7 @@ class IndexReservationRequest extends FormRequest
     {
         return [
             'status' => ['sometimes', 'string', Rule::enum(ReservationStatus::class)],
+            'payment_status' => ['sometimes', 'string', Rule::enum(PaymentStatus::class)],
             'car_id' => ['sometimes', 'integer'],
             'client_id' => ['sometimes', 'integer'],
             'pickup_from' => ['sometimes', 'date'],

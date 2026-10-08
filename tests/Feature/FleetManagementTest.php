@@ -3,16 +3,24 @@
 namespace Tests\Feature;
 
 use App\Enums\CarStatus;
+use App\Enums\ExpenseStatus;
+use App\Enums\ExpenseType;
 use App\Enums\FuelType;
+use App\Enums\PaymentRecordStatus;
+use App\Enums\ReservationChangeType;
+use App\Enums\ReservationStatus;
 use App\Models\ActivityLog;
 use App\Models\Agency;
 use App\Models\Brand;
 use App\Models\Car;
 use App\Models\CarCategory;
+use App\Models\CarExpense;
 use App\Models\CarImage;
 use App\Models\CarModel;
 use App\Models\Client;
+use App\Models\Payment;
 use App\Models\Reservation;
+use App\Models\ReservationChange;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -478,5 +486,184 @@ class FleetManagementTest extends TestCase
             ->firstOrFail();
 
         $this->assertSame('available', $deleted->old_values['status']);
+    }
+
+    public function test_overview_requires_permission_and_summarises_a_cars_financials(): void
+    {
+        $outsider = $this->actor(['reservations.view']);
+        $car = $this->car(['registration_number' => 'OVR-001']);
+
+        $this->actingAs($outsider, 'sanctum')
+            ->getJson('/api/v1/cars/'.$car->id.'/overview')
+            ->assertStatus(403)
+            ->assertJsonPath('permission', 'fleet.view');
+
+        $actor = $this->actor(['fleet.view']);
+        $client = $this->client();
+
+        $active = Reservation::factory()->active()->create([
+            'agency_id' => $this->agency->id,
+            'car_id' => $car->id,
+            'primary_client_id' => $client->id,
+            'created_by' => $actor->id,
+            'rental_days' => 4,
+            'total_amount' => 1200,
+        ]);
+        Reservation::factory()->completed()->create([
+            'agency_id' => $this->agency->id,
+            'car_id' => $car->id,
+            'primary_client_id' => $client->id,
+            'created_by' => $actor->id,
+            'rental_days' => 3,
+            'total_amount' => 900,
+        ]);
+        Reservation::factory()->create([
+            'agency_id' => $this->agency->id,
+            'car_id' => $car->id,
+            'primary_client_id' => $client->id,
+            'created_by' => $actor->id,
+            'rental_days' => 5,
+            'status' => ReservationStatus::Cancelled,
+            'total_amount' => 1500,
+        ]);
+
+        foreach ([
+            [500, PaymentRecordStatus::Paid],
+            [200, PaymentRecordStatus::Pending],
+            [100, PaymentRecordStatus::Refunded],
+        ] as [$amount, $status]) {
+            Payment::factory()->create([
+                'agency_id' => $this->agency->id,
+                'reservation_id' => $active->id,
+                'amount' => $amount,
+                'status' => $status,
+                'payment_date' => now(),
+            ]);
+        }
+
+        CarExpense::factory()->create([
+            'agency_id' => $this->agency->id,
+            'car_id' => $car->id,
+            'type' => ExpenseType::Maintenance,
+            'amount' => 300,
+            'status' => ExpenseStatus::Paid,
+            'paid_date' => now(),
+        ]);
+        CarExpense::factory()->create([
+            'agency_id' => $this->agency->id,
+            'car_id' => $car->id,
+            'type' => ExpenseType::Repair,
+            'amount' => 150,
+            'status' => ExpenseStatus::Pending,
+            'due_date' => now()->subDay(),
+        ]);
+
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/cars/'.$car->id.'/overview')
+            ->assertOk()
+            ->assertJsonPath('stats.reservations.total', 3)
+            ->assertJsonPath('stats.reservations.active', 1)
+            ->assertJsonPath('stats.reservations.booked_days', 7)
+            ->assertJsonPath('stats.revenue.paid', 500)
+            ->assertJsonPath('stats.revenue.pending', 200)
+            ->assertJsonPath('stats.revenue.refunded', 100)
+            ->assertJsonPath('stats.revenue.net', 400)
+            ->assertJsonPath('stats.expenses.paid', 300)
+            ->assertJsonPath('stats.expenses.pending', 150)
+            ->assertJsonPath('stats.expenses.total', 450)
+            ->assertJsonPath('stats.expenses.overdue_count', 1)
+            ->assertJsonPath('stats.expenses.by_type.0.type', 'maintenance')
+            ->assertJsonPath('stats.expenses.by_type.0.amount', 300)
+            ->assertJsonPath('stats.net', -50)
+            ->assertJsonCount(12, 'stats.timeline.labels')
+            ->assertJsonCount(3, 'recent_reservations')
+            ->assertJsonCount(2, 'recent_expenses');
+
+        $foreign = Car::factory()->create([
+            'agency_id' => Agency::factory(),
+            'registration_number' => 'OVR-999',
+        ]);
+
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/cars/'.$foreign->id.'/overview')
+            ->assertNotFound();
+    }
+
+    public function test_history_merges_car_activity_and_reservation_changes(): void
+    {
+        $outsider = $this->actor(['reservations.view']);
+        $car = $this->car(['registration_number' => 'HIS-001']);
+
+        $this->actingAs($outsider, 'sanctum')
+            ->getJson('/api/v1/cars/'.$car->id.'/history')
+            ->assertStatus(403)
+            ->assertJsonPath('permission', 'fleet.view');
+
+        $actor = $this->actor(['fleet.view']);
+        $client = $this->client();
+
+        $reservation = Reservation::factory()->create([
+            'agency_id' => $this->agency->id,
+            'car_id' => $car->id,
+            'primary_client_id' => $client->id,
+            'created_by' => $actor->id,
+        ]);
+
+        ReservationChange::factory()->create([
+            'reservation_id' => $reservation->id,
+            'created_by' => $actor->id,
+            'change_type' => ReservationChangeType::Extension,
+        ]);
+
+        // Changes on another car's reservation must never leak in.
+        $otherCar = $this->car(['registration_number' => 'HIS-002']);
+        $otherReservation = Reservation::factory()->create([
+            'agency_id' => $this->agency->id,
+            'car_id' => $otherCar->id,
+            'primary_client_id' => $client->id,
+            'created_by' => $actor->id,
+        ]);
+        ReservationChange::factory()->create([
+            'reservation_id' => $otherReservation->id,
+            'created_by' => $actor->id,
+        ]);
+
+        ActivityLog::create([
+            'agency_id' => $this->agency->id,
+            'user_id' => $actor->id,
+            'module' => 'fleet',
+            'action' => 'updated',
+            'entity_type' => Car::class,
+            'entity_id' => $car->id,
+            'description' => 'Car updated',
+        ]);
+
+        $response = $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/cars/'.$car->id.'/history')
+            ->assertOk()
+            ->assertJsonCount(2);
+
+        $entries = collect($response->json());
+
+        $carEntry = $entries->firstWhere('source', 'car');
+        $this->assertNotNull($carEntry);
+        $this->assertSame('updated', $carEntry['action']);
+        $this->assertSame($actor->full_name, $carEntry['user']['full_name']);
+
+        $reservationEntry = $entries->firstWhere('source', 'reservation');
+        $this->assertNotNull($reservationEntry);
+        $this->assertSame('extension', $reservationEntry['change_type']);
+        $this->assertSame($reservation->id, $reservationEntry['reservation']['id']);
+        $this->assertSame($reservation->reservation_number, $reservationEntry['reservation']['reservation_number']);
+        $this->assertSame($actor->full_name, $reservationEntry['user']['full_name']);
+
+        $foreign = Car::factory()->create([
+            'agency_id' => Agency::factory(),
+            'registration_number' => 'HIS-999',
+        ]);
+
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/cars/'.$foreign->id.'/history')
+            ->assertNotFound();
     }
 }

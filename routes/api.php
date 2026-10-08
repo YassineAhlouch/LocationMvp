@@ -32,6 +32,7 @@ Route::prefix('v1')
         require __DIR__.'/api/session.php';
         require __DIR__.'/api/reservations.php';
         require __DIR__.'/api/pricing.php';
+        require __DIR__.'/api/extras.php';
         require __DIR__.'/api/payments.php';
         require __DIR__.'/api/activity.php';
         require __DIR__.'/api/clients.php';

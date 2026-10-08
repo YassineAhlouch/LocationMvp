@@ -8,6 +8,8 @@ use App\Http\Requests\Cars\IndexCarRequest;
 use App\Http\Requests\Cars\StoreCarRequest;
 use App\Http\Requests\Cars\UpdateCarRequest;
 use App\Http\Resources\CarResource;
+use App\Http\Resources\ExpenseResource;
+use App\Http\Resources\ReservationResource;
 use App\Models\Car;
 use App\Services\Activity\LogsActivity;
 use App\Services\Cars\CarQueryService;
@@ -56,6 +58,33 @@ class CarController extends Controller
         $car->loadCount('images as images_count');
 
         return new CarResource($car);
+    }
+
+    /**
+     * Car dossier summary: lifetime financials + operations, a 12-month
+     * revenue/expense trend and the most recent reservations and expenses.
+     * Gated by fleet.view like the car it describes.
+     */
+    public function overview(Car $car): JsonResponse
+    {
+        return response()->json([
+            'stats' => $this->cars->overview($car),
+            'recent_reservations' => ReservationResource::collection(
+                $this->cars->recentReservations($car),
+            )->resolve(),
+            'recent_expenses' => ExpenseResource::collection(
+                $this->cars->recentExpenses($car),
+            )->resolve(),
+        ]);
+    }
+
+    /**
+     * Merged audit trail for the car: vehicle edits plus every business change
+     * on its reservations, newest first.
+     */
+    public function history(Car $car): JsonResponse
+    {
+        return response()->json($this->cars->history($car));
     }
 
     public function update(UpdateCarRequest $request, Car $car): CarResource

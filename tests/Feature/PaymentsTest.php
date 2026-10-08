@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Enums\PaymentMethod;
 use App\Enums\PaymentRecordStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\ReservationStatus;
 use App\Models\Agency;
+use App\Models\Client;
 use App\Models\Payment;
 use App\Models\Reservation;
 use App\Models\Role;
@@ -452,5 +454,192 @@ class PaymentsTest extends TestCase
             ->assertJsonPath('0.amount', 200)
             ->assertJsonPath('0.created_by.id', $actor->id)
             ->assertJsonPath('1.amount', 100);
+    }
+
+    public function test_ledger_lists_every_payment_with_reservation_and_client(): void
+    {
+        $actor = $this->actor(['payments.*']);
+
+        $client = Client::factory()->create([
+            'agency_id' => $this->agency->id,
+            'first_name' => 'Samir',
+            'last_name' => 'Alaoui',
+        ]);
+
+        $reservation = $this->reservation(['primary_client_id' => $client->id]);
+
+        Payment::factory()->create([
+            'agency_id' => $this->agency->id,
+            'reservation_id' => $reservation->id,
+            'amount' => 300,
+            'method' => PaymentMethod::Cash,
+            'status' => PaymentRecordStatus::Paid,
+            'created_by' => $actor->id,
+            'payment_date' => now()->subDay(),
+        ]);
+
+        Payment::factory()->create([
+            'agency_id' => $this->agency->id,
+            'reservation_id' => $reservation->id,
+            'amount' => 600,
+            'method' => PaymentMethod::Card,
+            'status' => PaymentRecordStatus::Pending,
+            'created_by' => $actor->id,
+            'payment_date' => now(),
+        ]);
+
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/payments')
+            ->assertOk()
+            ->assertJsonPath('meta.total', 2)
+            ->assertJsonPath('data.0.amount', 600)
+            ->assertJsonPath('data.0.status', 'pending')
+            ->assertJsonPath('data.0.reservation.reservation_number', $reservation->reservation_number)
+            ->assertJsonPath('data.0.reservation.primary_client.full_name', 'Samir Alaoui')
+            ->assertJsonPath('data.1.amount', 300);
+    }
+
+    public function test_ledger_filters_by_status_method_date_and_search(): void
+    {
+        $actor = $this->actor(['payments.*']);
+
+        $client = Client::factory()->create([
+            'agency_id' => $this->agency->id,
+            'first_name' => 'Yasmine',
+            'last_name' => 'Bennani',
+        ]);
+
+        $reservation = $this->reservation([
+            'primary_client_id' => $client->id,
+            'reservation_number' => 'RES-424242',
+        ]);
+
+        Payment::factory()->create([
+            'agency_id' => $this->agency->id,
+            'reservation_id' => $reservation->id,
+            'amount' => 100,
+            'method' => PaymentMethod::Cash,
+            'status' => PaymentRecordStatus::Paid,
+            'created_by' => $actor->id,
+            'payment_date' => now()->subDays(10),
+        ]);
+
+        Payment::factory()->create([
+            'agency_id' => $this->agency->id,
+            'reservation_id' => $reservation->id,
+            'amount' => 250,
+            'method' => PaymentMethod::Transfer,
+            'status' => PaymentRecordStatus::Pending,
+            'reference' => 'WIRE-9988',
+            'created_by' => $actor->id,
+            'payment_date' => now(),
+        ]);
+
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/payments?status=pending')
+            ->assertOk()
+            ->assertJsonPath('meta.total', 1)
+            ->assertJsonPath('data.0.amount', 250);
+
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/payments?method=cash')
+            ->assertOk()
+            ->assertJsonPath('meta.total', 1)
+            ->assertJsonPath('data.0.amount', 100);
+
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/payments?q=WIRE-9988')
+            ->assertOk()
+            ->assertJsonPath('meta.total', 1)
+            ->assertJsonPath('data.0.amount', 250);
+
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/payments?q=Yasmine')
+            ->assertOk()
+            ->assertJsonPath('meta.total', 2);
+
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/payments?q=RES-424242')
+            ->assertOk()
+            ->assertJsonPath('meta.total', 2);
+
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/payments?from='.now()->subDays(2)->toDateString())
+            ->assertOk()
+            ->assertJsonPath('meta.total', 1)
+            ->assertJsonPath('data.0.amount', 250);
+    }
+
+    public function test_ledger_endpoints_are_permission_and_tenant_scoped(): void
+    {
+        $viewer = $this->actor(['payments.view']);
+        $outsider = $this->actor(['reservations.view']);
+
+        $this->actingAs($viewer, 'sanctum')
+            ->getJson('/api/v1/payments')
+            ->assertOk();
+
+        $this->actingAs($viewer, 'sanctum')
+            ->getJson('/api/v1/payments/overview')
+            ->assertOk();
+
+        $this->actingAs($outsider, 'sanctum')
+            ->getJson('/api/v1/payments')
+            ->assertStatus(403)
+            ->assertJsonPath('permission', 'payments.view');
+
+        $this->actingAs($outsider, 'sanctum')
+            ->getJson('/api/v1/payments/overview')
+            ->assertStatus(403)
+            ->assertJsonPath('permission', 'payments.view');
+
+        $foreign = Reservation::factory()->create(['agency_id' => Agency::factory()]);
+
+        Payment::factory()->create([
+            'agency_id' => $foreign->agency_id,
+            'reservation_id' => $foreign->id,
+        ]);
+
+        $this->actingAs($viewer, 'sanctum')
+            ->getJson('/api/v1/payments')
+            ->assertOk()
+            ->assertJsonPath('meta.total', 0);
+    }
+
+    public function test_overview_summarises_totals_counts_and_trend(): void
+    {
+        $actor = $this->actor(['payments.*']);
+        $reservation = $this->reservation();
+        $today = now()->toDateString();
+
+        foreach ([
+            [500, PaymentRecordStatus::Paid],
+            [200, PaymentRecordStatus::Pending],
+            [100, PaymentRecordStatus::Refunded],
+        ] as [$amount, $status]) {
+            Payment::factory()->create([
+                'agency_id' => $this->agency->id,
+                'reservation_id' => $reservation->id,
+                'amount' => $amount,
+                'status' => $status,
+                'created_by' => $actor->id,
+                'payment_date' => now(),
+            ]);
+        }
+
+        $response = $this->actingAs($actor, 'sanctum')
+            ->getJson("/api/v1/payments/overview?from={$today}&to={$today}")
+            ->assertOk()
+            ->assertJsonPath('totals.paid', 500)
+            ->assertJsonPath('totals.pending', 200)
+            ->assertJsonPath('totals.refunded', 100)
+            ->assertJsonPath('totals.net', 400)
+            ->assertJsonPath('counts.total', 3)
+            ->assertJsonPath('trend.labels.0', $today)
+            ->assertJsonPath('trend.paid.0', 500)
+            ->assertJsonPath('trend.pending.0', 200)
+            ->assertJsonPath('trend.refunded.0', 100);
+
+        $this->assertCount(1, $response->json('trend.labels'));
     }
 }

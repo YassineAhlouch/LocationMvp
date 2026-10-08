@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Enums\CarStatus;
+use App\Enums\PaymentStatus;
 use App\Enums\PricingType;
 use App\Enums\ReservationChangeType;
 use App\Enums\ReservationStatus;
@@ -168,6 +169,78 @@ class ReservationEngineTest extends TestCase
 
         // A pending booking does not flip the car — only confirmation does.
         $this->assertSame(CarStatus::Available, $car->fresh()->status);
+    }
+
+    public function test_create_reservation_accepts_free_form_extras(): void
+    {
+        $actor = $this->actor(['reservations.*']);
+        $car = $this->car(['daily_price' => 300]);
+        $client = $this->client();
+
+        $pickup = now()->addDay()->setTime(9, 0);
+
+        $response = $this->actingAs($actor, 'sanctum')->postJson('/api/v1/reservations', $this->storePayload($car, $client, [
+            'extras' => [
+                [
+                    'name' => 'GPS',
+                    'description' => 'With charger',
+                    'pricing_type' => 'fixed',
+                    'quantity' => 1,
+                    'unit_price' => 100,
+                ],
+                [
+                    'name' => 'Chauffeur',
+                    'pricing_type' => 'daily',
+                    'quantity' => 2,
+                    'unit_price' => 50,
+                ],
+            ],
+        ]));
+
+        $response->assertCreated();
+
+        $reservationId = $response->json('id');
+
+        $this->assertDatabaseHas('reservation_extras', [
+            'reservation_id' => $reservationId,
+            'name' => 'GPS',
+            'description' => 'With charger',
+            'pricing_type' => 'fixed',
+            'quantity' => 1,
+            'unit_price' => 100,
+            'total_price' => 100,
+        ]);
+
+        // 50 × 2 × 4 rental days for the daily line.
+        $this->assertDatabaseHas('reservation_extras', [
+            'reservation_id' => $reservationId,
+            'name' => 'Chauffeur',
+            'description' => null,
+            'pricing_type' => 'daily',
+            'quantity' => 2,
+            'unit_price' => 50,
+            'total_price' => 400,
+        ]);
+    }
+
+    public function test_free_form_extra_without_required_fields_is_rejected(): void
+    {
+        $actor = $this->actor(['reservations.*']);
+        $car = $this->car();
+        $client = $this->client();
+
+        $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/reservations', $this->storePayload($car, $client, [
+                'extras' => [
+                    ['name' => 'GPS'],
+                ],
+            ]))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'extras.0.pricing_type',
+                'extras.0.unit_price',
+                'extras.0.quantity',
+            ]);
     }
 
     public function test_overlapping_reservation_is_rejected_with_conflict_payload(): void
@@ -394,6 +467,37 @@ class ReservationEngineTest extends TestCase
         ]);
     }
 
+    public function test_no_show_requires_reason_and_releases_car(): void
+    {
+        $actor = $this->actor(['reservations.*']);
+        $car = $this->car();
+
+        $id = $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/reservations', $this->storePayload($car, $this->client(), [
+                'status' => 'reserved',
+            ]))
+            ->json('id');
+
+        $this->actingAs($actor, 'sanctum')
+            ->postJson("/api/v1/reservations/{$id}/no-show")
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('reason');
+
+        $this->actingAs($actor, 'sanctum')
+            ->postJson("/api/v1/reservations/{$id}/no-show", ['reason' => 'Client never arrived'])
+            ->assertOk()
+            ->assertJsonPath('status', 'no_show');
+
+        $this->assertSame(CarStatus::Available, $car->fresh()->status);
+
+        $this->assertDatabaseHas('reservation_changes', [
+            'reservation_id' => $id,
+            'field_name' => 'status',
+            'new_value' => 'no_show',
+            'reason' => 'Client never arrived',
+        ]);
+    }
+
     public function test_cancel_keeps_car_reserved_when_another_booking_holds_it(): void
     {
         $actor = $this->actor(['reservations.*']);
@@ -528,6 +632,110 @@ class ReservationEngineTest extends TestCase
         ]);
     }
 
+    public function test_update_can_advance_status_through_the_state_machine(): void
+    {
+        $actor = $this->actor(['reservations.*']);
+        $car = $this->car();
+
+        $pickup = now()->addDay()->setTime(9, 0);
+
+        $id = $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/reservations', $this->storePayload($car, $this->client(), [
+                'pickup_datetime' => $pickup->toDateTimeString(),
+                'expected_return_datetime' => $pickup->copy()->addDays(3)->toDateTimeString(),
+                'status' => 'confirmed',
+            ]))
+            ->json('id');
+
+        // Confirmation holds the car; the edit then activates it.
+        $this->assertSame(CarStatus::Reserved, $car->fresh()->status);
+
+        $this->actingAs($actor, 'sanctum')
+            ->patchJson("/api/v1/reservations/{$id}", ['status' => 'active'])
+            ->assertOk()
+            ->assertJsonPath('status', 'active');
+
+        $this->assertSame(CarStatus::Rented, $car->fresh()->status);
+
+        $this->assertDatabaseHas('reservation_changes', [
+            'reservation_id' => $id,
+            'field_name' => 'status',
+            'change_type' => ReservationChangeType::StatusChange->value,
+            'old_value' => 'confirmed',
+            'new_value' => 'active',
+            'created_by' => $actor->id,
+        ]);
+    }
+
+    public function test_update_rejects_illegal_status_transition(): void
+    {
+        $actor = $this->actor(['reservations.*']);
+        $car = $this->car();
+
+        $id = $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/reservations', $this->storePayload($car, $this->client()))
+            ->json('id');
+
+        // pending → active skips confirmation.
+        $this->actingAs($actor, 'sanctum')
+            ->patchJson("/api/v1/reservations/{$id}", ['status' => 'active'])
+            ->assertStatus(422)
+            ->assertJsonPath('code', 'invalid_transition')
+            ->assertJsonPath('from', 'pending')
+            ->assertJsonPath('to', 'active');
+    }
+
+    public function test_update_replaces_extras_and_reprices(): void
+    {
+        $actor = $this->actor(['reservations.*']);
+        $car = $this->car();
+
+        $pickup = now()->addDay()->setTime(9, 0);
+
+        $id = $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/reservations', $this->storePayload($car, $this->client(), [
+                'pickup_datetime' => $pickup->toDateTimeString(),
+                'expected_return_datetime' => $pickup->copy()->addDays(3)->toDateTimeString(),
+            ]))
+            ->json('id');
+
+        $response = $this->actingAs($actor, 'sanctum')
+            ->patchJson("/api/v1/reservations/{$id}", [
+                'extras' => [
+                    ['name' => 'GPS', 'pricing_type' => 'fixed', 'quantity' => 1, 'unit_price' => 100],
+                    ['name' => 'Chauffeur', 'pricing_type' => 'daily', 'quantity' => 1, 'unit_price' => 50],
+                ],
+            ]);
+
+        // 300×3 + (100 fixed + 50×3 daily) = 1150; tax 230 → total 1380.
+        $response->assertOk()
+            ->assertJsonPath('rental_days', 3);
+
+        $this->assertEqualsWithDelta(1380.0, $response->json('total_amount'), 0.001);
+
+        $this->assertDatabaseHas('reservation_extras', [
+            'reservation_id' => $id,
+            'name' => 'GPS',
+            'quantity' => 1,
+            'unit_price' => 100,
+            'total_price' => 100,
+        ]);
+
+        $this->assertDatabaseHas('reservation_extras', [
+            'reservation_id' => $id,
+            'name' => 'Chauffeur',
+            'quantity' => 1,
+            'unit_price' => 50,
+            'total_price' => 150,
+        ]);
+
+        $this->assertDatabaseHas('reservation_changes', [
+            'reservation_id' => $id,
+            'field_name' => 'extras',
+            'change_type' => ReservationChangeType::ManualEdit->value,
+        ]);
+    }
+
     public function test_terminal_reservations_are_frozen(): void
     {
         $actor = $this->actor(['reservations.*']);
@@ -586,6 +794,34 @@ class ReservationEngineTest extends TestCase
             ->assertNotFound();
     }
 
+    public function test_index_filters_by_payment_status(): void
+    {
+        $actor = $this->actor(['reservations.*']);
+        $pickup = now()->addDay()->setTime(9, 0);
+
+        $paid = $this->existingReservation($pickup, $pickup->copy()->addDays(2));
+        $paid->payment_status = PaymentStatus::Paid;
+        $paid->save();
+
+        $partial = $this->existingReservation(
+            $pickup->copy()->addDays(4),
+            $pickup->copy()->addDays(6),
+        );
+        $partial->payment_status = PaymentStatus::Partial;
+        $partial->save();
+
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/reservations?payment_status=partial')
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.id', $partial->id);
+
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/reservations?payment_status=unpaid')
+            ->assertOk()
+            ->assertJsonCount(0, 'data');
+    }
+
     public function test_availability_endpoint_reports_conflicts(): void
     {
         $actor = $this->actor(['reservations.*']);
@@ -639,5 +875,313 @@ class ReservationEngineTest extends TestCase
             ->postJson("/api/v1/reservations/{$id}/cancel", ['reason' => 'Not allowed'])
             ->assertStatus(403)
             ->assertJsonPath('permission', 'reservations.cancel');
+    }
+
+    public function test_create_reservation_persists_secondary_client(): void
+    {
+        $actor = $this->actor(['reservations.*']);
+        $car = $this->car();
+        $primary = $this->client();
+        $secondary = $this->client();
+
+        $response = $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/reservations', $this->storePayload($car, $primary, [
+                'secondary_client_id' => $secondary->id,
+            ]))
+            ->assertCreated();
+
+        $this->assertSame($secondary->id, $response->json('secondary_client.id'));
+
+        $this->assertDatabaseHas('reservations', [
+            'id' => $response->json('id'),
+            'primary_client_id' => $primary->id,
+            'secondary_client_id' => $secondary->id,
+        ]);
+    }
+
+    public function test_create_reservation_as_confirmed_marks_car_reserved(): void
+    {
+        $actor = $this->actor(['reservations.*']);
+        $car = $this->car();
+        $client = $this->client();
+
+        $response = $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/reservations', $this->storePayload($car, $client, [
+                'status' => 'confirmed',
+            ]))
+            ->assertCreated()
+            ->assertJsonPath('status', 'confirmed');
+
+        // Same lifecycle step as the dedicated confirm endpoint: the car flips
+        // to reserved inside the creation transaction.
+        $this->assertSame(CarStatus::Reserved, $car->fresh()->status);
+
+        $id = $response->json('id');
+
+        // Created as confirmed, with the pending → confirmed move audited too.
+        $this->assertDatabaseHas('reservation_changes', [
+            'reservation_id' => $id,
+            'field_name' => 'status',
+            'change_type' => ReservationChangeType::Creation->value,
+            'new_value' => 'confirmed',
+        ]);
+
+        $this->assertDatabaseHas('reservation_changes', [
+            'reservation_id' => $id,
+            'field_name' => 'status',
+            'change_type' => ReservationChangeType::StatusChange->value,
+            'old_value' => 'pending',
+            'new_value' => 'confirmed',
+        ]);
+    }
+
+    public function test_create_reservation_as_reserved_marks_car_reserved(): void
+    {
+        $actor = $this->actor(['reservations.*']);
+        $car = $this->car();
+        $client = $this->client();
+
+        $response = $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/reservations', $this->storePayload($car, $client, [
+                'status' => 'reserved',
+            ]))
+            ->assertCreated()
+            ->assertJsonPath('status', 'reserved');
+
+        // A phone-hold still occupies the car until confirmed or released.
+        $this->assertSame(CarStatus::Reserved, $car->fresh()->status);
+
+        $id = $response->json('id');
+
+        $this->assertDatabaseHas('reservation_changes', [
+            'reservation_id' => $id,
+            'field_name' => 'status',
+            'change_type' => ReservationChangeType::StatusChange->value,
+            'old_value' => 'pending',
+            'new_value' => 'reserved',
+        ]);
+    }
+
+    public function test_create_reservation_rejects_statuses_outside_startup_choices(): void
+    {
+        $actor = $this->actor(['reservations.*']);
+        $car = $this->car();
+        $client = $this->client();
+
+        $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/reservations', $this->storePayload($car, $client, [
+                'status' => 'active',
+            ]))
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('status');
+
+        $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/reservations', $this->storePayload($car, $client, [
+                'status' => 'no_show',
+            ]))
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('status');
+
+        $this->assertDatabaseCount('reservations', 0);
+    }
+
+    public function test_create_reservation_with_paid_initial_payment_derives_payment_status(): void
+    {
+        $actor = $this->actor(['reservations.*', 'payments.create']);
+        $car = $this->car(['daily_price' => 300]);
+        $client = $this->client();
+
+        $response = $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/reservations', $this->storePayload($car, $client, [
+                'payment' => [
+                    'amount' => 500,
+                    'method' => 'cash',
+                    'reference' => 'REC-001',
+                ],
+            ]))
+            ->assertCreated()
+            // 500 < the quoted total → the ledger derives "partial".
+            ->assertJsonPath('payment_status', 'partial');
+
+        $this->assertDatabaseHas('payments', [
+            'reservation_id' => $response->json('id'),
+            'amount' => 500,
+            'method' => 'cash',
+            'status' => 'paid',
+            'reference' => 'REC-001',
+        ]);
+
+        $this->assertDatabaseHas('reservation_changes', [
+            'reservation_id' => $response->json('id'),
+            'field_name' => 'payment_status',
+            'change_type' => ReservationChangeType::Payment->value,
+            'old_value' => 'unpaid',
+            'new_value' => 'partial',
+        ]);
+    }
+
+    public function test_create_reservation_with_pending_initial_payment_stays_unpaid(): void
+    {
+        $actor = $this->actor(['reservations.*', 'payments.create']);
+        $car = $this->car();
+        $client = $this->client();
+
+        $response = $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/reservations', $this->storePayload($car, $client, [
+                'payment' => [
+                    'amount' => 500,
+                    'method' => 'transfer',
+                    'status' => 'pending',
+                ],
+            ]))
+            ->assertCreated()
+            ->assertJsonPath('payment_status', 'unpaid');
+
+        $this->assertDatabaseHas('payments', [
+            'reservation_id' => $response->json('id'),
+            'amount' => 500,
+            'method' => 'transfer',
+            'status' => 'pending',
+        ]);
+    }
+
+    public function test_initial_payment_requires_payments_create_permission(): void
+    {
+        $actor = $this->actor(['reservations.*']);
+        $car = $this->car();
+        $client = $this->client();
+
+        $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/reservations', $this->storePayload($car, $client, [
+                'payment' => ['amount' => 100, 'method' => 'cash'],
+            ]))
+            ->assertStatus(403)
+            ->assertJsonPath('permission', 'payments.create');
+    }
+
+    public function test_create_reservation_records_multiple_initial_payments(): void
+    {
+        $actor = $this->actor(['reservations.*', 'payments.create']);
+        $car = $this->car(['daily_price' => 300]);
+        $client = $this->client();
+
+        $response = $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/reservations', $this->storePayload($car, $client, [
+                'payments' => [
+                    ['amount' => 500, 'method' => 'cash', 'reference' => 'REC-001'],
+                    ['amount' => 300, 'method' => 'transfer', 'status' => 'paid'],
+                ],
+            ]))
+            ->assertCreated()
+            // 800 paid of the 1440 quoted total → partial.
+            ->assertJsonPath('payment_status', 'partial');
+
+        $reservationId = $response->json('id');
+
+        $this->assertDatabaseHas('payments', [
+            'reservation_id' => $reservationId,
+            'amount' => 500,
+            'method' => 'cash',
+            'status' => 'paid',
+            'reference' => 'REC-001',
+        ]);
+
+        $this->assertDatabaseHas('payments', [
+            'reservation_id' => $reservationId,
+            'amount' => 300,
+            'method' => 'transfer',
+            'status' => 'paid',
+        ]);
+
+        $this->assertDatabaseHas('reservation_changes', [
+            'reservation_id' => $reservationId,
+            'field_name' => 'payment_status',
+            'change_type' => ReservationChangeType::Payment->value,
+            'old_value' => 'unpaid',
+            'new_value' => 'partial',
+        ]);
+    }
+
+    public function test_multiple_initial_payments_require_payments_create_permission(): void
+    {
+        $actor = $this->actor(['reservations.*']);
+        $car = $this->car();
+        $client = $this->client();
+
+        $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/reservations', $this->storePayload($car, $client, [
+                'payments' => [
+                    ['amount' => 500, 'method' => 'cash'],
+                ],
+            ]))
+            ->assertStatus(403)
+            ->assertJsonPath('permission', 'payments.create');
+    }
+
+    public function test_calendar_projects_the_booking_window(): void
+    {
+        $actor = $this->actor(['reservations.view']);
+        $car = $this->car(['registration_number' => 'CAL-001']);
+        $client = $this->client();
+
+        $pickup = now()->addDays(2)->setTime(9, 0);
+
+        $reservation = Reservation::factory()->create([
+            'agency_id' => $this->agency->id,
+            'car_id' => $car->id,
+            'primary_client_id' => $client->id,
+            'created_by' => User::factory(),
+            'pickup_datetime' => $pickup,
+            'expected_return_datetime' => $pickup->copy()->addDays(3),
+        ]);
+
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/reservations/calendar')
+            ->assertOk()
+            ->assertJsonCount(1)
+            ->assertJsonPath('0.id', $reservation->id)
+            ->assertJsonPath('0.car.registration_number', 'CAL-001')
+            ->assertJsonPath('0.primary_client.id', $client->id)
+            // The full record (extras, audit trail, …) is fetched lazily on
+            // open; the calendar feed stays a light projection.
+            ->assertJsonMissingPath('0.extras')
+            ->assertJsonMissingPath('0.changes');
+    }
+
+    public function test_calendar_window_filters_by_overlap_and_validates_bounds(): void
+    {
+        $actor = $this->actor(['reservations.view']);
+
+        $inside = $this->existingReservation(
+            now()->addDays(3)->setTime(9, 0),
+            now()->addDays(6)->setTime(9, 0),
+        );
+        // Started before the window but returns inside it — must still show.
+        $straddling = $this->existingReservation(
+            now()->subDays(2)->setTime(9, 0),
+            now()->addDay()->setTime(9, 0),
+        );
+        $outside = $this->existingReservation(
+            now()->addDays(20)->setTime(9, 0),
+            now()->addDays(25)->setTime(9, 0),
+        );
+
+        $from = now()->startOfDay()->toDateString();
+        $to = now()->addDays(7)->toDateString();
+
+        $response = $this->actingAs($actor, 'sanctum')
+            ->getJson("/api/v1/reservations/calendar?from={$from}&to={$to}")
+            ->assertOk()
+            ->assertJsonCount(2);
+
+        $ids = collect($response->json())->pluck('id');
+
+        $this->assertTrue($ids->contains($inside->id));
+        $this->assertTrue($ids->contains($straddling->id));
+        $this->assertFalse($ids->contains($outside->id));
+
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/reservations/calendar?from=not-a-date')
+            ->assertStatus(422);
     }
 }

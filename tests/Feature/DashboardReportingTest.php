@@ -220,9 +220,11 @@ class DashboardReportingTest extends TestCase
         $this->assertSame([
             'pending' => 0,
             'confirmed' => 1,
+            'reserved' => 0,
             'active' => 1,
             'completed' => 0,
             'cancelled' => 1,
+            'no_show' => 0,
         ], $data['reservations']['by_status']);
         $this->assertSame(3, $data['reservations']['total']);
         $this->assertSame(1, $data['reservations']['currently_active']);

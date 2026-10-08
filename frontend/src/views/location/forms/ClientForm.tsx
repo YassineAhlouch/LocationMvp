@@ -116,6 +116,8 @@ type ClientFormProps = {
     isOpen?: boolean
     onCancel: () => void
     onSaved: () => void
+    /** Fired with the created client when creating (not updating). */
+    onCreated?: (client: Client) => void
 }
 
 const ClientForm = ({
@@ -123,6 +125,7 @@ const ClientForm = ({
     isOpen = true,
     onCancel,
     onSaved,
+    onCreated,
 }: ClientFormProps) => {
     const [submitting, setSubmitting] = useState(false)
 
@@ -153,13 +156,14 @@ const ClientForm = ({
                     />,
                 )
             } else {
-                await apiCreateClient(payload)
+                const created = await apiCreateClient(payload)
                 toast.push(
                     <Notification
                         type="success"
                         title="Client added successfully!"
                     />,
                 )
+                onCreated?.(created)
             }
             onSaved()
             onCancel()

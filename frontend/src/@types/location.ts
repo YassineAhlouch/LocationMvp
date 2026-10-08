@@ -17,7 +17,13 @@ export type Paginated<T> = {
 export type CarStatus =
     'available' | 'reserved' | 'rented' | 'maintenance' | 'inactive'
 export type ReservationStatus =
-    'pending' | 'confirmed' | 'active' | 'completed' | 'cancelled'
+    | 'pending'
+    | 'confirmed'
+    | 'reserved'
+    | 'active'
+    | 'completed'
+    | 'cancelled'
+    | 'no_show'
 export type PaymentStatus = 'unpaid' | 'partial' | 'paid'
 export type ClientStatus = 'normal' | 'vip' | 'blacklist'
 export type ClientSource =
@@ -34,6 +40,85 @@ export type ExpenseType =
 export type TransmissionType = 'manual' | 'automatic'
 export type FuelType = 'diesel' | 'petrol' | 'hybrid' | 'electric'
 export type PaymentMethod = 'cash' | 'card' | 'transfer'
+
+/** State of a single payment row (mirrors App\Enums\PaymentRecordStatus). */
+export type PaymentRecordStatus = 'paid' | 'pending' | 'refunded'
+
+export type ExtrasPricingType = 'fixed' | 'daily'
+
+/** Extra from the agency catalog (snapshot source for reservation_extras). */
+export type Extra = {
+    id: number
+    name: string
+    description: string | null
+    pricing_type: ExtrasPricingType
+    default_price: number
+}
+
+/** Payload to record a payment on the ledger (mirrors the payments API). */
+export type PaymentRecordPayload = {
+    amount: number
+    method: PaymentMethod
+    status?: PaymentRecordStatus
+    payment_date?: string | null
+    reference?: string | null
+    notes?: string | null
+}
+
+/** A payment row on the ledger (mirrors App\Http\Resources\PaymentResource). */
+export type Payment = {
+    id: number
+    reservation_id: number
+    /** Present on the agency-wide ledger; omitted on the per-reservation list. */
+    reservation?: {
+        id: number
+        reservation_number: string
+        primary_client: { id: number; full_name: string } | null
+    } | null
+    payment_date: string | null
+    amount: number
+    method: PaymentMethod
+    reference: string | null
+    status: PaymentRecordStatus
+    notes: string | null
+    created_by?: { id: number; full_name: string } | null
+    created_at?: string | null
+    updated_at?: string | null
+}
+
+/** Totals, per-status counts and daily trend behind the payments page. */
+export type PaymentOverview = {
+    period: { from: string; to: string }
+    totals: { paid: number; pending: number; refunded: number; net: number }
+    counts: { paid: number; pending: number; refunded: number; total: number }
+    trend: {
+        labels: string[]
+        paid: number[]
+        pending: number[]
+        refunded: number[]
+    }
+}
+
+/** Dry-run quote from the booking engine (mirrors pricing/quote response). */
+export type PricingQuote = {
+    car_id: number
+    pickup_datetime: string
+    expected_return_datetime: string
+    base_daily_price: number
+    daily_rate: number
+    deposit_amount: number
+    tax_rate: number
+    currency: string
+    rental_days: number
+    rate_subtotal: number
+    duration_discount: number
+    duration_tier: number | null
+    extras_total: number
+    subtotal: number
+    discount_amount: number
+    tax_amount: number
+    total_amount: number
+}
 
 export type Brand = {
     id: number
@@ -121,6 +206,75 @@ export type CarPayload = {
     images?: { image: string; is_primary?: boolean; sort_order?: number }[]
 }
 
+/**
+ * Lifetime summary, 12-month revenue/expense trend and the latest records
+ * behind the car details overview (CarQueryService::overview).
+ */
+export type CarOverview = {
+    stats: {
+        reservations: {
+            total: number
+            by_status: Partial<Record<ReservationStatus, number>>
+            active: number
+            upcoming: number
+            booked_days: number
+            last_pickup_at: string | null
+        }
+        revenue: {
+            paid: number
+            pending: number
+            refunded: number
+            net: number
+        }
+        expenses: {
+            paid: number
+            pending: number
+            total: number
+            count: number
+            overdue_count: number
+            by_type: Array<{ type: ExpenseType; amount: number; count: number }>
+        }
+        net: number
+        timeline: {
+            labels: string[]
+            revenue: number[]
+            expenses: number[]
+        }
+    }
+    recent_reservations: Reservation[]
+    recent_expenses: Expense[]
+}
+
+/**
+ * One normalised entry in a car's merged audit trail
+ * (CarQueryService::history): the vehicle's own activity or a business
+ * change recorded against one of its reservations.
+ */
+export type CarHistoryEntry =
+    | {
+          id: string
+          source: 'car'
+          action: string
+          description: string | null
+          user: { id: number; full_name: string } | null
+          created_at: string | null
+      }
+    | {
+          id: string
+          source: 'reservation'
+          reservation: {
+              id: number
+              reservation_number: string
+          } | null
+          change_type: ReservationChangeType
+          field_name: string
+          old_value: string | null
+          new_value: string | null
+          reason: string | null
+          user: { id: number; full_name: string } | null
+          created_at: string | null
+      }
+
 export type Client = {
     id: number
     full_name: string
@@ -182,12 +336,12 @@ export type Reservation = {
     } | null
     primary_client: {
         id: number
-        name: string
+        full_name: string
         phone: string | null
     } | null
     secondary_client: {
         id: number
-        name: string
+        full_name: string
         phone: string | null
     } | null
     primary_driver: {
@@ -235,6 +389,42 @@ export type Reservation = {
     updated_at?: string | null
 }
 
+/** Lightweight reservation projection for the calendar (ReservationCalendarResource). */
+export type ReservationCalendarItem = {
+    id: number
+    reservation_number: string
+    status: ReservationStatus
+    payment_status: PaymentStatus
+    pickup_datetime: string
+    expected_return_datetime: string
+    rental_days: number
+    total_amount: number
+    car: { id: number; registration_number: string } | null
+    primary_client: { id: number; full_name: string } | null
+}
+
+export type ReservationChangeType =
+    | 'creation'
+    | 'status_change'
+    | 'extension'
+    | 'discount'
+    | 'date_change'
+    | 'manual_edit'
+    | 'pricing_update'
+    | 'payment'
+
+/** Append-only audit entry for a reservation (app/Resources/ReservationChangeResource). */
+export type ReservationChange = {
+    id: number
+    field_name: string
+    change_type: ReservationChangeType
+    old_value: string | null
+    new_value: string | null
+    reason: string | null
+    created_by: { id: number; full_name: string } | null
+    created_at: string
+}
+
 export type ReservationPayload = {
     car_id: number
     primary_client_id: number
@@ -258,7 +448,35 @@ export type ReservationPayload = {
     discount_reason?: string | null
     deposit_amount?: number | null
     remarks?: string | null
-    extras?: Array<{ extra_id: number; quantity: number }>
+    /**
+     * Lifecycle status. On create only the startup statuses (pending default,
+     * confirmed, reserved) are legal; on edit any state-machine target is
+     * accepted and enforced server-side.
+     */
+    status?: ReservationStatus
+    /** Audit reason accompanying a status change made from the edit form. */
+    status_reason?: string | null
+    /** Optional first payments recorded on the ledger with the reservation. */
+    payment?: {
+        amount: number
+        method: PaymentMethod
+        status?: PaymentRecordStatus
+        payment_date?: string
+        reference?: string | null
+        notes?: string | null
+    }
+    /** Optional first payments (several instalments allowed). */
+    payments?: PaymentRecordPayload[]
+    extras?: Array<
+        | { extra_id: number; quantity: number }
+        | {
+              name: string
+              description?: string | null
+              pricing_type: ExtrasPricingType
+              quantity: number
+              unit_price: number
+          }
+    >
 }
 
 export type Expense = {

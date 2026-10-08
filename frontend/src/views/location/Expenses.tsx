@@ -1,6 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import Container from '@/components/shared/Container'
-import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Tag from '@/components/ui/Tag'
 import Dialog from '@/components/ui/Dialog'
@@ -11,11 +9,19 @@ import { Notification } from '@/components/ui/Notification'
 import { toast } from '@/components/ui/toast'
 import DebouceInput from '@/components/shared/DebouceInput'
 import DataTable from '@/components/shared/DataTable'
+import OverflowTabs from '@/components/shared/OverflowTabs'
 import { useForm, Controller } from 'react-hook-form'
 import type { Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import type { ColumnDef } from '@tanstack/react-table'
+import {
+    LuCircleCheck,
+    LuClock,
+    LuSearch,
+    LuTriangleAlert,
+    LuWallet,
+} from 'react-icons/lu'
 import {
     apiGetExpenses,
     apiCreateExpense,
@@ -31,6 +37,7 @@ import {
     tagToneClass,
     formatDate,
 } from './shared'
+import { LiEdit } from '@/icons'
 
 type ExpenseFormValues = {
     car_id?: number
@@ -83,6 +90,45 @@ const buildPayload = (values: ExpenseFormValues): ExpensePayload => ({
     paid_date: values.paid_date || null,
     status: values.status ?? 'pending',
 })
+
+const statusTabList = [
+    {
+        label: (
+            <span className="flex items-center gap-2">
+                <LuWallet className="text-lg" />
+                <span>All Expenses</span>
+            </span>
+        ),
+        value: '',
+    },
+    {
+        label: (
+            <span className="flex items-center gap-2">
+                <LuClock className="text-lg" />
+                <span>Pending</span>
+            </span>
+        ),
+        value: 'pending',
+    },
+    {
+        label: (
+            <span className="flex items-center gap-2">
+                <LuCircleCheck className="text-lg" />
+                <span>Paid</span>
+            </span>
+        ),
+        value: 'paid',
+    },
+    {
+        label: (
+            <span className="flex items-center gap-2">
+                <LuTriangleAlert className="text-lg" />
+                <span>Overdue</span>
+            </span>
+        ),
+        value: 'overdue',
+    },
+]
 
 type ExpenseFormDialogProps = {
     open: boolean
@@ -344,6 +390,7 @@ const Expenses = () => {
     const [pageSize, setPageSize] = useState(10)
     const [q, setQ] = useState('')
     const [statusFilter, setStatusFilter] = useState('')
+    const [typeFilter, setTypeFilter] = useState('')
 
     const [dialogOpen, setDialogOpen] = useState(false)
     const [editing, setEditing] = useState<Expense | null>(null)
@@ -360,6 +407,9 @@ const Expenses = () => {
         if (statusFilter) {
             params.status = statusFilter
         }
+        if (typeFilter) {
+            params.type = typeFilter
+        }
         apiGetExpenses(params)
             .then((res) => {
                 setExpenses(res.data)
@@ -370,7 +420,7 @@ const Expenses = () => {
                 setTotal(0)
             })
             .finally(() => setLoading(false))
-    }, [pageIndex, pageSize, q, statusFilter])
+    }, [pageIndex, pageSize, q, statusFilter, typeFilter])
 
     useEffect(() => {
         fetchExpenses()
@@ -385,7 +435,7 @@ const Expenses = () => {
                     const expense = props.row.original
                     return (
                         <div className="flex flex-col">
-                            <span className="font-semibold capitalize dark:text-gray-100">
+                            <span className="font-semibold capitalize text-gray-900 dark:text-gray-100">
                                 {expense.title}
                             </span>
                             <span className="text-xs text-gray-400">
@@ -399,7 +449,7 @@ const Expenses = () => {
                 header: 'Car',
                 accessorKey: 'car.registration_number',
                 cell: (props) => (
-                    <span className="text-sm dark:text-gray-200">
+                    <span className="text-nowrap text-gray-600 dark:text-gray-300">
                         {props.row.original.car?.registration_number ?? '—'}
                     </span>
                 ),
@@ -408,9 +458,11 @@ const Expenses = () => {
                 header: 'Type',
                 accessorKey: 'type',
                 cell: (props) => (
-                    <span className="text-sm capitalize text-gray-600 dark:text-gray-300">
-                        {props.row.original.type.replace('_', ' ')}
-                    </span>
+                    <Tag className="bg-white font-medium shadow dark:bg-gray-800">
+                        <span className="capitalize">
+                            {props.row.original.type.replace('_', ' ')}
+                        </span>
+                    </Tag>
                 ),
             },
             {
@@ -435,7 +487,7 @@ const Expenses = () => {
                 header: 'Due',
                 accessorKey: 'due_date',
                 cell: (props) => (
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                    <span className="text-nowrap text-sm text-gray-500 dark:text-gray-400">
                         {formatDate(props.row.original.due_date)}
                     </span>
                 ),
@@ -461,16 +513,19 @@ const Expenses = () => {
                 header: '',
                 id: 'actions',
                 cell: (props) => (
-                    <div className="flex items-center justify-end gap-1">
+                    <div className="flex items-center justify-center gap-1">
                         <Button
                             size="sm"
-                            variant="ghost"
+                            variant="link"
+                            className="px-2 hover:text-gray-900 dark:hover:text-gray-100"
+                            role="button"
+                            title="Edit"
                             onClick={() => {
                                 setEditing(props.row.original)
                                 setDialogOpen(true)
                             }}
                         >
-                            Edit
+                            <LiEdit className="text-base" />
                         </Button>
                     </div>
                 ),
@@ -480,76 +535,92 @@ const Expenses = () => {
     )
 
     return (
-        <Container className="p-4">
-            <Card className="rounded-xl">
-                <div className="flex flex-col gap-4 p-4">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                        <div>
-                            <h3 className="text-xl font-bold dark:text-gray-100">
-                                Expenses
-                            </h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                                {total} expenses
-                            </p>
-                        </div>
-                        <Button
-                            variant="solid"
-                            onClick={() => {
-                                setEditing(null)
-                                setDialogOpen(true)
-                            }}
-                        >
-                            Add expense
-                        </Button>
+        <div>
+            <div className="px-4 py-2">
+                <div className="flex items-center justify-between gap-2">
+                    <div>
+                        <h4>Expenses</h4>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                            {total} expenses
+                        </p>
                     </div>
-
-                    <div className="flex flex-wrap items-center gap-3">
-                        <DebouceInput
-                            className="w-full sm:w-64"
-                            placeholder="Search expense…"
-                            onChange={(e) => {
-                                setQ(e.target.value)
-                                setPageIndex(1)
-                            }}
-                        />
-                        <div className="w-full sm:w-48">
-                            <Select
-                                options={[
-                                    { value: '', label: 'All statuses' },
-                                    ...expenseStatusOptions,
-                                ]}
-                                value={
-                                    [
-                                        { value: '', label: 'All statuses' },
-                                        ...expenseStatusOptions,
-                                    ].find((o) => o.value === statusFilter) ??
-                                    null
-                                }
-                                onChange={(option) => {
-                                    setStatusFilter(option?.value ?? '')
-                                    setPageIndex(1)
-                                }}
-                            />
-                        </div>
-                    </div>
-
-                    <DataTable<Expense>
-                        columns={columns}
-                        data={expenses}
-                        loading={loading}
-                        pagingData={{
-                            total,
-                            pageIndex,
-                            pageSize,
+                    <Button
+                        variant="solid"
+                        onClick={() => {
+                            setEditing(null)
+                            setDialogOpen(true)
                         }}
-                        onPaginationChange={(page) => setPageIndex(page)}
-                        onPageSizeChange={(size) => {
-                            setPageSize(size)
+                    >
+                        Add expense
+                    </Button>
+                </div>
+            </div>
+
+            <OverflowTabs
+                tabList={statusTabList}
+                value={statusFilter}
+                onChange={(value) => {
+                    setStatusFilter(value)
+                    setPageIndex(1)
+                }}
+                tabListClass="px-4 dark:border-gray-800"
+            />
+
+            <div className="flex flex-wrap items-center justify-between gap-2 p-4">
+                <div>
+                    <DebouceInput
+                        placeholder="Search expenses…"
+                        prefix={<LuSearch className="text-lg" />}
+                        onChange={(e) => {
+                            setQ(e.target.value)
                             setPageIndex(1)
                         }}
                     />
                 </div>
-            </Card>
+                <div className="w-48">
+                    <Select
+                        options={[
+                            { value: '', label: 'All types' },
+                            ...expenseTypeOptions,
+                        ]}
+                        value={
+                            [
+                                { value: '', label: 'All types' },
+                                ...expenseTypeOptions,
+                            ].find((o) => o.value === typeFilter) ?? null
+                        }
+                        onChange={(option) => {
+                            setTypeFilter(option?.value ?? '')
+                            setPageIndex(1)
+                        }}
+                    />
+                </div>
+            </div>
+
+            <div className="mb-4">
+                <DataTable<Expense>
+                    compact
+                    verticalDivider={{
+                        head: true,
+                        body: true,
+                    }}
+                    className="border-t border-b border-gray-200 dark:border-gray-700"
+                    columns={columns}
+                    data={expenses}
+                    noData={!loading && expenses.length === 0}
+                    loading={loading}
+                    pagingData={{
+                        total,
+                        pageIndex,
+                        pageSize,
+                    }}
+                    onPaginationChange={(page) => setPageIndex(page)}
+                    onPageSizeChange={(size) => {
+                        setPageSize(size)
+                        setPageIndex(1)
+                    }}
+                />
+            </div>
 
             <ExpenseFormDialog
                 open={dialogOpen}
@@ -557,7 +628,7 @@ const Expenses = () => {
                 onClose={() => setDialogOpen(false)}
                 onSaved={fetchExpenses}
             />
-        </Container>
+        </div>
     )
 }
 

@@ -18,6 +18,10 @@ Route::get('reservations/availability', [ReservationController::class, 'availabi
     ->middleware('permission:reservations.view')
     ->name('reservations.availability');
 
+Route::get('reservations/calendar', [ReservationController::class, 'calendar'])
+    ->middleware('permission:reservations.view')
+    ->name('reservations.calendar');
+
 Route::get('reservation-changes', [ReservationChangeController::class, 'index'])
     ->middleware('permission:reservations.view')
     ->name('reservation-changes.index');
@@ -57,6 +61,10 @@ Route::post('reservations/{reservation}/complete', [ReservationController::class
 Route::post('reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])
     ->middleware('permission:reservations.cancel')
     ->name('reservations.cancel');
+
+Route::post('reservations/{reservation}/no-show', [ReservationController::class, 'noShow'])
+    ->middleware('permission:reservations.update')
+    ->name('reservations.no-show');
 
 Route::post('reservations/{reservation}/extend', [ReservationController::class, 'extend'])
     ->middleware('permission:reservations.update')

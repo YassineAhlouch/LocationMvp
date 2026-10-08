@@ -237,8 +237,8 @@ class SearchAndPerformanceTest extends TestCase
             ->assertOk()
             ->assertJsonCount(3, 'data');
 
-        // 1 count + 1 select + 5 eager loads (car, primary, secondary,
-        // createdBy, approvedBy). A per-row lazy load would blow this.
+        // 1 count + 1 select + 6 eager loads (car, primary, secondary,
+        // createdBy, approvedBy, extras). A per-row lazy load would blow this.
         $this->assertLessThanOrEqual(9, count(DB::getQueryLog()));
     }
 

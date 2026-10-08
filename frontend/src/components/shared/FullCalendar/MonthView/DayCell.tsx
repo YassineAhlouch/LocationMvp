@@ -96,7 +96,7 @@ const DayCell = ({
             >
                 <div
                     className={classNames(
-                        'text-xs font-medium relative z-30 inline-flex justify-center items-center',
+                        'text-xs font-medium relative z-20 inline-flex justify-center items-center',
                         !currentMonth && 'opacity-40',
                         isToday(date)
                             ? 'flex translate-x-1 rounded-full bg-primary px-0 text-white'

@@ -217,8 +217,42 @@ class UpdateReservationAction
                 );
             }
 
+            // Optional lifecycle change from the edit form: the same locked
+            // state machine the list actions use, applied after the field,
+            // extras and pricing edits above.
+            if (array_key_exists('status', $data)) {
+                $target = ReservationStatus::tryFrom((string) $data['status']);
+
+                if ($target !== null && $target !== $fresh->status) {
+                    $fresh = $this->performTransition(
+                        $fresh,
+                        $target,
+                        $actor,
+                        $data['status_reason'] ?? null,
+                        $this->carHookFor($target),
+                    );
+                }
+            }
+
             return $fresh->load(['car', 'primaryClient', 'extras', 'createdBy', 'changes']);
         });
+    }
+
+    /**
+     * Car-side effect of moving to the given status — mirrors the dedicated
+     * lifecycle actions so an edit reaches the same fleet state.
+     *
+     * @return (callable(Car, Reservation): void)|null
+     */
+    private function carHookFor(ReservationStatus $target): ?callable
+    {
+        return match ($target) {
+            ReservationStatus::Confirmed, ReservationStatus::Reserved => fn (Car $car) => $this->lifecycle->onConfirmed($car),
+            ReservationStatus::Active => fn (Car $car) => $this->lifecycle->onActivated($car),
+            ReservationStatus::Cancelled, ReservationStatus::NoShow => fn (Car $car, Reservation $fresh) => $this->lifecycle->onCancelled($car, $fresh->id),
+            ReservationStatus::Completed => fn (Car $car, Reservation $fresh) => $this->lifecycle->onCompleted($car, $fresh),
+            ReservationStatus::Pending => null,
+        };
     }
 
     /**

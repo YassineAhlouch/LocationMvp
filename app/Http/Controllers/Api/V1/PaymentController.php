@@ -8,16 +8,21 @@ use App\Actions\Payments\RefundPaymentAction;
 use App\Actions\Payments\StorePaymentAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Payments\ConfirmPaymentRequest;
+use App\Http\Requests\Payments\IndexPaymentLedgerRequest;
+use App\Http\Requests\Payments\PaymentOverviewRequest;
 use App\Http\Requests\Payments\RefundPaymentRequest;
 use App\Http\Requests\Payments\StorePaymentRequest;
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
 use App\Models\Reservation;
 use App\Services\Notifications\NotificationDispatcher;
+use App\Services\Payments\PaymentQueryService;
+use App\Services\Reports\ReportingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 
 class PaymentController extends Controller
 {
@@ -27,7 +32,35 @@ class PaymentController extends Controller
         private readonly RefundPaymentAction $refundPayment,
         private readonly DeletePaymentAction $deletePayment,
         private readonly NotificationDispatcher $notifications,
+        private readonly PaymentQueryService $payments,
+        private readonly ReportingService $reporting,
     ) {}
+
+    /**
+     * Agency-wide ledger: every payment record across reservations, newest
+     * first, with the reservation and client pre-loaded for the table.
+     */
+    public function ledger(IndexPaymentLedgerRequest $request): AnonymousResourceCollection
+    {
+        return PaymentResource::collection($this->payments->paginate($request->validated()));
+    }
+
+    /**
+     * Period totals, per-status counts and the daily cash-basis trend that
+     * backs the metrics and chart on the payments page.
+     */
+    public function overview(PaymentOverviewRequest $request): JsonResponse
+    {
+        $from = $request->has('from')
+            ? Carbon::parse($request->string('from'))
+            : today()->startOfMonth();
+
+        $to = $request->has('to')
+            ? Carbon::parse($request->string('to'))
+            : today();
+
+        return response()->json($this->reporting->paymentOverview($from, $to));
+    }
 
     public function index(Reservation $reservation): AnonymousResourceCollection
     {
