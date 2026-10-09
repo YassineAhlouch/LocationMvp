@@ -1,26 +1,63 @@
 import { useEffect, useState } from 'react'
-import type { ReactNode } from 'react'
 import { useNavigate, useParams } from 'react-router'
+import dayjs from 'dayjs'
 import Button from '@/components/ui/Button'
 import Spinner from '@/components/ui/Spinner'
 import { LiChevronLeft, LiPrinter } from '@/icons'
 import { apiGetReservationContract } from '@/services/LocationService'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
-import { MAD, formatDate, formatDateTime } from './shared'
+import { formatDate, formatDateTime } from './shared'
 import type { Client, ReservationContract } from '@/@types/location'
+import './ReservationInvoice.css'
 
-const EM_DASH = '—'
+/**
+ * Printable "Contrat de location" for a reservation, mirroring the
+ * Sevenhorses template (resources/views/contracts/contrat-location.html).
+ * Two A4 portrait pages: the rental form + the 12 general conditions.
+ */
 
-const text = (value: string | number | null | undefined) =>
-    value === null || value === undefined || value === '' ? EM_DASH : String(value)
+const EMPTY = ''
 
-const km = (value: number | null | undefined) =>
+const txt = (value: string | number | null | undefined): string =>
+    value === null || value === undefined || value === ''
+        ? EMPTY
+        : String(value)
+
+/** Plain amount used next to the "DH" suffix printed on the document. */
+const amount = (value: number | null | undefined): string =>
     value === null || value === undefined
-        ? EM_DASH
-        : `${value.toLocaleString('fr-FR')} km`
+        ? EMPTY
+        : Number(value).toLocaleString('fr-FR', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+          })
 
-const percent = (value: number | null | undefined) =>
-    value === null || value === undefined ? EM_DASH : `${value}%`
+const kms = (value: number | null | undefined): string =>
+    value === null || value === undefined
+        ? EMPTY
+        : `${Number(value).toLocaleString('fr-FR')} km`
+
+const datePart = (
+    value: string | null | undefined,
+    unit: 'DD' | 'MM' | 'YYYY',
+): string => (value ? dayjs(value).format(unit) : EMPTY)
+
+const timePart = (value: string | null | undefined): string =>
+    value ? dayjs(value).format('HH:mm') : EMPTY
+
+const splitName = (full: string | null | undefined) => {
+    if (!full) {
+        return { nom: EMPTY, prenom: EMPTY }
+    }
+    const parts = full.trim().split(/\s+/)
+    if (parts.length === 1) {
+        return { nom: parts[0], prenom: EMPTY }
+    }
+    return {
+        prenom: parts.slice(0, -1).join(' '),
+        nom: parts[parts.length - 1],
+    }
+}
 
 const methodLabel: Record<string, string> = {
     cash: 'Espèces',
@@ -28,72 +65,188 @@ const methodLabel: Record<string, string> = {
     transfer: 'Virement',
 }
 
-const recordStatusLabel: Record<string, string> = {
-    paid: 'Payé',
-    pending: 'En attente',
-    refunded: 'Remboursé',
+type DriverFields = {
+    nom: string
+    prenom: string
+    naissance: string
+    lieuNaissance: string
+    adresse: string
+    telephone: string
+    permis: string
+    permisDelivreLe: string
+    permisDelivreA: string
+    passeport: string
+    passeportDelivreLe: string
+    passeportDelivreA: string
+    cin: string
+    cinValable: string
+    entreeMaroc: string
 }
 
-const fullAddress = (client: Client | null) => {
-    if (!client) {
-        return EM_DASH
+const buildDriver = (
+    client: Client | null,
+    fallback: {
+        name: string | null
+        phone: string | null
+        cin: string | null
+        passport: string | null
+        license: string | null
+    },
+): DriverFields => {
+    const split = splitName(fallback.name)
+
+    return {
+        nom: txt(client?.last_name) || split.nom,
+        prenom: txt(client?.first_name) || split.prenom,
+        naissance: client?.birth_date ? formatDate(client.birth_date) : EMPTY,
+        lieuNaissance: txt(client?.birth_place),
+        adresse:
+            [client?.address, client?.city, client?.country]
+                .filter(Boolean)
+                .join(', ') || EMPTY,
+        telephone: txt(client?.phone) || txt(fallback.phone),
+        permis: txt(client?.driving_license_number) || txt(fallback.license),
+        permisDelivreLe: EMPTY,
+        permisDelivreA: EMPTY,
+        passeport: txt(client?.passport_number) || txt(fallback.passport),
+        passeportDelivreLe: EMPTY,
+        passeportDelivreA: EMPTY,
+        cin: txt(client?.cin) || txt(fallback.cin),
+        cinValable: EMPTY,
+        entreeMaroc: EMPTY,
     }
-
-    return (
-        [client.address, client.city, client.country].filter(Boolean).join(', ') ||
-        EM_DASH
-    )
 }
 
-const Field = ({ label, value }: { label: string; value: ReactNode }) => (
-    <div className="space-y-0.5">
-        <div className="text-[10px] font-medium tracking-wide text-gray-500 uppercase">
-            {label}
+const DriverCell = ({ driver }: { driver: DriverFields }) => (
+    <td>
+        <div className="field-block">
+            <div className="field-row">
+                <span className="fl">Nom</span>
+                <div className="fd">{driver.nom}</div>
+            </div>
+            <div className="field-row">
+                <span className="fl">Prénom</span>
+                <div className="fd">{driver.prenom}</div>
+            </div>
+            <div className="field-row-split">
+                <div className="fhalf">
+                    <span className="fl">Né(e) le</span>
+                    <div className="fd">{driver.naissance}</div>
+                </div>
+                <div className="fhalf">
+                    <span className="fl">à</span>
+                    <div className="fd">{driver.lieuNaissance}</div>
+                </div>
+            </div>
+            <div className="field-row">
+                <span className="fl">Adresse du maroc</span>
+                <div className="fd">{driver.adresse}</div>
+            </div>
+            <div
+                className="field-row"
+                style={{ borderBottom: '1pt dotted #aaa', height: '3mm' }}
+            />
+            <div className="field-row">
+                <span className="fl">Téléphone</span>
+                <div className="fd">{driver.telephone}</div>
+            </div>
+            <div className="field-row">
+                <span className="fl">Permis de conduire N°</span>
+                <div className="fd">{driver.permis}</div>
+            </div>
+            <div className="field-row-split">
+                <div className="fhalf">
+                    <span className="fl">Délivré le</span>
+                    <div className="fd">{driver.permisDelivreLe}</div>
+                </div>
+                <div className="fhalf">
+                    <span className="fl">à</span>
+                    <div className="fd">{driver.permisDelivreA}</div>
+                </div>
+            </div>
+            <div className="field-row">
+                <span className="fl">Passeport</span>
+                <div className="fd">{driver.passeport}</div>
+            </div>
+            <div className="field-row-split">
+                <div className="fhalf">
+                    <span className="fl">Délivré le</span>
+                    <div className="fd">{driver.passeportDelivreLe}</div>
+                </div>
+                <div className="fhalf">
+                    <span className="fl">à</span>
+                    <div className="fd">{driver.passeportDelivreA}</div>
+                </div>
+            </div>
+            <div className="field-row">
+                <span className="fl">CIN N°</span>
+                <div className="fd">{driver.cin}</div>
+            </div>
+            <div className="field-row">
+                <span className="fl">Valable jusqu'au</span>
+                <div className="fd">{driver.cinValable}</div>
+            </div>
+            <div className="field-row">
+                <span className="fl">Numéro et date d'entrée au maroc</span>
+                <div className="fd">{driver.entreeMaroc}</div>
+            </div>
         </div>
-        <div className="text-sm text-gray-900">
-            {value === null || value === undefined || value === '' ? EM_DASH : value}
-        </div>
-    </div>
+    </td>
 )
 
-const SectionTitle = ({ children }: { children: ReactNode }) => (
-    <h3 className="mb-3 border-b border-gray-300 pb-1.5 text-xs font-bold tracking-wider text-gray-700 uppercase">
-        {children}
-    </h3>
-)
-
-const Row = ({ label, value }: { label: string; value: ReactNode }) => (
-    <div className="flex justify-between text-gray-700">
-        <span>{label}</span>
-        <span className="font-medium text-gray-900">{value}</span>
-    </div>
-)
-
-const Checkbox = ({ label }: { label: string }) => (
-    <div className="flex items-center gap-2 text-sm text-gray-800">
-        <span className="inline-block h-4 w-4 shrink-0 border border-gray-400" />
-        <span>{label}</span>
-    </div>
-)
-
-const TermsItem = ({ children }: { children: ReactNode }) => (
-    <li className="flex gap-2 text-xs leading-relaxed text-gray-700">
-        <span className="text-gray-400">•</span>
-        <span>{children}</span>
-    </li>
-)
-
-const TERMS = [
-    "The driver must have held a valid driver's license for more than 2 years.",
-    'A security deposit is mandatory upon vehicle handover.',
-    'The vehicle must be returned in identical condition and at the agreed contract time.',
-    'Any damages or scratches will be deducted directly from the deposit.',
-    'A 2,000 DH penalty applies for lost vehicle documents or keys.',
-    'No repairs may be made to the vehicle without prior written consent from the company.',
-    'Signing an amicable accident report without an expert present is strictly prohibited.',
-    'Driving the vehicle into Melilla is strictly forbidden; the renter assumes full responsibility for any attempt.',
-    'Driving by unauthorized individuals not listed on the contract is strictly prohibited.',
+const CONDITIONS: Array<{ num: string; body: string }> = [
+    {
+        num: 'Article 1 : UTILISATION DE LA VOITURE :',
+        body: "Le locataire s'engage à ne pas laisser conduire la voiture par d'autres personnes que lui-même ou celles agrées par le loueur et dont il se porte garant, et à n'utiliser le véhicule que pour ses besoins personnels. Il est interdit de participer à toute compétition quelle que soit, et d'utiliser le véhicule à des fins illicites ou des transports des marchandises. Le locataire s'engage à ne pas solliciter directement des documents douaniers. Il est interdit au locataire de surcharger le véhicule loué en transportant un nombre de passagers supérieur à celui porté sur le contrat, sous peine d'être déchu de l'assurance.",
+    },
+    {
+        num: "Article 2 : PAS D'ANNULATION :",
+        body: "Pas de remboursement en cas de problèmes personnels ni pour l'essence ; tout ce qui est pneumatique est à la charge du client ; les voitures doivent être garées dans les Parking payants avec gardiens. Vol de pneu de secours à la charge du CLIENT. Le procès d'excès de Vitesse est à la charge du client.",
+    },
+    {
+        num: 'Article 3 : ESSENCE ET HUILE :',
+        body: "L'essence est à la charge du client. Le locataire doit vérifier en permanence les niveaux d'huile et d'eau, et vérifier les niveaux de la boite de vitesse et du pont arrière tous les 1000 km. Il justifiera de ces travaux par des factures correspondantes (qui lui seront remboursées) sous peine d'avoir à payer une indemnité anormale.",
+    },
+    {
+        num: 'Article 4 : ENTRETIEN ET REPARATION :',
+        body: "L'usure mécanique normale est à la charge du loueur. Toutes les réparations provenant, soit d'une usure normale, soit d'une négligence de la part du locataire ou d'une cause accidentelle, seront à sa charge et exécutées par nos soins. Dans le cas où le véhicule serait immobilisé en dehors de la région, les réparations qu'elles soient dues à l'usure normale ou à une cause accidentelle, ne seront exécutées qu'après accord télégraphique du loueur ou par l'agent régional de la marque du véhicule. Elles devront faire l'objet d'une facture acquittée. En aucun cas et en aucune circonstance, le locataire ne pourra réclamer des dommages et intérêts, soit par retard de la remise de la voiture, ou annulation de la location, soit pour immobilisation dans le cas de réparations nécessaires par l'usure normale et effectuées au cours de la location. La responsabilité du loueur ne pourra jamais être invoquée, même en cas d'accidents de personnes ou de choses ayant résulté de vices ou de défauts de construction ou de réparation antérieures.",
+    },
+    {
+        num: 'Article 5 : ASSURANCE :',
+        body: "Le locataire est garanti pour les risques suivants : 1. Pour une somme illimitée pour les accidents qu'il peut causer aux tiers, y compris ceux transportés à titre gracieux. 2. Contre le vol et l'incendie de véhicule loué, à l'exclusion des vêtements et de tous les objets transportés. 3. Les frais de rapatriement et d'immobilisation restent toujours à la charge du locataire, quelque soit la formule d'assurance contractée. 4. Le locataire s'engage à déclarer au loueur, dans les 48 heures et immédiatement aux autorités de police, tout accident, vol ou incendie, même partiel sous peine d'être déchu du bénéfice de l'assurance.",
+    },
+    {
+        num: 'Article 6 : LOCATION, CAUTION, PROLONGATION :',
+        body: "Le prix de location, ainsi que la caution, sont déterminés par les tarifs en vigueur et payables d'avance. La caution ne pourra servir en aucun cas au loueur. Afin d'éviter toute contestation et pour le cas où le locataire voudrait conserver la voiture pour un temps supérieur à celui indiqué sur le contrat, il devra après avoir obtenu l'accord de s'exposer à des poursuites pour détournement de voiture ou abus de confiance. La journée de location compte de 0 heures à 24 heures et toute journée commencée est due en entier.",
+    },
+    {
+        num: 'Article 7 : RAPATRIEMENT DE LA VOITURE :',
+        body: "Le locataire est interdit formellement d'abandonner le véhicule. En cas d'impossibilité matérielle, celui-ci sera rapatrié aux frais et par les soins du locataire, la location restant due jusqu'au retour du véhicule.",
+    },
+    {
+        num: 'Article 8 : PAPIERS DE LA VOITURE :',
+        body: "Le locataire remettra dès la fin de la location et à la rentrée de la voiture, la carte grise et tous les papiers nécessaires à sa circulation, faute de quoi, ces pièces étant indispensables à de nouvelles locations, la location continuera à être facturée au prix initial jusqu'à remise à la société. En cas de perte de ces papiers, le locataire devra acquitter le montant des frais de duplicata.",
+    },
+    {
+        num: 'Article 9 : RESPONSABILITE :',
+        body: 'Le locataire demeure seul responsable des vols des pièces automobiles, amendes, contraventions et procès verbaux établis contre lui.',
+    },
+    {
+        num: 'Article 10 : COMPETENCE :',
+        body: "De convention expresse et en cas de contestation quelconque, le tribunal de Marrakech sera seul compétent, les frais de timbres et d'enregistrement restant à la charge du locataire.",
+    },
+    {
+        num: "Article 11 : EN CAS D'ACCIDENT :",
+        body: "Le client est tenu de faire un constat et de signer le PV, sinon les frais d'assurances sont à sa charge.",
+    },
+    {
+        num: 'Article 12 : CONDITIONS POUR LES 4X4 :',
+        body: "CHAQUE MATIN : chauffer le moteur 10 mn — vérifier l'eau, les huiles et les pneus — sur la route n'utilisez pas le crabotage — si vous êtes bloqué dans le sable : faire point mort et utiliser le crabotage en 4 roues motrices. Les 4x4 ne doivent pas passer dans les rivières ou sur les sables côtières. En cas d'accident sans justification (constat de police ou de gendarmerie avec n° de P.V) les dommages sont à la charge du client. La voiture est toujours à la charge de la personne sur le contrat de location. La voiture ne doit être laissée près de la plage ou la rivière ou dans les zones interdites.",
+    },
 ]
+
+const FALLBACK_ADDRESS =
+    'Numéro 78, 2ème étage, Kissaria Al Jassim, Boulevard Mohamed V, Gueliz, Marrakech'
 
 const ReservationInvoice = () => {
     const { id } = useParams()
@@ -165,19 +318,77 @@ const ReservationInvoice = () => {
         mileage,
     } = contract
 
-    const extras = reservation.extras ?? []
-    const paidTotal = payments
-        .filter((payment) => payment.status === 'paid')
-        .reduce((sum, payment) => sum + payment.amount, 0)
-    const balance = reservation.total_amount - paidTotal
+    // ── Company / letterhead ────────────────────────────────────────────
+    const brandName = (agency?.name ?? 'Sevenhorses').trim()
+    const brandParts = brandName.split(/\s+/)
+    const brandFirst = brandParts[0] ?? brandName
+    const brandRest = brandParts.slice(1).join(' ')
+    const footerAddress = agency?.address?.trim() || FALLBACK_ADDRESS
 
-    const hasSecondaryDriver = Boolean(
-        secondary_client || reservation.secondary_driver.name,
+    // ── Vehicle ─────────────────────────────────────────────────────────
+    const marque = txt(car?.brand)
+    const immatriculation =
+        txt(car?.registration_number) ||
+        txt(reservation.car?.registration_number)
+
+    // ── Drivers ─────────────────────────────────────────────────────────
+    const driver1 = buildDriver(primary_client, reservation.primary_driver)
+    const driver2 = buildDriver(secondary_client, reservation.secondary_driver)
+
+    // ── Duration ────────────────────────────────────────────────────────
+    const pickup = reservation.pickup_datetime
+    const dropoff = reservation.expected_return_datetime
+    const depart = {
+        j: datePart(pickup, 'DD'),
+        m: datePart(pickup, 'MM'),
+        a: datePart(pickup, 'YYYY'),
+        label: formatDateTime(pickup),
+    }
+    const retour = {
+        j: datePart(dropoff, 'DD'),
+        m: datePart(dropoff, 'MM'),
+        a: datePart(dropoff, 'YYYY'),
+        label: formatDateTime(dropoff),
+    }
+
+    // ── Delivery / collection ───────────────────────────────────────────
+    const livraisonLieu = txt(reservation.pickup_location)
+    const recuperationLieu = txt(reservation.return_location)
+    const livraisonHeure = timePart(pickup)
+    const recuperationHeure = timePart(dropoff)
+
+    // ── Pricing ─────────────────────────────────────────────────────────
+    const prixJour = amount(reservation.daily_rate)
+    const nbJours = txt(reservation.rental_days)
+    const kmAdditionnel =
+        mileage.extra_fee > 0 ? `${amount(mileage.extra_fee)} DH` : EMPTY
+
+    // ── Financials ──────────────────────────────────────────────────────
+    const netLocation = amount(reservation.subtotal)
+    const fraisLivraison = EMPTY
+    const tva = amount(reservation.tax_amount)
+    const caution = amount(reservation.deposit_amount)
+    const total = amount(reservation.total_amount)
+    const modeReglement = payments[0]
+        ? (methodLabel[payments[0].method] ?? txt(payments[0].method))
+        : EMPTY
+
+    // ── Inspection / signature ──────────────────────────────────────────
+    const kmDepart = kms(reservation.pickup_mileage)
+    const kmArrivee = kms(reservation.return_mileage)
+    const faitLe = formatDate(
+        reservation.created_at ?? new Date().toISOString(),
     )
-    const agencyInitial = (agency?.name ?? 'A').charAt(0).toUpperCase()
+
+    const footer = (
+        <div className="footer">
+            <span>{footerAddress}</span>
+            <strong>Sevenhorses.ma</strong>
+        </div>
+    )
 
     return (
-        <div className="min-h-screen bg-gray-100 px-4 py-6 print:bg-white print:p-0 dark:bg-gray-900">
+        <div className="min-h-screen overflow-x-auto bg-gray-100 px-4 py-6 print:overflow-visible print:bg-white print:p-0 dark:bg-gray-900">
             <div className="mx-auto mb-4 flex max-w-[1000px] items-center justify-between gap-3 print:hidden">
                 <Button
                     variant="subtle"
@@ -197,448 +408,294 @@ const ReservationInvoice = () => {
                 </Button>
             </div>
 
-            <div className="mx-auto max-w-[1000px] rounded-lg border border-gray-300 bg-white p-8 text-gray-900 shadow-sm print:max-w-none print:rounded-none print:border-0 print:p-0 print:shadow-none">
-                <header className="flex items-start justify-between gap-6 border-b-2 border-gray-800 pb-6">
-                    <div className="flex items-start gap-4">
-                        {agency?.logo ? (
-                            <img
-                                src={agency.logo}
-                                alt={agency.name}
-                                className="h-16 w-16 rounded object-contain"
-                            />
-                        ) : (
-                            <div className="flex h-16 w-16 items-center justify-center rounded bg-gray-800 text-2xl font-bold text-white">
-                                {agencyInitial}
+            <div className="reservation-contract">
+                {/* ═══════════════════════ PAGE 1 — CONTRAT ══════════════ */}
+                <div className="page">
+                    <div className="contract-header">
+                        <div>
+                            <div className="logo">
+                                <span>{brandFirst}</span>
+                                {brandRest ? ` ${brandRest}` : ''}
+                                <sup>®</sup>
                             </div>
-                        )}
-                        <div className="space-y-0.5">
-                            <h1 className="text-xl font-bold tracking-wide uppercase">
-                                {text(agency?.name)}
-                            </h1>
-                            {agency?.address && (
-                                <p className="text-sm text-gray-600">
-                                    {agency.address}
-                                </p>
-                            )}
-                            <p className="text-sm text-gray-600">
-                                {[agency?.city, agency?.country]
-                                    .filter(Boolean)
-                                    .join(', ')}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                                {[agency?.phone, agency?.email]
-                                    .filter(Boolean)
-                                    .join('  •  ')}
-                            </p>
-                        </div>
-                    </div>
-                    <div className="text-right">
-                        <h2 className="text-lg font-bold tracking-wide uppercase">
-                            Contrat de location
-                        </h2>
-                        <p className="text-xs text-gray-500">
-                            Car Rental Agreement
-                        </p>
-                        <div className="mt-3 space-y-1 text-sm">
-                            <p>
-                                <span className="text-gray-500">
-                                    Contrat N° :{' '}
-                                </span>
-                                <span className="font-semibold">
-                                    {reservation.reservation_number}
-                                </span>
-                            </p>
-                            <p>
-                                <span className="text-gray-500">Date : </span>
-                                <span className="font-medium">
-                                    {formatDate(reservation.created_at)}
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                </header>
-
-                <section className="mt-6">
-                    <SectionTitle>1. Agence &amp; document</SectionTitle>
-                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                        <Field label="Agence" value={agency?.name} />
-                        <Field label="ICE" value={agency?.ice} />
-                        <Field label="RC" value={agency?.rc} />
-                        <Field
-                            label="Contrat N°"
-                            value={reservation.reservation_number}
-                        />
-                        <Field
-                            label="Adresse"
-                            value={[agency?.address, agency?.city, agency?.country]
-                                .filter(Boolean)
-                                .join(', ')}
-                        />
-                        <Field label="Téléphone" value={agency?.phone} />
-                        <Field label="Email" value={agency?.email} />
-                        <Field
-                            label="Date d'émission"
-                            value={formatDate(reservation.created_at)}
-                        />
-                    </div>
-                </section>
-
-                <section className="mt-6">
-                    <SectionTitle>2. Locataire / Renter</SectionTitle>
-                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-                        <Field
-                            label="Nom complet"
-                            value={primary_client?.full_name}
-                        />
-                        <Field label="Téléphone" value={primary_client?.phone} />
-                        <Field
-                            label="Adresse"
-                            value={fullAddress(primary_client)}
-                        />
-                        <Field label="N° CIN" value={primary_client?.cin} />
-                        <Field
-                            label="N° Passeport"
-                            value={primary_client?.passport_number}
-                        />
-                        <Field
-                            label="N° Permis"
-                            value={primary_client?.driving_license_number}
-                        />
-                        <Field
-                            label="Validité permis"
-                            value={formatDate(
-                                primary_client?.driving_license_expiry,
-                            )}
-                        />
-                        <Field
-                            label="Nationalité"
-                            value={primary_client?.nationality}
-                        />
-                        <Field
-                            label="Date de naissance"
-                            value={formatDate(primary_client?.birth_date)}
-                        />
-                    </div>
-                </section>
-
-                <section className="mt-6">
-                    <SectionTitle>
-                        3. Autre conducteur / Secondary driver
-                    </SectionTitle>
-                    {hasSecondaryDriver ? (
-                        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-                            <Field
-                                label="Nom complet"
-                                value={
-                                    secondary_client?.full_name ??
-                                    reservation.secondary_driver.name
-                                }
-                            />
-                            <Field
-                                label="Téléphone"
-                                value={
-                                    secondary_client?.phone ??
-                                    reservation.secondary_driver.phone
-                                }
-                            />
-                            <Field
-                                label="N° CIN"
-                                value={
-                                    secondary_client?.cin ??
-                                    reservation.secondary_driver.cin
-                                }
-                            />
-                            <Field
-                                label="N° Permis"
-                                value={
-                                    secondary_client?.driving_license_number ??
-                                    reservation.secondary_driver.license
-                                }
-                            />
-                            <Field
-                                label="Validité permis"
-                                value={formatDate(
-                                    secondary_client?.driving_license_expiry,
-                                )}
-                            />
-                        </div>
-                    ) : (
-                        <p className="text-sm text-gray-500">
-                            Aucun conducteur secondaire enregistré.
-                        </p>
-                    )}
-                </section>
-
-                <section className="mt-6">
-                    <SectionTitle>
-                        4. Véhicule &amp; inspection / Vehicle &amp; inspection
-                    </SectionTitle>
-                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                        <Field label="Marque" value={car?.brand} />
-                        <Field label="Modèle" value={car?.model} />
-                        <Field
-                            label="Immatriculation"
-                            value={car?.registration_number}
-                        />
-                        <Field label="Catégorie" value={car?.category} />
-                        <Field label="Année" value={car?.year} />
-                        <Field label="Couleur" value={car?.color} />
-                        <Field
-                            label="Transmission"
-                            value={car?.transmission_type}
-                        />
-                        <Field label="Carburant" value={car?.fuel_type} />
-                    </div>
-
-                    <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        <div className="rounded border border-gray-300 p-3">
-                            <p className="mb-2 text-xs font-semibold text-gray-600 uppercase">
-                                Livraison — {formatDateTime(reservation.pickup_datetime)}
-                            </p>
-                            <div className="grid grid-cols-2 gap-3">
-                                <Field
-                                    label="Odomètre"
-                                    value={km(reservation.pickup_mileage)}
-                                />
-                                <Field
-                                    label="Carburant"
-                                    value={percent(reservation.pickup_fuel_level)}
-                                />
+                            <div className="company-info">
+                                <strong>
+                                    {agency?.name ?? 'Ste Sevenhorses'}
+                                </strong>
+                                <br />
+                                {agency?.phone ?? '+212 671-729098'}
+                                <br />
+                                {agency?.email ?? 'Contact@sevenhorses.ma'}
                             </div>
                         </div>
-                        <div className="rounded border border-gray-300 p-3">
-                            <p className="mb-2 text-xs font-semibold text-gray-600 uppercase">
-                                Réception —{' '}
-                                {formatDateTime(
-                                    reservation.actual_return_datetime ??
-                                        reservation.expected_return_datetime,
-                                )}
-                            </p>
-                            <div className="grid grid-cols-2 gap-3">
-                                <Field
-                                    label="Odomètre"
-                                    value={km(reservation.return_mileage)}
-                                />
-                                <Field
-                                    label="Carburant"
-                                    value={percent(reservation.return_fuel_level)}
-                                />
+                        <div className="header-right">
+                            <div className="tagline">
+                                Conduisez vers de
+                                <br />
+                                nouvelles expériences
+                            </div>
+                            <div className="contract-title">
+                                Contrat de location
                             </div>
                         </div>
                     </div>
 
-                    <div className="mt-3 grid grid-cols-1 gap-3 rounded border border-dashed border-gray-300 p-3 sm:grid-cols-3">
-                        <Checkbox label="Lavage / Wash" />
-                        <Checkbox label="Radio" />
-                        <Checkbox label="Roue de secours / Spare wheel" />
-                    </div>
-                </section>
-
-                <section className="mt-6">
-                    <SectionTitle>
-                        5. Durée &amp; financier / Duration &amp; financials
-                    </SectionTitle>
-                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                        <Field
-                            label="Date de sortie"
-                            value={formatDateTime(reservation.pickup_datetime)}
-                        />
-                        <Field
-                            label="Date d'entrée"
-                            value={formatDateTime(
-                                reservation.expected_return_datetime,
-                            )}
-                        />
-                        <Field label="Jours" value={reservation.rental_days} />
-                        <Field
-                            label="Distance parcourue"
-                            value={km(mileage.distance)}
-                        />
-                        <Field
-                            label="Km inclus"
-                            value={`${km(mileage.allowance)} (${mileage.daily_allowance} km/jour)`}
-                        />
-                        <Field
-                            label="Km supplémentaires"
-                            value={km(mileage.excess)}
-                        />
-                        <Field
-                            label="Frais km supp."
-                            value={`${MAD(mileage.extra_fee)} (${MAD(mileage.fee_per_km)}/km)`}
-                        />
-                        <Field
-                            label="Tarif journalier"
-                            value={MAD(reservation.daily_rate)}
-                        />
-                    </div>
-
-                    <div className="mt-4 ml-auto w-full max-w-md space-y-1.5 text-sm">
-                        <Row label="Sous-total" value={MAD(reservation.subtotal)} />
-                        {reservation.discount_amount > 0 && (
-                            <Row
-                                label="Remise"
-                                value={`- ${MAD(reservation.discount_amount)}`}
-                            />
-                        )}
-                        {reservation.tax_amount > 0 && (
-                            <Row label="Taxe" value={MAD(reservation.tax_amount)} />
-                        )}
-                        <Row label="Caution" value={MAD(reservation.deposit_amount)} />
-                        <div className="flex justify-between border-t border-gray-800 pt-1.5 text-base font-bold text-gray-900">
-                            <span>Total</span>
-                            <span>{MAD(reservation.total_amount)}</span>
+                    {/* VEHICLE BAND */}
+                    <div className="vehicle-band">
+                        <div className="vb-item">
+                            <span className="vb-label">Marque :</span>
+                            <div className="vb-dots">{marque}</div>
                         </div>
-                        <Row label="Payé" value={MAD(paidTotal)} />
-                        <Row label="Solde" value={MAD(balance)} />
+                        <div className="vb-sep" />
+                        <div className="vb-item">
+                            <span className="vb-label">
+                                N° d'Immatriculation :
+                            </span>
+                            <div className="vb-dots">{immatriculation}</div>
+                        </div>
                     </div>
 
-                    {extras.length > 0 && (
-                        <div className="mt-5">
-                            <p className="mb-2 text-xs font-semibold text-gray-600 uppercase">
-                                Extras
-                            </p>
-                            <table className="w-full border-collapse text-sm">
+                    <div className="section-title">Locataire</div>
+
+                    {/* DRIVERS TABLE */}
+                    <table className="driver-table">
+                        <thead>
+                            <tr>
+                                <th>1er Conducteur</th>
+                                <th>2ème Conducteur</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <DriverCell driver={driver1} />
+                                <DriverCell driver={driver2} />
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    {/* BOTTOM GRID */}
+                    <div className="bottom-grid">
+                        {/* LEFT COLUMN */}
+                        <div className="col-left">
+                            <table className="mini-table">
                                 <thead>
-                                    <tr className="border-b border-gray-300 text-left text-xs text-gray-500 uppercase">
-                                        <th className="py-1 pr-2 font-medium">
-                                            Désignation
-                                        </th>
-                                        <th className="py-1 pr-2 font-medium">
-                                            Type
-                                        </th>
-                                        <th className="py-1 pr-2 text-right font-medium">
-                                            Qté
-                                        </th>
-                                        <th className="py-1 pr-2 text-right font-medium">
-                                            P.U.
-                                        </th>
-                                        <th className="py-1 text-right font-medium">
-                                            Total
-                                        </th>
+                                    <tr>
+                                        <th
+                                            className="th-blank"
+                                            style={{ width: '18%' }}
+                                        />
+                                        <th style={{ width: '11%' }}>J</th>
+                                        <th style={{ width: '11%' }}>M</th>
+                                        <th style={{ width: '16%' }}>A</th>
+                                        <th>Durée de location</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {extras.map((extra, index) => (
-                                        <tr
-                                            key={`${extra.name}-${index}`}
-                                            className="border-b border-gray-200"
-                                        >
-                                            <td className="py-1 pr-2">
-                                                {extra.name}
-                                            </td>
-                                            <td className="py-1 pr-2">
-                                                {extra.pricing_type === 'daily'
-                                                    ? 'Journalier'
-                                                    : 'Fixe'}
-                                            </td>
-                                            <td className="py-1 pr-2 text-right">
-                                                {extra.quantity}
-                                            </td>
-                                            <td className="py-1 pr-2 text-right">
-                                                {MAD(extra.unit_price)}
-                                            </td>
-                                            <td className="py-1 text-right">
-                                                {MAD(extra.total_price)}
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    <tr>
+                                        <td className="row-label">Départ</td>
+                                        <td>{depart.j}</td>
+                                        <td>{depart.m}</td>
+                                        <td>{depart.a}</td>
+                                        <td className="td-left">
+                                            {depart.label}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td className="row-label">Retour</td>
+                                        <td>{retour.j}</td>
+                                        <td>{retour.m}</td>
+                                        <td>{retour.a}</td>
+                                        <td className="td-left">
+                                            {retour.label}
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
-                        </div>
-                    )}
 
-                    {payments.length > 0 && (
-                        <div className="mt-5">
-                            <p className="mb-2 text-xs font-semibold text-gray-600 uppercase">
-                                Paiements
-                            </p>
-                            <table className="w-full border-collapse text-sm">
+                            <table className="mini-table">
                                 <thead>
-                                    <tr className="border-b border-gray-300 text-left text-xs text-gray-500 uppercase">
-                                        <th className="py-1 pr-2 font-medium">
-                                            Date
-                                        </th>
-                                        <th className="py-1 pr-2 font-medium">
-                                            Méthode
-                                        </th>
-                                        <th className="py-1 pr-2 font-medium">
-                                            Référence
-                                        </th>
-                                        <th className="py-1 pr-2 font-medium">
-                                            Statut
-                                        </th>
-                                        <th className="py-1 text-right font-medium">
-                                            Montant
-                                        </th>
+                                    <tr>
+                                        <th
+                                            className="th-blank"
+                                            style={{ width: '26%' }}
+                                        />
+                                        <th>Lieu</th>
+                                        <th style={{ width: '28%' }}>Heure</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {payments.map((payment) => (
-                                        <tr
-                                            key={payment.id}
-                                            className="border-b border-gray-200"
-                                        >
-                                            <td className="py-1 pr-2">
-                                                {formatDate(payment.payment_date)}
-                                            </td>
-                                            <td className="py-1 pr-2">
-                                                {methodLabel[payment.method] ??
-                                                    text(payment.method)}
-                                            </td>
-                                            <td className="py-1 pr-2">
-                                                {text(payment.reference)}
-                                            </td>
-                                            <td className="py-1 pr-2">
-                                                {recordStatusLabel[
-                                                    payment.status
-                                                ] ?? text(payment.status)}
-                                            </td>
-                                            <td className="py-1 text-right">
-                                                {MAD(payment.amount)}
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    <tr>
+                                        <td className="row-label">Livraison</td>
+                                        <td className="td-left">
+                                            {livraisonLieu}
+                                        </td>
+                                        <td>{livraisonHeure}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="row-label">
+                                            Récupération
+                                        </td>
+                                        <td className="td-left">
+                                            {recuperationLieu}
+                                        </td>
+                                        <td>{recuperationHeure}</td>
+                                    </tr>
                                 </tbody>
                             </table>
+
+                            <div className="dotted-box">
+                                <div className="dotted-row">
+                                    <span className="line-lbl">
+                                        Prix / jour (300 km / jr)
+                                    </span>
+                                    <div className="dotted-fill">
+                                        {prixJour}
+                                    </div>
+                                </div>
+                                <div className="dotted-row">
+                                    <span className="line-lbl">
+                                        Nombre de jours
+                                    </span>
+                                    <div className="dotted-fill">{nbJours}</div>
+                                </div>
+                                <div className="dotted-row">
+                                    <span className="line-lbl">
+                                        Kilométrage additionnel (1dh / km)
+                                    </span>
+                                    <div className="dotted-fill">
+                                        {kmAdditionnel}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="dotted-box">
+                                <div className="dotted-row">
+                                    <span className="line-lbl">
+                                        Net location
+                                    </span>
+                                    <div className="dotted-fill">
+                                        {netLocation}
+                                    </div>
+                                    <span className="dotted-dh">DH</span>
+                                </div>
+                                <div className="dotted-row">
+                                    <span className="line-lbl">
+                                        Frais de livraison / Reprise
+                                    </span>
+                                    <div className="dotted-fill">
+                                        {fraisLivraison}
+                                    </div>
+                                    <span className="dotted-dh">DH</span>
+                                </div>
+                                <div className="dotted-row">
+                                    <span className="line-lbl">TVA 20%</span>
+                                    <div className="dotted-fill">{tva}</div>
+                                    <span className="dotted-dh">DH</span>
+                                </div>
+                                <div className="dotted-row">
+                                    <span className="line-lbl">Caution</span>
+                                    <div className="dotted-fill">{caution}</div>
+                                    <span className="dotted-dh">DH</span>
+                                </div>
+                            </div>
+
+                            <div className="total-box">
+                                <div className="total-row">
+                                    <span className="total-lbl">
+                                        Total Général
+                                    </span>
+                                    <div className="total-fill">{total}</div>
+                                    <span className="total-dh">DH</span>
+                                </div>
+                                <div className="total-row">
+                                    <span className="total-lbl">
+                                        Mode de règlement
+                                    </span>
+                                    <div className="total-fill">
+                                        {modeReglement}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    )}
-                </section>
 
-                <section className="mt-6">
-                    <SectionTitle>
-                        6. Conditions générales / General terms &amp; conditions
-                    </SectionTitle>
-                    <ol className="space-y-1.5">
-                        {TERMS.map((term) => (
-                            <TermsItem key={term}>{term}</TermsItem>
-                        ))}
-                    </ol>
-                </section>
+                        {/* RIGHT COLUMN */}
+                        <div className="col-right">
+                            <div className="right-image-container">
+                                <div className="image-border-wrapper">
+                                    <img
+                                        src="/imageCar.png"
+                                        alt="Contract visual / diagramme"
+                                        onError={(event) => {
+                                            event.currentTarget.style.display =
+                                                'none'
+                                        }}
+                                    />
+                                </div>
+                            </div>
 
-                <section className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
-                    <div>
-                        <p className="text-xs font-semibold text-gray-600 uppercase">
-                            Signature loueur / Agency
-                        </p>
-                        <div className="mt-2 h-24 rounded border border-gray-300" />
-                        <p className="mt-2 text-xs text-gray-500">
-                            {text(agency?.name)}
-                        </p>
+                            <div className="total-box">
+                                <div className="total-row">
+                                    <span className="total-lbl">Km départ</span>
+                                    <div className="total-fill">{kmDepart}</div>
+                                </div>
+                                <div className="total-row">
+                                    <span className="total-lbl">
+                                        Km arrivée
+                                    </span>
+                                    <div className="total-fill">
+                                        {kmArrivee}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <p className="text-xs font-semibold text-gray-600 uppercase">
-                            Signature client / Client
-                        </p>
-                        <p className="mt-1 text-[11px] text-gray-500 italic">
-                            J'ai lu, compris et j'approuve les termes du présent
-                            contrat.
-                        </p>
-                        <div className="mt-2 h-24 rounded border border-gray-300" />
-                        <p className="mt-2 text-xs text-gray-500">
-                            {text(primary_client?.full_name)}
-                        </p>
+
+                    <div className="legal">
+                        Le client est seul responsable des violations du code de
+                        la route.
+                        <br />
+                        Je reconnais pris connaissance des conditions générales
+                        de location
+                        <br /> au verso et accepté de m'y confirmer.
                     </div>
-                </section>
+
+                    <div className="sig-row">
+                        <div className="sig-item">
+                            <span className="sig-label">Fait le :</span>
+                            <div className="sig-line">{faitLe}</div>
+                        </div>
+                        <div className="sig-item">
+                            <span className="sig-label">Le locataire :</span>
+                            <div className="sig-line" />
+                        </div>
+                    </div>
+
+                    {footer}
+                </div>
+
+                {/* ═══════════════════ PAGE 2 — CONDITIONS ══════════════ */}
+                <div className="page">
+                    <div className="cond-title">
+                        CONDITIONS GENERALES DE LOCATION
+                    </div>
+
+                    <p className="cond-intro">
+                        Le présent contrat a été établi et prend date comme
+                        indiqué au verso. Il engage l'agence qui sera appelée «
+                        le loueur » et la personne, Société ou compagnie par qui
+                        est signé ce contrat, qui sera dénommée « le locataire
+                        ».
+                    </p>
+
+                    {CONDITIONS.map((condition) => (
+                        <p className="article" key={condition.num}>
+                            <span className="art-num">{condition.num}</span>{' '}
+                            <span className="art-body">{condition.body}</span>
+                        </p>
+                    ))}
+
+                    {footer}
+                </div>
             </div>
         </div>
     )

@@ -1,0 +1,458 @@
+<!--
+  Contrat de location — Sevenhorses (fillable template)
+  ────────────────────────────────────────────────────────
+  Replace the {{ ... }} placeholders with data, then render to PDF
+  (DomPDF / wkhtmltopdf). Place `imageCar.png` next to this file.
+
+  Placeholders:
+    Véhicule :    {{marque}} {{immatriculation}} {{km_depart}} {{km_arrivee}}
+    Conducteur 1: {{conducteur1_nom}} {{conducteur1_prenom}} {{conducteur1_naissance}}
+                  {{conducteur1_lieu_naissance}} {{conducteur1_adresse}} {{conducteur1_telephone}}
+                  {{conducteur1_permis_numero}} {{conducteur1_permis_delivre_le}} {{conducteur1_permis_delivre_a}}
+                  {{conducteur1_passeport}} {{conducteur1_passeport_delivre_le}} {{conducteur1_passeport_delivre_a}}
+                  {{conducteur1_cin}} {{conducteur1_cin_valable}} {{conducteur1_entree_maroc}}
+    Conducteur 2: {{conducteur2_nom}} {{conducteur2_prenom}} {{conducteur2_naissance}}
+                  {{conducteur2_lieu_naissance}} {{conducteur2_adresse}} {{conducteur2_telephone}}
+                  {{conducteur2_permis_numero}} {{conducteur2_permis_delivre_le}} {{conducteur2_permis_delivre_a}}
+                  {{conducteur2_passeport}} {{conducteur2_passeport_delivre_le}} {{conducteur2_passeport_delivre_a}}
+                  {{conducteur2_cin}} {{conducteur2_cin_valable}} {{conducteur2_entree_maroc}}
+    Durée :       {{depart_j}} {{depart_m}} {{depart_a}} {{date_depart}}
+                  {{retour_j}} {{retour_m}} {{retour_a}} {{date_retour}}
+    Livraison :   {{livraison_lieu}} {{livraison_heure}}
+                  {{recuperation_lieu}} {{recuperation_heure}}
+    Tarifs :      {{prix_jour}} {{nb_jours}} {{km_additionnel}}
+    Montants :    {{net_location}} {{frais_livraison}} {{tva}} {{caution}}
+                  {{total}} {{mode_reglement}}
+    Signature :   {{fait_le}}
+-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Contrat de location — Sevenhorses (image insérée)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+<style>
+
+  /* ─── PDF / PRINT RESET ─────────────────────────────────── */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #fff;
+    font-family: DejaVu Sans, sans-serif; /* DomPDF safe font */
+    font-size: 8.4pt;
+    color: #111;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ─── PAGE SETUP ─────────────────────────────────────────
+     Matches your original .page exactly:
+       width:      210mm
+       min-height: 297mm
+       padding:    10mm 11mm 8mm 11mm  (top right bottom left)
+  ──────────────────────────────────────────────────────── */
+  @page {
+    size: A4 portrait;
+    margin: 0;                     /* We handle margins via .page padding */
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    background: #fff;
+    padding: 10mm 11mm 8mm 11mm;   /* ← YOUR EXACT VALUES */
+    position: relative;
+    page-break-after: always;
+  }
+  .page:last-child {
+    page-break-after: avoid;
+  }
+
+  /* ─── HEADER ─────────────────────────────────────────────
+     margin-bottom: 4mm
+  ──────────────────────────────────────────────────────── */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4mm;
+  }
+  .logo {
+    font-size: 28pt;
+    font-weight: 900;
+    color: #111;
+    letter-spacing: -1pt;
+    line-height: 1;
+  }
+  .logo span { color: #ef5b23; }
+  .logo sup   { font-size: 11pt; vertical-align: super; }
+
+  .company-info {
+    font-size: 7.5pt;
+    color: #333;
+    line-height: 1.7;
+    margin-top: 2mm;
+    font-weight: 600;
+  }
+  .header-right   { text-align: right; }
+  .tagline        { font-size: 9pt;  color: #ef5b23; line-height: 1.5; margin-bottom: 2mm; }
+  .contract-title { font-size: 20pt; font-weight: 800; color: #ef5b23; line-height: 1; }
+
+  /* ─── VEHICLE BAND ───────────────────────────────────────
+     border: 0.5px solid #111
+     padding: 2.5mm 3.5mm
+     margin-bottom: 3mm
+  ──────────────────────────────────────────────────────── */
+  .vehicle-band {
+    border: 0.5px solid #111;
+    padding: 2.5mm 3.5mm;
+    margin-bottom: 3mm;
+    display: flex;
+    gap: 6mm;
+  }
+  .vb-item  { display: flex; align-items: baseline; gap: 2mm; flex: 1; }
+  .vb-label { font-size: 8pt; color: #444; font-weight: 600; white-space: nowrap; }
+  .vb-dots  { flex: 1; border-bottom: 1pt dotted #999; height: 4mm; }
+  .vb-sep   { border-left: 1pt solid #ccc; margin: 0 1mm; }
+
+  /* ─── SECTION TITLE ──────────────────────────────────────
+     margin: 2mm 0 2.5mm
+  ──────────────────────────────────────────────────────── */
+  .section-title {
+    text-align: center;
+    font-size: 11pt;
+    font-weight: 800;
+    color: #ef5b23;
+    margin: 2mm 0 2.5mm;
+    letter-spacing: 0.5pt;
+  }
+
+  /* ─── DRIVER TABLE ───────────────────────────────────────
+     margin-bottom: 3mm
+     cell padding: 1.5mm 3mm  (body) / 2mm 3mm (head)
+  ──────────────────────────────────────────────────────── */
+  .driver-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 3mm;
+    table-layout: fixed;
+  }
+  .driver-table thead th {
+    font-size: 8.5pt;
+    font-weight: 700;
+    text-align: center;
+    padding: 2mm 3mm;             /* ← head cell padding */
+    border: 0.5px solid #111;
+    width: 50%;
+  }
+  .driver-table tbody td {
+    border: 0.5px solid #111;
+    padding: 1.5mm 3mm;           /* ← body cell padding */
+    vertical-align: top;
+  }
+
+  /* ─── FIELD ROWS (inside driver cells) ──────────────────
+     gap: 1.5mm between label and dotted line
+  ──────────────────────────────────────────────────────── */
+  .field-row       { display: flex; align-items: baseline; gap: 1.5mm; }
+  .field-row-split { display: flex; gap: 2mm; }
+  .fhalf           { display: flex; align-items: baseline; gap: 1.5mm; flex: 1; }
+  .fl  { font-size: 7.5pt; color: #444; white-space: nowrap; font-weight: 600; }
+  .fd  { flex: 1; border-bottom: 1pt dotted #aaa; min-height: 3.8mm; font-size: 7.5pt; font-weight: 700; }
+
+  /* ─── BOTTOM GRID ────────────────────────────────────────
+     Two columns, no gap (left 50% / right 50% + 4mm left-padding)
+  ──────────────────────────────────────────────────────── */
+  .bottom-grid { display: flex; }
+  .col-left    { width: 50%; }
+  .col-right   { width: 50%; padding-left: 4mm; display: flex; flex-direction: column; }
+
+  /* ─── MINI TABLES ────────────────────────────────────────
+     margin-bottom: 2.5mm
+     cell padding: 1mm 2mm
+  ──────────────────────────────────────────────────────── */
+  .mini-table { width: 100%; border-collapse: collapse; margin-bottom: 2.5mm; font-size: 8pt; }
+  .mini-table th {
+    font-size: 7.5pt; font-weight: 700; text-align: center;
+    padding: 1mm 2mm;             /* ← mini-table head padding */
+    border: 0.5px solid black;
+  }
+  .mini-table td {
+    border: 0.5px solid black;
+    padding: 1mm 2mm;             /* ← mini-table cell padding */
+    font-weight: 700; text-align: center; font-size: 8pt;
+  }
+  .mini-table td.row-label { text-align: left; font-weight: 600; color: black; background: #fafafa; }
+  .mini-table td.td-left   { text-align: left; }
+  .mini-table th.th-blank  { background: #f5f5f5; border: 0.5px solid black; }
+
+  /* ─── BOXED DOTTED ROWS ──────────────────────────────────
+     border: 0.5px solid black
+     padding: 1.5mm 2.5mm
+     margin-bottom: 2.5mm
+  ──────────────────────────────────────────────────────── */
+  .dotted-box  { border: 0.5px solid black; padding: 1.5mm 2.5mm; margin-bottom: 2.5mm; }
+  .dotted-row  { display: flex; align-items: baseline; gap: 2mm; }
+  .dotted-fill { flex: 1; border-bottom: 1pt dotted #111; height: 4mm; }
+  .dotted-dh   { font-size: 7pt; color: #888; margin-left: 1mm; white-space: nowrap; }
+  .line-lbl    { font-size: 7.8pt; font-weight: 600; color: #333; white-space: nowrap; }
+
+  /* ─── TOTAL BOX ──────────────────────────────────────────
+     border: 0.5px solid black
+     row padding: 0mm 2.5mm  (+ margin-bottom: 2px between rows)
+     margin-bottom: 2.5mm
+  ──────────────────────────────────────────────────────── */
+  .total-box { width: 100%; border: 0.5px solid black; padding: 0; margin-bottom: 2.5mm; }
+  .total-row { display: flex; align-items: baseline; gap: 2mm; padding: 0 2.5mm; margin-bottom: 2px; }
+  .total-lbl { font-size: 8pt; font-weight: 600; color: #333; white-space: nowrap; }
+  .total-fill{ flex: 1; border-bottom: 1pt dotted #111; height: 4mm; }
+  .total-dh  { font-size: 7.5pt; color: #888; margin-left: 1mm; }
+
+  /* ─── RIGHT IMAGE CONTAINER ──────────────────────────────
+     width: 100%,  flex: 1 (fills remaining height)
+     margin-bottom: 2.5mm
+  ──────────────────────────────────────────────────────── */
+  .right-image-container {
+    width: 100%;
+    margin-bottom: 2.5mm;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+  .right-image-container img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  /* ─── LEGAL TEXT ─────────────────────────────────────────
+     margin: 3mm 0
+     font-size: 7pt, line-height: 1.6
+  ──────────────────────────────────────────────────────── */
+  .legal {
+    font-size: 7pt;
+    color: #444;
+    line-height: 1.6;
+    margin-top: 3mm;
+    margin-bottom: 3mm;
+  }
+
+  /* ─── SIGNATURE ROW ──────────────────────────────────────
+     margin-top: 2mm, padding-top: 1mm
+  ──────────────────────────────────────────────────────── */
+  .sig-row   { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 2mm; padding-top: 1mm; }
+  .sig-item  { display: flex; align-items: baseline; gap: 2mm; }
+  .sig-label { font-size: 8pt; color: #444; font-weight: 600; }
+  .sig-line  { border-bottom: 1pt solid #888; width: 45mm; height: 5mm; }
+
+  /* ─── FOOTER ─────────────────────────────────────────────
+     margin-top: 4mm, padding-top: 2mm
+     border-top: 0.5pt solid #ddd
+  ──────────────────────────────────────────────────────── */
+  .footer {
+    margin-top: 4mm;
+    padding-top: 2mm;
+    border-top: 0.5pt solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 7pt;
+    color: #555;
+  }
+  .footer strong { color: #111; font-size: 7.5pt; }
+
+  /* ─── PAGE 2 CONDITIONS ──────────────────────────────────
+     article font-size: 7.8pt, line-height: 1.65, margin-bottom: 3mm
+  ──────────────────────────────────────────────────────── */
+  .cond-title {
+    font-size: 10.5pt; font-weight: 800; color: #ef5b23;
+    border-bottom: 1.5pt solid #ef5b23;
+    padding-bottom: 1.5mm; margin-bottom: 4mm;
+  }
+  .cond-intro { font-size: 8pt; line-height: 1.6; color: #222; margin-bottom: 3mm; }
+  .article    { font-size: 7.8pt; line-height: 1.65; color: #222; margin-bottom: 3mm; }
+  .art-num    { font-weight: 800; }
+
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="logo"><span>seven</span>horses<sup>®</sup></div>
+      <div class="company-info">
+        <strong>Ste Sevenhorses</strong><br>
+        +212 671-729098<br>
+        Contact@sevenhorses.ma
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="tagline">Conduisez vers de<br>nouvelles expériences</div>
+      <div class="contract-title">Contrat de location</div>
+    </div>
+  </div>
+
+  <!-- VEHICLE BAND -->
+  <div class="vehicle-band">
+    <div class="vb-item">
+      <span class="vb-label">Marque :</span>
+      <div class="vb-dots">{{marque}}</div>
+    </div>
+    <div class="vb-sep"></div>
+    <div class="vb-item">
+      <span class="vb-label">N° d'Immatriculation :</span>
+      <div class="vb-dots">{{immatriculation}}</div>
+    </div>
+  </div>
+
+  <!-- SECTION TITLE -->
+  <div class="section-title">Locataire</div>
+
+  <!-- DRIVERS TABLE (unchanged) -->
+  <table class="driver-table">
+    <thead><tr><th>1er Conducteur</th><th>2ème Conducteur</th></tr></thead>
+    <tbody><tr>
+      <td> <!-- 1st driver fields (exact as before) -->
+        <div class="field-block">
+          <div class="field-row"><span class="fl">Nom</span><div class="fd">{{conducteur1_nom}}</div></div>
+          <div class="field-row"><span class="fl">Prénom</span><div class="fd">{{conducteur1_prenom}}</div></div>
+          <div class="field-row-split"><div class="fhalf"><span class="fl">Né(e) le</span><div class="fd">{{conducteur1_naissance}}</div></div><div class="fhalf"><span class="fl">à</span><div class="fd">{{conducteur1_lieu_naissance}}</div></div></div>
+          <div class="field-row"><span class="fl">Adresse du maroc</span><div class="fd">{{conducteur1_adresse}}</div></div>
+          <div class="field-row" style="border-bottom:1pt dotted #aaa; height:3mm;"></div>
+          <div class="field-row"><span class="fl">Téléphone</span><div class="fd">{{conducteur1_telephone}}</div></div>
+          <div class="field-row"><span class="fl">Permis de conduire N°</span><div class="fd">{{conducteur1_permis_numero}}</div></div>
+          <div class="field-row-split"><div class="fhalf"><span class="fl">Délivré le</span><div class="fd">{{conducteur1_permis_delivre_le}}</div></div><div class="fhalf"><span class="fl">à</span><div class="fd">{{conducteur1_permis_delivre_a}}</div></div></div>
+          <div class="field-row"><span class="fl">Passeport</span><div class="fd">{{conducteur1_passeport}}</div></div>
+          <div class="field-row-split"><div class="fhalf"><span class="fl">Délivré le</span><div class="fd">{{conducteur1_passeport_delivre_le}}</div></div><div class="fhalf"><span class="fl">à</span><div class="fd">{{conducteur1_passeport_delivre_a}}</div></div></div>
+          <div class="field-row"><span class="fl">CIN N°</span><div class="fd">{{conducteur1_cin}}</div></div>
+          <div class="field-row"><span class="fl">Valable jusqu'au</span><div class="fd">{{conducteur1_cin_valable}}</div></div>
+          <div class="field-row"><span class="fl">Numéro et date d'entrée au maroc</span><div class="fd">{{conducteur1_entree_maroc}}</div></div>
+        </div>
+      </td>
+      <td> <!-- 2nd driver (identical) -->
+        <div class="field-block">
+          <div class="field-row"><span class="fl">Nom</span><div class="fd">{{conducteur2_nom}}</div></div>
+          <div class="field-row"><span class="fl">Prénom</span><div class="fd">{{conducteur2_prenom}}</div></div>
+          <div class="field-row-split"><div class="fhalf"><span class="fl">Né(e) le</span><div class="fd">{{conducteur2_naissance}}</div></div><div class="fhalf"><span class="fl">à</span><div class="fd">{{conducteur2_lieu_naissance}}</div></div></div>
+          <div class="field-row"><span class="fl">Adresse du maroc</span><div class="fd">{{conducteur2_adresse}}</div></div>
+          <div class="field-row" style="border-bottom:1pt dotted #aaa; height:3mm;"></div>
+          <div class="field-row"><span class="fl">Téléphone</span><div class="fd">{{conducteur2_telephone}}</div></div>
+          <div class="field-row"><span class="fl">Permis de conduire N°</span><div class="fd">{{conducteur2_permis_numero}}</div></div>
+          <div class="field-row-split"><div class="fhalf"><span class="fl">Délivré le</span><div class="fd">{{conducteur2_permis_delivre_le}}</div></div><div class="fhalf"><span class="fl">à</span><div class="fd">{{conducteur2_permis_delivre_a}}</div></div></div>
+          <div class="field-row"><span class="fl">Passeport</span><div class="fd">{{conducteur2_passeport}}</div></div>
+          <div class="field-row-split"><div class="fhalf"><span class="fl">Délivré le</span><div class="fd">{{conducteur2_passeport_delivre_le}}</div></div><div class="fhalf"><span class="fl">à</span><div class="fd">{{conducteur2_passeport_delivre_a}}</div></div></div>
+          <div class="field-row"><span class="fl">CIN N°</span><div class="fd">{{conducteur2_cin}}</div></div>
+          <div class="field-row"><span class="fl">Valable jusqu'au</span><div class="fd">{{conducteur2_cin_valable}}</div></div>
+          <div class="field-row"><span class="fl">Numéro et date d'entrée au maroc</span><div class="fd">{{conducteur2_entree_maroc}}</div></div>
+        </div>
+      </td>
+    </tr></tbody>
+  </table>
+
+  <!-- BOTTOM GRID: LEFT + RIGHT (right now holds image + KM box) -->
+  <div class="bottom-grid">
+
+    <!-- LEFT COLUMN (unchanged) -->
+    <div class="col-left">
+      <table class="mini-table">
+        <thead><tr><th class="th-blank" style="width:18%;"></th><th style="width:11%;">J</th><th style="width:11%;">M</th><th style="width:16%;">A</th><th>Durée de location</th></tr></thead>
+        <tbody><tr><td class="row-label">Départ</td><td>{{depart_j}}</td><td>{{depart_m}}</td><td>{{depart_a}}</td><td class="td-left">{{date_depart}}</td></tr>
+               <tr><td class="row-label">Retour</td><td>{{retour_j}}</td><td>{{retour_m}}</td><td>{{retour_a}}</td><td class="td-left">{{date_retour}}</td></tr>
+        </tbody>
+      </table>
+
+      <table class="mini-table">
+        <thead><tr><th class="th-blank" style="width:26%;"></th><th>Lieu</th><th style="width:28%;">Heure</th></tr></thead>
+        <tbody><tr><td class="row-label">Livraison</td><td class="td-left">{{livraison_lieu}}</td><td>{{livraison_heure}}</td></tr>
+               <tr><td class="row-label">Récupération</td><td class="td-left">{{recuperation_lieu}}</td><td>{{recuperation_heure}}</td></tr>
+        </tbody>
+      </table>
+
+      <div style="border:0.5px solid black; padding:1.5mm 2.5mm; margin-bottom:2.5mm;">
+        <div class="dotted-row"><span class="line-lbl">Prix / jour (300 km / jr)</span><div class="dotted-fill">{{prix_jour}}</div></div>
+        <div class="dotted-row"><span class="line-lbl">Nombre de jours</span><div class="dotted-fill">{{nb_jours}}</div></div>
+        <div class="dotted-row" style="border-bottom:none;"><span class="line-lbl">Kilométrage additionnel (1dh / km)</span><div class="dotted-fill">{{km_additionnel}}</div></div>
+      </div>
+
+      <div style="border:0.5px solid black; padding:1.5mm 2.5mm; margin-bottom:2.5mm;">
+        <div class="dotted-row"><span class="line-lbl">Net location</span><div class="dotted-fill">{{net_location}}</div><span class="dotted-dh">DH</span></div>
+        <div class="dotted-row"><span class="line-lbl">Frais de livraison / Reprise</span><div class="dotted-fill">{{frais_livraison}}</div><span class="dotted-dh">DH</span></div>
+        <div class="dotted-row"><span class="line-lbl">TVA 20%</span><div class="dotted-fill">{{tva}}</div><span class="dotted-dh">DH</span></div>
+        <div class="dotted-row" style="border-bottom:none;"><span class="line-lbl">Caution</span><div class="dotted-fill">{{caution}}</div><span class="dotted-dh">DH</span></div>
+      </div>
+
+      <div class="total-box">
+        <div class="total-row"><span class="total-lbl">Total Général</span><div class="total-fill">{{total}}</div><span class="total-dh">DH</span></div>
+        <div class="total-row" style="border-bottom:none;"><span class="total-lbl">Mode de règlement</span><div class="total-fill">{{mode_reglement}}</div></div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN : IMAGE + KM box (exactly as requested) -->
+    <div class="col-right">
+
+        <div class="right-image-container">
+          <div class="image-border-wrapper">  <!-- New wrapper for border -->
+            <img src="imageCar.png" alt="Contract visual / diagramme">
+          </div>
+        </div>
+
+      <!-- KM box (preserved exactly as before) -->
+      <div class="total-box">
+        <div class="total-row"><span class="total-lbl">Km départ</span><div class="total-fill">{{km_depart}}</div></div>
+        <div class="total-row" style="border-bottom:none;"><span class="total-lbl">Km arrivée</span><div class="total-fill">{{km_arrivee}}</div></div>
+      </div>
+    </div><!-- /col-right -->
+
+  </div><!-- /bottom-grid -->
+
+  <!-- LEGAL & SIGNATURE (unchanged) -->
+  <div class="legal">
+    Le client est seul responsable des violations du code de la route.<br>
+    Je reconnais pris connaissance des conditions générales de location <br> 
+    au verso et accepté de m'y confirmer.
+  </div>
+
+  <div class="sig-row">
+    <div class="sig-item"><span class="sig-label">Fait le :</span><div class="sig-line">{{fait_le}}</div></div>
+    <div class="sig-item"><span class="sig-label">Le locataire :</span><div class="sig-line"></div></div>
+  </div>
+
+  <div class="footer">
+    <span>Numéro 78, 2ème étage, Kissaria Al Jassim, Boulevard Mohamed V, Gueliz, Marrakech</span>
+    <strong>Sevenhorses.ma</strong>
+  </div>
+</div><!-- /page 1 -->
+
+<!-- PAGE 2 (conditions, unchanged) -->
+<div class="page">
+  <div class="cond-title">CONDITIONS GENERALES DE LOCATION</div>
+  <p class="cond-intro">Le présent contrat a été établi et prend date comme indiqué au verso. Il engage l'agence qui sera appelée « le loueur » et la personne, Société ou compagnie par qui est signé ce contrat, qui sera dénommée « le locataire ».</p>
+  <p class="article"><span class="art-num">Article 1 : UTILISATION DE LA VOITURE :</span> <span class="art-body">Le locataire s'engage à ne pas laisser conduire la voiture par d'autres personnes que lui-même ou celles agrées par le loueur et dont il se porte garant, et à n'utiliser le véhicule que pour ses besoins personnels. Il est interdit de participer à toute compétition quelle que soit, et d'utiliser le véhicule à des fins illicites ou des transports des marchandises. Le locataire s'engage à ne pas solliciter directement des documents douaniers. Il est interdit au locataire de surcharger le véhicule loué en transportant un nombre de passagers supérieur à celui porté sur le contrat, sous peine d'être déchu de l'assurance.</span></p>
+  <p class="article"><span class="art-num">Article 2 : PAS D'ANNULATION :</span> <span class="art-body">Pas de remboursement en cas de problèmes personnels ni pour l'essence ; tout ce qui est pneumatique est à la charge du client ; les voitures doivent être garées dans les Parking payants avec gardiens. Vol de pneu de secours à la charge du CLIENT. Le procès d'excès de Vitesse est à la charge du client.</span></p>
+  <p class="article"><span class="art-num">Article 3 : ESSENCE ET HUILE :</span> <span class="art-body">L'essence est à la charge du client. Le locataire doit vérifier en permanence les niveaux d'huile et d'eau, et vérifier les niveaux de la boite de vitesse et du pont arrière tous les 1000 km. Il justifiera de ces travaux par des factures correspondantes (qui lui seront remboursées) sous peine d'avoir à payer une indemnité anormale.</span></p>
+  <p class="article"><span class="art-num">Article 4 : ENTRETIEN ET REPARATION :</span> <span class="art-body">L'usure mécanique normale est à la charge du loueur. Toutes les réparations provenant, soit d'une usure normale, soit d'une négligence de la part du locataire ou d'une cause accidentelle, seront à sa charge et exécutées par nos soins. Dans le cas où le véhicule serait immobilisé en dehors de la région, les réparations qu'elles soient dues à l'usure normale ou à une cause accidentelle, ne seront exécutées qu'après accord télégraphique du loueur ou par l'agent régional de la marque du véhicule. Elles devront faire l'objet d'une facture acquittée. En aucun cas et en aucune circonstance, le locataire ne pourra réclamer des dommages et intérêts, soit par retard de la remise de la voiture, ou annulation de la location, soit pour immobilisation dans le cas de réparations nécessaires par l'usure normale et effectuées au cours de la location. La responsabilité du loueur ne pourra jamais être invoquée, même en cas d'accidents de personnes ou de choses ayant résulté de vices ou de défauts de construction ou de réparation antérieures.</span></p>
+  <p class="article"><span class="art-num">Article 5 : ASSURANCE :</span> <span class="art-body">Le locataire est garanti pour les risques suivants : 1. Pour une somme illimitée pour les accidents qu'il peut causer aux tiers, y compris ceux transportés à titre gracieux. 2. Contre le vol et l'incendie de véhicule loué, à l'exclusion des vêtements et de tous les objets transportés. 3. Les frais de rapatriement et d'immobilisation restent toujours à la charge du locataire, quelque soit la formule d'assurance contractée. 4. Le locataire s'engage à déclarer au loueur, dans les 48 heures et immédiatement aux autorités de police, tout accident, vol ou incendie, même partiel sous peine d'être déchu du bénéfice de l'assurance.</span></p>
+  <p class="article"><span class="art-num">Article 6 : LOCATION, CAUTION, PROLONGATION :</span> <span class="art-body">Le prix de location, ainsi que la caution, sont déterminés par les tarifs en vigueur et payables d'avance. La caution ne pourra servir en aucun cas au loueur. Afin d'éviter toute contestation et pour le cas où le locataire voudrait conserver la voiture pour un temps supérieur à celui indiqué sur le contrat, il devra après avoir obtenu l'accord de s'exposer à des poursuites pour détournement de voiture ou abus de confiance. La journée de location compte de 0 heures à 24 heures et toute journée commencée est due en entier.</span></p>
+  <p class="article"><span class="art-num">Article 7 : RAPATRIEMENT DE LA VOITURE :</span> <span class="art-body">Le locataire est interdit formellement d'abandonner le véhicule. En cas d'impossibilité matérielle, celui-ci sera rapatrié aux frais et par les soins du locataire, la location restant due jusqu'au retour du véhicule.</span></p>
+  <p class="article"><span class="art-num">Article 8 : PAPIERS DE LA VOITURE :</span> <span class="art-body">Le locataire remettra dès la fin de la location et à la rentrée de la voiture, la carte grise et tous les papiers nécessaires à sa circulation, faute de quoi, ces pièces étant indispensables à de nouvelles locations, la location continuera à être facturée au prix initial jusqu'à remise à la société. En cas de perte de ces papiers, le locataire devra acquitter le montant des frais de duplicata.</span></p>
+  <p class="article"><span class="art-num">Article 9 : RESPONSABILITE :</span> <span class="art-body">Le locataire demeure seul responsable des vols des pièces automobiles, amendes, contraventions et procès verbaux établis contre lui.</span></p>
+  <p class="article"><span class="art-num">Article 10 : COMPETENCE :</span> <span class="art-body">De convention expresse et en cas de contestation quelconque, le tribunal de Marrakech sera seul compétent, les frais de timbres et d'enregistrement restant à la charge du locataire.</span></p>
+  <p class="article"><span class="art-num">Article 11 : EN CAS D'ACCIDENT :</span> <span class="art-body">Le client est tenu de faire un constat et de signer le PV, sinon les frais d'assurances sont à sa charge.</span></p>
+  <p class="article"><span class="art-num">Article 12 : CONDITIONS POUR LES 4X4 :</span> <span class="art-body">CHAQUE MATIN : chauffer le moteur 10 mn — vérifier l'eau, les huiles et les pneus — sur la route n'utilisez pas le crabotage — si vous êtes bloqué dans le sable : faire point mort et utiliser le crabotage en 4 roues motrices. Les 4x4 ne doivent pas passer dans les rivières ou sur les sables côtières. En cas d'accident sans justification (constat de police ou de gendarmerie avec n° de P.V) les dommages sont à la charge du client. La voiture est toujours à la charge de la personne sur le contrat de location. La voiture ne doit être laissée près de la plage ou la rivière ou dans les zones interdites.</span></p>
+
+  <div class="footer">
+    <span>Numéro 78, 2ème étage, Kissaria Al Jassim, Boulevard Mohamed V, Gueliz, Marrakech</span>
+    <strong>Sevenhorses.ma</strong>
+  </div>
+</div><!-- /page 2 -->
+</body>
+</html>

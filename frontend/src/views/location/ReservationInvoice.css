@@ -1,0 +1,405 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Contrat de location — Sevenhorses (facture page)
+   Scoped under .reservation-contract so the generic class names (.header,
+   .footer, .page, .article …) never leak into the rest of the admin app.
+   Layout/values mirror resources/views/contracts/contrat-location.html.
+   ───────────────────────────────────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+
+/* ─── PDF / PRINT RESET ─────────────────────────────────── */
+.reservation-contract,
+.reservation-contract *,
+.reservation-contract *::before,
+.reservation-contract *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ─── PAGE SETUP ─────────────────────────────────────────
+   width: 210mm, min-height: 297mm, padding: 10mm 11mm 8mm 11mm
+   ──────────────────────────────────────────────────────── */
+@page {
+    size: A4 portrait;
+    margin: 0;
+}
+
+.reservation-contract {
+    font-family: "DM Sans", "DejaVu Sans", sans-serif;
+    font-size: 8.4pt;
+    color: #111;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.reservation-contract .page {
+    width: 210mm;
+    min-height: 297mm;
+    background: #fff;
+    padding: 10mm 11mm 8mm 11mm;
+    position: relative;
+    page-break-after: always;
+    margin: 10mm auto;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.18);
+}
+.reservation-contract .page:last-child {
+    page-break-after: avoid;
+}
+
+/* ─── HEADER ─────────────────────────────────────────────
+   NB: not ".header" — that class belongs to the admin layout and is
+   print:hidden / dark:bg-gray-800, which would break this document.
+   ──────────────────────────────────────────────────────── */
+.reservation-contract .contract-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4mm;
+}
+.reservation-contract .logo {
+    font-size: 28pt;
+    font-weight: 900;
+    color: #111;
+    letter-spacing: -1pt;
+    line-height: 1;
+}
+.reservation-contract .logo span {
+    color: #ef5b23;
+}
+.reservation-contract .logo sup {
+    font-size: 11pt;
+    vertical-align: super;
+}
+
+.reservation-contract .company-info {
+    font-size: 7.5pt;
+    color: #333;
+    line-height: 1.7;
+    margin-top: 2mm;
+    font-weight: 600;
+}
+.reservation-contract .header-right {
+    text-align: right;
+}
+.reservation-contract .tagline {
+    font-size: 9pt;
+    color: #ef5b23;
+    line-height: 1.5;
+    margin-bottom: 2mm;
+}
+.reservation-contract .contract-title {
+    font-size: 20pt;
+    font-weight: 800;
+    color: #ef5b23;
+    line-height: 1;
+}
+
+/* ─── VEHICLE BAND ─────────────────────────────────────── */
+.reservation-contract .vehicle-band {
+    border: 0.5px solid #111;
+    padding: 2.5mm 3.5mm;
+    margin-bottom: 3mm;
+    display: flex;
+    gap: 6mm;
+}
+.reservation-contract .vb-item {
+    display: flex;
+    align-items: baseline;
+    gap: 2mm;
+    flex: 1;
+}
+.reservation-contract .vb-label {
+    font-size: 8pt;
+    color: #444;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.reservation-contract .vb-dots {
+    flex: 1;
+    border-bottom: 1pt dotted #999;
+    height: 4mm;
+}
+.reservation-contract .vb-sep {
+    border-left: 1pt solid #ccc;
+    margin: 0 1mm;
+}
+
+/* ─── SECTION TITLE ────────────────────────────────────── */
+.reservation-contract .section-title {
+    text-align: center;
+    font-size: 11pt;
+    font-weight: 800;
+    color: #ef5b23;
+    margin: 2mm 0 2.5mm;
+    letter-spacing: 0.5pt;
+}
+
+/* ─── DRIVER TABLE ─────────────────────────────────────── */
+.reservation-contract .driver-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 3mm;
+    table-layout: fixed;
+}
+.reservation-contract .driver-table thead th {
+    font-size: 8.5pt;
+    font-weight: 700;
+    text-align: center;
+    padding: 2mm 3mm;
+    border: 0.5px solid #111;
+    width: 50%;
+}
+.reservation-contract .driver-table tbody td {
+    border: 0.5px solid #111;
+    padding: 1.5mm 3mm;
+    vertical-align: top;
+}
+
+/* ─── FIELD ROWS (inside driver cells) ────────────────── */
+.reservation-contract .field-row {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5mm;
+}
+.reservation-contract .field-row-split {
+    display: flex;
+    gap: 2mm;
+}
+.reservation-contract .fhalf {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5mm;
+    flex: 1;
+}
+.reservation-contract .fl {
+    font-size: 7.5pt;
+    color: #444;
+    white-space: nowrap;
+    font-weight: 600;
+}
+.reservation-contract .fd {
+    flex: 1;
+    border-bottom: 1pt dotted #aaa;
+    min-height: 3.8mm;
+    font-size: 7.5pt;
+    font-weight: 700;
+}
+
+/* ─── BOTTOM GRID ──────────────────────────────────────── */
+.reservation-contract .bottom-grid {
+    display: flex;
+}
+.reservation-contract .col-left {
+    width: 50%;
+}
+.reservation-contract .col-right {
+    width: 50%;
+    padding-left: 4mm;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ─── MINI TABLES ──────────────────────────────────────── */
+.reservation-contract .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2.5mm;
+    font-size: 8pt;
+}
+.reservation-contract .mini-table th {
+    font-size: 7.5pt;
+    font-weight: 700;
+    text-align: center;
+    padding: 1mm 2mm;
+    border: 0.5px solid black;
+}
+.reservation-contract .mini-table td {
+    border: 0.5px solid black;
+    padding: 1mm 2mm;
+    font-weight: 700;
+    text-align: center;
+    font-size: 8pt;
+}
+.reservation-contract .mini-table td.row-label {
+    text-align: left;
+    font-weight: 600;
+    color: black;
+    background: #fafafa;
+}
+.reservation-contract .mini-table td.td-left {
+    text-align: left;
+}
+.reservation-contract .mini-table th.th-blank {
+    background: #f5f5f5;
+    border: 0.5px solid black;
+}
+
+/* ─── BOXED DOTTED ROWS ────────────────────────────────── */
+.reservation-contract .dotted-box {
+    border: 0.5px solid black;
+    padding: 1.5mm 2.5mm;
+    margin-bottom: 2.5mm;
+}
+.reservation-contract .dotted-row {
+    display: flex;
+    align-items: baseline;
+    gap: 2mm;
+}
+.reservation-contract .dotted-fill {
+    flex: 1;
+    border-bottom: 1pt dotted #111;
+    height: 4mm;
+}
+.reservation-contract .dotted-dh {
+    font-size: 7pt;
+    color: #888;
+    margin-left: 1mm;
+    white-space: nowrap;
+}
+.reservation-contract .line-lbl {
+    font-size: 7.8pt;
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+}
+
+/* ─── TOTAL BOX ────────────────────────────────────────── */
+.reservation-contract .total-box {
+    width: 100%;
+    border: 0.5px solid black;
+    padding: 0;
+    margin-bottom: 2.5mm;
+}
+.reservation-contract .total-row {
+    display: flex;
+    align-items: baseline;
+    gap: 2mm;
+    padding: 0 2.5mm;
+    margin-bottom: 2px;
+}
+.reservation-contract .total-lbl {
+    font-size: 8pt;
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+}
+.reservation-contract .total-fill {
+    flex: 1;
+    border-bottom: 1pt dotted #111;
+    height: 4mm;
+}
+.reservation-contract .total-dh {
+    font-size: 7.5pt;
+    color: #888;
+    margin-left: 1mm;
+}
+
+/* ─── RIGHT IMAGE CONTAINER ────────────────────────────── */
+.reservation-contract .right-image-container {
+    width: 100%;
+    margin-bottom: 2.5mm;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
+.reservation-contract .right-image-container img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* ─── LEGAL TEXT ───────────────────────────────────────── */
+.reservation-contract .legal {
+    font-size: 7pt;
+    color: #444;
+    line-height: 1.6;
+    margin-top: 3mm;
+    margin-bottom: 3mm;
+}
+
+/* ─── SIGNATURE ROW ────────────────────────────────────── */
+.reservation-contract .sig-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 2mm;
+    padding-top: 1mm;
+}
+.reservation-contract .sig-item {
+    display: flex;
+    align-items: baseline;
+    gap: 2mm;
+}
+.reservation-contract .sig-label {
+    font-size: 8pt;
+    color: #444;
+    font-weight: 600;
+}
+.reservation-contract .sig-line {
+    border-bottom: 1pt solid #888;
+    width: 45mm;
+    height: 5mm;
+}
+
+/* ─── FOOTER ───────────────────────────────────────────── */
+.reservation-contract .footer {
+    margin-top: 4mm;
+    padding-top: 2mm;
+    border-top: 0.5pt solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 7pt;
+    color: #555;
+}
+.reservation-contract .footer strong {
+    color: #111;
+    font-size: 7.5pt;
+}
+
+/* ─── PAGE 2 CONDITIONS ────────────────────────────────── */
+.reservation-contract .cond-title {
+    font-size: 10.5pt;
+    font-weight: 800;
+    color: #ef5b23;
+    border-bottom: 1.5pt solid #ef5b23;
+    padding-bottom: 1.5mm;
+    margin-bottom: 4mm;
+}
+.reservation-contract .cond-intro {
+    font-size: 8pt;
+    line-height: 1.6;
+    color: #222;
+    margin-bottom: 3mm;
+}
+.reservation-contract .article {
+    font-size: 7.8pt;
+    line-height: 1.65;
+    color: #222;
+    margin-bottom: 3mm;
+}
+.reservation-contract .art-num {
+    font-weight: 800;
+}
+.reservation-contract .art-body {
+    font-weight: 400;
+}
+
+/* ─── PRINT ────────────────────────────────────────────── */
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
+    .reservation-contract .page {
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always;
+    }
+    .reservation-contract .page:last-child {
+        page-break-after: avoid;
+    }
+}
