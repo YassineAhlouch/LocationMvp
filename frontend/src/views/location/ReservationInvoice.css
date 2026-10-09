@@ -185,18 +185,40 @@
     font-weight: 700;
 }
 
-/* ─── BOTTOM GRID ──────────────────────────────────────── */
+/* ─── BOTTOM GRID ────────────────────────────────────────
+   Two stacked rows. Top row: the four left blocks (Durée de
+   location → Net location) beside the inspection image, which
+   is stretched to exactly the same height. Bottom row: the
+   Total Général box beside the Km box (equal heights).
+   ──────────────────────────────────────────────────────── */
 .reservation-contract .bottom-grid {
     display: flex;
+    flex-direction: column;
+}
+.reservation-contract .bottom-top {
+    display: flex;
+    align-items: stretch;
+    margin-bottom: 2.5mm;
+}
+.reservation-contract .bottom-bottom {
+    display: flex;
+    align-items: stretch;
 }
 .reservation-contract .col-left {
     width: 50%;
+    display: flex;
+    flex-direction: column;
 }
 .reservation-contract .col-right {
     width: 50%;
     padding-left: 4mm;
     display: flex;
     flex-direction: column;
+}
+/* Drop the trailing gap inside the top-left stack so the image lines
+   up exactly with the bottom edge of the "Net location" box. */
+.reservation-contract .bottom-top .col-left > :last-child {
+    margin-bottom: 0;
 }
 
 /* ─── MINI TABLES ──────────────────────────────────────── */
@@ -297,22 +319,29 @@
 /* ─── RIGHT IMAGE CONTAINER ────────────────────────────── */
 .reservation-contract .right-image-container {
     width: 100%;
-    margin-bottom: 2.5mm;
+    margin-bottom: 0;
     display: flex;
     flex-direction: column;
     flex: 1;
     min-height: 0;
 }
-.reservation-contract .right-image-container img {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-height: 100%;
-    object-fit: contain;
-}
 .reservation-contract .image-border-wrapper {
     border: 0.5px solid black;
     padding: 1.5mm;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    overflow: hidden;
+}
+.reservation-contract .right-image-container img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
 }
 
 /* ─── LEGAL TEXT ───────────────────────────────────────── */

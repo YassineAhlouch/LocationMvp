@@ -482,175 +482,206 @@ const ReservationInvoice = () => {
 
                     {/* BOTTOM GRID */}
                     <div className="bottom-grid">
-                        {/* LEFT COLUMN */}
-                        <div className="col-left">
-                            <table className="mini-table">
-                                <thead>
-                                    <tr>
-                                        <th
-                                            className="th-blank"
-                                            style={{ width: '18%' }}
-                                        />
-                                        <th style={{ width: '11%' }}>J</th>
-                                        <th style={{ width: '11%' }}>M</th>
-                                        <th style={{ width: '16%' }}>A</th>
-                                        <th>Durée de location</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td className="row-label">Départ</td>
-                                        <td>{depart.j}</td>
-                                        <td>{depart.m}</td>
-                                        <td>{depart.a}</td>
-                                        <td className="td-left">
-                                            {depart.label}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="row-label">Retour</td>
-                                        <td>{retour.j}</td>
-                                        <td>{retour.m}</td>
-                                        <td>{retour.a}</td>
-                                        <td className="td-left">
-                                            {retour.label}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        {/* TOP ROW — left blocks (Durée → Net location) | inspection image */}
+                        <div className="bottom-top">
+                            <div className="col-left">
+                                <table className="mini-table">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                className="th-blank"
+                                                style={{ width: '18%' }}
+                                            />
+                                            <th style={{ width: '11%' }}>J</th>
+                                            <th style={{ width: '11%' }}>M</th>
+                                            <th style={{ width: '16%' }}>A</th>
+                                            <th>Durée de location</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td className="row-label">
+                                                Départ
+                                            </td>
+                                            <td>{depart.j}</td>
+                                            <td>{depart.m}</td>
+                                            <td>{depart.a}</td>
+                                            <td className="td-left">
+                                                {depart.label}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="row-label">
+                                                Retour
+                                            </td>
+                                            <td>{retour.j}</td>
+                                            <td>{retour.m}</td>
+                                            <td>{retour.a}</td>
+                                            <td className="td-left">
+                                                {retour.label}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
 
-                            <table className="mini-table">
-                                <thead>
-                                    <tr>
-                                        <th
-                                            className="th-blank"
-                                            style={{ width: '26%' }}
-                                        />
-                                        <th>Lieu</th>
-                                        <th style={{ width: '28%' }}>Heure</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td className="row-label">Livraison</td>
-                                        <td className="td-left">
-                                            {livraisonLieu}
-                                        </td>
-                                        <td>{livraisonHeure}</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="row-label">
-                                            Récupération
-                                        </td>
-                                        <td className="td-left">
-                                            {recuperationLieu}
-                                        </td>
-                                        <td>{recuperationHeure}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                <table className="mini-table">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                className="th-blank"
+                                                style={{ width: '26%' }}
+                                            />
+                                            <th>Lieu</th>
+                                            <th style={{ width: '28%' }}>
+                                                Heure
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td className="row-label">
+                                                Livraison
+                                            </td>
+                                            <td className="td-left">
+                                                {livraisonLieu}
+                                            </td>
+                                            <td>{livraisonHeure}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="row-label">
+                                                Récupération
+                                            </td>
+                                            <td className="td-left">
+                                                {recuperationLieu}
+                                            </td>
+                                            <td>{recuperationHeure}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
 
-                            <div className="dotted-box">
-                                <div className="dotted-row">
-                                    <span className="line-lbl">
-                                        Prix / jour (300 km / jr)
-                                    </span>
-                                    <div className="dotted-fill">
-                                        {prixJour}
+                                <div className="dotted-box">
+                                    <div className="dotted-row">
+                                        <span className="line-lbl">
+                                            Prix / jour (300 km / jr)
+                                        </span>
+                                        <div className="dotted-fill">
+                                            {prixJour}
+                                        </div>
+                                    </div>
+                                    <div className="dotted-row">
+                                        <span className="line-lbl">
+                                            Nombre de jours
+                                        </span>
+                                        <div className="dotted-fill">
+                                            {nbJours}
+                                        </div>
+                                    </div>
+                                    <div className="dotted-row">
+                                        <span className="line-lbl">
+                                            Kilométrage additionnel (1dh / km)
+                                        </span>
+                                        <div className="dotted-fill">
+                                            {kmAdditionnel}
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="dotted-row">
-                                    <span className="line-lbl">
-                                        Nombre de jours
-                                    </span>
-                                    <div className="dotted-fill">{nbJours}</div>
-                                </div>
-                                <div className="dotted-row">
-                                    <span className="line-lbl">
-                                        Kilométrage additionnel (1dh / km)
-                                    </span>
-                                    <div className="dotted-fill">
-                                        {kmAdditionnel}
+
+                                <div className="dotted-box">
+                                    <div className="dotted-row">
+                                        <span className="line-lbl">
+                                            Net location
+                                        </span>
+                                        <div className="dotted-fill">
+                                            {netLocation}
+                                        </div>
+                                        <span className="dotted-dh">DH</span>
+                                    </div>
+                                    <div className="dotted-row">
+                                        <span className="line-lbl">
+                                            Frais de livraison / Reprise
+                                        </span>
+                                        <div className="dotted-fill">
+                                            {fraisLivraison}
+                                        </div>
+                                        <span className="dotted-dh">DH</span>
+                                    </div>
+                                    <div className="dotted-row">
+                                        <span className="line-lbl">
+                                            TVA 20%
+                                        </span>
+                                        <div className="dotted-fill">{tva}</div>
+                                        <span className="dotted-dh">DH</span>
+                                    </div>
+                                    <div className="dotted-row">
+                                        <span className="line-lbl">
+                                            Caution
+                                        </span>
+                                        <div className="dotted-fill">
+                                            {caution}
+                                        </div>
+                                        <span className="dotted-dh">DH</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="dotted-box">
-                                <div className="dotted-row">
-                                    <span className="line-lbl">
-                                        Net location
-                                    </span>
-                                    <div className="dotted-fill">
-                                        {netLocation}
-                                    </div>
-                                    <span className="dotted-dh">DH</span>
-                                </div>
-                                <div className="dotted-row">
-                                    <span className="line-lbl">
-                                        Frais de livraison / Reprise
-                                    </span>
-                                    <div className="dotted-fill">
-                                        {fraisLivraison}
-                                    </div>
-                                    <span className="dotted-dh">DH</span>
-                                </div>
-                                <div className="dotted-row">
-                                    <span className="line-lbl">TVA 20%</span>
-                                    <div className="dotted-fill">{tva}</div>
-                                    <span className="dotted-dh">DH</span>
-                                </div>
-                                <div className="dotted-row">
-                                    <span className="line-lbl">Caution</span>
-                                    <div className="dotted-fill">{caution}</div>
-                                    <span className="dotted-dh">DH</span>
-                                </div>
-                            </div>
-
-                            <div className="total-box">
-                                <div className="total-row">
-                                    <span className="total-lbl">
-                                        Total Général
-                                    </span>
-                                    <div className="total-fill">{total}</div>
-                                    <span className="total-dh">DH</span>
-                                </div>
-                                <div className="total-row">
-                                    <span className="total-lbl">
-                                        Mode de règlement
-                                    </span>
-                                    <div className="total-fill">
-                                        {modeReglement}
+                            {/* RIGHT COLUMN — inspection image spans the left blocks */}
+                            <div className="col-right">
+                                <div className="right-image-container">
+                                    <div className="image-border-wrapper">
+                                        <img
+                                            src="/img/invoice/carinspection.jpg"
+                                            alt="Contract visual / diagramme"
+                                            onError={(event) => {
+                                                event.currentTarget.style.display =
+                                                    'none'
+                                            }}
+                                        />
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        {/* RIGHT COLUMN */}
-                        <div className="col-right">
-                            <div className="right-image-container">
-                                <div className="image-border-wrapper">
-                                    <img
-                                        src="/img/invoice/carinspection.jpg"
-                                        alt="Contract visual / diagramme"
-                                        onError={(event) => {
-                                            event.currentTarget.style.display =
-                                                'none'
-                                        }}
-                                    />
+                        {/* BOTTOM ROW — Total Général | Km */}
+                        <div className="bottom-bottom">
+                            <div className="col-left">
+                                <div className="total-box">
+                                    <div className="total-row">
+                                        <span className="total-lbl">
+                                            Total Général
+                                        </span>
+                                        <div className="total-fill">
+                                            {total}
+                                        </div>
+                                        <span className="total-dh">DH</span>
+                                    </div>
+                                    <div className="total-row">
+                                        <span className="total-lbl">
+                                            Mode de règlement
+                                        </span>
+                                        <div className="total-fill">
+                                            {modeReglement}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="total-box">
-                                <div className="total-row">
-                                    <span className="total-lbl">Km départ</span>
-                                    <div className="total-fill">{kmDepart}</div>
-                                </div>
-                                <div className="total-row">
-                                    <span className="total-lbl">
-                                        Km arrivée
-                                    </span>
-                                    <div className="total-fill">
-                                        {kmArrivee}
+                            <div className="col-right">
+                                <div className="total-box">
+                                    <div className="total-row">
+                                        <span className="total-lbl">
+                                            Km départ
+                                        </span>
+                                        <div className="total-fill">
+                                            {kmDepart}
+                                        </div>
+                                    </div>
+                                    <div className="total-row">
+                                        <span className="total-lbl">
+                                            Km arrivée
+                                        </span>
+                                        <div className="total-fill">
+                                            {kmArrivee}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -16,6 +16,7 @@ import Tabs from '@/components/ui/Tabs'
 import Dropdown from '@/components/ui/Dropdown'
 import Segment from '@/components/ui/Segment'
 import Collapsible from '@/components/ui/Collapsible'
+import Tooltip from '@/components/ui/Tooltip'
 import IconFrame from '@/components/shared/IconFrame'
 import DebouceInput from '@/components/shared/DebouceInput'
 import DataTable from '@/components/shared/DataTable'
@@ -72,6 +73,10 @@ import {
     LiMoney,
     LiPhone,
     LiTickCircle,
+    LiPlay,
+    LiUserCross,
+    LiReceipt,
+    LiEdit,
 } from '@/icons'
 
 const { TabNav, TabList } = Tabs
@@ -258,7 +263,11 @@ type NoShowDialogProps = {
     onNoShow: () => void
 }
 
-const NoShowDialog = ({ reservation, onClose, onNoShow }: NoShowDialogProps) => {
+const NoShowDialog = ({
+    reservation,
+    onClose,
+    onNoShow,
+}: NoShowDialogProps) => {
     const [reason, setReason] = useState('')
     const [submitting, setSubmitting] = useState(false)
 
@@ -272,7 +281,10 @@ const NoShowDialog = ({ reservation, onClose, onNoShow }: NoShowDialogProps) => 
                 reason: reason.trim(),
             })
             toast.push(
-                <Notification type="success" title="Reservation marked as no show" />,
+                <Notification
+                    type="success"
+                    title="Reservation marked as no show"
+                />,
             )
             onNoShow()
             onClose()
@@ -575,7 +587,8 @@ const ExpandableReservationDetails = ({
                             <div className="flex flex-wrap items-center gap-2">
                                 <span className="flex items-center gap-1 heading-text font-medium">
                                     <LiCar className="text-base" />
-                                    {reservation.car?.registration_number ?? '—'}
+                                    {reservation.car?.registration_number ??
+                                        '—'}
                                 </span>
                                 <span>·</span>
                                 <span className="heading-text font-medium">
@@ -611,7 +624,8 @@ const ExpandableReservationDetails = ({
                             <div className="flex flex-wrap items-center gap-2">
                                 <LiUser className="text-base" />
                                 <span className="heading-text font-medium">
-                                    {reservation.primary_client?.full_name ?? '—'}
+                                    {reservation.primary_client?.full_name ??
+                                        '—'}
                                 </span>
                                 {reservation.primary_client?.phone && (
                                     <span className="flex items-center gap-1 text-sm">
@@ -666,7 +680,9 @@ const ExpandableReservationDetails = ({
                             )}
                             {reservation.discount_amount > 0 && (
                                 <div className="flex justify-between items-center">
-                                    <span className="font-medium">Discount</span>
+                                    <span className="font-medium">
+                                        Discount
+                                    </span>
                                     <span className="font-medium heading-text">
                                         -{MAD(reservation.discount_amount)}
                                     </span>
@@ -743,9 +759,12 @@ const ExpandableReservationDetails = ({
                                 No show
                             </Button>
                         )}
-                        {['pending', 'confirmed', 'reserved', 'active'].includes(
-                            reservation.status,
-                        ) && (
+                        {[
+                            'pending',
+                            'confirmed',
+                            'reserved',
+                            'active',
+                        ].includes(reservation.status) && (
                             <Button
                                 size="sm"
                                 variant="ghost"
@@ -792,7 +811,7 @@ const Reservations = () => {
     const [sortBy, setSortBy] = useState('')
     const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
     const [expandedId, setExpandedId] = useState<number | null>(null)
-    const [viewMode, setViewMode] = useState<'card' | 'table'>('card')
+    const [viewMode, setViewMode] = useState<'card' | 'table'>('table')
 
     const [summary, setSummary] = useState<DashboardSummary | null>(null)
     const [summaryLoading, setSummaryLoading] = useState(false)
@@ -838,7 +857,16 @@ const Reservations = () => {
                 setTotal(0)
             })
             .finally(() => setLoading(false))
-    }, [pageIndex, pageSize, q, statusFilter, paymentStatusFilter, range, sortBy, sortDir])
+    }, [
+        pageIndex,
+        pageSize,
+        q,
+        statusFilter,
+        paymentStatusFilter,
+        range,
+        sortBy,
+        sortDir,
+    ])
 
     useEffect(() => {
         fetchReservations()
@@ -847,9 +875,7 @@ const Reservations = () => {
     useEffect(() => {
         setSummaryLoading(true)
         apiGetDashboardSummary({
-            from: dayjs()
-                .subtract(Number(range), 'day')
-                .format('YYYY-MM-DD'),
+            from: dayjs().subtract(Number(range), 'day').format('YYYY-MM-DD'),
             to: dayjs().format('YYYY-MM-DD'),
         })
             .then(setSummary)
@@ -985,81 +1011,108 @@ const Reservations = () => {
                     return (
                         <div className="flex items-center justify-end gap-1">
                             {['pending', 'reserved'].includes(status) && (
-                                <Button
-                                    size="sm"
-                                    variant="subtle"
-                                    onClick={() => handleConfirm(reservation)}
-                                >
-                                    Confirm
-                                </Button>
+                                <Tooltip title="Confirm" placement="top">
+                                    <Button
+                                        size="sm"
+                                        variant="subtle"
+                                        icon={<LiTickCircle />}
+                                        aria-label="Confirm reservation"
+                                        onClick={() =>
+                                            handleConfirm(reservation)
+                                        }
+                                    />
+                                </Tooltip>
                             )}
                             {['confirmed', 'reserved'].includes(status) && (
-                                <Button
-                                    size="sm"
-                                    variant="ghost"
-                                    className="text-success hover:bg-success-subtle"
-                                    onClick={() => setActivating(reservation)}
-                                >
-                                    Activate
-                                </Button>
+                                <Tooltip title="Activate" placement="top">
+                                    <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        className="text-success hover:bg-success-subtle"
+                                        icon={<LiPlay />}
+                                        aria-label="Activate reservation"
+                                        onClick={() =>
+                                            setActivating(reservation)
+                                        }
+                                    />
+                                </Tooltip>
                             )}
                             {status === 'active' && (
-                                <Button
-                                    size="sm"
-                                    variant="ghost"
-                                    className="text-primary hover:bg-primary-subtle"
-                                    onClick={() => setCompleting(reservation)}
-                                >
-                                    Complete
-                                </Button>
+                                <Tooltip title="Complete" placement="top">
+                                    <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        className="text-primary hover:bg-primary-subtle"
+                                        icon={<LiBoxTick />}
+                                        aria-label="Complete reservation"
+                                        onClick={() =>
+                                            setCompleting(reservation)
+                                        }
+                                    />
+                                </Tooltip>
                             )}
                             {['pending', 'confirmed', 'reserved'].includes(
                                 status,
                             ) && (
+                                <Tooltip title="No show" placement="top">
+                                    <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        className="text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                        icon={<LiUserCross />}
+                                        aria-label="Mark reservation as no show"
+                                        onClick={() =>
+                                            setNoShowing(reservation)
+                                        }
+                                    />
+                                </Tooltip>
+                            )}
+                            {[
+                                'pending',
+                                'confirmed',
+                                'reserved',
+                                'active',
+                            ].includes(status) && (
+                                <Tooltip title="Cancel" placement="top">
+                                    <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        className="text-error hover:bg-error-subtle"
+                                        icon={<LiCross />}
+                                        aria-label="Cancel reservation"
+                                        onClick={() =>
+                                            setCancelling(reservation)
+                                        }
+                                    />
+                                </Tooltip>
+                            )}
+                            <Tooltip title="Invoice" placement="top">
                                 <Button
                                     size="sm"
                                     variant="ghost"
-                                    className="text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                    onClick={() => setNoShowing(reservation)}
-                                >
-                                    No show
-                                </Button>
-                            )}
-                            {['pending', 'confirmed', 'reserved', 'active'].includes(
-                                status,
-                            ) && (
+                                    className="text-primary hover:bg-primary-subtle"
+                                    icon={<LiReceipt />}
+                                    aria-label="View invoice"
+                                    onClick={() => {
+                                        navigate(
+                                            `${APPS_PREFIX_PATH}/reservations/${reservation.id}/facture`,
+                                        )
+                                    }}
+                                />
+                            </Tooltip>
+                            <Tooltip title="Edit" placement="top">
                                 <Button
                                     size="sm"
                                     variant="ghost"
-                                    className="text-error hover:bg-error-subtle"
-                                    onClick={() => setCancelling(reservation)}
-                                >
-                                    Cancel
-                                </Button>
-                            )}
-                            <Button
-                                size="sm"
-                                variant="ghost"
-                                className="text-primary hover:bg-primary-subtle"
-                                onClick={() => {
-                                    navigate(
-                                        `${APPS_PREFIX_PATH}/reservations/${reservation.id}/facture`,
-                                    )
-                                }}
-                            >
-                                Invoice
-                            </Button>
-                            <Button
-                                size="sm"
-                                variant="ghost"
-                                onClick={() => {
-                                    navigate(
-                                        `${APPS_PREFIX_PATH}/reservations/${reservation.id}/modifier`,
-                                    )
-                                }}
-                            >
-                                Edit
-                            </Button>
+                                    icon={<LiEdit />}
+                                    aria-label="Edit reservation"
+                                    onClick={() => {
+                                        navigate(
+                                            `${APPS_PREFIX_PATH}/reservations/${reservation.id}/modifier`,
+                                        )
+                                    }}
+                                />
+                            </Tooltip>
                         </div>
                     )
                 },
@@ -1126,7 +1179,7 @@ const Reservations = () => {
     }
 
     return (
-        <Container className="p-4">
+        <Container className="">
             <div className="space-y-4">
                 <div className="flex items-center justify-between gap-4">
                     <h4>Reservations</h4>
@@ -1156,7 +1209,9 @@ const Reservations = () => {
                                 >
                                     <span className="flex items-center justify-between w-full">
                                         <span>{option.label}</span>
-                                        {range === option.value && <LiTickCircle />}
+                                        {range === option.value && (
+                                            <LiTickCircle />
+                                        )}
                                     </span>
                                 </Dropdown.Item>
                             ))}
@@ -1188,7 +1243,10 @@ const Reservations = () => {
                         {statCards.map((item, index) => (
                             <div
                                 key={item.id}
-                                className={classNames('px-4', getBorderClass(index))}
+                                className={classNames(
+                                    'px-4',
+                                    getBorderClass(index),
+                                )}
                             >
                                 <div className="flex items-center gap-4">
                                     <IconFrame>
@@ -1298,9 +1356,8 @@ const Reservations = () => {
                                 >
                                     <span className="flex items-center justify-between w-full">
                                         <span>{option.label}</span>
-                                        {paymentStatusFilter === option.value && (
-                                            <LiTickCircle />
-                                        )}
+                                        {paymentStatusFilter ===
+                                            option.value && <LiTickCircle />}
                                     </span>
                                 </Dropdown.Item>
                             ))}
@@ -1360,7 +1417,9 @@ const Reservations = () => {
                                 >
                                     <span className="flex items-center justify-between w-full">
                                         <span>{field.label}</span>
-                                        {sortBy === field.key && <LiTickCircle />}
+                                        {sortBy === field.key && (
+                                            <LiTickCircle />
+                                        )}
                                     </span>
                                 </Dropdown.Item>
                             ))}
@@ -1386,7 +1445,7 @@ const Reservations = () => {
                             body: true,
                             footer: true,
                         }}
-                        className="border-b border-gray-200 dark:border-gray-800"
+                        overflowClass="rounded-xs border border-gray-300 dark:border-gray-600"
                         columns={columns}
                         data={reservations}
                         loading={loading}
@@ -1488,7 +1547,8 @@ const Reservations = () => {
                                                         className={classNames(
                                                             'border-0',
                                                             reservationCardMap[
-                                                                reservation.status
+                                                                reservation
+                                                                    .status
                                                             ]?.bg,
                                                             'text-white',
                                                         )}
