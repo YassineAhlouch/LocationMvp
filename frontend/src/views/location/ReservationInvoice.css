@@ -4,7 +4,7 @@
    .footer, .page, .article …) never leak into the rest of the admin app.
    Layout/values mirror resources/views/contracts/contrat-location.html.
    ───────────────────────────────────────────────────────────────────────── */
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
 /* ─── PDF / PRINT RESET ─────────────────────────────────── */
 .reservation-contract,
@@ -25,7 +25,7 @@
 }
 
 .reservation-contract {
-    font-family: "DM Sans", "DejaVu Sans", sans-serif;
+    font-family: 'DM Sans', 'DejaVu Sans', sans-serif;
     font-size: 8.4pt;
     color: #111;
     -webkit-print-color-adjust: exact;
@@ -64,7 +64,7 @@
     line-height: 1;
 }
 .reservation-contract .logo span {
-    color: #ef5b23;
+    color: var(--primary);
 }
 .reservation-contract .logo sup {
     font-size: 11pt;
@@ -83,14 +83,14 @@
 }
 .reservation-contract .tagline {
     font-size: 9pt;
-    color: #ef5b23;
+    color: var(--primary);
     line-height: 1.5;
     margin-bottom: 2mm;
 }
 .reservation-contract .contract-title {
     font-size: 20pt;
     font-weight: 800;
-    color: #ef5b23;
+    color: var(--primary);
     line-height: 1;
 }
 
@@ -129,7 +129,7 @@
     text-align: center;
     font-size: 11pt;
     font-weight: 800;
-    color: #ef5b23;
+    color: var(--primary);
     margin: 2mm 0 2.5mm;
     letter-spacing: 0.5pt;
 }
@@ -310,6 +310,10 @@
     max-height: 100%;
     object-fit: contain;
 }
+.reservation-contract .image-border-wrapper {
+    border: 0.5px solid black;
+    padding: 1.5mm;
+}
 
 /* ─── LEGAL TEXT ───────────────────────────────────────── */
 .reservation-contract .legal {
@@ -364,8 +368,8 @@
 .reservation-contract .cond-title {
     font-size: 10.5pt;
     font-weight: 800;
-    color: #ef5b23;
-    border-bottom: 1.5pt solid #ef5b23;
+    color: var(--primary);
+    border-bottom: 1.5pt solid var(--primary);
     padding-bottom: 1.5mm;
     margin-bottom: 4mm;
 }

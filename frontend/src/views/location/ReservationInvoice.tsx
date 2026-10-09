@@ -12,7 +12,7 @@ import './ReservationInvoice.css'
 
 /**
  * Printable "Contrat de location" for a reservation, mirroring the
- * Sevenhorses template (resources/views/contracts/contrat-location.html).
+ * contract template (resources/views/contracts/contrat-location.html).
  * Two A4 portrait pages: the rental form + the 12 general conditions.
  */
 
@@ -245,9 +245,6 @@ const CONDITIONS: Array<{ num: string; body: string }> = [
     },
 ]
 
-const FALLBACK_ADDRESS =
-    'Numéro 78, 2ème étage, Kissaria Al Jassim, Boulevard Mohamed V, Gueliz, Marrakech'
-
 const ReservationInvoice = () => {
     const { id } = useParams()
     const navigate = useNavigate()
@@ -319,11 +316,11 @@ const ReservationInvoice = () => {
     } = contract
 
     // ── Company / letterhead ────────────────────────────────────────────
-    const brandName = (agency?.name ?? 'Sevenhorses').trim()
+    const brandName = (agency?.name ?? '').trim()
     const brandParts = brandName.split(/\s+/)
-    const brandFirst = brandParts[0] ?? brandName
+    const brandFirst = brandParts[0] ?? ''
     const brandRest = brandParts.slice(1).join(' ')
-    const footerAddress = agency?.address?.trim() || FALLBACK_ADDRESS
+    const footerAddress = agency?.address?.trim() ?? ''
 
     // ── Vehicle ─────────────────────────────────────────────────────────
     const marque = txt(car?.brand)
@@ -383,7 +380,7 @@ const ReservationInvoice = () => {
     const footer = (
         <div className="footer">
             <span>{footerAddress}</span>
-            <strong>Sevenhorses.ma</strong>
+            {agency?.name ? <strong>{agency.name}</strong> : null}
         </div>
     )
 
@@ -413,19 +410,29 @@ const ReservationInvoice = () => {
                 <div className="page">
                     <div className="contract-header">
                         <div>
-                            <div className="logo">
-                                <span>{brandFirst}</span>
-                                {brandRest ? ` ${brandRest}` : ''}
-                                <sup>®</sup>
-                            </div>
+                            {brandName ? (
+                                <div className="logo">
+                                    <span>{brandFirst}</span>
+                                    {brandRest ? ` ${brandRest}` : ''}
+                                    <sup>®</sup>
+                                </div>
+                            ) : null}
                             <div className="company-info">
-                                <strong>
-                                    {agency?.name ?? 'Ste Sevenhorses'}
-                                </strong>
-                                <br />
-                                {agency?.phone ?? '+212 671-729098'}
-                                <br />
-                                {agency?.email ?? 'Contact@sevenhorses.ma'}
+                                {agency?.name ? (
+                                    <strong>{agency.name}</strong>
+                                ) : null}
+                                {agency?.phone ? (
+                                    <>
+                                        <br />
+                                        {agency.phone}
+                                    </>
+                                ) : null}
+                                {agency?.email ? (
+                                    <>
+                                        <br />
+                                        {agency.email}
+                                    </>
+                                ) : null}
                             </div>
                         </div>
                         <div className="header-right">
@@ -623,7 +630,7 @@ const ReservationInvoice = () => {
                             <div className="right-image-container">
                                 <div className="image-border-wrapper">
                                     <img
-                                        src="/imageCar.png"
+                                        src="/img/invoice/carinspection.jpg"
                                         alt="Contract visual / diagramme"
                                         onError={(event) => {
                                             event.currentTarget.style.display =
