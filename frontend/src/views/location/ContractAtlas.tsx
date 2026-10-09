@@ -115,11 +115,6 @@ const ContractAtlas = ({ contract }: { contract: ReservationContract }) => {
 
     const agencyName = (agency?.name ?? '').trim()
     const badge = (agencyName || 'ATLAS').toUpperCase()
-    const cityCountry = [agency?.city, agency?.country]
-        .filter(Boolean)
-        .join(' - ')
-        .toUpperCase()
-
     const vehicleName = [txt(car?.brand), txt(car?.model)]
         .filter(Boolean)
         .join(' ')
@@ -129,13 +124,10 @@ const ContractAtlas = ({ contract }: { contract: ReservationContract }) => {
         : vehicleName
 
     const clientName = fullName(primary_client)
-    const clientSignature = clientName || txt(reservation.primary_driver?.name)
     const secondaryName = fullName(secondary_client)
 
-    const signatureDate = date(reservation.pickup_datetime)
-
     return (
-        <div className="atlas-contract">
+        <div className="atlas-contract page">
             <div className="badge">{badge}</div>
 
             {/* ── Header ── */}
@@ -405,20 +397,7 @@ const ContractAtlas = ({ contract }: { contract: ReservationContract }) => {
             {/* ── Signatures ── */}
             <div className="signs">
                 <div className="sign-side">
-                    <div className="sig-box">
-                        <div className="stamp">
-                            <div className="stamp-inner">
-                                {agencyName ? (
-                                    <div>{agencyName.toUpperCase()}</div>
-                                ) : null}
-                                {agency?.rc ? <div>RC {agency.rc}</div> : null}
-                                {agency?.ice ? (
-                                    <div>ICE {agency.ice}</div>
-                                ) : null}
-                                {cityCountry ? <div>{cityCountry}</div> : null}
-                            </div>
-                        </div>
-                    </div>
+                    <div className="sig-box" />
                     <div className="cap">
                         Signature ·{' '}
                         <span lang="ar" dir="rtl">
@@ -428,79 +407,20 @@ const ContractAtlas = ({ contract }: { contract: ReservationContract }) => {
                     <div className="cap-line">loueur</div>
                 </div>
 
-                <svg
+                <img
                     className="cars"
-                    viewBox="0 0 360 210"
-                    width="360"
-                    height="210"
-                    role="img"
-                    aria-label="Croquis des véhicules"
-                >
-                    <defs>
-                        <g
-                            id="atlas-car-side"
-                            fill="#eef1f3"
-                            stroke="#555"
-                            strokeWidth="2"
-                            strokeLinejoin="round"
-                        >
-                            <path d="M10 62 L18 44 Q23 35 34 34 L56 32 L68 16 Q74 9 86 9 L112 9 Q124 9 131 17 L146 33 L156 36 Q165 40 167 50 L170 62 Q171 69 163 69 L16 69 Q8 69 10 62 Z" />
-                            <circle cx="50" cy="69" r="12" />
-                            <circle cx="130" cy="69" r="12" />
-                            <circle cx="50" cy="69" r="5" fill="#cfd4d8" />
-                            <circle cx="130" cy="69" r="5" fill="#cfd4d8" />
-                        </g>
-                        <g
-                            id="atlas-car-front"
-                            fill="#eef1f3"
-                            stroke="#555"
-                            strokeWidth="2"
-                            strokeLinejoin="round"
-                        >
-                            <path d="M24 78 L24 42 Q24 20 50 20 L110 20 Q136 20 136 42 L136 78 Q136 84 130 84 L30 84 Q24 84 24 78 Z" />
-                            <rect x="36" y="28" width="88" height="26" rx="9" />
-                            <circle cx="44" cy="60" r="9" fill="#cfd4d8" />
-                            <circle cx="116" cy="60" r="9" fill="#cfd4d8" />
-                        </g>
-                        <g
-                            id="atlas-car-top"
-                            fill="#eef1f3"
-                            stroke="#555"
-                            strokeWidth="2"
-                            strokeLinejoin="round"
-                        >
-                            <path d="M48 6 Q80 -2 112 6 Q126 10 128 30 L128 74 Q128 90 110 92 L50 92 Q32 90 32 74 L32 30 Q34 10 48 6 Z" />
-                            <path d="M42 36 L118 36 L110 22 Q80 14 50 22 Z" />
-                            <path d="M42 62 L118 62 L112 76 Q80 82 48 76 Z" />
-                        </g>
-                    </defs>
-                    <use href="#atlas-car-side" x="6" y="4" />
-                    <use href="#atlas-car-side" x="194" y="4" />
-                    <use href="#atlas-car-front" x="6" y="110" />
-                    <use href="#atlas-car-top" x="194" y="110" />
-                </svg>
+                    src="/img/invoice/cardiagram-clio.jpg"
+                    alt="Schéma du véhicule"
+                />
 
                 <div className="sign-side">
-                    <div className="sig-box">
-                        {clientSignature ? (
-                            <div className="hand">{clientSignature}</div>
-                        ) : null}
-                    </div>
+                    <div className="sig-box" />
                     <div className="cap">
                         Signature client ·{' '}
                         <span lang="ar" dir="rtl">
                             توقيع المكتري
                         </span>
                     </div>
-                    {clientSignature ? (
-                        <div className="ok">
-                            {clientSignature} · {signatureDate} —{' '}
-                            <span lang="ar" dir="rtl">
-                                وُقِّع
-                            </span>{' '}
-                            ✓
-                        </div>
-                    ) : null}
                     <div className="cap-line">
                         {time(reservation.pickup_datetime)}
                     </div>

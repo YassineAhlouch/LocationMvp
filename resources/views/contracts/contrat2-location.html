@@ -5,55 +5,58 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contrat de location — Atlas Car Location</title>
 <style>
-  * { box-sizing: border-box; }
+  /* ─── PDF / PRINT RESET ─────────────────────────────────── */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    margin: 0;
-    background: #e9e9e9;
-    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: #fff;
+    font-family: "DejaVu Sans", "Noto Naskh Arabic", "Amiri", Tahoma, sans-serif;
+    font-size: 8.4pt;
     color: #111;
-    font-size: 14px;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
 
-  .card {
-    position: relative;
-    max-width: 880px;
-    margin: 24px auto;
+  /* ─── PAGE SETUP ───────────────────────────────────────── */
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  .page {
+    width: 210mm;
+    min-height: 297mm;
     background: #fff;
-    border-radius: 14px;
-    box-shadow: 0 6px 26px rgba(0, 0, 0, 0.12);
-    padding: 22px 12px;
+    padding: 10mm 11mm 8mm 11mm;
+    position: relative;
+    page-break-after: avoid;
   }
 
   /* ── Header ───────────────────────────────────────────── */
   .badge {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: 5mm;
+    right: 6mm;
     background: #111;
     color: #f58220;
-    font-size: 12px;
+    font-size: 9pt;
     font-weight: 800;
-    letter-spacing: 2px;
-    padding: 7px 11px;
-    border-radius: 9px;
+    letter-spacing: 1pt;
+    padding: 2mm 3mm;
   }
-
   .head {
     text-align: center;
-    padding: 6px 70px 16px;
+    padding: 1.5mm 22mm 1mm;
   }
   .head h1 {
     margin: 0;
-    font-size: 25px;
+    font-size: 16pt;
     font-weight: 800;
+    line-height: 1.15;
   }
   .head .sub {
-    margin-top: 5px;
+    margin-top: 1mm;
     color: #888;
-    font-size: 13px;
+    font-size: 8pt;
     direction: rtl;
   }
 
@@ -61,52 +64,54 @@
   table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 14px;
+    font-size: 8.4pt;
   }
   th, td {
-    border: 1px solid #e1e1e1;
-    height: 30px;
-    padding: 4px 10px;
+    border: 0.5px solid #111;
+    height: 4mm;
+    padding: 0.4mm 2.5mm;
     vertical-align: middle;
+    line-height: 1.12;
   }
-  table + table { margin-top: -1px; }
+  table + table { margin-top: -0.5px; }
 
   .fr-label {
-    color: #555;
-    font-style: italic;
+    color: #333;
     text-align: left;
-    font-size: 13px;
+    font-size: 7.5pt;
+    font-weight: 600;
   }
   .value {
-    font-weight: bold;
+    font-weight: 700;
     text-align: center;
+    font-size: 8pt;
   }
   .ar {
     direction: rtl;
     text-align: right;
-    font-weight: bold;
-    font-size: 15px;
+    font-weight: 700;
+    font-size: 8.5pt;
   }
 
   /* Contract number row */
   .contract-row td {
-    border: 2px solid #000;
-    height: 42px;
+    border: 0.5px solid #111;
+    height: 5mm;
   }
   .contract-row .fr-label {
-    font-weight: bold;
-    font-size: 15px;
+    font-weight: 700;
+    font-size: 8.5pt;
   }
-  .contract-row .value { font-size: 21px; }
-  .contract-row .ar { font-size: 17px; }
+  .contract-row .value { font-size: 11pt; }
+  .contract-row .ar { font-size: 9pt; }
 
   /* Section bars */
   .section-bar td {
     background: #f1f1f1;
-    height: 28px;
+    height: 4mm;
     text-align: center;
-    font-weight: bold;
-    font-size: 14px;
+    font-weight: 700;
+    font-size: 8.5pt;
     direction: rtl;
   }
 
@@ -115,25 +120,27 @@
   .cond-tbl th {
     background: #f1f1f1;
     text-align: center;
-    font-size: 12px;
-    padding: 4px 6px;
-    height: 34px;
+    font-size: 7pt;
+    padding: 0.6mm 1.5mm;
+    height: 5.5mm;
   }
-  .cond-tbl th .h-fr { display: block; font-weight: bold; }
+  .cond-tbl th .h-fr { display: block; font-weight: 700; }
   .cond-tbl th .h-ar {
     display: block;
     direction: rtl;
-    font-weight: bold;
-    font-size: 12px;
+    font-weight: 700;
+    font-size: 7pt;
   }
   .cond-tbl tbody td {
-    height: 44px;
+    height: 5.5mm;
     text-align: center;
-    font-weight: bold;
+    font-weight: 700;
+    font-size: 8pt;
+    line-height: 1.12;
   }
   .cond-tbl tbody td.last {
     background: #f1f1f1;
-    line-height: 1.4;
+    line-height: 1.35;
   }
 
   /* ── Rental info ──────────────────────────────────────── */
@@ -142,43 +149,44 @@
   /* ── Conditions ───────────────────────────────────────── */
   .cond-box {
     display: flex;
-    border: 1px solid #e1e1e1;
-    margin-top: 14px;
-    font-size: 12.3px;
+    border: 0.5px solid #111;
+    margin-top: 2.5mm;
+    font-size: 6.8pt;
   }
   .cond-col {
     width: 50%;
-    padding: 12px 14px;
+    padding: 2mm 2.5mm;
   }
   .cond-col.left { text-align: left; }
   .cond-col.right {
     text-align: right;
     direction: rtl;
-    border-left: 1px solid #e1e1e1;
+    border-left: 0.5px solid #111;
   }
   .cond-title {
-    margin: 0 0 8px;
+    margin: 0 0 0.6mm;
     text-align: center;
-    font-weight: bold;
+    font-weight: 700;
+    font-size: 8pt;
     text-decoration: underline;
   }
   .cond-col p {
-    margin: 4px 0;
-    line-height: 1.5;
+    margin: 0.1mm 0;
+    line-height: 1.3;
   }
 
   /* ── Agreement ────────────────────────────────────────── */
   .agreement {
-    border: 1px solid #e1e1e1;
-    margin-top: 12px;
-    padding: 9px 12px;
+    border: 0.5px solid #111;
+    margin-top: 2mm;
+    padding: 1.5mm 3mm;
     text-align: center;
-    font-weight: bold;
-    font-size: 12.5px;
+    font-weight: 700;
+    font-size: 7pt;
   }
   .agreement .ar {
     display: inline;
-    font-size: 12.5px;
+    font-size: 7pt;
   }
 
   /* ── Signatures ───────────────────────────────────────── */
@@ -186,128 +194,53 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    gap: 12px;
-    margin-top: 18px;
+    margin-top: 2.5mm;
   }
   .sign-side {
     flex: 0 0 auto;
     text-align: center;
   }
   .sig-box {
-    width: 232px;
-    height: 134px;
-    border: 1.5px dashed #b3b3b3;
-    border-radius: 12px;
+    width: 50mm;
+    height: 28mm;
+    border: 0.75px dashed #999;
     background: #fcfcfc;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .sign-side .cap {
-    margin-top: 8px;
-    font-weight: bold;
-    font-size: 12.5px;
+    margin-top: 1.5mm;
+    font-weight: 700;
+    font-size: 7pt;
   }
   .sign-side .cap-line {
-    font-weight: bold;
-    font-size: 12.5px;
-    line-height: 1.4;
-  }
-  .sign-side .ok {
-    margin-top: 3px;
-    color: #1b8a3a;
-    font-weight: bold;
-    font-size: 12px;
-  }
-
-  /* Stamp */
-  .stamp {
-    width: 106px;
-    height: 106px;
-    border: 2px solid #1b3fa0;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #1b3fa0;
-  }
-  .stamp-inner {
-    width: 90px;
-    height: 90px;
-    border: 1px solid #1b3fa0;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-size: 7.5px;
-    font-weight: bold;
+    font-weight: 700;
+    font-size: 7pt;
     line-height: 1.3;
-    padding: 6px;
   }
-
-  /* Handwritten signature */
-  .hand {
-    font-family: "Segoe Script", "Brush Script MT", "Apple Chancery", cursive;
-    font-style: italic;
-    font-size: 32px;
-    color: #16308f;
-    transform: rotate(-6deg);
-  }
-
   .cars {
     flex: 0 1 auto;
+    width: 65mm;
     max-width: 100%;
     height: auto;
+    display: block;
   }
 
   /* ── Footer ───────────────────────────────────────────── */
   .foot {
-    border-top: 1px solid #e1e1e1;
-    margin-top: 16px;
-    padding-top: 10px;
+    border-top: 0.5pt solid #ddd;
+    margin-top: 2mm;
+    padding-top: 1.5mm;
     text-align: center;
-    color: #777;
-    font-size: 11.5px;
-  }
-
-  /* ── Print ────────────────────────────────────────────── */
-  @media print {
-    body { background: #fff; }
-    .card {
-      max-width: none;
-      margin: 0;
-      border-radius: 0;
-      box-shadow: none;
-    }
-  }
-
-  /* ── Mobile ───────────────────────────────────────────── */
-  @media (max-width: 640px) {
-    body { font-size: 12px; }
-    .card { padding: 14px 8px; }
-    .head { padding: 6px 56px 12px; }
-    .head h1 { font-size: 20px; }
-    table, .cond-box, .agreement { font-size: 12px; }
-    .ar { font-size: 13px; }
-    .contract-row .value { font-size: 17px; }
-    .contract-row .ar { font-size: 14px; }
-    .cond-box { flex-direction: column; }
-    .cond-col { width: 100%; }
-    .cond-col.right {
-      border-left: none;
-      border-top: 1px solid #e1e1e1;
-    }
-    .signs { flex-direction: column; align-items: center; }
-    .sig-box { width: 100%; max-width: 260px; }
-    .cars { width: 100%; max-width: 320px; }
+    color: #555;
+    font-size: 7pt;
   }
 </style>
 </head>
 <body>
 
-<div class="card">
+<div class="page">
   <div class="badge">ATLAS</div>
 
   <!-- ── Header ── -->
@@ -563,58 +496,20 @@
 
   <!-- ── Signatures ── -->
   <div class="signs">
-    <!-- Left: agency stamp -->
+    <!-- Left: agency (empty for signing) -->
     <div class="sign-side">
-      <div class="sig-box">
-        <div class="stamp">
-          <div class="stamp-inner">
-            <div>ATLAS CAR</div>
-            <div>LOCATION SARL</div>
-            <div>RC 45872</div>
-            <div>ICE 002745318000061</div>
-            <div>MARRAKECH - MAROC</div>
-          </div>
-        </div>
-      </div>
+      <div class="sig-box"></div>
       <div class="cap">Signature · <span lang="ar" dir="rtl">توقيع وكاشي الوكالة</span></div>
       <div class="cap-line">loueur</div>
     </div>
 
-    <!-- Center: cars diagram -->
-    <svg class="cars" viewBox="0 0 360 210" width="360" height="210" role="img" aria-label="Croquis des véhicules">
-      <defs>
-        <g id="car-side" fill="#eef1f3" stroke="#555" stroke-width="2" stroke-linejoin="round">
-          <path d="M10 62 L18 44 Q23 35 34 34 L56 32 L68 16 Q74 9 86 9 L112 9 Q124 9 131 17 L146 33 L156 36 Q165 40 167 50 L170 62 Q171 69 163 69 L16 69 Q8 69 10 62 Z"/>
-          <circle cx="50" cy="69" r="12"/>
-          <circle cx="130" cy="69" r="12"/>
-          <circle cx="50" cy="69" r="5" fill="#cfd4d8"/>
-          <circle cx="130" cy="69" r="5" fill="#cfd4d8"/>
-        </g>
-        <g id="car-front" fill="#eef1f3" stroke="#555" stroke-width="2" stroke-linejoin="round">
-          <path d="M24 78 L24 42 Q24 20 50 20 L110 20 Q136 20 136 42 L136 78 Q136 84 130 84 L30 84 Q24 84 24 78 Z"/>
-          <rect x="36" y="28" width="88" height="26" rx="9"/>
-          <circle cx="44" cy="60" r="9" fill="#cfd4d8"/>
-          <circle cx="116" cy="60" r="9" fill="#cfd4d8"/>
-        </g>
-        <g id="car-top" fill="#eef1f3" stroke="#555" stroke-width="2" stroke-linejoin="round">
-          <path d="M48 6 Q80 -2 112 6 Q126 10 128 30 L128 74 Q128 90 110 92 L50 92 Q32 90 32 74 L32 30 Q34 10 48 6 Z"/>
-          <path d="M42 36 L118 36 L110 22 Q80 14 50 22 Z"/>
-          <path d="M42 62 L118 62 L112 76 Q80 82 48 76 Z"/>
-        </g>
-      </defs>
-      <use href="#car-side" x="6" y="4"/>
-      <use href="#car-side" x="194" y="4"/>
-      <use href="#car-front" x="6" y="110"/>
-      <use href="#car-top" x="194" y="110"/>
-    </svg>
+    <!-- Center: vehicle diagram -->
+    <img class="cars" src="/img/invoice/cardiagram-clio.jpg" alt="Schéma du véhicule">
 
-    <!-- Right: client signature -->
+    <!-- Right: client (empty for signing) -->
     <div class="sign-side">
-      <div class="sig-box">
-        <div class="hand">Amine Chraibi</div>
-      </div>
+      <div class="sig-box"></div>
       <div class="cap">Signature client · <span lang="ar" dir="rtl">توقيع المكتري</span></div>
-      <div class="ok">Amine Chraibi · 21/08/2026 — <span lang="ar" dir="rtl">وُقِّع</span> ✓</div>
       <div class="cap-line">07:00</div>
     </div>
   </div>
