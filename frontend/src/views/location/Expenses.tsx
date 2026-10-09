@@ -9,6 +9,7 @@ import { Notification } from '@/components/ui/Notification'
 import { toast } from '@/components/ui/toast'
 import DebouceInput from '@/components/shared/DebouceInput'
 import DataTable from '@/components/shared/DataTable'
+import Container from '@/components/shared/Container'
 import OverflowTabs from '@/components/shared/OverflowTabs'
 import { useForm, Controller } from 'react-hook-form'
 import type { Resolver } from 'react-hook-form'
@@ -536,91 +537,96 @@ const Expenses = () => {
 
     return (
         <div>
-            <div className="px-4 py-2">
-                <div className="flex items-center justify-between gap-2">
+            <Container className="">
+                <div className="space-y-4">
                     <div>
-                        <h4>Expenses</h4>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {total} expenses
-                        </p>
+                        <div className="flex items-center justify-between gap-4">
+                            <div>
+                                <h4>Expenses</h4>
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    {total} expenses
+                                </p>
+                            </div>
+                            <Button
+                                variant="solid"
+                                onClick={() => {
+                                    setEditing(null)
+                                    setDialogOpen(true)
+                                }}
+                            >
+                                Add expense
+                            </Button>
+                        </div>
                     </div>
-                    <Button
-                        variant="solid"
-                        onClick={() => {
-                            setEditing(null)
-                            setDialogOpen(true)
-                        }}
-                    >
-                        Add expense
-                    </Button>
-                </div>
-            </div>
 
-            <OverflowTabs
-                tabList={statusTabList}
-                value={statusFilter}
-                onChange={(value) => {
-                    setStatusFilter(value)
-                    setPageIndex(1)
-                }}
-                tabListClass="px-4 dark:border-gray-800"
-            />
-
-            <div className="flex flex-wrap items-center justify-between gap-2 p-4">
-                <div>
-                    <DebouceInput
-                        placeholder="Search expenses…"
-                        prefix={<LuSearch className="text-lg" />}
-                        onChange={(e) => {
-                            setQ(e.target.value)
+                    <OverflowTabs
+                        tabList={statusTabList}
+                        value={statusFilter}
+                        onChange={(value) => {
+                            setStatusFilter(value)
                             setPageIndex(1)
                         }}
+                        tabListClass="dark:border-gray-800"
                     />
-                </div>
-                <div className="w-48">
-                    <Select
-                        options={[
-                            { value: '', label: 'All types' },
-                            ...expenseTypeOptions,
-                        ]}
-                        value={
-                            [
-                                { value: '', label: 'All types' },
-                                ...expenseTypeOptions,
-                            ].find((o) => o.value === typeFilter) ?? null
-                        }
-                        onChange={(option) => {
-                            setTypeFilter(option?.value ?? '')
-                            setPageIndex(1)
-                        }}
-                    />
-                </div>
-            </div>
 
-            <div className="mb-4">
-                <DataTable<Expense>
-                    compact
-                    verticalDivider={{
-                        head: true,
-                        body: true,
-                    }}
-                    className="border-t border-b border-gray-200 dark:border-gray-700"
-                    columns={columns}
-                    data={expenses}
-                    noData={!loading && expenses.length === 0}
-                    loading={loading}
-                    pagingData={{
-                        total,
-                        pageIndex,
-                        pageSize,
-                    }}
-                    onPaginationChange={(page) => setPageIndex(page)}
-                    onPageSizeChange={(size) => {
-                        setPageSize(size)
-                        setPageIndex(1)
-                    }}
-                />
-            </div>
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <DebouceInput
+                                placeholder="Search expenses…"
+                                prefix={<LuSearch className="text-lg" />}
+                                onChange={(e) => {
+                                    setQ(e.target.value)
+                                    setPageIndex(1)
+                                }}
+                            />
+                        </div>
+                        <div className="w-48">
+                            <Select
+                                options={[
+                                    { value: '', label: 'All types' },
+                                    ...expenseTypeOptions,
+                                ]}
+                                value={
+                                    [
+                                        { value: '', label: 'All types' },
+                                        ...expenseTypeOptions,
+                                    ].find((o) => o.value === typeFilter) ??
+                                    null
+                                }
+                                onChange={(option) => {
+                                    setTypeFilter(option?.value ?? '')
+                                    setPageIndex(1)
+                                }}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="mb-4">
+                        <DataTable<Expense>
+                            compact
+                            verticalDivider={{
+                                head: true,
+                                body: true,
+                            }}
+                            className="border-t border-b border-gray-200 dark:border-gray-700"
+                            columns={columns}
+                            data={expenses}
+                            noData={!loading && expenses.length === 0}
+                            loading={loading}
+                            pagingData={{
+                                total,
+                                pageIndex,
+                                pageSize,
+                            }}
+                            onPaginationChange={(page) => setPageIndex(page)}
+                            onPageSizeChange={(size) => {
+                                setPageSize(size)
+                                setPageIndex(1)
+                            }}
+                        />
+                    </div>
+                </div>
+            </Container>
 
             <ExpenseFormDialog
                 open={dialogOpen}

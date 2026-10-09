@@ -9,6 +9,7 @@ import Select from '@/components/ui/Select'
 import ActionBar from '@/components/ui/ActionBar'
 import DebouceInput from '@/components/shared/DebouceInput'
 import DataTable from '@/components/shared/DataTable'
+import Container from '@/components/shared/Container'
 import OverflowTabs from '@/components/shared/OverflowTabs'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import { Notification } from '@/components/ui/Notification'
@@ -327,134 +328,150 @@ const ListeUtilisateurs = () => {
 
     return (
         <div>
-            <div className="px-4 py-2">
-                <div className="flex items-center justify-between gap-2">
+            <Container className="">
+                <div className="space-y-4">
                     <div>
-                        <h4>Users</h4>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {total} staff members
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <OverflowTabs
-                tabList={tabList}
-                value={currentTab}
-                onChange={setCurrentTab}
-                tabListClass="px-4"
-            />
-
-            {currentTab === 'users' && (
-                <div>
-                    <div className="flex flex-wrap items-center justify-between gap-2 p-4">
-                        <div>
-                            <DebouceInput
-                                placeholder="Search users…"
-                                prefix={<LuSearch className="text-lg" />}
-                                onChange={(e) => {
-                                    setQ(e.target.value)
-                                    setSelectedRows([])
-                                    setPageIndex(1)
-                                }}
-                            />
+                        <div className="flex items-center justify-between gap-4">
+                            <div>
+                                <h4>Users</h4>
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    {total} staff members
+                                </p>
+                            </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <div className="w-48">
-                                <Select
-                                    options={[
-                                        { value: '', label: 'All roles' },
-                                        ...roles,
-                                    ]}
-                                    value={
-                                        [
-                                            {
-                                                value: '',
-                                                label: 'All roles',
-                                            },
-                                            ...roles,
-                                        ].find((o) => o.value === roleFilter) ??
-                                        null
-                                    }
-                                    onChange={(option) => {
-                                        setRoleFilter(
-                                            String(option?.value ?? ''),
-                                        )
-                                        setSelectedRows([])
-                                        setPageIndex(1)
+                    </div>
+
+                    <OverflowTabs
+                        tabList={tabList}
+                        value={currentTab}
+                        onChange={setCurrentTab}
+                    />
+
+                    {currentTab === 'users' && (
+                        <div>
+                            <div className="flex flex-wrap items-center justify-between gap-2">
+                                <div>
+                                    <DebouceInput
+                                        placeholder="Search users…"
+                                        prefix={
+                                            <LuSearch className="text-lg" />
+                                        }
+                                        onChange={(e) => {
+                                            setQ(e.target.value)
+                                            setSelectedRows([])
+                                            setPageIndex(1)
+                                        }}
+                                    />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-48">
+                                        <Select
+                                            options={[
+                                                {
+                                                    value: '',
+                                                    label: 'All roles',
+                                                },
+                                                ...roles,
+                                            ]}
+                                            value={
+                                                [
+                                                    {
+                                                        value: '',
+                                                        label: 'All roles',
+                                                    },
+                                                    ...roles,
+                                                ].find(
+                                                    (o) =>
+                                                        o.value === roleFilter,
+                                                ) ?? null
+                                            }
+                                            onChange={(option) => {
+                                                setRoleFilter(
+                                                    String(option?.value ?? ''),
+                                                )
+                                                setSelectedRows([])
+                                                setPageIndex(1)
+                                            }}
+                                        />
+                                    </div>
+                                    <Button
+                                        variant="solid"
+                                        onClick={() =>
+                                            navigate(
+                                                `${APPS_PREFIX_PATH}/utilisateurs/ajouter`,
+                                            )
+                                        }
+                                    >
+                                        Add user
+                                    </Button>
+                                </div>
+                            </div>
+
+                            <div className="mb-4">
+                                <DataTable<StaffUser>
+                                    compact
+                                    selectable
+                                    verticalDivider={{
+                                        head: true,
+                                        body: true,
                                     }}
+                                    className="border-t border-b border-gray-200 dark:border-gray-700"
+                                    columns={columns}
+                                    data={users}
+                                    noData={!loading && users.length === 0}
+                                    skeletonAvatarColumns={[1]}
+                                    skeletonAvatarProps={{
+                                        width: 28,
+                                        height: 28,
+                                    }}
+                                    loading={loading}
+                                    checkboxChecked={(row) =>
+                                        selectedRows.some(
+                                            (selected) =>
+                                                selected.id === row.id,
+                                        )
+                                    }
+                                    pagingData={{
+                                        total,
+                                        pageIndex,
+                                        pageSize,
+                                    }}
+                                    onPaginationChange={handlePageChange}
+                                    onPageSizeChange={handlePageSizeChange}
+                                    onRowSelect={handleRowSelect}
+                                    onAllRowSelect={handleAllRowSelect}
                                 />
                             </div>
-                            <Button
-                                variant="solid"
-                                onClick={() =>
-                                    navigate(
-                                        `${APPS_PREFIX_PATH}/utilisateurs/ajouter`,
-                                    )
-                                }
-                            >
-                                Add user
-                            </Button>
-                        </div>
-                    </div>
 
-                    <div className="mb-4">
-                        <DataTable<StaffUser>
-                            compact
-                            selectable
-                            verticalDivider={{
-                                head: true,
-                                body: true,
-                            }}
-                            className="border-t border-b border-gray-200 dark:border-gray-700"
-                            columns={columns}
-                            data={users}
-                            noData={!loading && users.length === 0}
-                            skeletonAvatarColumns={[1]}
-                            skeletonAvatarProps={{ width: 28, height: 28 }}
-                            loading={loading}
-                            checkboxChecked={(row) =>
-                                selectedRows.some(
-                                    (selected) => selected.id === row.id,
-                                )
-                            }
-                            pagingData={{
-                                total,
-                                pageIndex,
-                                pageSize,
-                            }}
-                            onPaginationChange={handlePageChange}
-                            onPageSizeChange={handlePageSizeChange}
-                            onRowSelect={handleRowSelect}
-                            onAllRowSelect={handleAllRowSelect}
-                        />
-                    </div>
-
-                    <ActionBar open={selectedRows.length > 0}>
-                        <div className="flex items-center justify-between">
-                            <span className="font-medium">
-                                <span className="heading-text font-semibold">
-                                    {selectedRows.length} Items
-                                </span>{' '}
-                                selected
-                            </span>
-                            <div className="flex items-center gap-2">
-                                <Button
-                                    type="button"
-                                    className={() =>
-                                        'border-error ring-1 ring-error text-error hover:border-error hover:ring-error hover:text-error'
-                                    }
-                                    onClick={() => setBulkDeactivateOpen(true)}
-                                >
-                                    Deactivate
-                                </Button>
-                            </div>
+                            <ActionBar open={selectedRows.length > 0}>
+                                <div className="flex items-center justify-between">
+                                    <span className="font-medium">
+                                        <span className="heading-text font-semibold">
+                                            {selectedRows.length} Items
+                                        </span>{' '}
+                                        selected
+                                    </span>
+                                    <div className="flex items-center gap-2">
+                                        <Button
+                                            type="button"
+                                            className={() =>
+                                                'border-error ring-1 ring-error text-error hover:border-error hover:ring-error hover:text-error'
+                                            }
+                                            onClick={() =>
+                                                setBulkDeactivateOpen(true)
+                                            }
+                                        >
+                                            Deactivate
+                                        </Button>
+                                    </div>
+                                </div>
+                            </ActionBar>
                         </div>
-                    </ActionBar>
+                    )}
+
+                    {currentTab === 'roles' && <RolesTab />}
                 </div>
-            )}
-
-            {currentTab === 'roles' && <RolesTab />}
+            </Container>
 
             <UserEditDrawer
                 isOpen={editDrawerOpen}

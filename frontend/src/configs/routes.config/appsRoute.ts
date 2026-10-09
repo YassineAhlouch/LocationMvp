@@ -130,7 +130,7 @@ const appsRoute: Routes = [
         authority: [ADMIN, USER],
         access: 'protected',
         meta: {
-            pageContainerType: 'gutterless',
+            pageContainerType: 'contained',
             footer: false,
         },
     },
@@ -143,7 +143,7 @@ const appsRoute: Routes = [
         authority: [ADMIN, USER],
         access: 'protected',
         meta: {
-            pageContainerType: 'gutterless',
+            pageContainerType: 'contained',
             footer: false,
         },
     },
@@ -178,7 +178,7 @@ const appsRoute: Routes = [
         authority: [ADMIN, USER],
         access: 'protected',
         meta: {
-            pageContainerType: 'gutterless',
+            pageContainerType: 'contained',
             footer: false,
         },
     },

@@ -6,6 +6,7 @@ import Tag from '@/components/ui/Tag'
 import Dialog from '@/components/ui/Dialog'
 import Select from '@/components/ui/Select'
 import ActionBar from '@/components/ui/ActionBar'
+import Container from '@/components/shared/Container'
 import OverflowTabs from '@/components/shared/OverflowTabs'
 import DebouceInput from '@/components/shared/DebouceInput'
 import DataTable from '@/components/shared/DataTable'
@@ -347,98 +348,107 @@ const Clients = () => {
 
     return (
         <div>
-            <div className="px-4 py-2">
-                <div className="flex items-center justify-between gap-2">
+            <Container className="">
+                <div className="space-y-4">
                     <div>
-                        <h4>Clients</h4>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {total} clients
-                        </p>
+                        <div className="flex items-center justify-between gap-4">
+                            <div>
+                                <h4>Clients</h4>
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    {total} clients
+                                </p>
+                            </div>
+                            <Button
+                                variant="solid"
+                                onClick={() =>
+                                    navigate(
+                                        `${APPS_PREFIX_PATH}/clients/ajouter`,
+                                    )
+                                }
+                            >
+                                Add client
+                            </Button>
+                        </div>
                     </div>
-                    <Button
-                        variant="solid"
-                        onClick={() =>
-                            navigate(`${APPS_PREFIX_PATH}/clients/ajouter`)
-                        }
-                    >
-                        Add client
-                    </Button>
-                </div>
-            </div>
 
-            <OverflowTabs
-                tabList={statusTabList}
-                value={statusFilter}
-                onChange={(value) => {
-                    setSelectedRows([])
-                    setStatusFilter(value)
-                    setPageIndex(1)
-                }}
-                tabListClass="px-4 dark:border-gray-800"
-            />
-
-            <div className="flex flex-wrap items-center justify-between gap-2 p-4">
-                <div>
-                    <DebouceInput
-                        placeholder="Search clients…"
-                        prefix={<LuSearch className="text-lg" />}
-                        onChange={(e) => {
-                            setQ(e.target.value)
+                    <OverflowTabs
+                        tabList={statusTabList}
+                        value={statusFilter}
+                        onChange={(value) => {
                             setSelectedRows([])
+                            setStatusFilter(value)
                             setPageIndex(1)
                         }}
+                        tabListClass="dark:border-gray-800"
                     />
-                </div>
-                <div className="w-48">
-                    <Select
-                        options={[
-                            { value: '', label: 'All sources' },
-                            ...clientSourceOptions,
-                        ]}
-                        value={
-                            [
-                                { value: '', label: 'All sources' },
-                                ...clientSourceOptions,
-                            ].find((o) => o.value === sourceFilter) ?? null
-                        }
-                        onChange={(option) => {
-                            setSourceFilter(option?.value ?? '')
-                            setSelectedRows([])
-                            setPageIndex(1)
-                        }}
-                    />
-                </div>
-            </div>
 
-            <div className="mb-4">
-                <DataTable<Client>
-                    compact
-                    selectable
-                    verticalDivider={{
-                        head: true,
-                        body: true,
-                    }}
-                    className="border-t border-b border-gray-200 dark:border-gray-700"
-                    columns={columns}
-                    data={clients}
-                    noData={!loading && clients.length === 0}
-                    skeletonAvatarColumns={[1]}
-                    skeletonAvatarProps={{ width: 28, height: 28 }}
-                    loading={loading}
-                    checkboxChecked={(row) =>
-                        selectedRows.some((selected) => selected.id === row.id)
-                    }
-                    pagingData={{
-                        total,
-                        pageIndex,
-                        pageSize,
-                    }}
-                    onPaginationChange={handlePageChange}
-                    onPageSizeChange={handlePageSizeChange}
-                    onRowSelect={handleRowSelect}
-                    onAllRowSelect={handleAllRowSelect}
-                />
-            </div>
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <DebouceInput
+                                placeholder="Search clients…"
+                                prefix={<LuSearch className="text-lg" />}
+                                onChange={(e) => {
+                                    setQ(e.target.value)
+                                    setSelectedRows([])
+                                    setPageIndex(1)
+                                }}
+                            />
+                        </div>
+                        <div className="w-48">
+                            <Select
+                                options={[
+                                    { value: '', label: 'All sources' },
+                                    ...clientSourceOptions,
+                                ]}
+                                value={
+                                    [
+                                        { value: '', label: 'All sources' },
+                                        ...clientSourceOptions,
+                                    ].find((o) => o.value === sourceFilter) ??
+                                    null
+                                }
+                                onChange={(option) => {
+                                    setSourceFilter(option?.value ?? '')
+                                    setSelectedRows([])
+                                    setPageIndex(1)
+                                }}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="mb-4">
+                        <DataTable<Client>
+                            compact
+                            selectable
+                            verticalDivider={{
+                                head: true,
+                                body: true,
+                            }}
+                            className="border-t border-b border-gray-200 dark:border-gray-700"
+                            columns={columns}
+                            data={clients}
+                            noData={!loading && clients.length === 0}
+                            skeletonAvatarColumns={[1]}
+                            skeletonAvatarProps={{ width: 28, height: 28 }}
+                            loading={loading}
+                            checkboxChecked={(row) =>
+                                selectedRows.some(
+                                    (selected) => selected.id === row.id,
+                                )
+                            }
+                            pagingData={{
+                                total,
+                                pageIndex,
+                                pageSize,
+                            }}
+                            onPaginationChange={handlePageChange}
+                            onPageSizeChange={handlePageSizeChange}
+                            onRowSelect={handleRowSelect}
+                            onAllRowSelect={handleAllRowSelect}
+                        />
+                    </div>
+                </div>
+            </Container>
 
             <ActionBar open={selectedRows.length > 0}>
                 <div className="flex items-center justify-between">
