@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 import Card from '@/components/ui/Card'
-import Avatar from '@/components/ui/Avatar'
 import Tag from '@/components/ui/Tag'
 import Button from '@/components/ui/Button'
 import Dialog from '@/components/ui/Dialog'
@@ -39,14 +38,20 @@ const CarDetailsInfo = ({ car, onUpdated }: CarDetailsInfoProps) => {
         <>
             <Card bodyClass="p-4">
                 <div className="flex flex-col items-center text-center">
-                    <Avatar
-                        shape="round"
-                        size={96}
-                        className="vehicle-avatar"
-                        {...(cover
-                            ? { src: cover }
-                            : { icon: <LiCar className="text-3xl" /> })}
-                    />
+                    <div className="w-full overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700">
+                        {cover ? (
+                            <img
+                                src={cover}
+                                alt={name || car.registration_number}
+                                loading="lazy"
+                                className="h-44 w-full object-cover"
+                            />
+                        ) : (
+                            <div className="flex h-44 w-full items-center justify-center text-gray-400 dark:text-gray-500">
+                                <LiCar className="text-4xl" />
+                            </div>
+                        )}
+                    </div>
                     <h5 className="mt-3 dark:text-gray-100">
                         {name || car.registration_number}
                     </h5>

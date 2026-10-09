@@ -527,6 +527,7 @@ type ExpandableReservationDetailsProps = {
     onCancel: (reservation: Reservation) => void
     onNoShow: (reservation: Reservation) => void
     onEdit: (reservation: Reservation) => void
+    onInvoice: (reservation: Reservation) => void
 }
 
 const ExpandableReservationDetails = ({
@@ -539,6 +540,7 @@ const ExpandableReservationDetails = ({
     onCancel,
     onNoShow,
     onEdit,
+    onInvoice,
 }: ExpandableReservationDetailsProps) => {
     const extras = reservation.extras ?? []
     const extrasTotal = extras.reduce(
@@ -753,6 +755,14 @@ const ExpandableReservationDetails = ({
                                 Cancel
                             </Button>
                         )}
+                        <Button
+                            size="sm"
+                            variant="ghost"
+                            className="text-primary hover:bg-primary-subtle"
+                            onClick={() => onInvoice(reservation)}
+                        >
+                            Invoice
+                        </Button>
                         <Button
                             size="sm"
                             variant="subtle"
@@ -1027,6 +1037,18 @@ const Reservations = () => {
                                     Cancel
                                 </Button>
                             )}
+                            <Button
+                                size="sm"
+                                variant="ghost"
+                                className="text-primary hover:bg-primary-subtle"
+                                onClick={() => {
+                                    navigate(
+                                        `${APPS_PREFIX_PATH}/reservations/${reservation.id}/facture`,
+                                    )
+                                }}
+                            >
+                                Invoice
+                            </Button>
                             <Button
                                 size="sm"
                                 variant="ghost"
@@ -1446,6 +1468,11 @@ const Reservations = () => {
                                                 onEdit={(res) => {
                                                     navigate(
                                                         `${APPS_PREFIX_PATH}/reservations/${res.id}/modifier`,
+                                                    )
+                                                }}
+                                                onInvoice={(res) => {
+                                                    navigate(
+                                                        `${APPS_PREFIX_PATH}/reservations/${res.id}/facture`,
                                                     )
                                                 }}
                                             />

@@ -99,6 +99,7 @@ function DataTable<T>(props: DataTableProps<T>) {
         },
         checkboxChecked,
         indeterminateCheckboxChecked,
+        className,
         ref,
         ...rest
     } = props
@@ -251,7 +252,7 @@ function DataTable<T>(props: DataTableProps<T>) {
     }
 
     const renderTable = () => (
-        <Table {...rest}>
+        <Table {...rest} className={classNames('text-nowrap', className)}>
             <THead>
                 {table.getHeaderGroups().map((headerGroup) => (
                     <Fragment key={headerGroup.id}>

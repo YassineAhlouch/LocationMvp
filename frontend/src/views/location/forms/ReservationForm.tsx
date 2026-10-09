@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import type { FieldErrors, Resolver } from 'react-hook-form'
+import { useNavigate } from 'react-router'
 import dayjs from 'dayjs'
 import Button from '@/components/ui/Button'
 import Select from '@/components/ui/Select'
@@ -17,7 +18,8 @@ import type { CustomOption, SingleOption } from '@/components/ui/Select/types'
 import Container from '@/components/shared/Container'
 import IconFrame from '@/components/shared/IconFrame'
 import OverflowTabs from '@/components/shared/OverflowTabs'
-import { LiAdd, LiBank, LiCalendar, LiCar } from '@/icons'
+import { APPS_PREFIX_PATH } from '@/constants/route.constant'
+import { LiAdd, LiBank, LiCalendar, LiCar, LiPrinter } from '@/icons'
 import {
     apiCreateReservation,
     apiUpdateReservation,
@@ -633,6 +635,7 @@ const ReservationForm = ({
     sidebar,
 }: ReservationFormProps) => {
     const isEditing = reservation !== null
+    const navigate = useNavigate()
     const [selectedSection, setSelectedSection] = useState('basicInfo')
     const [invalidFields, setInvalidFields] = useState<string[]>([])
     const [cars, setCars] = useState<{ value: number; label: string }[]>([])
@@ -1208,6 +1211,18 @@ const ReservationForm = ({
                                 >
                                     {reservation.payment_status}
                                 </Tag>
+                                <Button
+                                    size="sm"
+                                    variant="subtle"
+                                    icon={<LiPrinter />}
+                                    onClick={() =>
+                                        navigate(
+                                            `${APPS_PREFIX_PATH}/reservations/${reservation.id}/facture`,
+                                        )
+                                    }
+                                >
+                                    Invoice
+                                </Button>
                             </div>
                         )}
                     </div>

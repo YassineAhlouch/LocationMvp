@@ -479,6 +479,56 @@ export type ReservationPayload = {
     >
 }
 
+/** Agency letterhead + mileage policy (mirrors App\Http\Resources\AgencyResource). */
+export type Agency = {
+    id: number
+    name: string
+    email: string | null
+    phone: string | null
+    address: string | null
+    city: string | null
+    country: string | null
+    ice: string | null
+    rc: string | null
+    logo: string | null
+    daily_mileage_allowance: number
+    extra_mileage_fee_per_km: number
+}
+
+/** Vehicle identity/specs printed on the contract (distinct from Reservation.car). */
+export type ReservationContractCar = {
+    id: number | null
+    registration_number: string | null
+    brand: string | null
+    model: string | null
+    category: string | null
+    year: number | null
+    color: string | null
+    transmission_type: TransmissionType | null
+    fuel_type: FuelType | null
+}
+
+/**
+ * Printable rental contract/invoice payload from
+ * GET /v1/reservations/{id}/contract.
+ */
+export type ReservationContract = {
+    reservation: Reservation
+    agency: Agency | null
+    car: ReservationContractCar | null
+    primary_client: Client | null
+    secondary_client: Client | null
+    payments: Payment[]
+    mileage: {
+        distance: number | null
+        allowance: number
+        excess: number
+        extra_fee: number
+        daily_allowance: number
+        fee_per_km: number
+    }
+}
+
 export type Expense = {
     id: number
     car: { id: number; registration_number: string } | null

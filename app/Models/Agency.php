@@ -7,7 +7,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['name', 'email', 'phone', 'address', 'city', 'country', 'is_active'])]
+#[Fillable([
+    'name',
+    'email',
+    'phone',
+    'address',
+    'city',
+    'country',
+    'ice',
+    'rc',
+    'logo_path',
+    'daily_mileage_allowance',
+    'extra_mileage_fee_per_km',
+    'is_active',
+])]
 class Agency extends Model
 {
     use HasFactory;
@@ -15,6 +28,8 @@ class Agency extends Model
     protected function casts(): array
     {
         return [
+            'daily_mileage_allowance' => 'integer',
+            'extra_mileage_fee_per_km' => 'decimal:2',
             'is_active' => 'boolean',
         ];
     }

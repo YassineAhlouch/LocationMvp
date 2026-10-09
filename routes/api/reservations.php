@@ -42,6 +42,10 @@ Route::get('reservations/{reservation}/changes', [ReservationController::class, 
     ->middleware('permission:reservations.view')
     ->name('reservations.changes');
 
+Route::get('reservations/{reservation}/contract', [ReservationController::class, 'contract'])
+    ->middleware('permission:reservations.view')
+    ->name('reservations.contract');
+
 Route::patch('reservations/{reservation}', [ReservationController::class, 'update'])
     ->middleware('permission:reservations.update')
     ->name('reservations.update');

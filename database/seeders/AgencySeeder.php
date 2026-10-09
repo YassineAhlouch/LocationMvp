@@ -13,7 +13,7 @@ class AgencySeeder extends Seeder
      */
     public function run(): void
     {
-        Agency::firstOrCreate(
+        Agency::updateOrCreate(
             ['name' => 'Location Marrakech'],
             [
                 'email' => 'contact@location-marrakech.ma',
@@ -21,6 +21,10 @@ class AgencySeeder extends Seeder
                 'address' => 'Guéliz, Marrakech',
                 'city' => 'Marrakech',
                 'country' => 'Morocco',
+                'ice' => '001234567000045',
+                'rc' => 'RC/MARRAKECH/2019/12345',
+                'daily_mileage_allowance' => 250,
+                'extra_mileage_fee_per_km' => 1,
                 'is_active' => true,
             ],
         );

@@ -1,5 +1,6 @@
 import ApiService from './ApiService'
 import type {
+    Agency,
     Brand,
     Car,
     CarCategory,
@@ -24,6 +25,7 @@ import type {
     Reservation,
     ReservationCalendarItem,
     ReservationChange,
+    ReservationContract,
     ReservationPayload,
     Role,
     RolePayload,
@@ -181,6 +183,20 @@ export const apiGetReservationCalendar = (params?: Record<string, unknown>) =>
 export const apiGetReservationChanges = (id: number) =>
     ApiService.fetchDataWithAxios<ReservationChange[]>({
         url: `/v1/reservations/${id}/changes`,
+        method: 'get',
+    })
+
+export const apiGetReservationContract = (id: number) =>
+    ApiService.fetchDataWithAxios<ReservationContract>({
+        url: `/v1/reservations/${id}/contract`,
+        method: 'get',
+    })
+
+// ---- Agency --------------------------------------------------------------
+
+export const apiGetAgency = () =>
+    ApiService.fetchDataWithAxios<Agency>({
+        url: '/v1/agency',
         method: 'get',
     })
 

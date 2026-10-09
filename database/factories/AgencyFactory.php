@@ -22,6 +22,10 @@ class AgencyFactory extends Factory
             'address' => fake()->streetAddress(),
             'city' => fake()->randomElement(['Marrakech', 'Casablanca', 'Rabat', 'Agadir']),
             'country' => 'Morocco',
+            'ice' => fake()->numerify('#############'),
+            'rc' => fake()->bothify('RC/?????/####/#####'),
+            'daily_mileage_allowance' => 250,
+            'extra_mileage_fee_per_km' => 1,
             'is_active' => true,
         ];
     }

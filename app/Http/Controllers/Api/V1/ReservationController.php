@@ -23,14 +23,19 @@ use App\Http\Requests\Reservations\IndexReservationRequest;
 use App\Http\Requests\Reservations\NoShowReservationRequest;
 use App\Http\Requests\Reservations\StoreReservationRequest;
 use App\Http\Requests\Reservations\UpdateReservationRequest;
+use App\Http\Resources\AgencyResource;
+use App\Http\Resources\ClientResource;
+use App\Http\Resources\PaymentResource;
 use App\Http\Resources\ReservationCalendarResource;
 use App\Http\Resources\ReservationChangeResource;
 use App\Http\Resources\ReservationResource;
 use App\Models\Car;
 use App\Models\Reservation;
 use App\Services\Reservations\AvailabilityService;
+use App\Services\Reservations\ReservationContractService;
 use App\Services\Reservations\ReservationQueryService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Carbon;
 
@@ -44,6 +49,7 @@ class ReservationController extends Controller
     public function __construct(
         private readonly ReservationQueryService $queries,
         private readonly AvailabilityService $availability,
+        private readonly ReservationContractService $contracts,
     ) {}
 
     public function index(IndexReservationRequest $request): AnonymousResourceCollection
@@ -129,6 +135,42 @@ class ReservationController extends Controller
         );
     }
 
+    /**
+     * Printable rental contract/invoice payload: the reservation, the agency
+     * letterhead, the renter identities, the payment ledger and the mileage
+     * policy arithmetic the document needs.
+     */
+    public function contract(Request $request, Reservation $reservation): JsonResponse
+    {
+        $reservation->load([
+            'car.brand',
+            'car.model',
+            'car.category',
+            'primaryClient',
+            'secondaryClient',
+            'extras',
+            'createdBy',
+            'approvedBy',
+        ]);
+
+        $agency = $request->user()->agency;
+        $payments = $reservation->payments()->with('createdBy')->orderBy('payment_date')->get();
+
+        return response()->json([
+            'reservation' => (new ReservationResource($reservation))->resolve(),
+            'agency' => $agency !== null ? (new AgencyResource($agency))->resolve() : null,
+            'car' => $this->contractCar($reservation),
+            'primary_client' => $reservation->primaryClient !== null
+                ? (new ClientResource($reservation->primaryClient))->resolve()
+                : null,
+            'secondary_client' => $reservation->secondaryClient !== null
+                ? (new ClientResource($reservation->secondaryClient))->resolve()
+                : null,
+            'payments' => PaymentResource::collection($payments)->resolve(),
+            'mileage' => $this->contracts->mileageSummary($reservation, $agency),
+        ]);
+    }
+
     public function confirm(
         Reservation $reservation,
         ConfirmReservationRequest $request,
@@ -195,5 +237,33 @@ class ReservationController extends Controller
             $request->validated('reason'),
             $request->user(),
         ));
+    }
+
+    /**
+     * Vehicle identity + specifications for the contract's "Informations du
+     * véhicule" block. Null only in the degenerate case of a reservation whose
+     * car has been hard-deleted.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function contractCar(Reservation $reservation): ?array
+    {
+        $car = $reservation->car;
+
+        if ($car === null) {
+            return null;
+        }
+
+        return [
+            'id' => $car->id,
+            'registration_number' => $car->registration_number,
+            'brand' => $car->brand?->name,
+            'model' => $car->model?->name,
+            'category' => $car->category?->name,
+            'year' => $car->year,
+            'color' => $car->color,
+            'transmission_type' => $car->transmission_type?->value,
+            'fuel_type' => $car->fuel_type?->value,
+        ];
     }
 }

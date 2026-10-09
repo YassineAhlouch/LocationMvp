@@ -43,6 +43,17 @@ const appsRoute: Routes = [
         },
     },
     {
+        key: 'gestion.reservations.facture',
+        path: `${APPS_PREFIX_PATH}/reservations/:id/facture`,
+        component: lazy(() => import('@/views/location/ReservationInvoice')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'gutterless',
+            footer: false,
+        },
+    },
+    {
         key: 'gestion.reservations.liste',
         path: `${APPS_PREFIX_PATH}/reservations/liste`,
         component: lazy(() => import('@/views/location/Reservations')),

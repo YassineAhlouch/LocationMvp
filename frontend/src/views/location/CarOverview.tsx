@@ -140,7 +140,7 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
 
     return (
         <div className="space-y-4">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <KpiCard
                     label="Reservations"
                     value={String(stats.reservations.total)}
@@ -216,7 +216,7 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
                             Latest bookings for this vehicle
                         </p>
                     </div>
-                    <Table>
+                    <Table className="text-nowrap">
                         <THead>
                             <Tr>
                                 <Th>Reservation</Th>
@@ -291,7 +291,7 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
                             Latest costs booked to this vehicle
                         </p>
                     </div>
-                    <Table>
+                    <Table className="text-nowrap">
                         <THead>
                             <Tr>
                                 <Th>Expense</Th>
