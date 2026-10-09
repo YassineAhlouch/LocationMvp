@@ -56,13 +56,7 @@ class StoreCarRequest extends FormRequest
             'next_service_mileage' => ['nullable', 'integer', 'min:0'],
             'last_maintenance_at' => ['nullable', 'date'],
 
-            // reserved/rented are engine-owned lifecycle states, so CRUD may
-            // only drive the manual states.
-            'status' => ['sometimes', Rule::in([
-                CarStatus::Available->value,
-                CarStatus::Maintenance->value,
-                CarStatus::Inactive->value,
-            ])],
+            'status' => ['sometimes', Rule::enum(CarStatus::class)],
             'is_active' => ['sometimes', 'boolean'],
             'notes' => ['nullable', 'string', 'max:5000'],
 

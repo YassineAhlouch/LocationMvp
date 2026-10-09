@@ -3,6 +3,7 @@ import Button from '@/components/ui/Button'
 import Select from '@/components/ui/Select'
 import Switcher from '@/components/ui/Switcher'
 import Input from '@/components/ui/Input'
+import Tag from '@/components/ui/Tag'
 import Spinner from '@/components/ui/Spinner'
 import Upload from '@/components/ui/Upload'
 import { Form, FormItem } from '@/components/ui/Form'
@@ -30,9 +31,20 @@ import type {
 } from '@/@types/location'
 import {
     carStatusOptions,
+    carStatusTone,
+    tagToneClass,
     transmissionOptions,
     fuelOptions,
 } from '../shared'
+
+/** Renders a car status as a coloured badge, used both in the select field
+ * and in its option list. */
+const CarStatusBadge = ({ status }: { status: CarStatus }) => (
+    <Tag className={`capitalize ${tagToneClass[carStatusTone[status]]}`}>
+        {carStatusOptions.find((option) => option.value === status)?.label ??
+            status}
+    </Tag>
+)
 
 type CarFormValues = {
     brand_id?: number
@@ -74,9 +86,7 @@ const carSchema = z.object({
     brand_id: z.number({ message: 'Brand is required' }),
     model_id: z.number({ message: 'Model is required' }),
     category_id: z.number({ message: 'Category is required' }),
-    registration_number: z
-        .string()
-        .min(1, 'Registration number is required'),
+    registration_number: z.string().min(1, 'Registration number is required'),
     daily_price: z.string().min(1, 'Daily price is required'),
     is_active: z.boolean(),
     // Optional fields are validated in the payload builder instead.
@@ -109,8 +119,7 @@ const toNumberOrNull = (value?: string) => {
     return Number.isFinite(parsed) ? parsed : null
 }
 
-const toDateInput = (value?: string | null) =>
-    value ? value.slice(0, 10) : ''
+const toDateInput = (value?: string | null) => (value ? value.slice(0, 10) : '')
 
 const defaultFormValues = (car?: Car | null): CarFormValues => ({
     brand_id: car?.brand?.id,
@@ -134,9 +143,7 @@ const defaultFormValues = (car?: Car | null): CarFormValues => ({
     insurance_company: car?.insurance_company ?? '',
     insurance_policy_number: car?.insurance_policy_number ?? '',
     insurance_expiry_date: toDateInput(car?.insurance_expiry_date),
-    technical_inspection_expiry: toDateInput(
-        car?.technical_inspection_expiry,
-    ),
+    technical_inspection_expiry: toDateInput(car?.technical_inspection_expiry),
     next_service_mileage: car?.next_service_mileage
         ? String(car.next_service_mileage)
         : '',
@@ -237,7 +244,9 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
         }
         apiGetBrands()
             .then((res) =>
-                setBrands(res.data.map((b) => ({ value: b.id, label: b.name }))),
+                setBrands(
+                    res.data.map((b) => ({ value: b.id, label: b.name })),
+                ),
             )
             .catch(() => setBrands([]))
         apiGetCategories()
@@ -455,10 +464,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         name="registration_number"
                         control={control}
                         render={({ field }) => (
-                            <Input
-                                placeholder="e.g. 45678-A-6"
-                                {...field}
-                            />
+                            <Input placeholder="e.g. 45678-A-6" {...field} />
                         )}
                     />
                 </FormItem>
@@ -548,11 +554,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         name="seats_count"
                         control={control}
                         render={({ field }) => (
-                            <Input
-                                type="number"
-                                placeholder="5"
-                                {...field}
-                            />
+                            <Input type="number" placeholder="5" {...field} />
                         )}
                     />
                 </FormItem>
@@ -561,11 +563,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         name="doors_count"
                         control={control}
                         render={({ field }) => (
-                            <Input
-                                type="number"
-                                placeholder="4"
-                                {...field}
-                            />
+                            <Input type="number" placeholder="4" {...field} />
                         )}
                     />
                 </FormItem>
@@ -614,11 +612,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         name="current_fuel_level"
                         control={control}
                         render={({ field }) => (
-                            <Input
-                                type="number"
-                                placeholder="100"
-                                {...field}
-                            />
+                            <Input type="number" placeholder="100" {...field} />
                         )}
                     />
                 </FormItem>
@@ -635,18 +629,14 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                     <Controller
                         name="insurance_expiry_date"
                         control={control}
-                        render={({ field }) => (
-                            <Input type="date" {...field} />
-                        )}
+                        render={({ field }) => <Input type="date" {...field} />}
                     />
                 </FormItem>
                 <FormItem label="Technical inspection expiry">
                     <Controller
                         name="technical_inspection_expiry"
                         control={control}
-                        render={({ field }) => (
-                            <Input type="date" {...field} />
-                        )}
+                        render={({ field }) => <Input type="date" {...field} />}
                     />
                 </FormItem>
                 <FormItem label="Status">
@@ -662,6 +652,25 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                                 onChange={(option) =>
                                     field.onChange(option?.value)
                                 }
+                                customInputDisplay={(option) =>
+                                    option ? (
+                                        <CarStatusBadge
+                                            status={option.value as CarStatus}
+                                        />
+                                    ) : null
+                                }
+                                customOption={({
+                                    option,
+                                    selected,
+                                    CheckIcon,
+                                }) => (
+                                    <span className="flex w-full items-center justify-between gap-2">
+                                        <CarStatusBadge
+                                            status={option.value as CarStatus}
+                                        />
+                                        {selected && CheckIcon}
+                                    </span>
+                                )}
                             />
                         )}
                     />
@@ -673,9 +682,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         render={({ field }) => (
                             <Switcher
                                 checked={field.value}
-                                onChange={(checked) =>
-                                    field.onChange(checked)
-                                }
+                                onChange={(checked) => field.onChange(checked)}
                             />
                         )}
                     />
@@ -696,8 +703,8 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                             Click or drag images here
                         </span>
                         <span className="text-xs text-gray-400">
-                            JPG, PNG or WEBP — 5MB max each, up to{' '}
-                            {MAX_IMAGES} images
+                            JPG, PNG or WEBP — 5MB max each, up to {MAX_IMAGES}{' '}
+                            images
                         </span>
                     </div>
                 </Upload>

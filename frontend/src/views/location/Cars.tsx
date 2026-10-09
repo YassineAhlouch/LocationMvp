@@ -6,6 +6,11 @@ import Tag from '@/components/ui/Tag'
 import Avatar from '@/components/ui/Avatar'
 import Tooltip from '@/components/ui/Tooltip'
 import Dialog from '@/components/ui/Dialog'
+import Card from '@/components/ui/Card'
+import Skeleton from '@/components/ui/Skeleton'
+import Select from '@/components/ui/Select'
+import Pagination from '@/components/ui/Pagination'
+import Segment from '@/components/ui/Segment'
 import Popover from '@/components/ui/Popover'
 import ActionBar from '@/components/ui/ActionBar'
 import Progress from '@/components/ui/Progress'
@@ -20,26 +25,40 @@ import type { ColumnDef, Row } from '@/components/shared/DataTable'
 import { CSVLink } from 'react-csv'
 import { NumericFormat } from 'react-number-format'
 import { LuPlus, LuSearch } from 'react-icons/lu'
-import { LiCar, LiDownload, LiEdit2, LiEye, LiSetting4, LiTrash } from '@/icons'
-import { APPS_PREFIX_PATH } from '@/constants/route.constant'
-import { apiGetCars, apiDeleteCar } from '@/services/LocationService'
-import type { Car, CarStatus } from '@/@types/location'
-import CarForm from './forms/CarForm'
 import {
-    MAD,
-    carStatusOptions,
-    carStatusTone,
-    tagToneClass,
-} from './shared'
+    LiCar,
+    LiDownload,
+    LiEdit2,
+    LiElement3,
+    LiEye,
+    LiKey,
+    LiSetting4,
+    LiTextAlignLeft,
+    LiTickCircle,
+    LiTrash,
+} from '@/icons'
+import { APPS_PREFIX_PATH } from '@/constants/route.constant'
+import {
+    apiGetCars,
+    apiDeleteCar,
+    apiGetDashboardSummary,
+} from '@/services/LocationService'
+import type { Car, CarStatus, DashboardSummary } from '@/@types/location'
+import CarForm from './forms/CarForm'
+import StatCards from './StatCards'
+import { MAD, carStatusOptions, carStatusTone, tagToneClass } from './shared'
 
 type CarStatusOption = { value: string; label: string }
 
-/** All fleet statuses — superset of carStatusOptions so the filter can match
- * any state a vehicle can be in, including system-set reserved/rented. */
-const statusFilterOptions: CarStatusOption[] = [
-    ...carStatusOptions,
-    { value: 'reserved', label: 'Reserved' },
-    { value: 'rented', label: 'Rented' },
+/** All fleet statuses, including the lifecycle-owned reserved/rented states,
+ * so the filter can match any state a vehicle can be in. */
+const statusFilterOptions: CarStatusOption[] = [...carStatusOptions]
+
+const pageSizeOption = [
+    { value: 10, label: '10 / page' },
+    { value: 25, label: '25 / page' },
+    { value: 50, label: '50 / page' },
+    { value: 100, label: '100 / page' },
 ]
 
 /** Fuel-gauge color: danger below a quarter, warning at half, success above. */
@@ -117,6 +136,113 @@ const ActionColumn = ({
     )
 }
 
+const CarCard = ({
+    car,
+    onEdit,
+    onDelete,
+}: {
+    car: Car
+    onEdit: () => void
+    onDelete: () => void
+}) => {
+    const cover =
+        (car.images?.find((img) => img.is_primary) ?? car.images?.[0])?.image ??
+        ''
+    const name =
+        [car.brand?.name, car.model?.name].filter(Boolean).join(' ') ||
+        car.registration_number
+    const fuel = car.current_fuel_level ?? 0
+    const detailsUrl = `${APPS_PREFIX_PATH}/vehicules/${car.id}/overview`
+
+    return (
+        <Card bodyClass="p-0">
+            <div className="relative overflow-hidden rounded-t-lg bg-gray-100 dark:bg-gray-700">
+                <Link to={detailsUrl}>
+                    {cover ? (
+                        <img
+                            src={cover}
+                            alt={name}
+                            loading="lazy"
+                            className="h-44 w-full object-cover transition-transform duration-300 hover:scale-105"
+                        />
+                    ) : (
+                        <div className="flex h-44 w-full items-center justify-center text-gray-400 dark:text-gray-500">
+                            <LiCar className="text-4xl" />
+                        </div>
+                    )}
+                </Link>
+                <Tag
+                    className={`absolute left-3 top-3 capitalize ${tagToneClass[carStatusTone[car.status as CarStatus]]}`}
+                >
+                    {car.status}
+                </Tag>
+            </div>
+
+            <div className="p-4">
+                <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                        <h6 className="truncate">
+                            <Link
+                                to={detailsUrl}
+                                className="hover:text-primary"
+                            >
+                                {name}
+                            </Link>
+                        </h6>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {car.registration_number}
+                        </p>
+                    </div>
+                    <span className="heading-text whitespace-nowrap font-semibold">
+                        {MAD(car.daily_price)}
+                        <span className="text-xs font-normal text-gray-500 dark:text-gray-400">
+                            {' '}
+                            / day
+                        </span>
+                    </span>
+                </div>
+
+                <div className="mt-3 flex items-center justify-between gap-2 text-sm text-gray-500 dark:text-gray-400">
+                    <span className="truncate">
+                        {car.category?.name ?? '—'}
+                    </span>
+                    <span className="whitespace-nowrap">
+                        <NumericFormat
+                            displayType="text"
+                            value={car.current_mileage ?? 0}
+                            thousandSeparator
+                        />{' '}
+                        km
+                    </span>
+                </div>
+
+                <div className="mt-2 flex items-center gap-2">
+                    <Progress
+                        size="sm"
+                        percent={fuel}
+                        strokeClass={fuelLevelColor(fuel)}
+                        showInfo={false}
+                    />
+                    <span className="whitespace-nowrap text-xs text-gray-500 dark:text-gray-400">
+                        {fuel}%
+                    </span>
+                </div>
+
+                <div className="mt-3 flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700">
+                    <span className="text-xs uppercase tracking-wide text-gray-400">
+                        {car.color ?? ''}
+                    </span>
+                    <ActionColumn
+                        car={car}
+                        onEdit={onEdit}
+                        onDelete={onDelete}
+                    />
+                </div>
+            </div>
+        </Card>
+    )
+}
+
 type CarFormDialogProps = {
     open: boolean
     car: Car | null
@@ -137,34 +263,6 @@ const CarFormDialog = ({ open, car, onClose, onSaved }: CarFormDialogProps) => (
         <CarForm car={car} isOpen={open} onCancel={onClose} onSaved={onSaved} />
     </Dialog>
 )
-
-const CarsHeader = ({ onAdd }: { onAdd: () => void }) => {
-    return (
-        <div className="p-4 border-b border-gray-200 dark:border-gray-800">
-            <Container className="sm:px-4">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div>
-                        <h5>Cars</h5>
-                        <p>
-                            Manage your fleet availability, pricing & status in
-                            real time
-                        </p>
-                    </div>
-                    <div className="flex items-center gap-2 w-full md:w-auto">
-                        <Button
-                            className="w-full md:w-auto"
-                            variant="subtle"
-                            icon={<LuPlus />}
-                            onClick={onAdd}
-                        >
-                            Add Car
-                        </Button>
-                    </div>
-                </div>
-            </Container>
-        </div>
-    )
-}
 
 const StatusFilter = ({
     value,
@@ -189,9 +287,7 @@ const StatusFilter = ({
     return (
         <Popover
             renderTrigger={
-                <Button icon={<LiSetting4 />}>
-                    {larger.sm && 'Filter'}
-                </Button>
+                <Button icon={<LiSetting4 />}>{larger.sm && 'Filter'}</Button>
             }
             open={filterOpen}
             placement="bottom-start"
@@ -233,12 +329,15 @@ const StatusFilter = ({
 const Cars = () => {
     const [cars, setCars] = useState<Car[]>([])
     const [loading, setLoading] = useState(true)
+    const [summary, setSummary] = useState<DashboardSummary | null>(null)
+    const [summaryLoading, setSummaryLoading] = useState(false)
     const [total, setTotal] = useState(0)
     const [pageIndex, setPageIndex] = useState(1)
     const [pageSize, setPageSize] = useState(10)
     const [q, setQ] = useState('')
     const [statusFilter, setStatusFilter] = useState('')
     const [selectedRows, setSelectedRows] = useState<Car[]>([])
+    const [viewMode, setViewMode] = useState<'card' | 'table'>('table')
 
     const [dialogOpen, setDialogOpen] = useState(false)
     const [editing, setEditing] = useState<Car | null>(null)
@@ -274,6 +373,14 @@ const Cars = () => {
     useEffect(() => {
         fetchCars()
     }, [fetchCars])
+
+    useEffect(() => {
+        setSummaryLoading(true)
+        apiGetDashboardSummary()
+            .then(setSummary)
+            .catch(() => setSummary(null))
+            .finally(() => setSummaryLoading(false))
+    }, [])
 
     const handlePageChange = (page: number) => {
         setSelectedRows([])
@@ -495,17 +602,56 @@ const Cars = () => {
         [],
     )
 
+    const statCards = useMemo(
+        () => [
+            {
+                id: 'total',
+                label: 'Total',
+                value: summary?.fleet.total_cars ?? 0,
+                icon: <LiCar />,
+            },
+            {
+                id: 'available',
+                label: 'Available',
+                value: summary?.fleet.by_status.available ?? 0,
+                icon: <LiTickCircle />,
+            },
+            {
+                id: 'rented',
+                label: 'Rented',
+                value: summary?.fleet.by_status.rented ?? 0,
+                icon: <LiKey />,
+            },
+            {
+                id: 'maintenance',
+                label: 'Maintenance',
+                value: summary?.fleet.by_status.maintenance ?? 0,
+                icon: <LiSetting4 />,
+            },
+        ],
+        [summary],
+    )
+
     return (
         <div>
-            <CarsHeader
-                onAdd={() => {
-                    setEditing(null)
-                    setDialogOpen(true)
-                }}
-            />
+            <Container className="">
+                <div className="space-y-4">
+                    <div className="flex items-center justify-between gap-4">
+                        <h4>Cars</h4>
+                        <Button
+                            variant="subtle"
+                            icon={<LuPlus />}
+                            onClick={() => {
+                                setEditing(null)
+                                setDialogOpen(true)
+                            }}
+                        >
+                            Add Car
+                        </Button>
+                    </div>
 
-            <Container className="p-4">
-                <div className="flex flex-col gap-4">
+                    <StatCards items={statCards} loading={summaryLoading} />
+
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                         <div className="flex-1 sm:flex-none">
                             <DebouceInput
@@ -519,6 +665,19 @@ const Cars = () => {
                             />
                         </div>
                         <div className="flex items-center gap-2">
+                            <Segment
+                                value={viewMode}
+                                onChange={(value) =>
+                                    setViewMode(value as 'card' | 'table')
+                                }
+                            >
+                                <Segment.Item value="card" className="px-2">
+                                    <LiElement3 />
+                                </Segment.Item>
+                                <Segment.Item value="table" className="px-2">
+                                    <LiTextAlignLeft />
+                                </Segment.Item>
+                            </Segment>
                             <div>
                                 <StatusFilter
                                     value={statusFilter}
@@ -543,30 +702,106 @@ const Cars = () => {
                         </div>
                     </div>
 
-                    <DataTable<Car>
-                        selectable
-                        className="table-vehicles"
-                        columns={columns}
-                        data={cars}
-                        loading={loading}
-                        noData={!loading && cars.length === 0}
-                        skeletonAvatarColumns={[1]}
-                        skeletonAvatarProps={{ width: 28, height: 28 }}
-                        checkboxChecked={(row) =>
-                            selectedRows.some(
-                                (selected) => selected.id === row.id,
-                            )
-                        }
-                        pagingData={{
-                            total,
-                            pageIndex,
-                            pageSize,
-                        }}
-                        onPaginationChange={handlePageChange}
-                        onPageSizeChange={handlePageSizeChange}
-                        onRowSelect={handleRowSelect}
-                        onAllRowSelect={handleAllRowSelect}
-                    />
+                    {viewMode === 'table' ? (
+                        <DataTable<Car>
+                            selectable
+                            className="table-vehicles rounded-xs border border-gray-300 dark:border-gray-600"
+                            columns={columns}
+                            data={cars}
+                            loading={loading}
+                            noData={!loading && cars.length === 0}
+                            skeletonAvatarColumns={[1]}
+                            skeletonAvatarProps={{ width: 28, height: 28 }}
+                            checkboxChecked={(row) =>
+                                selectedRows.some(
+                                    (selected) => selected.id === row.id,
+                                )
+                            }
+                            pagingData={{
+                                total,
+                                pageIndex,
+                                pageSize,
+                            }}
+                            onPaginationChange={handlePageChange}
+                            onPageSizeChange={handlePageSizeChange}
+                            onRowSelect={handleRowSelect}
+                            onAllRowSelect={handleAllRowSelect}
+                        />
+                    ) : loading ? (
+                        <div className="space-y-4">
+                            {Array.from({ length: 5 }).map((_, index) => (
+                                <Card key={index}>
+                                    <div className="flex justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <Skeleton
+                                                variant="circle"
+                                                className="w-9 h-9"
+                                            />
+                                            <div className="flex flex-col gap-2">
+                                                <Skeleton className="w-32 h-3" />
+                                                <Skeleton className="w-48 h-2" />
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col gap-2 items-end">
+                                            <Skeleton className="w-20" />
+                                            <Skeleton className="w-16 h-2" />
+                                        </div>
+                                    </div>
+                                </Card>
+                            ))}
+                        </div>
+                    ) : cars.length === 0 ? (
+                        <div className="text-center py-16">
+                            <h6 className="font-semibold mb-1">
+                                No cars found
+                            </h6>
+                            <p className="text-sm text-gray-400">
+                                Try widening the filters or add a new car.
+                            </p>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                                {cars.map((car) => (
+                                    <CarCard
+                                        key={car.id}
+                                        car={car}
+                                        onEdit={() => {
+                                            setEditing(car)
+                                            setDialogOpen(true)
+                                        }}
+                                        onDelete={() => setDeleting(car)}
+                                    />
+                                ))}
+                            </div>
+                            <div className="py-4 flex justify-between">
+                                <Pagination
+                                    pageSize={pageSize}
+                                    currentPage={pageIndex}
+                                    total={total}
+                                    onChange={handlePageChange}
+                                />
+                                <Select
+                                    size="sm"
+                                    className="w-[120px]"
+                                    placement="top"
+                                    isSearchable={false}
+                                    value={
+                                        pageSizeOption.find(
+                                            (option) =>
+                                                option.value === pageSize,
+                                        ) ?? null
+                                    }
+                                    options={pageSizeOption}
+                                    onChange={(option) => {
+                                        if (option?.value) {
+                                            handlePageSizeChange(option.value)
+                                        }
+                                    }}
+                                />
+                            </div>
+                        </>
+                    )}
                 </div>
             </Container>
 

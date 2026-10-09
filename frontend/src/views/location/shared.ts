@@ -47,7 +47,8 @@ export const tagToneClass: Record<TagTone, string> = {
     primary: 'bg-primary-subtle text-primary border-0',
     // Same palette as colors.purple (used by report badges).
     purple: 'bg-[#44238e17] text-[#44238e] dark:bg-[#44238e91] dark:text-[#c2b0eb] border-0',
-    neutral: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 border-0',
+    neutral:
+        'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 border-0',
     default: '',
 }
 
@@ -74,13 +75,7 @@ export const reservationStatusTone: Record<ReservationStatus, TagTone> = {
  * reservation status, so the calendar events and its legend stay in sync.
  */
 export type CalendarColor =
-    | 'blue'
-    | 'green'
-    | 'red'
-    | 'yellow'
-    | 'purple'
-    | 'orange'
-    | 'gray'
+    'blue' | 'green' | 'red' | 'yellow' | 'purple' | 'orange' | 'gray'
 
 export const reservationCalendarColor: Record<
     ReservationStatus,
@@ -122,6 +117,8 @@ export const paymentRecordStatusTone: Record<PaymentRecordStatus, TagTone> = {
 
 export const carStatusOptions: SelectOption<CarStatus>[] = [
     { value: 'available', label: 'Available' },
+    { value: 'reserved', label: 'Reserved' },
+    { value: 'rented', label: 'Rented' },
     { value: 'maintenance', label: 'Maintenance' },
     { value: 'inactive', label: 'Inactive' },
 ]

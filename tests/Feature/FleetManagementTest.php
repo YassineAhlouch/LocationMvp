@@ -292,7 +292,7 @@ class FleetManagementTest extends TestCase
         $this->assertSame('ABC-123-45', $creation->new_values['registration_number']);
     }
 
-    public function test_store_enforces_brand_model_pairing_and_engine_owned_status(): void
+    public function test_store_enforces_brand_model_pairing_and_accepts_statuses(): void
     {
         $actor = $this->actor(['fleet.*']);
         $renault = $this->brand(['name' => 'Renault']);
@@ -306,14 +306,15 @@ class FleetManagementTest extends TestCase
             ->assertStatus(422)
             ->assertJsonValidationErrors(['model_id']);
 
-        // reserved/rented are engine-owned — CRUD cannot set them.
+        // The full lifecycle status set (including reserved/rented) is accepted
+        // so an existing car's state round-trips through the edit form.
         $this->actingAs($actor, 'sanctum')
             ->postJson('/api/v1/cars', $this->storePayload($renault, CarModel::factory()->create(['brand_id' => $renault->id]), $category, [
                 'registration_number' => 'ABC-222',
                 'status' => CarStatus::Rented->value,
             ]))
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['status']);
+            ->assertCreated()
+            ->assertJsonPath('status', CarStatus::Rented->value);
 
         // registration_number is globally unique, including across soft
         // deletes (a plate is the vehicle's physical identity).
