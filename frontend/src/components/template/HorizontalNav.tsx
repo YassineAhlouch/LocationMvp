@@ -1,8 +1,8 @@
 import HorizontalMenuContent from './HorizontalMenuContent'
 import { useRouteKeyStore } from '@/store/routeKeyStore'
 import { useSessionUser } from '@/store/authStore'
+import useNavigationConfig from '@/utils/hooks/useNavigationConfig'
 import appConfig from '@/configs/app.config'
-import navigationConfig from '@/configs/navigation.config'
 
 type HorizontalNavProps = {
     translationSetup?: boolean
@@ -18,6 +18,7 @@ const HorizontalNav = ({
     const currentRouteKey = useRouteKeyStore((state) => state.currentRouteKey)
 
     const userAuthority = useSessionUser((state) => state.user.authority)
+    const navigationConfig = useNavigationConfig()
 
     return (
         <HorizontalMenuContent

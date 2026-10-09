@@ -35,7 +35,11 @@
             "utilisateursListe": "قائمة المستخدمين",
             "utilisateursListeDesc": "عرض المستخدمين",
             "utilisateursAjouter": "إضافة مستخدم",
-            "utilisateursAjouterDesc": "إضافة عضو إلى الفريق"
+            "utilisateursAjouterDesc": "إضافة عضو إلى الفريق",
+            "parametres": "الإعدادات",
+            "parametresDesc": "إعدادات التطبيق",
+            "parametresFactures": "قوالب الفواتير",
+            "parametresFacturesDesc": "تعيين نموذج عقد لكل وكالة"
         },
         "uiComponents": "مكونات الواجهة",
         "uiComponentsCommon": {

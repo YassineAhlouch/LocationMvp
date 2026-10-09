@@ -183,6 +183,21 @@ const appsRoute: Routes = [
         },
     },
 
+    // ===== PARAMETRES =====
+    {
+        key: 'gestion.parametres.factures',
+        path: `${APPS_PREFIX_PATH}/parametres/factures`,
+        component: lazy(
+            () => import('@/views/location/InvoiceTemplateSettings'),
+        ),
+        authority: [ADMIN],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'contained',
+            footer: false,
+        },
+    },
+
     // ===== RAPPORTS ===== (planned: vehicules / clients / reservations / financiers)
     // ===== OPERATIONS ===== (planned: maintenance / accidents)
     // +++++ End NEW Links

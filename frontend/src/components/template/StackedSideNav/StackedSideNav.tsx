@@ -10,7 +10,7 @@ import StackedSideNavSecondary from './StackedSideNavSecondary'
 import { useThemeStore } from '@/store/themeStore'
 import { useRouteKeyStore } from '@/store/routeKeyStore'
 import { useSessionUser } from '@/store/authStore'
-import navigationConfig from '@/configs/navigation.config'
+import useNavigationConfig from '@/utils/hooks/useNavigationConfig'
 import appConfig from '@/configs/app.config'
 import isEmpty from 'lodash/isEmpty'
 import useTranslation from '@/utils/hooks/useTranslation'
@@ -36,6 +36,7 @@ const StackedSideNav = ({
     const currentRouteKey = useRouteKeyStore((state) => state.currentRouteKey)
 
     const userAuthority = useSessionUser((state) => state.user.authority)
+    const navigationConfig = useNavigationConfig()
 
     const navColor = (navType: string, mode: string) => {
         return `${navType}-${mode}`

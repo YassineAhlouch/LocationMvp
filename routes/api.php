@@ -31,6 +31,7 @@ Route::prefix('v1')
     ->group(function () {
         require __DIR__.'/api/session.php';
         require __DIR__.'/api/agency.php';
+        require __DIR__.'/api/settings.php';
         require __DIR__.'/api/reservations.php';
         require __DIR__.'/api/pricing.php';
         require __DIR__.'/api/extras.php';

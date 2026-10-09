@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Agency;
+namespace App\Http\Requests\Settings;
 
-use App\Enums\InvoiceTemplate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateAgencyRequest extends FormRequest
+class UpdateAgencyTemplateRequest extends FormRequest
 {
     /**
      * Route-level authorization is handled by the 'permission:settings.manage'
@@ -18,16 +17,16 @@ class UpdateAgencyRequest extends FormRequest
     }
 
     /**
-     * Only the invoice/contract layout is editable through this endpoint for
-     * now. The letterhead fields (name, address, ICE, logo…) are managed
-     * elsewhere.
-     *
      * @return array<string, array<int, mixed>>
      */
     public function rules(): array
     {
         return [
-            'invoice_template' => ['required', Rule::enum(InvoiceTemplate::class)],
+            'invoice_template_id' => [
+                'required',
+                'integer',
+                Rule::exists('invoice_templates', 'id')->where('is_active', true),
+            ],
         ];
     }
 }

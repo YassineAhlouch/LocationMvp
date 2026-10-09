@@ -201,11 +201,28 @@ export const apiGetAgency = () =>
         method: 'get',
     })
 
-export const apiUpdateAgency = (data: { invoice_template: InvoiceTemplate }) =>
+// ---- Settings: invoice templates (admin only) ----------------------------
+
+export const apiGetInvoiceTemplates = () =>
+    ApiService.fetchDataWithAxios<InvoiceTemplate[]>({
+        url: '/v1/invoice-templates',
+        method: 'get',
+    })
+
+export const apiGetAgencies = () =>
+    ApiService.fetchDataWithAxios<Agency[]>({
+        url: '/v1/agencies',
+        method: 'get',
+    })
+
+export const apiUpdateAgencyTemplate = (
+    agencyId: number,
+    invoiceTemplateId: number,
+) =>
     ApiService.fetchDataWithAxios<Agency>({
-        url: '/v1/agency',
+        url: `/v1/agencies/${agencyId}`,
         method: 'patch',
-        data,
+        data: { invoice_template_id: invoiceTemplateId },
     })
 
 export const apiCreateReservation = (data: ReservationPayload) =>

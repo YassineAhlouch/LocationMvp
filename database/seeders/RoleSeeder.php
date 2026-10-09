@@ -30,7 +30,6 @@ class RoleSeeder extends Seeder
             'activity_logs.*',
             'notifications.*',
             'users.view',
-            'settings.*',
         ],
         'agent' => [
             'dashboard.view',

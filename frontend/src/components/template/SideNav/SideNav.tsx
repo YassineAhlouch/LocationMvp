@@ -4,7 +4,7 @@ import VerticalMenuContent from '@/components/template/VerticalMenuContent'
 import { useThemeStore } from '@/store/themeStore'
 import { useSessionUser } from '@/store/authStore'
 import { useRouteKeyStore } from '@/store/routeKeyStore'
-import navigationConfig from '@/configs/navigation.config'
+import useNavigationConfig from '@/utils/hooks/useNavigationConfig'
 import appConfig from '@/configs/app.config'
 import {
     SIDE_NAV_WIDTH,
@@ -49,6 +49,7 @@ const SideNav = ({
     const currentRouteKey = useRouteKeyStore((state) => state.currentRouteKey)
 
     const userAuthority = useSessionUser((state) => state.user.authority)
+    const navigationConfig = useNavigationConfig()
 
     return (
         <div

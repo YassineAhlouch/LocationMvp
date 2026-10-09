@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Enums\InvoiceTemplate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -10,8 +9,9 @@ class AgencyResource extends JsonResource
 {
     /**
      * Full agency profile, including the legal/document fields printed on
-     * rental contracts (ICE, registre de commerce, logo) and the mileage
-     * policy used to quote excess distance.
+     * rental contracts (ICE, registre de commerce, logo), the mileage policy
+     * used to quote excess distance, and the single invoice layout the agency
+     * prints.
      *
      * @return array<string, mixed>
      */
@@ -30,7 +30,9 @@ class AgencyResource extends JsonResource
             'logo' => $this->logo_path,
             'daily_mileage_allowance' => (int) $this->daily_mileage_allowance,
             'extra_mileage_fee_per_km' => (float) $this->extra_mileage_fee_per_km,
-            'invoice_template' => $this->invoice_template?->value ?? InvoiceTemplate::Classic->value,
+            'invoice_template' => $this->invoiceTemplate
+                ? new InvoiceTemplateResource($this->invoiceTemplate)
+                : null,
         ];
     }
 }

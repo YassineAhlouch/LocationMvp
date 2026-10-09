@@ -4,7 +4,7 @@ import Drawer from '@/components/ui/Drawer'
 import NavToggle from '@/components/shared/NavToggle'
 import { DIR_RTL } from '@/constants/theme.constant'
 import withHeaderItem, { WithHeaderItemProps } from '@/utils/hoc/withHeaderItem'
-import navigationConfig from '@/configs/navigation.config'
+import useNavigationConfig from '@/utils/hooks/useNavigationConfig'
 import appConfig from '@/configs/app.config'
 import { useThemeStore } from '@/store/themeStore'
 import { useRouteKeyStore } from '@/store/routeKeyStore'
@@ -43,6 +43,7 @@ const MobileNav = ({
     const currentRouteKey = useRouteKeyStore((state) => state.currentRouteKey)
 
     const userAuthority = useSessionUser((state) => state.user.authority)
+    const navigationConfig = useNavigationConfig()
 
     return (
         <>

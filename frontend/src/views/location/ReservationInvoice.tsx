@@ -2,25 +2,13 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import dayjs from 'dayjs'
 import Button from '@/components/ui/Button'
-import Select from '@/components/ui/Select'
 import Spinner from '@/components/ui/Spinner'
-import { Notification } from '@/components/ui/Notification'
-import { toast } from '@/components/ui/toast'
 import { LiChevronLeft, LiPrinter } from '@/icons'
-import {
-    apiGetReservationContract,
-    apiUpdateAgency,
-} from '@/services/LocationService'
+import { apiGetReservationContract } from '@/services/LocationService'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
-import { useSessionUser } from '@/store/authStore'
-import { formatDate, formatDateTime, invoiceTemplateOptions } from './shared'
-import { isVerbGranted } from './PermissionChecklist'
+import { formatDate, formatDateTime } from './shared'
 import ContractAtlas from './ContractAtlas'
-import type {
-    Client,
-    InvoiceTemplate,
-    ReservationContract,
-} from '@/@types/location'
+import type { Client, ReservationContract } from '@/@types/location'
 import './ReservationInvoice.css'
 
 /**
@@ -266,14 +254,6 @@ const ReservationInvoice = () => {
     const [contract, setContract] = useState<ReservationContract | null>(null)
     const [loading, setLoading] = useState(true)
     const [failed, setFailed] = useState(false)
-    const [template, setTemplate] = useState<InvoiceTemplate>('classic')
-    const [savingTemplate, setSavingTemplate] = useState(false)
-    const { user } = useSessionUser()
-    const canManageTemplate = isVerbGranted(
-        user?.role?.permissions ?? [],
-        'settings',
-        'manage',
-    )
 
     useEffect(() => {
         if (!id) {
@@ -305,13 +285,6 @@ const ReservationInvoice = () => {
             active = false
         }
     }, [id])
-
-    useEffect(() => {
-        const value = contract?.agency?.invoice_template
-        if (value) {
-            setTemplate(value)
-        }
-    }, [contract])
 
     if (loading) {
         return (
@@ -412,32 +385,6 @@ const ReservationInvoice = () => {
         </div>
     )
 
-    const handleTemplateChange = async (option: { value: InvoiceTemplate }) => {
-        const next = option.value
-        if (next === template) {
-            return
-        }
-        const previous = template
-        setTemplate(next)
-        setSavingTemplate(true)
-        try {
-            await apiUpdateAgency({ invoice_template: next })
-            toast.push(
-                <Notification type="success" title="Invoice style updated" />,
-            )
-        } catch {
-            setTemplate(previous)
-            toast.push(
-                <Notification
-                    type="danger"
-                    title="Could not update invoice style"
-                />,
-            )
-        } finally {
-            setSavingTemplate(false)
-        }
-    }
-
     const documentToolbar = (
         <div className="mx-auto mb-4 flex max-w-[1000px] items-center justify-between gap-3 print:hidden">
             <Button
@@ -448,35 +395,20 @@ const ReservationInvoice = () => {
             >
                 Back to reservations
             </Button>
-            <div className="flex items-center gap-3">
-                {canManageTemplate ? (
-                    <div className="w-56">
-                        <Select
-                            options={invoiceTemplateOptions}
-                            value={
-                                invoiceTemplateOptions.find(
-                                    (option) => option.value === template,
-                                ) ?? null
-                            }
-                            isSearchable={false}
-                            isDisabled={savingTemplate}
-                            onChange={handleTemplateChange}
-                        />
-                    </div>
-                ) : null}
-                <Button
-                    variant="solid"
-                    size="sm"
-                    icon={<LiPrinter />}
-                    onClick={() => window.print()}
-                >
-                    Print
-                </Button>
-            </div>
+            <Button
+                variant="solid"
+                size="sm"
+                icon={<LiPrinter />}
+                onClick={() => window.print()}
+            >
+                Print
+            </Button>
         </div>
     )
 
-    if (template === 'atlas') {
+    // The layout is assigned to the agency by an administrator; an agency user
+    // cannot switch it from this page.
+    if ((agency?.invoice_template?.slug ?? 'classic') === 'atlas') {
         return (
             <div className="min-h-screen overflow-x-auto bg-gray-100 px-4 py-6 print:overflow-visible print:bg-white print:p-0 dark:bg-gray-900">
                 {documentToolbar}

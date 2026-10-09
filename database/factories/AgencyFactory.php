@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Agency;
+use App\Models\InvoiceTemplate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -26,6 +27,12 @@ class AgencyFactory extends Factory
             'rc' => fake()->bothify('RC/?????/####/#####'),
             'daily_mileage_allowance' => 250,
             'extra_mileage_fee_per_km' => 1,
+            // Every agency always has a layout; default to the classic one and
+            // let tests override with InvoiceTemplate::factory().
+            'invoice_template_id' => fn () => InvoiceTemplate::query()->firstOrCreate(
+                ['slug' => 'classic'],
+                ['name' => 'Classic (letterhead)'],
+            )->getKey(),
             'is_active' => true,
         ];
     }

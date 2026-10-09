@@ -25,6 +25,9 @@ class UserResource extends JsonResource
                 'name' => $this->role?->name,
                 'permissions' => $this->role?->permissions ?? [],
             ],
+            // Role-based menu gating: every staff member carries 'user' so the
+            // shared navigation shows, while admin-only entries require 'admin'.
+            'authority' => array_values(array_filter([$this->role?->name, 'user'])),
             'agency' => [
                 'id' => $this->agency?->id,
                 'name' => $this->agency?->name,

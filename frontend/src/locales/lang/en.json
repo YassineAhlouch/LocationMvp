@@ -35,7 +35,11 @@
             "utilisateursListe": "Users list",
             "utilisateursListeDesc": "Listing staff members",
             "utilisateursAjouter": "Add user",
-            "utilisateursAjouterDesc": "Add a staff member"
+            "utilisateursAjouterDesc": "Add a staff member",
+            "parametres": "Settings",
+            "parametresDesc": "Application settings",
+            "parametresFactures": "Invoice templates",
+            "parametresFacturesDesc": "Assign a contract layout to each agency"
         },
         "uiComponents": "UI Components",
         "uiComponentsCommon": {

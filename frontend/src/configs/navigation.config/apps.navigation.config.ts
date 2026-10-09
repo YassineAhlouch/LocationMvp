@@ -316,6 +316,41 @@ const appsNavigationConfig: NavigationTree[] = [
                     },
                 ],
             },
+            // ===== PARAMETRES =====
+            {
+                key: 'gestion.parametres',
+                path: '',
+                title: 'Settings',
+                translateKey: 'nav.gestion.parametres',
+                icon: 'gestionUtilisateurs',
+                type: NAV_ITEM_TYPE_COLLAPSE,
+                authority: [ADMIN],
+                meta: {
+                    description: {
+                        translateKey: 'nav.gestion.parametresDesc',
+                        label: 'Application settings',
+                    },
+                },
+                subMenu: [
+                    {
+                        key: 'gestion.parametres.factures',
+                        path: `${APPS_PREFIX_PATH}/parametres/factures`,
+                        title: 'Invoice templates',
+                        translateKey: 'nav.gestion.parametresFactures',
+                        icon: 'gestionUtilisateurs',
+                        type: NAV_ITEM_TYPE_ITEM,
+                        authority: [ADMIN],
+                        meta: {
+                            description: {
+                                translateKey:
+                                    'nav.gestion.parametresFacturesDesc',
+                                label: 'Assign a contract layout to each agency',
+                            },
+                        },
+                        subMenu: [],
+                    },
+                ],
+            },
         ],
     },
 ]

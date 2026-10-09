@@ -479,8 +479,16 @@ export type ReservationPayload = {
     >
 }
 
-/** Rental contract/invoice layout an agency can print (App\Enums\InvoiceTemplate). */
-export type InvoiceTemplate = 'classic' | 'atlas'
+/** Stable key mapping an invoice layout to its renderer. */
+export type InvoiceTemplateSlug = 'classic' | 'atlas'
+
+/** Invoice/contract layout an agency is assigned (App\Models\InvoiceTemplate). */
+export type InvoiceTemplate = {
+    id: number
+    slug: InvoiceTemplateSlug
+    name: string
+    is_active: boolean
+}
 
 /** Agency letterhead + mileage policy (mirrors App\Http\Resources\AgencyResource). */
 export type Agency = {

@@ -110,6 +110,7 @@ class ReservationContractTest extends TestCase
             ->assertJsonPath('agency.id', $this->agency->id)
             ->assertJsonPath('agency.daily_mileage_allowance', 250)
             ->assertJsonPath('agency.extra_mileage_fee_per_km', 1)
+            ->assertJsonPath('agency.invoice_template.slug', 'classic')
             ->assertJsonPath('car.registration_number', $reservation->car->registration_number)
             ->assertJsonPath('primary_client.id', $client->id)
             ->assertJsonPath('primary_client.address', 'Rue de la Liberté')
@@ -169,39 +170,6 @@ class ReservationContractTest extends TestCase
             ->assertJsonPath('name', $this->agency->name)
             ->assertJsonPath('daily_mileage_allowance', 250)
             ->assertJsonPath('extra_mileage_fee_per_km', 1)
-            ->assertJsonPath('invoice_template', 'classic');
-    }
-
-    public function test_invoice_template_can_be_updated_with_the_settings_permission(): void
-    {
-        $actor = $this->actor(['settings.manage']);
-
-        $this->actingAs($actor, 'sanctum')
-            ->patchJson('/api/v1/agency', ['invoice_template' => 'atlas'])
-            ->assertOk()
-            ->assertJsonPath('invoice_template', 'atlas');
-
-        $this->assertSame('atlas', $this->agency->refresh()->invoice_template->value);
-    }
-
-    public function test_invoice_template_update_requires_the_settings_permission(): void
-    {
-        $outsider = $this->actor(['reservations.view']);
-
-        $this->actingAs($outsider, 'sanctum')
-            ->patchJson('/api/v1/agency', ['invoice_template' => 'atlas'])
-            ->assertStatus(403);
-
-        $this->assertSame('classic', $this->agency->refresh()->invoice_template->value);
-    }
-
-    public function test_invoice_template_update_rejects_unknown_values(): void
-    {
-        $actor = $this->actor(['settings.manage']);
-
-        $this->actingAs($actor, 'sanctum')
-            ->patchJson('/api/v1/agency', ['invoice_template' => 'fancy'])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('invoice_template');
+            ->assertJsonPath('invoice_template.slug', 'classic');
     }
 }
