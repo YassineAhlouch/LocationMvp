@@ -23,10 +23,7 @@ import {
     reservationCalendarColor,
     reservationStatusOptions,
 } from './shared'
-import type {
-    Reservation,
-    ReservationCalendarItem,
-} from '@/@types/location'
+import type { Reservation, ReservationCalendarItem } from '@/@types/location'
 import type { FullCalendarEvent } from '@/components/shared/FullCalendar/types'
 
 const reservationTitle = (item: ReservationCalendarItem) =>
@@ -164,8 +161,9 @@ const ReservationCalendar = () => {
 
         apiUpdateReservation(item.id, {
             pickup_datetime: pickup.format('YYYY-MM-DD HH:mm:ss'),
-            expected_return_datetime:
-                expectedReturn.format('YYYY-MM-DD HH:mm:ss'),
+            expected_return_datetime: expectedReturn.format(
+                'YYYY-MM-DD HH:mm:ss',
+            ),
         })
             .then(() =>
                 toast.push(
@@ -191,14 +189,14 @@ const ReservationCalendar = () => {
     )
 
     return (
-        <Container className="px-4 h-full">
+        <Container className="h-full">
             <div className="flex h-full flex-col">
-                <div className="flex flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-4 pb-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h4>Reservation Calendar</h4>
-                        <p className="mt-1">
+                        {/* <p className="mt-1">
                             Manage vehicle reservations on a calendar
-                        </p>
+                        </p> */}
                         <div className="mt-3 hidden flex-wrap items-center gap-x-4 gap-y-1.5 lg:flex">
                             {reservationStatusOptions.map((option) => (
                                 <span
@@ -246,7 +244,9 @@ const ReservationCalendar = () => {
                                     content: (
                                         <CustomEvent
                                             event={event}
-                                            item={itemById.get(Number(event.id))}
+                                            item={itemById.get(
+                                                Number(event.id),
+                                            )}
                                         />
                                     ),
                                 })}
