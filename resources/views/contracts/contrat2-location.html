@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contrat de location — Atlas Car Location</title>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #e9e9e9;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    color: #111;
+    font-size: 14px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .card {
+    position: relative;
+    max-width: 880px;
+    margin: 24px auto;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 6px 26px rgba(0, 0, 0, 0.12);
+    padding: 22px 12px;
+  }
+
+  /* ── Header ───────────────────────────────────────────── */
+  .badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #111;
+    color: #f58220;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    padding: 7px 11px;
+    border-radius: 9px;
+  }
+
+  .head {
+    text-align: center;
+    padding: 6px 70px 16px;
+  }
+  .head h1 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 800;
+  }
+  .head .sub {
+    margin-top: 5px;
+    color: #888;
+    font-size: 13px;
+    direction: rtl;
+  }
+
+  /* ── Tables ───────────────────────────────────────────── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th, td {
+    border: 1px solid #e1e1e1;
+    height: 30px;
+    padding: 4px 10px;
+    vertical-align: middle;
+  }
+  table + table { margin-top: -1px; }
+
+  .fr-label {
+    color: #555;
+    font-style: italic;
+    text-align: left;
+    font-size: 13px;
+  }
+  .value {
+    font-weight: bold;
+    text-align: center;
+  }
+  .ar {
+    direction: rtl;
+    text-align: right;
+    font-weight: bold;
+    font-size: 15px;
+  }
+
+  /* Contract number row */
+  .contract-row td {
+    border: 2px solid #000;
+    height: 42px;
+  }
+  .contract-row .fr-label {
+    font-weight: bold;
+    font-size: 15px;
+  }
+  .contract-row .value { font-size: 21px; }
+  .contract-row .ar { font-size: 17px; }
+
+  /* Section bars */
+  .section-bar td {
+    background: #f1f1f1;
+    height: 28px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    direction: rtl;
+  }
+
+  /* ── Vehicle condition table ──────────────────────────── */
+  .cond-tbl { table-layout: fixed; }
+  .cond-tbl th {
+    background: #f1f1f1;
+    text-align: center;
+    font-size: 12px;
+    padding: 4px 6px;
+    height: 34px;
+  }
+  .cond-tbl th .h-fr { display: block; font-weight: bold; }
+  .cond-tbl th .h-ar {
+    display: block;
+    direction: rtl;
+    font-weight: bold;
+    font-size: 12px;
+  }
+  .cond-tbl tbody td {
+    height: 44px;
+    text-align: center;
+    font-weight: bold;
+  }
+  .cond-tbl tbody td.last {
+    background: #f1f1f1;
+    line-height: 1.4;
+  }
+
+  /* ── Rental info ──────────────────────────────────────── */
+  .red-row td { color: #d41212; }
+
+  /* ── Conditions ───────────────────────────────────────── */
+  .cond-box {
+    display: flex;
+    border: 1px solid #e1e1e1;
+    margin-top: 14px;
+    font-size: 12.3px;
+  }
+  .cond-col {
+    width: 50%;
+    padding: 12px 14px;
+  }
+  .cond-col.left { text-align: left; }
+  .cond-col.right {
+    text-align: right;
+    direction: rtl;
+    border-left: 1px solid #e1e1e1;
+  }
+  .cond-title {
+    margin: 0 0 8px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  .cond-col p {
+    margin: 4px 0;
+    line-height: 1.5;
+  }
+
+  /* ── Agreement ────────────────────────────────────────── */
+  .agreement {
+    border: 1px solid #e1e1e1;
+    margin-top: 12px;
+    padding: 9px 12px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 12.5px;
+  }
+  .agreement .ar {
+    display: inline;
+    font-size: 12.5px;
+  }
+
+  /* ── Signatures ───────────────────────────────────────── */
+  .signs {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .sign-side {
+    flex: 0 0 auto;
+    text-align: center;
+  }
+  .sig-box {
+    width: 232px;
+    height: 134px;
+    border: 1.5px dashed #b3b3b3;
+    border-radius: 12px;
+    background: #fcfcfc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sign-side .cap {
+    margin-top: 8px;
+    font-weight: bold;
+    font-size: 12.5px;
+  }
+  .sign-side .cap-line {
+    font-weight: bold;
+    font-size: 12.5px;
+    line-height: 1.4;
+  }
+  .sign-side .ok {
+    margin-top: 3px;
+    color: #1b8a3a;
+    font-weight: bold;
+    font-size: 12px;
+  }
+
+  /* Stamp */
+  .stamp {
+    width: 106px;
+    height: 106px;
+    border: 2px solid #1b3fa0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1b3fa0;
+  }
+  .stamp-inner {
+    width: 90px;
+    height: 90px;
+    border: 1px solid #1b3fa0;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 7.5px;
+    font-weight: bold;
+    line-height: 1.3;
+    padding: 6px;
+  }
+
+  /* Handwritten signature */
+  .hand {
+    font-family: "Segoe Script", "Brush Script MT", "Apple Chancery", cursive;
+    font-style: italic;
+    font-size: 32px;
+    color: #16308f;
+    transform: rotate(-6deg);
+  }
+
+  .cars {
+    flex: 0 1 auto;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* ── Footer ───────────────────────────────────────────── */
+  .foot {
+    border-top: 1px solid #e1e1e1;
+    margin-top: 16px;
+    padding-top: 10px;
+    text-align: center;
+    color: #777;
+    font-size: 11.5px;
+  }
+
+  /* ── Print ────────────────────────────────────────────── */
+  @media print {
+    body { background: #fff; }
+    .card {
+      max-width: none;
+      margin: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+  }
+
+  /* ── Mobile ───────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    body { font-size: 12px; }
+    .card { padding: 14px 8px; }
+    .head { padding: 6px 56px 12px; }
+    .head h1 { font-size: 20px; }
+    table, .cond-box, .agreement { font-size: 12px; }
+    .ar { font-size: 13px; }
+    .contract-row .value { font-size: 17px; }
+    .contract-row .ar { font-size: 14px; }
+    .cond-box { flex-direction: column; }
+    .cond-col { width: 100%; }
+    .cond-col.right {
+      border-left: none;
+      border-top: 1px solid #e1e1e1;
+    }
+    .signs { flex-direction: column; align-items: center; }
+    .sig-box { width: 100%; max-width: 260px; }
+    .cars { width: 100%; max-width: 320px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="badge">ATLAS</div>
+
+  <!-- ── Header ── -->
+  <div class="head">
+    <h1>Atlas Car Location</h1>
+    <div class="sub" lang="ar" dir="rtl">وكالة تأجير السيارات - Agence de Location de Voiture</div>
+  </div>
+
+  <!-- ── Main table ── -->
+  <table>
+    <colgroup>
+      <col style="width:23%">
+      <col style="width:54%">
+      <col style="width:23%">
+    </colgroup>
+    <tbody>
+      <tr class="contract-row">
+        <td class="fr-label">CONTRAT N°</td>
+        <td class="value">260821-0108</td>
+        <td class="ar" lang="ar" dir="rtl">عـقـد الكراء رقم</td>
+      </tr>
+      <tr>
+        <td class="fr-label">Locataire</td>
+        <td class="value">Amine Chraibi</td>
+        <td class="ar" lang="ar" dir="rtl">المكتري</td>
+      </tr>
+      <tr>
+        <td class="fr-label">Adresse Perso</td>
+        <td class="value">Marrakech</td>
+        <td class="ar" lang="ar" dir="rtl">العنوان الشخصي</td>
+      </tr>
+      <tr>
+        <td class="fr-label">Tel. Perso</td>
+        <td class="value">0666-59-33-27</td>
+        <td class="ar" lang="ar" dir="rtl">الهاتف الشخصي</td>
+      </tr>
+      <tr>
+        <td class="fr-label">N° CIN</td>
+        <td class="value">BH704918</td>
+        <td class="ar" lang="ar" dir="rtl">رقم البطاقة الوطنية</td>
+      </tr>
+      <tr>
+        <td class="fr-label">N° CE</td>
+        <td class="value"></td>
+        <td class="ar" lang="ar" dir="rtl">رقم بطاقة الإقامة</td>
+      </tr>
+      <tr>
+        <td class="fr-label">N° Passeport</td>
+        <td class="value"></td>
+        <td class="ar" lang="ar" dir="rtl">رقم جواز السفر</td>
+      </tr>
+      <tr>
+        <td class="fr-label">N° Permis</td>
+        <td class="value">P220685</td>
+        <td class="ar" lang="ar" dir="rtl">رقم رخصة السياقة</td>
+      </tr>
+      <tr>
+        <td class="fr-label">Validité Permis</td>
+        <td class="value">19/10/2029</td>
+        <td class="ar" lang="ar" dir="rtl">صلاحية الرخصة</td>
+      </tr>
+      <tr>
+        <td class="fr-label">Délivré à</td>
+        <td class="value"></td>
+        <td class="ar" lang="ar" dir="rtl">مكان التسليم</td>
+      </tr>
+
+      <tr class="section-bar">
+        <td colspan="3" lang="ar" dir="rtl">السائق الآخر - Autre Conducteur</td>
+      </tr>
+      <tr>
+        <td class="fr-label">Nom et Prénom</td>
+        <td class="value"></td>
+        <td class="ar" lang="ar" dir="rtl">الإسم والنسب</td>
+      </tr>
+      <tr>
+        <td class="fr-label">N° CIN</td>
+        <td class="value"></td>
+        <td class="ar" lang="ar" dir="rtl">رقم البطاقة الوطنية</td>
+      </tr>
+      <tr>
+        <td class="fr-label">Adresse Perso</td>
+        <td class="value"></td>
+        <td class="ar" lang="ar" dir="rtl">العنوان الشخصي</td>
+      </tr>
+      <tr>
+        <td class="fr-label">N° Permis</td>
+        <td class="value"></td>
+        <td class="ar" lang="ar" dir="rtl">رقم رخصة السياقة</td>
+      </tr>
+      <tr>
+        <td class="fr-label">Validité Permis</td>
+        <td class="value"></td>
+        <td class="ar" lang="ar" dir="rtl">صلاحية الرخصة</td>
+      </tr>
+
+      <tr class="section-bar">
+        <td colspan="3" lang="ar" dir="rtl">معلومات السيارة - Informations du Véhicule</td>
+      </tr>
+      <tr>
+        <td class="fr-label">Véhicule</td>
+        <td class="value">Volkswagen Golf (78120-A-1)</td>
+        <td class="ar" lang="ar" dir="rtl">السيارة</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── Vehicle condition table ── -->
+  <table class="cond-tbl">
+    <colgroup>
+      <col style="width:16.66%">
+      <col style="width:16.66%">
+      <col style="width:16.66%">
+      <col style="width:16.66%">
+      <col style="width:16.66%">
+      <col style="width:16.7%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>
+          <span class="h-fr">Kilométrage</span>
+          <span class="h-ar" lang="ar" dir="rtl">عداد المسافة</span>
+        </th>
+        <th>
+          <span class="h-fr">Lavage</span>
+          <span class="h-ar" lang="ar" dir="rtl">الغسيل</span>
+        </th>
+        <th>
+          <span class="h-fr">Poste Radio</span>
+          <span class="h-ar" lang="ar" dir="rtl">الراديو</span>
+        </th>
+        <th>
+          <span class="h-fr">Carburant</span>
+          <span class="h-ar" lang="ar" dir="rtl">الوقود</span>
+        </th>
+        <th>
+          <span class="h-fr">Roue &amp; Secours</span>
+          <span class="h-ar" lang="ar" dir="rtl">عجلة احتياطية</span>
+        </th>
+        <th>
+          <span class="h-fr">Date</span>
+          <span class="h-ar" lang="ar" dir="rtl">التاريخ</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>102,513</td>
+        <td>OUI</td>
+        <td>OUI</td>
+        <td>100%</td>
+        <td>OUI</td>
+        <td class="last">Livraison<br>21/08/2026</td>
+      </tr>
+      <tr>
+        <td>102768</td>
+        <td>OUI</td>
+        <td>OUI</td>
+        <td>100%</td>
+        <td>OUI</td>
+        <td class="last">Réception<br>24/08/2026</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── Rental info ── -->
+  <table>
+    <colgroup>
+      <col style="width:23%">
+      <col style="width:54%">
+      <col style="width:23%">
+    </colgroup>
+    <tbody>
+      <tr class="section-bar">
+        <td colspan="3" lang="ar" dir="rtl">معلومات الكراء - Informations de la location</td>
+      </tr>
+      <tr>
+        <td class="fr-label">Date de Sortie</td>
+        <td class="value">21/08/2026 09:00</td>
+        <td class="ar" lang="ar" dir="rtl">تاريخ الاستلام</td>
+      </tr>
+      <tr>
+        <td class="fr-label">Date d'Entrée</td>
+        <td class="value">24/08/2026 09:00</td>
+        <td class="ar" lang="ar" dir="rtl">تاريخ الإرجاع</td>
+      </tr>
+      <tr>
+        <td class="fr-label">Nombre de jours</td>
+        <td class="value">3</td>
+        <td class="ar" lang="ar" dir="rtl">عدد الأيام</td>
+      </tr>
+      <tr>
+        <td class="fr-label">Distance parcourue</td>
+        <td class="value">255 km</td>
+        <td class="ar" lang="ar" dir="rtl">المسافة المقطوعة</td>
+      </tr>
+      <tr>
+        <td class="fr-label">Km inclus (250/jour)</td>
+        <td class="value">750 km</td>
+        <td class="ar" lang="ar" dir="rtl">الكيلومترات المشمولة</td>
+      </tr>
+      <tr>
+        <td class="fr-label">Km supplémentaire</td>
+        <td class="value">0 km</td>
+        <td class="ar" lang="ar" dir="rtl">كيلومترات إضافية</td>
+      </tr>
+      <tr class="red-row">
+        <td class="fr-label">Frais km supp. (1 DH/km)</td>
+        <td class="value">0.00 DH</td>
+        <td class="ar" lang="ar" dir="rtl">رسوم الكيلومترات الإضافية</td>
+      </tr>
+      <tr>
+        <td class="fr-label">Montant Total</td>
+        <td class="value">1,440.00 DH</td>
+        <td class="ar" lang="ar" dir="rtl">المبلغ الإجمالي</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── Conditions générales ── -->
+  <div class="cond-box">
+    <div class="cond-col left">
+      <div class="cond-title">CONDITIONS GÉNÉRALES</div>
+      <p>* Le locataire doit être titulaire d'un permis de conduire depuis plus de deux ans.</p>
+      <p>* Une caution est exigée du locataire lors de la location.</p>
+      <p>* Le locataire s'engage à restituer le véhicule dans le même état et au moment fixés dans le présent contrat.</p>
+      <p>* En cas de dommage ou de rayure sur le véhicule, son montant est directement déduit du montant de la caution.</p>
+      <p>* En cas de perte des documents ou de la clé du véhicule, le locataire paie une pénalité de 2000 DH.</p>
+      <p>* Le locataire n'a pas le droit de réparer le véhicule sans l'autorisation de la société, quelle que soit la nature de la panne.</p>
+      <p>* Il est interdit au locataire de signer le constat à l'amiable avant la présence de l'expert.</p>
+      <p>* Il est interdit au locataire d'entrer à Melilla ; il assume l'entière responsabilité en cas de tentative.</p>
+      <p>* Il est interdit au locataire de laisser conduire le véhicule par d'autres personnes dont les noms ne figurent pas dans le présent contrat.</p>
+    </div>
+    <div class="cond-col right" lang="ar" dir="rtl">
+      <div class="cond-title">شــروط عـامـــة</div>
+      <p>* يجب على المكتري أن يتوفر على رخصة السياقة أكثر من سنتين.</p>
+      <p>* عند الكراء يشترط على المكتري دفع ضمانة.</p>
+      <p>* يلتزم المكتري بإرجاع السيارة في نفس الحالة والوقت المحددين في هذه العقدة.</p>
+      <p>* في حالة حدوث عطب أو خدش للسيارة، تخصم قيمته مباشرة من مبلغ الضمانة.</p>
+      <p>* في حالة ضياع أوراق أو مفتاح السيارة، يؤدي المكتري غرامة تقدر بـ 2000 درهم.</p>
+      <p>* لا يحق للمكتري إصلاح السيارة دون اذن الشركة كيفما كان نوع العطب.</p>
+      <p>* يمنع على المكتري إمضاء المعاينة الودية قبل حضور الخبير.</p>
+      <p>* يمنع على المكتري دخول مليلية ويتحمل المسؤولية كاملة من حاول القيام بذلك.</p>
+      <p>* يمنع على المكتري السماح لأشخاص آخرين بقيادة السيارة إذا لم تكن أسماؤهم مذكورة في هذا العقد.</p>
+    </div>
+  </div>
+
+  <!-- ── Agreement ── -->
+  <div class="agreement">
+    J'ai lu, compris et j'approuve les termes du présent contrat.
+    <span class="ar" lang="ar" dir="rtl">لقد اطلعت وفهمت ووافقت على شروط الكراء المحددة في هذا العقد.</span>
+  </div>
+
+  <!-- ── Signatures ── -->
+  <div class="signs">
+    <!-- Left: agency stamp -->
+    <div class="sign-side">
+      <div class="sig-box">
+        <div class="stamp">
+          <div class="stamp-inner">
+            <div>ATLAS CAR</div>
+            <div>LOCATION SARL</div>
+            <div>RC 45872</div>
+            <div>ICE 002745318000061</div>
+            <div>MARRAKECH - MAROC</div>
+          </div>
+        </div>
+      </div>
+      <div class="cap">Signature · <span lang="ar" dir="rtl">توقيع وكاشي الوكالة</span></div>
+      <div class="cap-line">loueur</div>
+    </div>
+
+    <!-- Center: cars diagram -->
+    <svg class="cars" viewBox="0 0 360 210" width="360" height="210" role="img" aria-label="Croquis des véhicules">
+      <defs>
+        <g id="car-side" fill="#eef1f3" stroke="#555" stroke-width="2" stroke-linejoin="round">
+          <path d="M10 62 L18 44 Q23 35 34 34 L56 32 L68 16 Q74 9 86 9 L112 9 Q124 9 131 17 L146 33 L156 36 Q165 40 167 50 L170 62 Q171 69 163 69 L16 69 Q8 69 10 62 Z"/>
+          <circle cx="50" cy="69" r="12"/>
+          <circle cx="130" cy="69" r="12"/>
+          <circle cx="50" cy="69" r="5" fill="#cfd4d8"/>
+          <circle cx="130" cy="69" r="5" fill="#cfd4d8"/>
+        </g>
+        <g id="car-front" fill="#eef1f3" stroke="#555" stroke-width="2" stroke-linejoin="round">
+          <path d="M24 78 L24 42 Q24 20 50 20 L110 20 Q136 20 136 42 L136 78 Q136 84 130 84 L30 84 Q24 84 24 78 Z"/>
+          <rect x="36" y="28" width="88" height="26" rx="9"/>
+          <circle cx="44" cy="60" r="9" fill="#cfd4d8"/>
+          <circle cx="116" cy="60" r="9" fill="#cfd4d8"/>
+        </g>
+        <g id="car-top" fill="#eef1f3" stroke="#555" stroke-width="2" stroke-linejoin="round">
+          <path d="M48 6 Q80 -2 112 6 Q126 10 128 30 L128 74 Q128 90 110 92 L50 92 Q32 90 32 74 L32 30 Q34 10 48 6 Z"/>
+          <path d="M42 36 L118 36 L110 22 Q80 14 50 22 Z"/>
+          <path d="M42 62 L118 62 L112 76 Q80 82 48 76 Z"/>
+        </g>
+      </defs>
+      <use href="#car-side" x="6" y="4"/>
+      <use href="#car-side" x="194" y="4"/>
+      <use href="#car-front" x="6" y="110"/>
+      <use href="#car-top" x="194" y="110"/>
+    </svg>
+
+    <!-- Right: client signature -->
+    <div class="sign-side">
+      <div class="sig-box">
+        <div class="hand">Amine Chraibi</div>
+      </div>
+      <div class="cap">Signature client · <span lang="ar" dir="rtl">توقيع المكتري</span></div>
+      <div class="ok">Amine Chraibi · 21/08/2026 — <span lang="ar" dir="rtl">وُقِّع</span> ✓</div>
+      <div class="cap-line">07:00</div>
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <div class="foot">
+    Av. Mohammed V, Résidence Al Massira, Marrakech · EMAIL: app.review@gestionauto.ma · TEL: 0600000000
+  </div>
+</div>
+
+</body>
+</html>

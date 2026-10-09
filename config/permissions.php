@@ -37,5 +37,7 @@ return [
 
     'roles' => ['view', 'manage'],
 
+    'settings' => ['manage'],
+
     'notifications' => ['view', 'send'],
 ];

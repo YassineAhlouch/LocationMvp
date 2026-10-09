@@ -16,6 +16,7 @@ import type {
     Expense,
     ExpensePayload,
     Extra,
+    InvoiceTemplate,
     Paginated,
     Payment,
     PaymentOverview,
@@ -198,6 +199,13 @@ export const apiGetAgency = () =>
     ApiService.fetchDataWithAxios<Agency>({
         url: '/v1/agency',
         method: 'get',
+    })
+
+export const apiUpdateAgency = (data: { invoice_template: InvoiceTemplate }) =>
+    ApiService.fetchDataWithAxios<Agency>({
+        url: '/v1/agency',
+        method: 'patch',
+        data,
     })
 
 export const apiCreateReservation = (data: ReservationPayload) =>

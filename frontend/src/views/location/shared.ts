@@ -13,6 +13,7 @@ import type {
     PaymentMethod,
     PaymentRecordStatus,
     PaymentStatus,
+    InvoiceTemplate,
 } from '@/@types/location'
 
 /** Format a MAD amount like the rest of the dashboard. */
@@ -185,6 +186,12 @@ export const paymentMethodOptions: SelectOption<PaymentMethod>[] = [
     { value: 'cash', label: 'Cash' },
     { value: 'card', label: 'Card' },
     { value: 'transfer', label: 'Transfer' },
+]
+
+/** Rental document layouts an agency can choose from (App\Enums\InvoiceTemplate). */
+export const invoiceTemplateOptions: SelectOption<InvoiceTemplate>[] = [
+    { value: 'classic', label: 'Classic (letterhead)' },
+    { value: 'atlas', label: 'Atlas (bilingual FR/AR)' },
 ]
 
 export const paymentRecordStatusOptions: SelectOption<PaymentRecordStatus>[] = [

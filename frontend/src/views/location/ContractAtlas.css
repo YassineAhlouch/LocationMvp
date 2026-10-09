@@ -1,0 +1,379 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Contrat de location — Atlas (bilingual FR/AR)
+   Scoped under .atlas-contract so the generic class names (.card, .badge,
+   .head, table …) never leak into the rest of the admin app. Layout/values
+   mirror resources/views/contracts/contrat2-location.html.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.atlas-contract {
+    position: relative;
+    max-width: 880px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 6px 26px rgba(0, 0, 0, 0.12);
+    padding: 22px 12px;
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    color: #111;
+    font-size: 14px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.atlas-contract *,
+.atlas-contract *::before,
+.atlas-contract *::after {
+    box-sizing: border-box;
+}
+
+/* ── Header ───────────────────────────────────────────── */
+.atlas-contract .badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #111;
+    color: #f58220;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    padding: 7px 11px;
+    border-radius: 9px;
+}
+
+.atlas-contract .head {
+    text-align: center;
+    padding: 6px 70px 16px;
+}
+
+.atlas-contract .head h1 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.atlas-contract .head .sub {
+    margin-top: 5px;
+    color: #888;
+    font-size: 13px;
+    direction: rtl;
+}
+
+/* ── Tables ───────────────────────────────────────────── */
+.atlas-contract table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.atlas-contract th,
+.atlas-contract td {
+    border: 1px solid #e1e1e1;
+    height: 30px;
+    padding: 4px 10px;
+    vertical-align: middle;
+}
+
+.atlas-contract table + table {
+    margin-top: -1px;
+}
+
+.atlas-contract .fr-label {
+    color: #555;
+    font-style: italic;
+    text-align: left;
+    font-size: 13px;
+}
+
+.atlas-contract .value {
+    font-weight: bold;
+    text-align: center;
+}
+
+.atlas-contract .ar {
+    direction: rtl;
+    text-align: right;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+/* Contract number row */
+.atlas-contract .contract-row td {
+    border: 2px solid #000;
+    height: 42px;
+}
+
+.atlas-contract .contract-row .fr-label {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.atlas-contract .contract-row .value {
+    font-size: 21px;
+}
+
+.atlas-contract .contract-row .ar {
+    font-size: 17px;
+}
+
+/* Section bars */
+.atlas-contract .section-bar td {
+    background: #f1f1f1;
+    height: 28px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    direction: rtl;
+}
+
+/* ── Vehicle condition table ──────────────────────────── */
+.atlas-contract .cond-tbl {
+    table-layout: fixed;
+}
+
+.atlas-contract .cond-tbl th {
+    background: #f1f1f1;
+    text-align: center;
+    font-size: 12px;
+    padding: 4px 6px;
+    height: 34px;
+}
+
+.atlas-contract .cond-tbl th .h-fr {
+    display: block;
+    font-weight: bold;
+}
+
+.atlas-contract .cond-tbl th .h-ar {
+    display: block;
+    direction: rtl;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.atlas-contract .cond-tbl tbody td {
+    height: 44px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.atlas-contract .cond-tbl tbody td.last {
+    background: #f1f1f1;
+    line-height: 1.4;
+}
+
+/* ── Rental info ──────────────────────────────────────── */
+.atlas-contract .red-row td {
+    color: #d41212;
+}
+
+/* ── Conditions ───────────────────────────────────────── */
+.atlas-contract .cond-box {
+    display: flex;
+    border: 1px solid #e1e1e1;
+    margin-top: 14px;
+    font-size: 12.3px;
+}
+
+.atlas-contract .cond-col {
+    width: 50%;
+    padding: 12px 14px;
+}
+
+.atlas-contract .cond-col.left {
+    text-align: left;
+}
+
+.atlas-contract .cond-col.right {
+    text-align: right;
+    direction: rtl;
+    border-left: 1px solid #e1e1e1;
+}
+
+.atlas-contract .cond-title {
+    margin: 0 0 8px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.atlas-contract .cond-col p {
+    margin: 4px 0;
+    line-height: 1.5;
+}
+
+/* ── Agreement ────────────────────────────────────────── */
+.atlas-contract .agreement {
+    border: 1px solid #e1e1e1;
+    margin-top: 12px;
+    padding: 9px 12px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 12.5px;
+}
+
+.atlas-contract .agreement .ar {
+    display: inline;
+    font-size: 12.5px;
+}
+
+/* ── Signatures ───────────────────────────────────────── */
+.atlas-contract .signs {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.atlas-contract .sign-side {
+    flex: 0 0 auto;
+    text-align: center;
+}
+
+.atlas-contract .sig-box {
+    width: 232px;
+    height: 134px;
+    border: 1.5px dashed #b3b3b3;
+    border-radius: 12px;
+    background: #fcfcfc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.atlas-contract .sign-side .cap {
+    margin-top: 8px;
+    font-weight: bold;
+    font-size: 12.5px;
+}
+
+.atlas-contract .sign-side .cap-line {
+    font-weight: bold;
+    font-size: 12.5px;
+    line-height: 1.4;
+}
+
+.atlas-contract .sign-side .ok {
+    margin-top: 3px;
+    color: #1b8a3a;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/* Stamp */
+.atlas-contract .stamp {
+    width: 106px;
+    height: 106px;
+    border: 2px solid #1b3fa0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1b3fa0;
+}
+
+.atlas-contract .stamp-inner {
+    width: 90px;
+    height: 90px;
+    border: 1px solid #1b3fa0;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 7.5px;
+    font-weight: bold;
+    line-height: 1.3;
+    padding: 6px;
+}
+
+/* Handwritten signature */
+.atlas-contract .hand {
+    font-family: 'Segoe Script', 'Brush Script MT', 'Apple Chancery', cursive;
+    font-style: italic;
+    font-size: 32px;
+    color: #16308f;
+    transform: rotate(-6deg);
+}
+
+.atlas-contract .cars {
+    flex: 0 1 auto;
+    max-width: 100%;
+    height: auto;
+}
+
+/* ── Footer ───────────────────────────────────────────── */
+.atlas-contract .foot {
+    border-top: 1px solid #e1e1e1;
+    margin-top: 16px;
+    padding-top: 10px;
+    text-align: center;
+    color: #777;
+    font-size: 11.5px;
+}
+
+/* ── Print ────────────────────────────────────────────── */
+@page {
+    size: A4 portrait;
+    margin: 8mm;
+}
+
+@media print {
+    .atlas-contract {
+        max-width: none;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+}
+
+/* ── Mobile ───────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .atlas-contract {
+        font-size: 12px;
+        padding: 14px 8px;
+    }
+    .atlas-contract .head {
+        padding: 6px 56px 12px;
+    }
+    .atlas-contract .head h1 {
+        font-size: 20px;
+    }
+    .atlas-contract table,
+    .atlas-contract .cond-box,
+    .atlas-contract .agreement {
+        font-size: 12px;
+    }
+    .atlas-contract .ar {
+        font-size: 13px;
+    }
+    .atlas-contract .contract-row .value {
+        font-size: 17px;
+    }
+    .atlas-contract .contract-row .ar {
+        font-size: 14px;
+    }
+    .atlas-contract .cond-box {
+        flex-direction: column;
+    }
+    .atlas-contract .cond-col {
+        width: 100%;
+    }
+    .atlas-contract .cond-col.right {
+        border-left: none;
+        border-top: 1px solid #e1e1e1;
+    }
+    .atlas-contract .signs {
+        flex-direction: column;
+        align-items: center;
+    }
+    .atlas-contract .sig-box {
+        width: 100%;
+        max-width: 260px;
+    }
+    .atlas-contract .cars {
+        width: 100%;
+        max-width: 320px;
+    }
+}

@@ -479,6 +479,9 @@ export type ReservationPayload = {
     >
 }
 
+/** Rental contract/invoice layout an agency can print (App\Enums\InvoiceTemplate). */
+export type InvoiceTemplate = 'classic' | 'atlas'
+
 /** Agency letterhead + mileage policy (mirrors App\Http\Resources\AgencyResource). */
 export type Agency = {
     id: number
@@ -493,6 +496,7 @@ export type Agency = {
     logo: string | null
     daily_mileage_allowance: number
     extra_mileage_fee_per_km: number
+    invoice_template: InvoiceTemplate
 }
 
 /** Vehicle identity/specs printed on the contract (distinct from Reservation.car). */

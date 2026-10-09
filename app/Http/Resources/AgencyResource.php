@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\InvoiceTemplate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -29,6 +30,7 @@ class AgencyResource extends JsonResource
             'logo' => $this->logo_path,
             'daily_mileage_allowance' => (int) $this->daily_mileage_allowance,
             'extra_mileage_fee_per_km' => (float) $this->extra_mileage_fee_per_km,
+            'invoice_template' => $this->invoice_template?->value ?? InvoiceTemplate::Classic->value,
         ];
     }
 }
