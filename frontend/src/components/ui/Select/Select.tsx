@@ -289,7 +289,7 @@ const Select = <ExtraOption,>(props: SelectProps<ExtraOption>) => {
             ? (finalOptions as Array<SingleOption<ExtraOption>>).map(
                   (item, index) => (
                       <SelectItem
-                          key={item.value + index}
+                          key={`${String(item.value)}-${index}`}
                           option={item}
                           selected={
                               selectedItem && 'value' in selectedItem
@@ -327,7 +327,9 @@ const Select = <ExtraOption,>(props: SelectProps<ExtraOption>) => {
                                               results.itemIndex++
                                           return (
                                               <SelectItem
-                                                  key={optionIndex}
+                                                  key={`${String(
+                                                      option.value,
+                                                  )}-${sectionIndex}-${optionIndex}`}
                                                   option={option}
                                                   selected={
                                                       selectedItem &&

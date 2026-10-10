@@ -20,6 +20,7 @@ import IconFrame from '@/components/shared/IconFrame'
 import OverflowTabs from '@/components/shared/OverflowTabs'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 import { LiAdd, LiBank, LiCalendar, LiCar, LiPrinter } from '@/icons'
+import classNames from '@/utils/classNames'
 import {
     apiCreateReservation,
     apiUpdateReservation,
@@ -30,6 +31,7 @@ import {
     apiQuoteReservation,
 } from '@/services/LocationService'
 import type {
+    CarStatus,
     Client,
     Payment,
     PaymentMethod,
@@ -454,6 +456,69 @@ const makeStatusFlowOptionRenderer =
         )
     }
 
+// ---- Car availability ------------------------------------------------------
+
+/**
+ * A car option as the booking form needs it. `status`/`isActive` are optional
+ * because the currently-selected car of an edited reservation may not be part
+ * of the loaded page; such an option shows no availability badge.
+ */
+type CarOption = {
+    value: number
+    label: string
+    status?: CarStatus
+    isActive?: boolean
+}
+
+/** Only a car that is active and sitting at `available` can be booked. */
+const isCarAvailable = (option: SingleOption<CarOption>): boolean =>
+    option.status === 'available' && option.isActive !== false
+
+const CarOptionBadge = ({ option }: { option: SingleOption<CarOption> }) => {
+    if (!option.status) {
+        return null
+    }
+
+    const available = isCarAvailable(option)
+
+    return (
+        <span
+            className={`inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-[11px] font-semibold ${statusChipClass[
+                available ? 'success' : 'error'
+            ]}`}
+        >
+            {available ? 'Available' : 'Unavailable'}
+        </span>
+    )
+}
+
+const carOptionRenderer: CustomOption<CarOption> = ({
+    option,
+    selected,
+    CheckIcon,
+}) => (
+    <div
+        className={classNames(
+            'flex w-full items-center justify-between gap-3',
+            !isCarAvailable(option) && 'opacity-60',
+        )}
+    >
+        <span className="flex min-w-0 items-center gap-2">
+            <span className="truncate">{option.label}</span>
+            <CarOptionBadge option={option} />
+        </span>
+        {selected && CheckIcon}
+    </div>
+)
+
+const carInputDisplay = (selectedItem: SingleOption<CarOption> | null) =>
+    selectedItem ? (
+        <span className="flex items-center gap-2">
+            <span className="truncate">{selectedItem.label}</span>
+            <CarOptionBadge option={selectedItem} />
+        </span>
+    ) : null
+
 // ---- Payload building ------------------------------------------------------
 
 const buildPayload = (
@@ -638,7 +703,7 @@ const ReservationForm = ({
     const navigate = useNavigate()
     const [selectedSection, setSelectedSection] = useState('basicInfo')
     const [invalidFields, setInvalidFields] = useState<string[]>([])
-    const [cars, setCars] = useState<{ value: number; label: string }[]>([])
+    const [cars, setCars] = useState<SingleOption<CarOption>[]>([])
     const [clients, setClients] = useState<{ value: number; label: string }[]>(
         [],
     )
@@ -664,6 +729,10 @@ const ReservationForm = ({
     // Car default prices, used only as the fallback estimate while a quote
     // is not resolved (the quote itself is authoritative).
     const carPrices = useRef(new Map<number, number>())
+
+    // Labels for cars not present on the loaded page (e.g. an edited
+    // reservation whose car was paginated out), so the field still shows it.
+    const carLabels = useRef(new Map<number, string>())
 
     // Every fetched client is remembered by id so a selected option keeps a
     // label even when the current search page does not include it.
@@ -757,15 +826,28 @@ const ReservationForm = ({
     const loadClients = useCallback((query = '') => {
         const seq = ++clientRequestSeq.current
         setClientsLoading(true)
-        return apiGetClients({ per_page: 100, q: query.trim() || undefined })
+        return apiGetClients({
+            per_page: 100,
+            // Deactivated clients must never be offered on a reservation.
+            is_active: true,
+            q: query.trim() || undefined,
+        })
             .then((res) => {
                 if (seq !== clientRequestSeq.current) {
                     return
                 }
-                const next = res.data.map((client) => ({
-                    value: client.id,
-                    label: `${client.full_name} · ${client.phone}`,
-                }))
+                // Keyed by id so a duplicate row can never render twice.
+                const next = Array.from(
+                    new Map(
+                        res.data.map((client) => [
+                            client.id,
+                            {
+                                value: client.id,
+                                label: `${client.full_name} · ${client.phone}`,
+                            },
+                        ]),
+                    ).values(),
+                )
                 next.forEach((item) =>
                     clientLabels.current.set(item.value, item.label),
                 )
@@ -796,6 +878,25 @@ const ReservationForm = ({
         [loadClients],
     )
 
+    /** Fallback label for the reservation's own client if it is off-page. */
+    const reservationClientLabel = useCallback(
+        (id: number): string | undefined => {
+            const match =
+                reservation?.primary_client?.id === id
+                    ? reservation.primary_client
+                    : reservation?.secondary_client?.id === id
+                      ? reservation.secondary_client
+                      : null
+
+            if (!match) {
+                return undefined
+            }
+
+            return [match.full_name, match.phone].filter(Boolean).join(' · ')
+        },
+        [reservation],
+    )
+
     const clientOptionFor = useCallback(
         (id?: number) => {
             if (!id) {
@@ -805,10 +906,45 @@ const ReservationForm = ({
             if (found) {
                 return found
             }
-            const label = clientLabels.current.get(id)
+            const label =
+                clientLabels.current.get(id) ?? reservationClientLabel(id)
             return label ? { value: id, label } : undefined
         },
-        [clients],
+        [clients, reservationClientLabel],
+    )
+
+    const carOptionFor = useCallback(
+        (id?: number): SingleOption<CarOption> | undefined => {
+            if (!id) {
+                return undefined
+            }
+            const found = cars.find((item) => item.value === id)
+            if (found) {
+                return found
+            }
+            const label =
+                carLabels.current.get(id) ??
+                (reservation?.car?.id === id
+                    ? reservation.car.registration_number
+                    : undefined)
+            return label ? { value: id, label } : undefined
+        },
+        [cars, reservation],
+    )
+
+    /**
+     * Cars the user may pick: every unavailable car is shown but disabled, so
+     * its status stays visible. The reservation's own car remains enabled even
+     * when it is not `available` (e.g. already reserved by this booking).
+     */
+    const carOptions = useMemo(
+        () =>
+            cars.map((car) => ({
+                ...car,
+                disabled:
+                    !isCarAvailable(car) && car.value !== tripValues.car_id,
+            })),
+        [cars, tripValues.car_id],
     )
 
     useEffect(() => {
@@ -837,17 +973,21 @@ const ReservationForm = ({
         }
         apiGetCars({ per_page: 100, sort_by: 'registration_number' })
             .then((res) => {
-                res.data.forEach((car) =>
-                    carPrices.current.set(car.id, Number(car.daily_price)),
-                )
-                setCars(
-                    res.data.map((car) => ({
+                const options = res.data.map((car) => {
+                    carPrices.current.set(car.id, Number(car.daily_price))
+                    const label = `${car.registration_number} · ${
+                        car.brand?.name ?? ''
+                    } ${car.model?.name ?? ''}`.trim()
+                    carLabels.current.set(car.id, label)
+
+                    return {
                         value: car.id,
-                        label: `${car.registration_number} · ${car.brand?.name ?? ''} ${
-                            car.model?.name ?? ''
-                        }`,
-                    })),
-                )
+                        label,
+                        status: car.status,
+                        isActive: car.is_active,
+                    }
+                })
+                setCars(options)
             })
             .catch(() => setCars([]))
         loadClients()
@@ -1283,16 +1423,16 @@ const ReservationForm = ({
                         name="car_id"
                         control={control}
                         render={({ field }) => (
-                            <Select
+                            <Select<CarOption>
                                 isSearchable
                                 placeholder="Select car"
-                                options={cars}
-                                value={cars.find(
-                                    (o) => o.value === field.value,
-                                )}
+                                options={carOptions}
+                                value={carOptionFor(field.value)}
                                 onChange={(option) =>
                                     field.onChange(option?.value)
                                 }
+                                customInputDisplay={carInputDisplay}
+                                customOption={carOptionRenderer}
                             />
                         )}
                     />
