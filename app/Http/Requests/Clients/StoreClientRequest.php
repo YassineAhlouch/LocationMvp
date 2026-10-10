@@ -43,9 +43,9 @@ class StoreClientRequest extends FormRequest
                     ->whereNull('deleted_at')),
             ],
 
-            'cin' => ['nullable', 'string', 'max:50'],
-            'passport_number' => ['nullable', 'string', 'max:50'],
-            'driving_license_number' => ['nullable', 'string', 'max:50'],
+            'cin' => ['nullable', 'string', 'max:50', 'required_without:passport_number'],
+            'passport_number' => ['nullable', 'string', 'max:50', 'required_without:cin'],
+            'driving_license_number' => ['required', 'string', 'max:50'],
             'driving_license_expiry' => ['nullable', 'date'],
             'birth_date' => ['nullable', 'date', 'before:today'],
             'birth_place' => ['nullable', 'string', 'max:255'],

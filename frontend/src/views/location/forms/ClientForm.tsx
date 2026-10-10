@@ -3,7 +3,10 @@ import Button from '@/components/ui/Button'
 import Select from '@/components/ui/Select'
 import Switcher from '@/components/ui/Switcher'
 import Input from '@/components/ui/Input'
+import SelectInputWithPrefix from '@/components/shared/SelectInputWithPrefix'
+import SelectOptionWithPrefix from '@/components/shared/SelectOptionWithPrefix'
 import { Form, FormItem } from '@/components/ui/Form'
+import { countryList } from '@/constants/countries.constant'
 import { Notification } from '@/components/ui/Notification'
 import { toast } from '@/components/ui/toast'
 import { useForm, Controller } from 'react-hook-form'
@@ -18,6 +21,16 @@ import type {
     ClientSource,
 } from '@/@types/location'
 import { clientStatusOptions, clientSourceOptions } from '../shared'
+
+/**
+ * Country picker options: the country name is the stored value (the `country`
+ * column is free text), while the ISO alpha-2 code drives the flag image.
+ */
+const countryOptions = countryList.map((country) => ({
+    value: country.label,
+    label: country.label,
+    img: country.value,
+}))
 
 type ClientFormValues = {
     first_name: string
@@ -41,27 +54,47 @@ type ClientFormValues = {
     is_active: boolean
 }
 
-const clientSchema = z.object({
-    first_name: z.string().min(1, 'First name is required'),
-    last_name: z.string().min(1, 'Last name is required'),
-    phone: z.string().min(1, 'Phone is required'),
-    is_active: z.boolean(),
-    secondary_phone: z.string().optional(),
-    email: z.string().optional(),
-    cin: z.string().optional(),
-    passport_number: z.string().optional(),
-    driving_license_number: z.string().optional(),
-    driving_license_expiry: z.string().optional(),
-    birth_date: z.string().optional(),
-    birth_place: z.string().optional(),
-    nationality: z.string().optional(),
-    address: z.string().optional(),
-    city: z.string().optional(),
-    country: z.string().optional(),
-    notes: z.string().optional(),
-    source: z.string().optional(),
-    status: z.string().optional(),
-})
+/** A client must present at least one identity document: CIN or passport. */
+const hasIdentityDocument = (values: {
+    cin?: string
+    passport_number?: string
+}) =>
+    Boolean(values.cin?.trim()) || Boolean(values.passport_number?.trim())
+
+const identityDocumentMessage = 'Enter either a CIN or a passport number'
+
+const clientSchema = z
+    .object({
+        first_name: z.string().min(1, 'First name is required'),
+        last_name: z.string().min(1, 'Last name is required'),
+        phone: z.string().min(1, 'Phone is required'),
+        driving_license_number: z
+            .string()
+            .min(1, 'Driving license number is required'),
+        is_active: z.boolean(),
+        secondary_phone: z.string().optional(),
+        email: z.string().optional(),
+        cin: z.string().optional(),
+        passport_number: z.string().optional(),
+        driving_license_expiry: z.string().optional(),
+        birth_date: z.string().optional(),
+        birth_place: z.string().optional(),
+        nationality: z.string().optional(),
+        address: z.string().optional(),
+        city: z.string().optional(),
+        country: z.string().optional(),
+        notes: z.string().optional(),
+        source: z.string().optional(),
+        status: z.string().optional(),
+    })
+    .refine(hasIdentityDocument, {
+        message: identityDocumentMessage,
+        path: ['cin'],
+    })
+    .refine(hasIdentityDocument, {
+        message: identityDocumentMessage,
+        path: ['passport_number'],
+    })
 
 const toDateSlice = (value?: string | null) =>
     value ? value.slice(0, 10) : ''
@@ -81,7 +114,7 @@ const defaultFormValues = (client?: Client | null): ClientFormValues => ({
     nationality: client?.nationality ?? '',
     address: client?.address ?? '',
     city: client?.city ?? '',
-    country: client?.country ?? '',
+    country: client?.country ?? 'Morocco',
     notes: client?.notes ?? '',
     source: client?.source ?? undefined,
     status: client?.status ?? 'normal',
@@ -181,6 +214,7 @@ const ClientForm = ({
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <FormItem
                     label="First name"
+                    asterisk
                     invalid={Boolean(errors.first_name)}
                     errorMessage={errors.first_name?.message}
                 >
@@ -194,6 +228,7 @@ const ClientForm = ({
                 </FormItem>
                 <FormItem
                     label="Last name"
+                    asterisk
                     invalid={Boolean(errors.last_name)}
                     errorMessage={errors.last_name?.message}
                 >
@@ -207,6 +242,7 @@ const ClientForm = ({
                 </FormItem>
                 <FormItem
                     label="Phone"
+                    asterisk
                     invalid={Boolean(errors.phone)}
                     errorMessage={errors.phone?.message}
                 >
@@ -246,7 +282,12 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="CIN">
+                <FormItem
+                    label="CIN"
+                    asterisk
+                    invalid={Boolean(errors.cin)}
+                    errorMessage={errors.cin?.message}
+                >
                     <Controller
                         name="cin"
                         control={control}
@@ -255,7 +296,12 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="Passport number">
+                <FormItem
+                    label="Passport number"
+                    asterisk
+                    invalid={Boolean(errors.passport_number)}
+                    errorMessage={errors.passport_number?.message}
+                >
                     <Controller
                         name="passport_number"
                         control={control}
@@ -264,7 +310,12 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="Driving license number">
+                <FormItem
+                    label="Driving license number"
+                    asterisk
+                    invalid={Boolean(errors.driving_license_number)}
+                    errorMessage={errors.driving_license_number?.message}
+                >
                     <Controller
                         name="driving_license_number"
                         control={control}
@@ -323,7 +374,53 @@ const ClientForm = ({
                         name="country"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder="Morocco" {...field} />
+                            <Select
+                                isSearchable
+                                placeholder="Select country"
+                                options={countryOptions}
+                                value={
+                                    countryOptions.find(
+                                        (option) =>
+                                            option.value === field.value,
+                                    ) ?? null
+                                }
+                                onChange={(option) =>
+                                    field.onChange(option?.value)
+                                }
+                                customInputDisplay={(selectedItem) => (
+                                    <SelectInputWithPrefix
+                                        label={selectedItem?.label}
+                                        showPrefix={Boolean(selectedItem?.img)}
+                                        prefix={
+                                            selectedItem?.img && (
+                                                <img
+                                                    src={`/img/countries/${selectedItem.img}.png`}
+                                                    className="h-4 w-4 rounded-full"
+                                                    alt={selectedItem.label}
+                                                />
+                                            )
+                                        }
+                                    />
+                                )}
+                                customOption={({
+                                    option,
+                                    selected,
+                                    CheckIcon,
+                                }) => (
+                                    <SelectOptionWithPrefix
+                                        selected={selected}
+                                        checkIcon={CheckIcon}
+                                        label={option?.label}
+                                        prefix={
+                                            <img
+                                                src={`/img/countries/${option?.img}.png`}
+                                                className="h-4 w-4 rounded-full"
+                                                alt={option?.label}
+                                            />
+                                        }
+                                    />
+                                )}
+                            />
                         )}
                     />
                 </FormItem>

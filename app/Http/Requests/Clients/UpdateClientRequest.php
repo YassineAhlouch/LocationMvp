@@ -7,6 +7,7 @@ use App\Enums\ClientStatus;
 use App\Support\Tenancy\AgencyContext;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class UpdateClientRequest extends FormRequest
 {
@@ -55,6 +56,33 @@ class UpdateClientRequest extends FormRequest
             'source' => ['nullable', Rule::enum(ClientSource::class)],
             'status' => ['sometimes', Rule::enum(ClientStatus::class)],
             'is_active' => ['sometimes', 'boolean'],
+        ];
+    }
+
+    /**
+     * Identity documents and a driving license stay mandatory even on a
+     * partial PATCH: validate the effective (merged) values so an update that
+     * omits them still passes while explicitly clearing them is rejected.
+     */
+    public function after(): array
+    {
+        return [
+            function (Validator $validator): void {
+                $client = $this->route('client');
+
+                $cin = $this->input('cin', $client?->cin);
+                $passport = $this->input('passport_number', $client?->passport_number);
+
+                if (blank($cin) && blank($passport)) {
+                    $validator->errors()->add('cin', 'Enter either a CIN or a passport number.');
+                }
+
+                $license = $this->input('driving_license_number', $client?->driving_license_number);
+
+                if (blank($license)) {
+                    $validator->errors()->add('driving_license_number', 'The driving license number is required.');
+                }
+            },
         ];
     }
 }

@@ -63,6 +63,7 @@ class ClientManagementTest extends TestCase
             'last_name' => 'Amrani',
             'phone' => '0612345678',
             'cin' => 'CIN-A1B2C3',
+            'driving_license_number' => 'DL-A1B2C3',
         ], $overrides);
     }
 
@@ -266,6 +267,69 @@ class ClientManagementTest extends TestCase
         $this->actingAs($actor, 'sanctum')
             ->postJson('/api/v1/clients', $this->storePayload(['phone' => '0699999999', 'last_name' => 'Again']))
             ->assertCreated();
+    }
+
+    public function test_store_requires_an_identity_document_and_driving_license(): void
+    {
+        $actor = $this->actor(['clients.*']);
+
+        // Neither a CIN nor a passport → both identity fields report an error.
+        $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/clients', $this->storePayload([
+                'phone' => '0600000101',
+                'cin' => null,
+            ]))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['cin', 'passport_number']);
+
+        // A driving license is mandatory.
+        $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/clients', $this->storePayload([
+                'phone' => '0600000102',
+                'driving_license_number' => '',
+            ]))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['driving_license_number']);
+
+        // A passport alone satisfies the identity requirement.
+        $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/clients', $this->storePayload([
+                'phone' => '0600000103',
+                'cin' => null,
+                'passport_number' => 'PA123456',
+            ]))
+            ->assertCreated();
+    }
+
+    public function test_update_keeps_identity_and_license_mandatory(): void
+    {
+        $actor = $this->actor(['clients.*']);
+
+        $id = $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/clients', $this->storePayload())
+            ->assertCreated()->json('id');
+
+        // Clearing both identity documents is rejected.
+        $this->actingAs($actor, 'sanctum')
+            ->patchJson("/api/v1/clients/{$id}", [
+                'cin' => null,
+                'passport_number' => null,
+            ])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['cin']);
+
+        // Clearing the driving license is rejected.
+        $this->actingAs($actor, 'sanctum')
+            ->patchJson("/api/v1/clients/{$id}", [
+                'driving_license_number' => null,
+            ])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['driving_license_number']);
+
+        // A partial update that leaves them untouched still succeeds.
+        $this->actingAs($actor, 'sanctum')
+            ->patchJson("/api/v1/clients/{$id}", ['last_name' => 'Idrissi'])
+            ->assertOk();
     }
 
     public function test_soft_deleted_contact_details_can_be_reused(): void
