@@ -1395,7 +1395,13 @@ const ReservationForm = ({
                 </Container>
             </div>
 
-            <div className={sidebar ? 'flex flex-col-reverse lg:flex-row' : ''}>
+            <div
+                className={
+                    sidebar
+                        ? 'flex flex-1 flex-col-reverse lg:flex-row'
+                        : 'flex-1'
+                }
+            >
                 {sidebar && (
                     <aside className="w-full shrink-0 border-t border-gray-200 px-4 py-6 dark:border-gray-800 sm:px-6 lg:w-80 lg:border-r lg:border-t-0 lg:px-8">
                         {sidebar}
