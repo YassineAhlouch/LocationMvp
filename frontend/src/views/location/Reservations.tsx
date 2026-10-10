@@ -35,14 +35,17 @@ import {
     apiMarkReservationNoShow,
     apiActivateReservation,
     apiCompleteReservation,
+    apiGetClient,
 } from '@/services/LocationService'
 import type {
     DashboardSummary,
     PaymentStatus,
     Reservation,
     ReservationStatus,
+    Client,
 } from '@/@types/location'
 import ReservationForm from './forms/ReservationForm'
+import ClientForm from './forms/ClientForm'
 import {
     MAD,
     formatDateTime,
@@ -159,6 +162,37 @@ const ReservationFormDialog = ({
     >
         <ReservationForm
             reservation={reservation}
+            isOpen={open}
+            onCancel={onClose}
+            onSaved={onSaved}
+        />
+    </Dialog>
+)
+
+type ClientFormDialogProps = {
+    open: boolean
+    client: Client | null
+    onClose: () => void
+    onSaved: () => void
+}
+
+const ClientFormDialog = ({
+    open,
+    client,
+    onClose,
+    onSaved,
+}: ClientFormDialogProps) => (
+    <Dialog
+        isOpen={open}
+        onClose={onClose}
+        width={760}
+        className="max-h-[90vh] overflow-y-auto"
+    >
+        <h5 className="mb-6 text-base font-bold dark:text-gray-100">
+            {client ? 'Edit client' : 'Add client'}
+        </h5>
+        <ClientForm
+            client={client}
             isOpen={open}
             onCancel={onClose}
             onSaved={onSaved}
@@ -808,6 +842,8 @@ const Reservations = () => {
     const [noShowing, setNoShowing] = useState<Reservation | null>(null)
     const [activating, setActivating] = useState<Reservation | null>(null)
     const [completing, setCompleting] = useState<Reservation | null>(null)
+    const [editingClient, setEditingClient] = useState<Client | null>(null)
+    const [clientDialogOpen, setClientDialogOpen] = useState(false)
 
     const { larger } = useResponsive()
 
@@ -910,20 +946,40 @@ const Reservations = () => {
             {
                 header: 'Car',
                 accessorKey: 'car.registration_number',
-                cell: (props) => (
-                    <span className="font-medium text-nowrap">
-                        {props.row.original.car?.registration_number ?? '—'}
-                    </span>
-                ),
+                cell: (props) => {
+                    const car = props.row.original.car
+                    if (!car) return <span className="text-gray-400">—</span>
+                    return (
+                        <span className="font-medium text-nowrap cursor-pointer hover:text-primary select-none"
+                              onClick={() => navigate(`${APPS_PREFIX_PATH}/vehicules/${car.id}/overview`)}>
+                            {car.registration_number}
+                        </span>
+                    )
+                },
             },
             {
                 header: 'Client',
                 accessorKey: 'primary_client.full_name',
-                cell: (props) => (
-                    <span className="font-medium text-nowrap">
-                        {props.row.original.primary_client?.full_name ?? '—'}
-                    </span>
-                ),
+                cell: (props) => {
+                    const client = props.row.original.primary_client
+                    if (!client) return <span className="text-gray-400">—</span>
+                    return (
+                        <span className="font-medium text-nowrap cursor-pointer hover:text-primary select-none"
+                              onClick={async () => {
+                                  try {
+                                      const fullClient = await apiGetClient(client.id)
+                                      setEditingClient(fullClient)
+                                      setClientDialogOpen(true)
+                                  } catch {
+                                      // fallback: use minimal client data
+                                      setEditingClient(client as Client)
+                                      setClientDialogOpen(true)
+                                  }
+                              }}>
+                            {client.full_name}
+                        </span>
+                    )
+                },
             },
             {
                 header: 'Period',
@@ -1653,6 +1709,16 @@ const Reservations = () => {
                 reservation={completing}
                 onClose={() => setCompleting(null)}
                 onCompleted={fetchReservations}
+            />
+
+            <ClientFormDialog
+                open={clientDialogOpen}
+                client={editingClient}
+                onClose={() => {
+                    setClientDialogOpen(false)
+                    setEditingClient(null)
+                }}
+                onSaved={fetchReservations}
             />
         </Container>
     )
