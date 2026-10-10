@@ -114,7 +114,6 @@ const ContractAtlas = ({ contract }: { contract: ReservationContract }) => {
     } = contract
 
     const agencyName = (agency?.name ?? '').trim()
-    const badge = (agencyName || 'ATLAS').toUpperCase()
     const vehicleName = [txt(car?.brand), txt(car?.model)]
         .filter(Boolean)
         .join(' ')
@@ -128,7 +127,7 @@ const ContractAtlas = ({ contract }: { contract: ReservationContract }) => {
 
     return (
         <div className="atlas-contract page">
-            <div className="badge">{badge}</div>
+            {/* <div className="badge">{badge}</div> */}
 
             {/* ── Header ── */}
             <div className="head">
