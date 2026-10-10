@@ -1313,8 +1313,8 @@ const ReservationForm = ({
     return (
         <>
             {/* Header with section tabs — mirrors apps/sales ProductDetails */}
-            <div className="border-b border-gray-200 px-4 pt-4 dark:border-gray-800">
-                <Container size="md" className="md:px-4">
+            <div className="border-b border-gray-200 pt-4 dark:border-gray-800">
+                <Container className="px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col gap-4 md:flex-row md:justify-between">
                         <div className="flex items-center gap-4">
                             <IconFrame variant="layered">
@@ -1395,16 +1395,17 @@ const ReservationForm = ({
                 </Container>
             </div>
 
-            <div className={sidebar ? 'flex flex-col-reverse lg:flex-row md:px-4' : ''}>
+            <div className={sidebar ? 'flex flex-col-reverse lg:flex-row' : ''}>
                 {sidebar && (
-                    <aside className="w-full shrink-0 border-t border-gray-200 px-4 py-6 dark:border-gray-800 lg:w-80 lg:border-r lg:border-t-0">
+                    <aside className="w-full shrink-0 border-t border-gray-200 px-4 py-6 dark:border-gray-800 sm:px-6 lg:w-80 lg:border-r lg:border-t-0 lg:px-8">
                         {sidebar}
                     </aside>
                 )}
             <Container
-                size={sidebar ? 'lg' : 'md'}
                 className={
-                    sidebar ? 'min-w-0 flex-1 py-4 md:px-4' : 'py-4 md:px-4'
+                    sidebar
+                        ? 'min-w-0 flex-1 py-4 px-4 sm:px-6 lg:px-8'
+                        : 'py-4 px-4 sm:px-6 lg:px-8'
                 }
             >
                 <Form id="reservation-form" onSubmit={onSubmit}>
@@ -2453,7 +2454,7 @@ const ReservationForm = ({
 
             {/* Sticky footer — mirrors apps/sales ProductFooter */}
             <div className="sticky bottom-0 left-0 right-0 z-10 mt-8 border-t border-gray-200 bg-white py-4 dark:border-gray-700 dark:bg-gray-800">
-                <Container size="md" className="px-4 lg:px-0">
+                <Container className="px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between gap-2">
                         <Button
                             type="button"
