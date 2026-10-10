@@ -7,27 +7,19 @@ import Tag from '@/components/ui/Tag'
 import Dialog from '@/components/ui/Dialog'
 import Input from '@/components/ui/Input'
 import Select from '@/components/ui/Select'
-import Scroll from '@/components/ui/Scroll'
-import Tabs from '@/components/ui/Tabs'
-import InputGroup from '@/components/ui/InputGroup'
+import Avatar from '@/components/ui/Avatar'
+import DatePicker from '@/components/ui/DatePicker'
 import { Notification } from '@/components/ui/Notification'
 import { toast } from '@/components/ui/toast'
 import DebouceInput from '@/components/shared/DebouceInput'
 import DataTable from '@/components/shared/DataTable'
-import Loading from '@/components/shared/Loading'
+import StatisticCard from '@/components/shared/StatisticCard'
 import Container from '@/components/shared/Container'
-import { LineChart } from '@/components/shared/Chart'
-import useResponsive from '@/utils/hooks/useResponsive'
+import classNames from '@/utils/classNames'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
-import {
-    LuCircleCheck,
-    LuClock,
-    LuRotateCcw,
-    LuSearch,
-    LuTrash2,
-    LuTrendingUp,
-    LuWallet,
-} from 'react-icons/lu'
+import { colors } from '@/constants/colors.constant'
+import { LiClock, LiRefresh, LiStatusUp, LiWallet } from '@/icons'
+import { LuCircleCheck, LuRotateCcw, LuSearch, LuTrash2 } from 'react-icons/lu'
 import {
     apiGetPaymentsLedger,
     apiGetPaymentsOverview,
@@ -47,45 +39,6 @@ import {
 } from './shared'
 import type { ColumnDef } from '@tanstack/react-table'
 
-type DateRangePreset = '7D' | '30D' | '90D' | '1Y'
-type MetricKey = 'paid' | 'pending' | 'refunded' | 'net'
-
-const { TabNav, TabList } = Tabs
-
-const dateRangePresets: Array<{
-    value: DateRangePreset
-    label: string
-    shortLabel: string
-}> = [
-    { value: '7D', label: '7 Days', shortLabel: '7d' },
-    { value: '30D', label: '30 Days', shortLabel: '30d' },
-    { value: '90D', label: '90 Days', shortLabel: '90d' },
-    { value: '1Y', label: '1 Year', shortLabel: '1y' },
-]
-
-const presetRange = (preset: DateRangePreset): { from: string; to: string } => {
-    const days = { '7D': 7, '30D': 30, '90D': 90, '1Y': 365 }[preset]
-    const to = dayjs()
-    return {
-        from: to.subtract(days - 1, 'day').format('YYYY-MM-DD'),
-        to: to.format('YYYY-MM-DD'),
-    }
-}
-
-const metricConfig: Record<
-    MetricKey,
-    { label: string; color: string; Icon: typeof LuWallet }
-> = {
-    paid: { label: 'Total Received', color: 'var(--success)', Icon: LuWallet },
-    pending: { label: 'Pending', color: 'var(--warning)', Icon: LuClock },
-    refunded: {
-        label: 'Refunded',
-        color: 'var(--error)',
-        Icon: LuRotateCcw,
-    },
-    net: { label: 'Net Revenue', color: 'var(--primary)', Icon: LuTrendingUp },
-}
-
 const statusFilterOptions = [
     { value: '', label: 'All statuses' },
     ...paymentRecordStatusOptions,
@@ -97,10 +50,9 @@ const methodFilterOptions = [
 ]
 
 const Payments = () => {
-    const { larger } = useResponsive()
-
-    const [preset, setPreset] = useState<DateRangePreset>('30D')
-    const [metric, setMetric] = useState<MetricKey>('paid')
+    const [selectedDate, setSelectedDate] = useState(
+        dayjs().format('YYYY-MM-DD'),
+    )
 
     const [overview, setOverview] = useState<PaymentOverview | null>(null)
     const [overviewLoading, setOverviewLoading] = useState(true)
@@ -119,7 +71,22 @@ const Payments = () => {
     const [refundReason, setRefundReason] = useState('')
     const [deleteTarget, setDeleteTarget] = useState<Payment | null>(null)
 
-    const range = useMemo(() => presetRange(preset), [preset])
+    const range = useMemo(
+        () => ({
+            from: dayjs(selectedDate)
+                .subtract(29, 'day')
+                .format('YYYY-MM-DD'),
+            to: selectedDate,
+        }),
+        [selectedDate],
+    )
+
+    const handleDateChange = (date: Date | null) => {
+        if (date) {
+            setSelectedDate(dayjs(date).format('YYYY-MM-DD'))
+            setPageIndex(1)
+        }
+    }
 
     const loadOverview = useCallback(() => {
         setOverviewLoading(true)
@@ -172,10 +139,7 @@ const Payments = () => {
             try {
                 await apiConfirmPayment(payment.id)
                 toast.push(
-                    <Notification
-                        type="success"
-                        title="Payment confirmed"
-                    />,
+                    <Notification type="success" title="Payment confirmed" />,
                 )
                 fetchLedger()
                 loadOverview()
@@ -247,58 +211,34 @@ const Payments = () => {
         }
     }
 
-    const chartData = useMemo(() => {
-        if (!overview) {
-            return []
-        }
-        return overview.trend.labels.map((label, index) => {
-            const paid = overview.trend.paid[index] ?? 0
-            const pending = overview.trend.pending[index] ?? 0
-            const refunded = overview.trend.refunded[index] ?? 0
-            return {
-                date: dayjs(label).format('MMM DD'),
-                paid,
-                pending,
-                refunded,
-                net: Number((paid - refunded).toFixed(2)),
-            }
-        })
-    }, [overview])
-
-    const metrics: Array<{
-        key: MetricKey
-        label: string
-        value: number
-        count: number
-        Icon: typeof LuWallet
-    }> = [
+    const metricsData = [
         {
             key: 'paid',
-            label: metricConfig.paid.label,
+            title: 'Total Received',
             value: overview?.totals.paid ?? 0,
-            count: overview?.counts.paid ?? 0,
-            Icon: metricConfig.paid.Icon,
+            icon: <LiWallet />,
+            color: colors.emerald,
         },
         {
             key: 'pending',
-            label: metricConfig.pending.label,
+            title: 'Pending',
             value: overview?.totals.pending ?? 0,
-            count: overview?.counts.pending ?? 0,
-            Icon: metricConfig.pending.Icon,
+            icon: <LiClock />,
+            color: colors.yellow,
         },
         {
             key: 'refunded',
-            label: metricConfig.refunded.label,
+            title: 'Refunded',
             value: overview?.totals.refunded ?? 0,
-            count: overview?.counts.refunded ?? 0,
-            Icon: metricConfig.refunded.Icon,
+            icon: <LiRefresh />,
+            color: colors.red,
         },
         {
             key: 'net',
-            label: metricConfig.net.label,
+            title: 'Net Revenue',
             value: overview?.totals.net ?? 0,
-            count: overview?.counts.total ?? 0,
-            Icon: metricConfig.net.Icon,
+            icon: <LiStatusUp />,
+            color: colors.blue,
         },
     ]
 
@@ -388,7 +328,7 @@ const Payments = () => {
                 ),
             },
             {
-                header: '',
+                header: 'Actions',
                 id: 'actions',
                 cell: (props) => {
                     const payment = props.row.original
@@ -442,123 +382,72 @@ const Payments = () => {
         [busyId, handleConfirm],
     )
 
-    const activeMetric = metricConfig[metric]
-
     return (
         <Container>
-            <div className="space-y-4">
-                {/* Header + date range */}
-                <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-                    <div>
-                        <h4>Payments</h4>
-                        <p>
-                            Every payment received across reservations, with
-                            confirmation and refund controls
-                        </p>
-                    </div>
-                    <InputGroup>
-                        {dateRangePresets.map((item) => (
-                            <Button
-                                key={item.value}
-                                active={preset === item.value}
-                                clickFeedback={false}
-                                onClick={() => {
-                                    setPreset(item.value)
-                                    setPageIndex(1)
-                                }}
-                                block
-                            >
-                                {larger.sm ? item.label : item.shortLabel}
-                            </Button>
-                        ))}
-                    </InputGroup>
+            {/* Header */}
+            <div className="flex flex-col gap-4 mb-6 lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                    <h4>Payments</h4>
+                    <p>
+                        Every payment received across reservations, with
+                        confirmation and refund controls
+                    </p>
                 </div>
+                <div className="flex items-center gap-3">
+                    <DatePicker
+                        value={new Date(selectedDate)}
+                        onChange={handleDateChange}
+                        placeholder="Select date"
+                        inputFormat="DD MMM YYYY"
+                        clearable={false}
+                    />
+                </div>
+            </div>
 
-                {/* Metrics + trend */}
-                <Card bodyClass="p-0">
-                    <Tabs
-                        value={metric}
-                        onChange={(value) => setMetric(value as MetricKey)}
-                    >
-                        <Scroll edgeShadow>
-                            <TabList className="flex lg:grid lg:grid-cols-4 overflow-x-hidden">
-                                {metrics.map((item) => {
-                                    const Icon = item.Icon
-                                    return (
-                                        <TabNav
-                                            key={item.key}
-                                            value={item.key}
-                                            className="justify-start min-w-[230px] p-0"
-                                        >
-                                            <span className="w-full space-y-1 px-6 py-4 transition duration-150 hover:bg-gray-50 dark:hover:bg-gray-800">
-                                                <span className="flex items-center gap-2 font-medium text-gray-500 dark:text-gray-400">
-                                                    <Icon className="text-base" />
-                                                    {item.label}
-                                                </span>
-                                                <span className="flex items-center gap-2">
-                                                    <span className="h5">
-                                                        {overviewLoading
-                                                            ? '--'
-                                                            : MAD(item.value)}
-                                                    </span>
-                                                </span>
-                                                <span className="text-xs text-gray-500 dark:text-gray-400">
-                                                    {item.count} payment
-                                                    {item.count === 1
-                                                        ? ''
-                                                        : 's'}
-                                                </span>
-                                            </span>
-                                        </TabNav>
-                                    )
-                                })}
-                            </TabList>
-                        </Scroll>
-                    </Tabs>
-                    <div className="p-6">
-                        <Loading loading={overviewLoading} type="cover">
-                            <LineChart
-                                data={chartData}
-                                height={320}
-                                xAxisConfig={{ dataKey: 'date' }}
-                                lineConfig={[
-                                    {
-                                        type: 'monotone',
-                                        dataKey: metric,
-                                        stroke: activeMetric.color,
-                                        strokeWidth: 2,
-                                        dot: false,
-                                    },
-                                ]}
-                                tooltipContentConfig={{
-                                    valueFormatter: (value: number) =>
-                                        MAD(value),
-                                }}
-                            />
-                        </Loading>
-                    </div>
-                </Card>
-
-                {/* Ledger */}
-                <Card bodyClass="p-0">
-                    <div className="flex flex-wrap items-center justify-between gap-3 p-4">
-                        <div>
-                            <h6>Payments ledger</h6>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                                {total} payment{total === 1 ? '' : 's'} in the
-                                selected period
-                            </p>
+            {/* Metrics */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                {metricsData.map((item) => (
+                    <StatisticCard key={item.key}>
+                        <div className="flex items-center gap-4">
+                            <Avatar
+                                className={classNames(
+                                    'border-0',
+                                    item.color.iconBg,
+                                    item.color.iconText,
+                                )}
+                            >
+                                <span className="text-2xl">{item.icon}</span>
+                            </Avatar>
+                            <div>
+                                <p>{item.title}</p>
+                                <h4>
+                                    {overviewLoading ? '--' : MAD(item.value)}
+                                </h4>
+                            </div>
                         </div>
-                        <div className="flex flex-wrap items-center gap-2">
-                            <DebouceInput
-                                placeholder="Search reference, client…"
-                                prefix={<LuSearch className="text-lg" />}
-                                onChange={(e) => {
-                                    setQ(e.target.value)
-                                    setPageIndex(1)
-                                }}
-                            />
-                            <div className="w-44">
+                    </StatisticCard>
+                ))}
+            </div>
+
+            {/* Ledger */}
+            <Card bodyClass="p-0">
+                <div className="p-4 border-b border-gray-200 dark:border-gray-800">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                        <div className="flex flex-col gap-2 sm:flex-row sm:items-center lg:flex-1">
+                            <div className="w-full sm:w-auto">
+                                <DebouceInput
+                                    className="lg:max-w-[250px]"
+                                    prefix={
+                                        <LuSearch className="text-base heading-text" />
+                                    }
+                                    placeholder="Search reference, client..."
+                                    onChange={(e) => {
+                                        setQ(e.target.value)
+                                        setPageIndex(1)
+                                    }}
+                                />
+                            </div>
+                            <div className="w-full sm:min-w-[150px] sm:w-auto">
                                 <Select
                                     options={methodFilterOptions}
                                     value={
@@ -570,9 +459,10 @@ const Payments = () => {
                                         setMethodFilter(option?.value ?? '')
                                         setPageIndex(1)
                                     }}
+                                    placeholder="Filter by method"
                                 />
                             </div>
-                            <div className="w-44">
+                            <div className="w-full sm:min-w-[150px] sm:w-auto">
                                 <Select
                                     options={statusFilterOptions}
                                     value={
@@ -584,29 +474,30 @@ const Payments = () => {
                                         setStatusFilter(option?.value ?? '')
                                         setPageIndex(1)
                                     }}
+                                    placeholder="Filter by status"
                                 />
                             </div>
                         </div>
+                        <div className="font-medium heading-text text-center sm:text-left">
+                            {total} payment{total === 1 ? '' : 's'}
+                        </div>
                     </div>
-                    <div>
-                        <DataTable<Payment>
-                            compact
-                            verticalDivider={{ head: true, body: true }}
-                            className="border-t border-b border-gray-200 dark:border-gray-700"
-                            columns={columns}
-                            data={payments}
-                            noData={!loading && payments.length === 0}
-                            loading={loading}
-                            pagingData={{ total, pageIndex, pageSize }}
-                            onPaginationChange={(page) => setPageIndex(page)}
-                            onPageSizeChange={(size) => {
-                                setPageSize(size)
-                                setPageIndex(1)
-                            }}
-                        />
-                    </div>
-                </Card>
-            </div>
+                </div>
+                <div className="pb-4">
+                    <DataTable<Payment>
+                        columns={columns}
+                        data={payments}
+                        noData={!loading && payments.length === 0}
+                        loading={loading}
+                        pagingData={{ total, pageIndex, pageSize }}
+                        onPaginationChange={(page) => setPageIndex(page)}
+                        onPageSizeChange={(size) => {
+                            setPageSize(size)
+                            setPageIndex(1)
+                        }}
+                    />
+                </div>
+            </Card>
 
             {/* Refund dialog */}
             <Dialog
