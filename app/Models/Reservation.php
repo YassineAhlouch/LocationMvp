@@ -118,6 +118,11 @@ class Reservation extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function inspections(): HasMany
+    {
+        return $this->hasMany(ReservationInspection::class);
+    }
+
     /**
      * Reservations that block $carId for the given time window.
      *

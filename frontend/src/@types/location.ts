@@ -384,9 +384,49 @@ export type Reservation = {
     }>
     remarks: string | null
     reported_issues: string | null
+    /** Car condition snapshots; the pickup is taken on activation, the return on completion. */
+    inspections?: ReservationInspection[]
     created_by?: { id: number; first_name: string; last_name: string } | null
     created_at?: string | null
     updated_at?: string | null
+}
+
+export type ReservationInspectionType = 'pickup' | 'return'
+
+/** Car areas photographed and checked during an inspection. */
+export type InspectionArea =
+    | 'front'
+    | 'rear'
+    | 'left'
+    | 'right'
+    | 'interior'
+    | 'dashboard'
+
+export type InspectionCondition = 'ok' | 'minor' | 'damage'
+
+export type ReservationInspectionArea = {
+    condition: InspectionCondition
+    notes?: string | null
+}
+
+export type ReservationInspectionPhoto = {
+    id: number
+    area: InspectionArea
+    image: string
+    notes: string | null
+}
+
+/** Car condition snapshot taken at handover (pickup) or on return (mirrors ReservationInspectionResource). */
+export type ReservationInspection = {
+    id: number
+    type: ReservationInspectionType
+    mileage: number | null
+    fuel_level: number | null
+    condition_notes: string | null
+    areas: Partial<Record<InspectionArea, ReservationInspectionArea>>
+    photos: ReservationInspectionPhoto[]
+    inspector: { id: number; full_name: string } | null
+    inspected_at: string | null
 }
 
 /** Lightweight reservation projection for the calendar (ReservationCalendarResource). */

@@ -111,6 +111,8 @@ class ReservationController extends Controller
             'secondaryClient',
             'extras',
             'changes.createdBy',
+            'inspections.photos',
+            'inspections.inspector',
             'createdBy',
             'approvedBy',
         ]);
@@ -187,12 +189,14 @@ class ReservationController extends Controller
         ActivateReservationAction $action,
     ): ReservationResource {
         $data = $request->validated();
+        $data['inspection'] = $this->inspectionPayload($request);
 
         return new ReservationResource($action->handle(
             $reservation,
             $request->user(),
             $data['pickup_mileage'] ?? null,
             $data['pickup_fuel_level'] ?? null,
+            $data['inspection'],
         ));
     }
 
@@ -201,8 +205,11 @@ class ReservationController extends Controller
         CompleteReservationRequest $request,
         CompleteReservationAction $action,
     ): ReservationResource {
+        $data = $request->validated();
+        $data['inspection'] = $this->inspectionPayload($request);
+
         return new ReservationResource(
-            $action->handle($reservation, $request->user(), $request->validated()),
+            $action->handle($reservation, $request->user(), $data),
         );
     }
 
@@ -265,5 +272,19 @@ class ReservationController extends Controller
             'transmission_type' => $car->transmission_type?->value,
             'fuel_type' => $car->fuel_type?->value,
         ];
+    }
+
+    /**
+     * Optional car inspection submitted with a transition (activate = pickup,
+     * complete = return). The validated array already merges the input and file
+     * bags, so each photo keeps both its area label and the uploaded file.
+     *
+     * @return array<string, mixed>
+     */
+    private function inspectionPayload(Request $request): array
+    {
+        $inspection = $request->validated('inspection');
+
+        return is_array($inspection) ? $inspection : [];
     }
 }

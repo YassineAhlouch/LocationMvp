@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import Container from '@/components/shared/Container'
 import { useNavigate } from 'react-router'
@@ -46,6 +46,8 @@ import type {
 } from '@/@types/location'
 import ReservationForm from './forms/ReservationForm'
 import ClientForm from './forms/ClientForm'
+import CarInspection from './CarInspection'
+import type { CarInspectionHandle } from './CarInspection'
 import {
     MAD,
     formatDateTime,
@@ -371,6 +373,15 @@ const ActivateDialog = ({
     const [mileage, setMileage] = useState('')
     const [fuel, setFuel] = useState('')
     const [submitting, setSubmitting] = useState(false)
+    const inspectionRef = useRef<CarInspectionHandle>(null)
+
+    useEffect(() => {
+        if (!reservation) {
+            setMileage('')
+            setFuel('')
+            inspectionRef.current?.reset()
+        }
+    }, [reservation])
 
     const handleActivate = async () => {
         if (!reservation) {
@@ -378,10 +389,15 @@ const ActivateDialog = ({
         }
         setSubmitting(true)
         try {
-            await apiActivateReservation(reservation.id, {
-                pickup_mileage: mileage.trim() ? Number(mileage) : undefined,
-                pickup_fuel_level: fuel.trim() ? Number(fuel) : undefined,
-            })
+            const formData = new FormData()
+            if (mileage.trim()) {
+                formData.append('pickup_mileage', mileage.trim())
+            }
+            if (fuel.trim()) {
+                formData.append('pickup_fuel_level', fuel.trim())
+            }
+            inspectionRef.current?.appendTo(formData)
+            await apiActivateReservation(reservation.id, formData)
             toast.push(
                 <Notification type="success" title="Reservation activated" />,
             )
@@ -400,7 +416,7 @@ const ActivateDialog = ({
     }
 
     return (
-        <Dialog isOpen={Boolean(reservation)} onClose={onClose} width={480}>
+        <Dialog isOpen={Boolean(reservation)} onClose={onClose} width={720}>
             <h5 className="mb-1 text-base font-bold dark:text-gray-100">
                 Activate {reservation?.reservation_number}
             </h5>
@@ -431,6 +447,11 @@ const ActivateDialog = ({
                         />
                     </FormItem>
                 </div>
+
+                <div className="mt-4 border-t border-gray-100 pt-4 dark:border-gray-700">
+                    <CarInspection ref={inspectionRef} type="pickup" />
+                </div>
+
                 <div className="mt-6 flex justify-end gap-2">
                     <Button variant="ghost" onClick={onClose}>
                         Back
@@ -463,6 +484,16 @@ const CompleteDialog = ({
     const [fuel, setFuel] = useState('')
     const [issues, setIssues] = useState('')
     const [submitting, setSubmitting] = useState(false)
+    const inspectionRef = useRef<CarInspectionHandle>(null)
+
+    useEffect(() => {
+        if (!reservation) {
+            setMileage('')
+            setFuel('')
+            setIssues('')
+            inspectionRef.current?.reset()
+        }
+    }, [reservation])
 
     const handleComplete = async () => {
         if (!reservation) {
@@ -470,11 +501,18 @@ const CompleteDialog = ({
         }
         setSubmitting(true)
         try {
-            await apiCompleteReservation(reservation.id, {
-                return_mileage: mileage.trim() ? Number(mileage) : undefined,
-                return_fuel_level: fuel.trim() ? Number(fuel) : undefined,
-                reported_issues: issues.trim() || undefined,
-            })
+            const formData = new FormData()
+            if (mileage.trim()) {
+                formData.append('return_mileage', mileage.trim())
+            }
+            if (fuel.trim()) {
+                formData.append('return_fuel_level', fuel.trim())
+            }
+            if (issues.trim()) {
+                formData.append('reported_issues', issues.trim())
+            }
+            inspectionRef.current?.appendTo(formData)
+            await apiCompleteReservation(reservation.id, formData)
             toast.push(
                 <Notification type="success" title="Reservation completed" />,
             )
@@ -493,7 +531,7 @@ const CompleteDialog = ({
     }
 
     return (
-        <Dialog isOpen={Boolean(reservation)} onClose={onClose} width={480}>
+        <Dialog isOpen={Boolean(reservation)} onClose={onClose} width={720}>
             <h5 className="mb-1 text-base font-bold dark:text-gray-100">
                 Complete {reservation?.reservation_number}
             </h5>
@@ -532,6 +570,11 @@ const CompleteDialog = ({
                         onChange={(e) => setIssues(e.target.value)}
                     />
                 </FormItem>
+
+                <div className="mt-4 border-t border-gray-100 pt-4 dark:border-gray-700">
+                    <CarInspection ref={inspectionRef} type="return" />
+                </div>
+
                 <div className="mt-6 flex justify-end gap-2">
                     <Button variant="ghost" onClick={onClose}>
                         Back

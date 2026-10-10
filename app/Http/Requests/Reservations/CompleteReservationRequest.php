@@ -2,29 +2,32 @@
 
 namespace App\Http\Requests\Reservations;
 
+use App\Http\Requests\Reservations\Concerns\ValidatesReservationInspection;
 use App\Models\Reservation;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CompleteReservationRequest extends FormRequest
 {
+    use ValidatesReservationInspection;
+
     public function authorize(): bool
     {
         return true;
     }
 
     /**
-     * @return array<string, array<int, string>>
+     * @return array<string, array<int, mixed>>
      */
     public function rules(): array
     {
-        return [
+        return array_merge([
             'return_mileage' => ['nullable', 'integer', 'min:0', 'max:2000000'],
             'return_fuel_level' => ['nullable', 'integer', 'min:0', 'max:100'],
             'actual_return_datetime' => ['nullable', 'date'],
             'reported_issues' => ['nullable', 'string', 'max:5000'],
             'reason' => ['nullable', 'string', 'max:500'],
-        ];
+        ], $this->inspectionRules());
     }
 
     public function withValidator(Validator $validator): void

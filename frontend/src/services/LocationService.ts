@@ -323,9 +323,9 @@ export const apiMarkReservationNoShow = (
 
 export const apiActivateReservation = (
     id: number,
-    data?: { pickup_mileage?: number; pickup_fuel_level?: number },
+    data: FormData | Record<string, unknown>,
 ) =>
-    ApiService.fetchDataWithAxios<Reservation>({
+    ApiService.fetchDataWithAxios<Reservation, FormData | Record<string, unknown>>({
         url: `/v1/reservations/${id}/activate`,
         method: 'post',
         data,
@@ -333,13 +333,9 @@ export const apiActivateReservation = (
 
 export const apiCompleteReservation = (
     id: number,
-    data?: {
-        return_mileage?: number
-        return_fuel_level?: number
-        reported_issues?: string
-    },
+    data: FormData | Record<string, unknown>,
 ) =>
-    ApiService.fetchDataWithAxios<Reservation>({
+    ApiService.fetchDataWithAxios<Reservation, FormData | Record<string, unknown>>({
         url: `/v1/reservations/${id}/complete`,
         method: 'post',
         data,

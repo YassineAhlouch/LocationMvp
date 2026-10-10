@@ -5,6 +5,7 @@ namespace App\Actions\Reservations;
 use App\Actions\Reservations\Concerns\InteractsWithReservationLifecycle;
 use App\Enums\PricingType;
 use App\Enums\ReservationChangeType;
+use App\Enums\ReservationInspectionType;
 use App\Enums\ReservationStatus;
 use App\Models\Car;
 use App\Models\Reservation;
@@ -12,6 +13,7 @@ use App\Models\ReservationExtra;
 use App\Models\User;
 use App\Services\Pricing\PricingService;
 use App\Services\Reservations\CarLifecycleService;
+use App\Services\Reservations\ReservationInspectionService;
 use Illuminate\Support\Carbon;
 
 class CompleteReservationAction
@@ -23,6 +25,7 @@ class CompleteReservationAction
     public function __construct(
         private readonly CarLifecycleService $lifecycle,
         private readonly PricingService $pricing,
+        private readonly ReservationInspectionService $inspections,
     ) {}
 
     /**
@@ -31,7 +34,7 @@ class CompleteReservationAction
      * expected + pricing.late_grace_minutes is recharged for every extra
      * calendar day held, through the same engine as extend/update.
      *
-     * @param  array{return_mileage?: int, return_fuel_level?: int, actual_return_datetime?: string, reported_issues?: string, reason?: string}  $data
+     * @param  array{return_mileage?: int, return_fuel_level?: int, actual_return_datetime?: string, reported_issues?: string, reason?: string, inspection?: array<string, mixed>}  $data
      */
     public function handle(Reservation $reservation, User $actor, array $data = []): Reservation
     {
@@ -60,6 +63,8 @@ class CompleteReservationAction
                 $this->repriceLateReturn($fresh, $actor);
 
                 $this->lifecycle->onCompleted($car, $fresh);
+
+                $this->inspections->record($fresh, ReservationInspectionType::Return, $data['inspection'] ?? [], $actor);
             },
         );
     }

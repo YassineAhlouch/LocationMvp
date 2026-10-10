@@ -79,6 +79,10 @@ class ReservationResource extends JsonResource
                 $this->whenLoaded('changes', fn () => $this->resource->changes),
             ),
 
+            'inspections' => ReservationInspectionResource::collection(
+                $this->whenLoaded('inspections', fn () => $this->resource->inspections),
+            ),
+
             'created_by' => $this->userSummary($this->createdBy),
             'approved_by' => $this->userSummary($this->approvedBy),
 
