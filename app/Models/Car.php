@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable([
@@ -96,6 +97,16 @@ class Car extends Model
     public function expenses(): HasMany
     {
         return $this->hasMany(CarExpense::class);
+    }
+
+    public function financing(): HasOne
+    {
+        return $this->hasOne(CarFinancing::class);
+    }
+
+    public function installments(): HasMany
+    {
+        return $this->hasMany(CarInstallment::class)->orderBy('installment_number');
     }
 
     public function scopeAvailable(Builder $query): Builder

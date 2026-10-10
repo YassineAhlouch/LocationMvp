@@ -6,15 +6,18 @@ import OverflowTabs from '@/components/shared/OverflowTabs'
 import CarDetailsInfo from './CarDetailsInfo'
 import { apiGetCar } from '@/services/LocationService'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
+import { useSessionUser } from '@/store/authStore'
 import { LiChevronLeft } from '@/icons'
+import { isVerbGranted } from './PermissionChecklist'
 import type { Car } from '@/@types/location'
 
 const CarOverview = lazy(() => import('./CarOverview'))
 const CarReservations = lazy(() => import('./CarReservations'))
 const CarExpenses = lazy(() => import('./CarExpenses'))
 const CarHistory = lazy(() => import('./CarHistory'))
+const CarStatistics = lazy(() => import('./CarStatistics'))
 
-const tabList = [
+const baseTabList = [
     { label: 'Overview', value: 'overview' },
     { label: 'Reservations', value: 'reservations' },
     { label: 'Expenses', value: 'expenses' },
@@ -28,10 +31,25 @@ const CarDetails = () => {
     const rawSegment = params['*'] || ''
     const activeTab = rawSegment || 'overview'
 
+    const { user } = useSessionUser()
+    const canViewFinancing = isVerbGranted(
+        user?.role?.permissions ?? [],
+        'financing',
+        'view',
+    )
+    const tabList = canViewFinancing
+        ? [
+              baseTabList[0],
+              baseTabList[1],
+              baseTabList[2],
+              { label: 'Statistics', value: 'statistics' },
+              baseTabList[3],
+          ]
+        : baseTabList
+
     const [car, setCar] = useState<Car | null>(null)
     const [loading, setLoading] = useState(true)
     const [failed, setFailed] = useState(false)
-    const [refreshKey, setRefreshKey] = useState(0)
 
     const goToListe = () => navigate(`${APPS_PREFIX_PATH}/vehicules/liste`)
 
@@ -63,7 +81,7 @@ const CarDetails = () => {
         return () => {
             active = false
         }
-    }, [carId, refreshKey])
+    }, [carId])
 
     // Keep a bare /vehicules/:id URL in sync with the default tab.
     useEffect(() => {
@@ -107,11 +125,8 @@ const CarDetails = () => {
             </Button>
 
             <div className="flex flex-col xl:flex-row gap-4 h-full">
-                <div className="w-full xl:w-[300px] xl:min-w-[300px]">
-                    <CarDetailsInfo
-                        car={car}
-                        onUpdated={() => setRefreshKey((key) => key + 1)}
-                    />
+                <div className="flex w-full xl:w-[300px] xl:min-w-[300px]">
+                    <CarDetailsInfo car={car} />
                 </div>
 
                 <div className="w-full flex-1 min-w-0">
@@ -141,6 +156,10 @@ const CarDetails = () => {
                             <Route
                                 path="/history"
                                 element={<CarHistory carId={car.id} />}
+                            />
+                            <Route
+                                path="/statistics"
+                                element={<CarStatistics carId={car.id} />}
                             />
                             <Route
                                 path="*"

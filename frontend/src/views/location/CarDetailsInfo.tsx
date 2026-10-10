@@ -1,18 +1,16 @@
-import { useState } from 'react'
 import type { ReactNode } from 'react'
+import { useNavigate } from 'react-router'
 import Card from '@/components/ui/Card'
 import Tag from '@/components/ui/Tag'
 import Button from '@/components/ui/Button'
-import Dialog from '@/components/ui/Dialog'
 import { NumericFormat } from 'react-number-format'
 import { LiCar, LiEdit2 } from '@/icons'
-import CarForm from './forms/CarForm'
 import { MAD, carStatusTone, formatDate, tagToneClass } from './shared'
+import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 import type { Car } from '@/@types/location'
 
 type CarDetailsInfoProps = {
     car: Car
-    onUpdated: () => void
 }
 
 const InfoRow = ({ label, children }: { label: string; children: ReactNode }) => (
@@ -26,8 +24,8 @@ const InfoRow = ({ label, children }: { label: string; children: ReactNode }) =>
     </div>
 )
 
-const CarDetailsInfo = ({ car, onUpdated }: CarDetailsInfoProps) => {
-    const [editOpen, setEditOpen] = useState(false)
+const CarDetailsInfo = ({ car }: CarDetailsInfoProps) => {
+    const navigate = useNavigate()
 
     const cover =
         (car.images?.find((img) => img.is_primary) ?? car.images?.[0])?.image ??
@@ -36,7 +34,7 @@ const CarDetailsInfo = ({ car, onUpdated }: CarDetailsInfoProps) => {
 
     return (
         <>
-            <Card bodyClass="p-4">
+            <Card className="h-full w-full" bodyClass="p-4">
                 <div className="flex flex-col items-center text-center">
                     <div className="w-full overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700">
                         {cover ? (
@@ -74,7 +72,11 @@ const CarDetailsInfo = ({ car, onUpdated }: CarDetailsInfoProps) => {
                         className="mt-4 w-full"
                         variant="subtle"
                         icon={<LiEdit2 />}
-                        onClick={() => setEditOpen(true)}
+                        onClick={() =>
+                            navigate(
+                                `${APPS_PREFIX_PATH}/vehicules/${car.id}/modifier`,
+                            )
+                        }
                     >
                         Edit vehicle
                     </Button>
@@ -177,22 +179,6 @@ const CarDetailsInfo = ({ car, onUpdated }: CarDetailsInfoProps) => {
                     </div>
                 )}
             </Card>
-
-            <Dialog
-                isOpen={editOpen}
-                onClose={() => setEditOpen(false)}
-                width={760}
-            >
-                <CarForm
-                    car={car}
-                    isOpen={editOpen}
-                    onCancel={() => setEditOpen(false)}
-                    onSaved={() => {
-                        setEditOpen(false)
-                        onUpdated()
-                    }}
-                />
-            </Dialog>
         </>
     )
 }

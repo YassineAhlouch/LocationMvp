@@ -89,6 +89,17 @@ const appsRoute: Routes = [
         },
     },
     {
+        key: 'gestion.vehicules.modifier',
+        path: `${APPS_PREFIX_PATH}/vehicules/:id/modifier`,
+        component: lazy(() => import('@/views/location/EditVehicule')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'gutterless',
+            footer: false,
+        },
+    },
+    {
         key: 'gestion.vehicules.liste',
         path: `${APPS_PREFIX_PATH}/vehicules/liste`,
         component: lazy(() => import('@/views/location/Cars')),

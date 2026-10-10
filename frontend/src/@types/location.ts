@@ -692,3 +692,134 @@ export type PermissionModule = {
     module: string
     actions: string[]
 }
+
+// ---- Car financing & profitability ---------------------------------------
+
+export type InstallmentStatus = 'pending' | 'paid' | 'overdue'
+
+export type CarInstallment = {
+    id: number
+    financing_id: number
+    car_id: number
+    installment_number: number
+    due_date: string | null
+    amount: number
+    paid_date: string | null
+    status: InstallmentStatus
+    is_overdue: boolean
+    reference: string | null
+    created_at?: string | null
+    updated_at?: string | null
+}
+
+export type CarFinancing = {
+    id: number
+    car_id: number
+    purchase_date: string | null
+    purchase_price: number
+    down_payment: number
+    financed_amount: number
+    installment_amount: number
+    installments_count: number
+    first_due_date: string | null
+    lender: string | null
+    notes: string | null
+    installments?: CarInstallment[]
+    created_at?: string | null
+    updated_at?: string | null
+}
+
+export type CarFinancingPayload = {
+    purchase_date: string
+    purchase_price: number
+    down_payment: number
+    financed_amount?: number | null
+    installment_amount: number
+    installments_count: number
+    first_due_date: string
+    lender?: string | null
+    notes?: string | null
+}
+
+export type CarStatisticsKpis = {
+    total_revenue: number
+    total_expenses: number
+    installments_paid: number
+    down_payment: number
+    purchase_price: number
+    operating_profit: number
+    net_cash_position: number
+    days_in_service: number
+    profit_per_day: number
+    utilization_rate: number
+    payback_percent: number
+    is_profitable: boolean
+    is_paid_off: boolean
+    remaining_to_payback: number
+}
+
+export type CarFinancingProgress = {
+    has_financing: boolean
+    purchase_date: string | null
+    purchase_price: number
+    down_payment: number
+    financed_amount: number
+    installment_amount: number
+    installments_count: number
+    installments_paid_count: number
+    installments_paid_amount: number
+    installments_remaining_amount: number
+    progress_percent: number
+    payback_percent: number
+    lender: string | null
+    next_installment: {
+        id: number
+        installment_number: number
+        due_date: string | null
+        amount: number
+        status: InstallmentStatus
+    } | null
+}
+
+export type CarMonthlySeriesPoint = {
+    month: string
+    revenue: number
+    expenses: number
+    installments: number
+    net: number
+}
+
+export type CarUtilization = {
+    days_in_service: number
+    available_days: number
+    rented_days: number
+    maintenance_days: number
+    idle_days: number
+    rate: number
+}
+
+export type CarExpensesByType = {
+    type: ExpenseType
+    amount: number
+    paid: number
+    count: number
+}
+
+/** Payload of GET /api/v1/cars/{car}/statistics (CarStatisticsService). */
+export type CarStatistics = {
+    period: { months: number; from: string; to: string }
+    kpis: CarStatisticsKpis
+    financing_progress: CarFinancingProgress
+    monthly_series: CarMonthlySeriesPoint[]
+    utilization: CarUtilization
+    expenses_by_type: CarExpensesByType[]
+    financing: CarFinancing | null
+    installments: CarInstallment[]
+}
+
+export type CarFinancingPayloadUpdate = Partial<CarFinancingPayload>
+
+export type MarkInstallmentPaidPayload = {
+    paid_date?: string
+    reference?: string | null
+}

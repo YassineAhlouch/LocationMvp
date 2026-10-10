@@ -4,11 +4,15 @@ import type {
     Brand,
     Car,
     CarCategory,
+    CarFinancing,
+    CarFinancingPayload,
     CarHistoryEntry,
+    CarInstallment,
     CarModel,
     CarOverview,
     CarPayload,
     CarReport,
+    CarStatistics,
     Client,
     ClientPayload,
     ClientReport,
@@ -18,6 +22,7 @@ import type {
     ExpensePayload,
     Extra,
     InvoiceTemplate,
+    MarkInstallmentPaidPayload,
     Paginated,
     Payment,
     PaymentOverview,
@@ -131,6 +136,49 @@ export const apiUploadCarImage = (file: File) => {
         data: formData,
     })
 }
+
+// ---- Car financing & profitability ---------------------------------------
+
+export const apiGetCarStatistics = (id: number, months = 12) =>
+    ApiService.fetchDataWithAxios<CarStatistics>({
+        url: `/v1/cars/${id}/statistics`,
+        method: 'get',
+        params: { months },
+    })
+
+export const apiCreateCarFinancing = (id: number, data: CarFinancingPayload) =>
+    ApiService.fetchDataWithAxios<CarFinancing>({
+        url: `/v1/cars/${id}/financing`,
+        method: 'post',
+        data,
+    })
+
+export const apiUpdateCarFinancing = (
+    id: number,
+    data: Partial<CarFinancingPayload>,
+) =>
+    ApiService.fetchDataWithAxios<CarFinancing>({
+        url: `/v1/cars/${id}/financing`,
+        method: 'patch',
+        data,
+    })
+
+export const apiDeleteCarFinancing = (id: number) =>
+    ApiService.fetchDataWithAxios<{ message: string }>({
+        url: `/v1/cars/${id}/financing`,
+        method: 'delete',
+    })
+
+export const apiPayCarInstallment = (
+    carId: number,
+    installmentId: number,
+    data: MarkInstallmentPaidPayload,
+) =>
+    ApiService.fetchDataWithAxios<CarInstallment>({
+        url: `/v1/cars/${carId}/installments/${installmentId}/pay`,
+        method: 'post',
+        data,
+    })
 
 // ---- Clients -------------------------------------------------------------
 

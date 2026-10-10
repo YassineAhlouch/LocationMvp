@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\CarController;
+use App\Http\Controllers\Api\V1\CarFinancingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,28 @@ Route::get('cars/{car}/overview', [CarController::class, 'overview'])
 Route::get('cars/{car}/history', [CarController::class, 'history'])
     ->middleware('permission:fleet.view')
     ->name('cars.history');
+
+// Financing & profitability — financial data, so gated by the financing
+// module (admin/manager/finance) rather than the fleet module.
+Route::get('cars/{car}/statistics', [CarFinancingController::class, 'statistics'])
+    ->middleware('permission:financing.view')
+    ->name('cars.statistics');
+
+Route::post('cars/{car}/financing', [CarFinancingController::class, 'store'])
+    ->middleware('permission:financing.manage')
+    ->name('cars.financing.store');
+
+Route::patch('cars/{car}/financing', [CarFinancingController::class, 'update'])
+    ->middleware('permission:financing.manage')
+    ->name('cars.financing.update');
+
+Route::delete('cars/{car}/financing', [CarFinancingController::class, 'destroy'])
+    ->middleware('permission:financing.manage')
+    ->name('cars.financing.destroy');
+
+Route::post('cars/{car}/installments/{installment}/pay', [CarFinancingController::class, 'payInstallment'])
+    ->middleware('permission:financing.manage')
+    ->name('cars.installments.pay');
 
 Route::patch('cars/{car}', [CarController::class, 'update'])
     ->middleware('permission:fleet.update')

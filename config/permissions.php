@@ -29,6 +29,8 @@ return [
 
     'expenses' => ['view', 'create', 'update'],
 
+    'financing' => ['view', 'manage'],
+
     'reports' => ['view'],
 
     'activity_logs' => ['view'],
