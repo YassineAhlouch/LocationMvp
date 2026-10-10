@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Reports\CarsReportRequest;
+use App\Http\Requests\Reports\ClientsReportRequest;
 use App\Http\Requests\Reports\TimelineReportRequest;
 use App\Services\Reports\ReportingService;
 use Carbon\Carbon;
@@ -38,5 +39,21 @@ class ReportController extends Controller
             : today();
 
         return response()->json($this->reporting->cars($from, $to));
+    }
+
+    /**
+     * Per-client performance for the period, ranked by revenue.
+     */
+    public function clients(ClientsReportRequest $request): JsonResponse
+    {
+        $from = $request->has('from')
+            ? Carbon::parse($request->string('from'))
+            : today()->startOfMonth();
+
+        $to = $request->has('to')
+            ? Carbon::parse($request->string('to'))
+            : today();
+
+        return response()->json($this->reporting->clients($from, $to));
     }
 }

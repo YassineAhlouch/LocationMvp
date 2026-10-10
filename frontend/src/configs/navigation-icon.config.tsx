@@ -32,6 +32,7 @@ import {
     LiProfiles,
     LiCalendar,
     LiWalletMoney,
+    LiBarChartUp,
 } from '@/icons'
 import type { JSX } from 'react'
 
@@ -71,6 +72,8 @@ const navigationIcon: NavigationIcons = {
     gestionReservations: <LiCalendar className={CLASS_NAME} />,
     gestionFinances: <LiWalletMoney className={CLASS_NAME} />,
     gestionUtilisateurs: <LiUserCircle className={CLASS_NAME} />,
+    statistiques: <LiBarChartUp className={CLASS_NAME} />,
+    gestionRapports: <LiChartSquare className={CLASS_NAME} />,
     documentation: <LiFileText className={CLASS_NAME} />,
     sharedComponentDoc: <LiLayer className={CLASS_NAME} />,
     utilsDoc: <LiZapCircle className={CLASS_NAME} />,

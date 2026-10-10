@@ -1,6 +1,7 @@
 {
     "nav": {
         "apps": "Apps",
+        "statistiques": "Statistics",
         "gestion": {
             "dashboard": "Dashboard",
             "dashboardDesc": "Car rental dashboard",
@@ -39,7 +40,15 @@
             "parametres": "Settings",
             "parametresDesc": "Application settings",
             "parametresFactures": "Invoice templates",
-            "parametresFacturesDesc": "Assign a contract layout to each agency"
+            "parametresFacturesDesc": "Assign a contract layout to each agency",
+            "rapports": "Reports",
+            "rapportsDesc": "Performance reports",
+            "rapportsClients": "Client performance",
+            "rapportsClientsDesc": "Top clients by revenue",
+            "rapportsVehicules": "Vehicle performance",
+            "rapportsVehiculesDesc": "Revenue, expenses and margin per vehicle",
+            "rapportsEncaissement": "Collection performance",
+            "rapportsEncaissementDesc": "Cash collected, pending and refunds"
         },
         "uiComponents": "UI Components",
         "uiComponentsCommon": {

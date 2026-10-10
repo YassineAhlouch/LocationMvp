@@ -8,6 +8,7 @@ use App\Enums\PaymentRecordStatus;
 use App\Enums\ReservationStatus;
 use App\Models\Car;
 use App\Models\CarExpense;
+use App\Models\Client;
 use App\Models\Payment;
 use App\Models\Reservation;
 use Carbon\CarbonInterface;
@@ -200,6 +201,92 @@ final class ReportingService
                 ];
             })
             ->sortByDesc('margin')
+            ->values()
+            ->all();
+    }
+
+    /**
+     * Per-client performance for the period, ranked by revenue so the owner
+     * sees who brings the business. Revenue is cash-basis paid payments on the
+     * client's reservations; booked days use the same nights convention as
+     * cars(). Reservations counted are those whose hire window overlaps the
+     * period.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function clients(CarbonInterface $from, CarbonInterface $to): array
+    {
+        $range = [$from->copy()->startOfDay(), $to->copy()->endOfDay()];
+
+        $revenueByClient = Payment::query()
+            ->where('status', PaymentRecordStatus::Paid)
+            ->whereBetween('payment_date', $range)
+            ->with('reservation:id,primary_client_id')
+            ->get(['id', 'reservation_id', 'amount'])
+            ->groupBy(fn (Payment $payment) => $payment->reservation?->primary_client_id)
+            ->map(fn (Collection $group) => round((float) $group->sum('amount'), 2));
+
+        $reservationsByClient = Reservation::query()
+            ->whereNotNull('primary_client_id')
+            ->whereIn('status', [
+                ReservationStatus::Pending,
+                ReservationStatus::Confirmed,
+                ReservationStatus::Reserved,
+                ReservationStatus::Active,
+                ReservationStatus::Completed,
+            ])
+            ->where('pickup_datetime', '<', $range[1])
+            ->where('expected_return_datetime', '>', $range[0])
+            ->get(['primary_client_id', 'pickup_datetime', 'expected_return_datetime'])
+            ->groupBy('primary_client_id');
+
+        $clients = Client::query()
+            ->whereIn('id', $reservationsByClient->keys()->all())
+            ->get()
+            ->keyBy('id');
+
+        $periodStart = $from->copy()->startOfDay();
+        $periodEnd = $to->copy()->startOfDay();
+
+        return $reservationsByClient
+            ->map(function (Collection $group, $clientId) use ($clients, $periodStart, $periodEnd, $revenueByClient): array {
+                $bookedDays = 0;
+                $lastRental = null;
+
+                foreach ($group as $reservation) {
+                    $occupiedStart = $reservation->pickup_datetime->copy()->startOfDay();
+                    $occupiedEnd = $reservation->expected_return_datetime->copy()->startOfDay()->subDay();
+
+                    $overlapStart = $occupiedStart->copy()->max($periodStart);
+                    $overlapEnd = $occupiedEnd->copy()->min($periodEnd);
+
+                    if ($overlapEnd->gte($overlapStart)) {
+                        $bookedDays += $overlapStart->diffInDays($overlapEnd) + 1;
+                    }
+
+                    if ($lastRental === null || $reservation->pickup_datetime->gt($lastRental)) {
+                        $lastRental = $reservation->pickup_datetime;
+                    }
+                }
+
+                $revenue = (float) ($revenueByClient[$clientId] ?? 0);
+                $count = $group->count();
+                $client = $clients->get($clientId);
+
+                return [
+                    'client_id' => (int) $clientId,
+                    'full_name' => $client?->full_name,
+                    'phone' => $client?->phone,
+                    'email' => $client?->email,
+                    'status' => $client?->status?->value,
+                    'reservations' => $count,
+                    'booked_days' => $bookedDays,
+                    'revenue' => $revenue,
+                    'average_spend' => $count > 0 ? round($revenue / $count, 2) : 0.0,
+                    'last_rental' => $lastRental?->toDateString(),
+                ];
+            })
+            ->sortByDesc('revenue')
             ->values()
             ->all();
     }

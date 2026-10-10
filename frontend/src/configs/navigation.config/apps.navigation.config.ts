@@ -353,6 +353,92 @@ const appsNavigationConfig: NavigationTree[] = [
             },
         ],
     },
+    // ===== STATISTIQUES =====
+    {
+        key: 'statistiques',
+        path: '',
+        title: 'Statistics',
+        translateKey: 'nav.statistiques',
+        icon: 'statistiques',
+        type: NAV_ITEM_TYPE_TITLE,
+        authority: [ADMIN, USER],
+        meta: {
+            horizontalMenu: {
+                layout: 'tabs',
+                columns: 1,
+            },
+        },
+        subMenu: [
+            {
+                key: 'gestion.rapports',
+                path: '',
+                title: 'Reports',
+                translateKey: 'nav.gestion.rapports',
+                icon: 'gestionRapports',
+                type: NAV_ITEM_TYPE_COLLAPSE,
+                authority: [ADMIN, USER],
+                meta: {
+                    description: {
+                        translateKey: 'nav.gestion.rapportsDesc',
+                        label: 'Performance reports',
+                    },
+                },
+                subMenu: [
+                    {
+                        key: 'gestion.rapports.clients',
+                        path: `${APPS_PREFIX_PATH}/statistiques/rapports/performance-clients`,
+                        title: 'Client performance',
+                        translateKey: 'nav.gestion.rapportsClients',
+                        icon: 'gestionRapports',
+                        type: NAV_ITEM_TYPE_ITEM,
+                        authority: [ADMIN, USER],
+                        meta: {
+                            description: {
+                                translateKey:
+                                    'nav.gestion.rapportsClientsDesc',
+                                label: 'Top clients by revenue',
+                            },
+                        },
+                        subMenu: [],
+                    },
+                    {
+                        key: 'gestion.rapports.vehicules',
+                        path: `${APPS_PREFIX_PATH}/statistiques/rapports/performance-vehicules`,
+                        title: 'Vehicle performance',
+                        translateKey: 'nav.gestion.rapportsVehicules',
+                        icon: 'gestionRapports',
+                        type: NAV_ITEM_TYPE_ITEM,
+                        authority: [ADMIN, USER],
+                        meta: {
+                            description: {
+                                translateKey:
+                                    'nav.gestion.rapportsVehiculesDesc',
+                                label: 'Fleet profitability',
+                            },
+                        },
+                        subMenu: [],
+                    },
+                    {
+                        key: 'gestion.rapports.encaissement',
+                        path: `${APPS_PREFIX_PATH}/statistiques/rapports/performance-encaissement`,
+                        title: 'Collection performance',
+                        translateKey: 'nav.gestion.rapportsEncaissement',
+                        icon: 'gestionRapports',
+                        type: NAV_ITEM_TYPE_ITEM,
+                        authority: [ADMIN, USER],
+                        meta: {
+                            description: {
+                                translateKey:
+                                    'nav.gestion.rapportsEncaissementDesc',
+                                label: 'Cash collection performance',
+                            },
+                        },
+                        subMenu: [],
+                    },
+                ],
+            },
+        ],
+    },
 ]
 
 export default appsNavigationConfig

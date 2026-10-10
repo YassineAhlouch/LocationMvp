@@ -1,6 +1,7 @@
 {
     "nav": {
         "apps": "التطبيقات",
+        "statistiques": "الإحصائيات",
         "gestion": {
             "dashboard": "لوحة القيادة",
             "dashboardDesc": "لوحة قيادة تأجير السيارات",
@@ -39,7 +40,15 @@
             "parametres": "الإعدادات",
             "parametresDesc": "إعدادات التطبيق",
             "parametresFactures": "قوالب الفواتير",
-            "parametresFacturesDesc": "تعيين نموذج عقد لكل وكالة"
+            "parametresFacturesDesc": "تعيين نموذج عقد لكل وكالة",
+            "rapports": "التقارير",
+            "rapportsDesc": "تقارير الأداء",
+            "rapportsClients": "أداء العملاء",
+            "rapportsClientsDesc": "أفضل العملاء حسب الإيرادات",
+            "rapportsVehicules": "أداء المركبات",
+            "rapportsVehiculesDesc": "الإيرادات والمصاريف والهامش لكل مركبة",
+            "rapportsEncaissement": "أداء التحصيل",
+            "rapportsEncaissementDesc": "المبالغ المحصلة والمعلقة والمستردة"
         },
         "uiComponents": "مكونات الواجهة",
         "uiComponentsCommon": {

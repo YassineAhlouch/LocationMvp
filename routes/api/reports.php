@@ -18,3 +18,7 @@ Route::get('reports/timeline', [ReportController::class, 'timeline'])
 Route::get('reports/cars', [ReportController::class, 'cars'])
     ->middleware('permission:reports.view')
     ->name('reports.cars');
+
+Route::get('reports/clients', [ReportController::class, 'clients'])
+    ->middleware('permission:reports.view')
+    ->name('reports.clients');

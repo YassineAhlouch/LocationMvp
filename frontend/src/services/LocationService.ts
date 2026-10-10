@@ -11,6 +11,7 @@ import type {
     CarReport,
     Client,
     ClientPayload,
+    ClientReport,
     DashboardSummary,
     DashboardTimeline,
     Expense,
@@ -62,6 +63,13 @@ export const apiGetDashboardTimeline = (params?: { months?: number }) =>
 export const apiGetCarReports = (params?: { from?: string; to?: string }) =>
     ApiService.fetchDataWithAxios<CarReport[]>({
         url: '/v1/reports/cars',
+        method: 'get',
+        params,
+    })
+
+export const apiGetClientReports = (params?: { from?: string; to?: string }) =>
+    ApiService.fetchDataWithAxios<ClientReport[]>({
+        url: '/v1/reports/clients',
         method: 'get',
         params,
     })

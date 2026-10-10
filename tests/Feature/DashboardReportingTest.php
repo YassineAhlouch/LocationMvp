@@ -348,6 +348,11 @@ class DashboardReportingTest extends TestCase
             ->getJson('/api/v1/reports/cars')
             ->assertStatus(403)
             ->assertJsonPath('permission', 'reports.view');
+
+        $this->actingAs($agent, 'sanctum')
+            ->getJson('/api/v1/reports/clients')
+            ->assertStatus(403)
+            ->assertJsonPath('permission', 'reports.view');
     }
 
     public function test_cars_report_ranks_by_margin_and_zero_fills(): void
@@ -409,5 +414,69 @@ class DashboardReportingTest extends TestCase
         $this->assertEqualsWithDelta(0, $data[2]['margin'], 0.01);
         $this->assertSame(0, $data[2]['booked_days']);
         $this->assertNotNull($data[2]['brand']);
+    }
+
+    public function test_clients_report_ranks_by_revenue_and_scopes_to_agency(): void
+    {
+        $actor = $this->actor(['reports.view']);
+
+        $from = today()->subDays(3)->toDateString();
+        $to = today()->subDay()->toDateString();
+
+        $bigClient = $this->client();
+        $smallClient = $this->client();
+
+        $reservationA = $this->reservation($this->car(), [
+            'primary_client_id' => $bigClient->id,
+            'status' => ReservationStatus::Confirmed,
+            'pickup_datetime' => today()->subDays(3)->setTime(9, 0),
+            'expected_return_datetime' => today()->setTime(9, 0),
+        ]);
+        $this->payment($reservationA, ['amount' => 800, 'payment_date' => today()->subDays(2)]);
+        // Outside the period — must not inflate revenue.
+        $this->payment($reservationA, ['amount' => 9999, 'payment_date' => today()->subDays(10)]);
+
+        $reservationB = $this->reservation($this->car(), [
+            'primary_client_id' => $smallClient->id,
+            'status' => ReservationStatus::Confirmed,
+            'pickup_datetime' => today()->subDay()->setTime(9, 0),
+            'expected_return_datetime' => today()->addDay()->setTime(9, 0),
+        ]);
+        $this->payment($reservationB, ['amount' => 300, 'payment_date' => today()->subDay()]);
+
+        // A foreign agency's client must not leak into the ranking.
+        $foreignAgency = Agency::factory()->create();
+        $foreignReservation = Reservation::factory()->create([
+            'agency_id' => $foreignAgency,
+            'car_id' => Car::factory()->create(['agency_id' => $foreignAgency])->id,
+            'primary_client_id' => Client::factory()->create(['agency_id' => $foreignAgency])->id,
+            'status' => ReservationStatus::Confirmed,
+            'pickup_datetime' => today()->subDays(2)->setTime(9, 0),
+            'expected_return_datetime' => today()->setTime(9, 0),
+        ]);
+        Payment::factory()->create([
+            'agency_id' => $foreignAgency,
+            'reservation_id' => $foreignReservation->id,
+            'amount' => 5000,
+            'status' => PaymentRecordStatus::Paid,
+            'payment_date' => now(),
+        ]);
+
+        $data = $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/reports/clients?from='.$from.'&to='.$to)
+            ->assertOk()
+            ->json();
+
+        $this->assertCount(2, $data);
+
+        $this->assertSame($bigClient->id, $data[0]['client_id']);
+        $this->assertEqualsWithDelta(800, $data[0]['revenue'], 0.01);
+        $this->assertSame(1, $data[0]['reservations']);
+        $this->assertSame(3, $data[0]['booked_days']);
+        $this->assertEqualsWithDelta(800, $data[0]['average_spend'], 0.01);
+        $this->assertSame(today()->subDays(3)->toDateString(), $data[0]['last_rental']);
+
+        $this->assertSame($smallClient->id, $data[1]['client_id']);
+        $this->assertEqualsWithDelta(300, $data[1]['revenue'], 0.01);
     }
 }

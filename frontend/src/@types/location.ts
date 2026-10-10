@@ -614,6 +614,19 @@ export type CarReport = {
     booked_days: number
 }
 
+export type ClientReport = {
+    client_id: number
+    full_name: string | null
+    phone: string | null
+    email: string | null
+    status: ClientStatus | null
+    reservations: number
+    booked_days: number
+    revenue: number
+    average_spend: number
+    last_rental: string | null
+}
+
 export type SelectOption<T = number | string> = { value: T; label: string }
 
 export type UserRole = {

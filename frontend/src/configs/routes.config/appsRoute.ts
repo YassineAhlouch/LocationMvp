@@ -198,7 +198,47 @@ const appsRoute: Routes = [
         },
     },
 
-    // ===== RAPPORTS ===== (planned: vehicules / clients / reservations / financiers)
+    // ===== RAPPORTS =====
+    {
+        key: 'gestion.rapports.clients',
+        path: `${APPS_PREFIX_PATH}/statistiques/rapports/performance-clients`,
+        component: lazy(
+            () => import('@/views/location/reports/PerformanceClients'),
+        ),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'contained',
+            footer: false,
+        },
+    },
+    {
+        key: 'gestion.rapports.vehicules',
+        path: `${APPS_PREFIX_PATH}/statistiques/rapports/performance-vehicules`,
+        component: lazy(
+            () => import('@/views/location/reports/PerformanceCars'),
+        ),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'contained',
+            footer: false,
+        },
+    },
+    {
+        key: 'gestion.rapports.encaissement',
+        path: `${APPS_PREFIX_PATH}/statistiques/rapports/performance-encaissement`,
+        component: lazy(
+            () => import('@/views/location/reports/PerformanceCollections'),
+        ),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'contained',
+            footer: false,
+        },
+    },
+
     // ===== OPERATIONS ===== (planned: maintenance / accidents)
     // +++++ End NEW Links
     {
