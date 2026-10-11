@@ -177,16 +177,16 @@ const NavbarLogo = ({ mode }: { mode: Mode }) => (
     <Link to="/landing">
         {mode === 'light' && (
             <img
-                src="/img/logo/logo-light-full.png"
-                width={80}
+                src="/img/logo/logo-light-full.svg"
+                width={117}
                 height={30}
                 alt="logo"
             />
         )}
         {mode === 'dark' && (
             <img
-                src="/img/logo/logo-dark-full.png"
-                width={80}
+                src="/img/logo/logo-dark-full.svg"
+                width={117}
                 height={30}
                 alt="logo"
             />
