@@ -11,6 +11,14 @@ interface LogoProps extends CommonProps {
 
 const LOGO_SRC_PATH = '/img/logo/'
 
+/**
+ * Light mode logos are vector (.svg); dark mode logos are still raster (.png).
+ */
+const LOGO_EXTENSION: Record<'light' | 'dark', 'svg' | 'png'> = {
+    light: 'svg',
+    dark: 'png',
+}
+
 const Logo = (props: LogoProps) => {
     const {
         type = 'full',
@@ -38,7 +46,7 @@ const Logo = (props: LogoProps) => {
         >
             <img
                 className={imgClass}
-                src={`${LOGO_SRC_PATH}logo-${normalizedMode}-${type}.png`}
+                src={`${LOGO_SRC_PATH}logo-${normalizedMode}-${type}.${LOGO_EXTENSION[normalizedMode]}`}
                 alt={`${APP_NAME} logo`}
             />
         </div>
