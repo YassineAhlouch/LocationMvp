@@ -78,6 +78,16 @@ const platformRoute: Routes = [
         },
     },
     {
+        key: 'platform.payments',
+        path: `${PLATFORM_PREFIX_PATH}/payments`,
+        component: lazy(() => import('@/views/platform/Payments')),
+        access: 'protected',
+        authority: ['platform'],
+        meta: {
+            pageContainerType: 'contained',
+        },
+    },
+    {
         key: 'platform.currencies',
         path: `${PLATFORM_PREFIX_PATH}/fleet/currencies`,
         component: lazy(() => import('@/views/platform/Currencies')),

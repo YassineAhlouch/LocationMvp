@@ -41,8 +41,19 @@ export type PlatformAgency = {
     } | null
     users_count?: number
     cars_count?: number
+    billing?: AgencyBillingSummary
     created_at: string | null
     updated_at: string | null
+}
+
+/**
+ * Billing snapshot attached to each agency (PlatformAgencyResource). An
+ * overdue invoice flips `has_overdue_payment` and locks the agency workspace.
+ */
+export type AgencyBillingSummary = {
+    outstanding_amount: number
+    has_overdue_payment: boolean
+    next_due_date: string | null
 }
 
 export type AgencyPayload = {
@@ -171,6 +182,49 @@ export type CurrencyPayload = {
 }
 
 /* ------------------------------------------------------------------ */
+/* Subscription payments (platform -> agency invoices)                */
+/* ------------------------------------------------------------------ */
+
+export type PaymentStatus = 'pending' | 'overdue' | 'paid'
+
+export type AgencyPayment = {
+    id: number
+    amount: number
+    period: string | null
+    due_date: string | null
+    paid_at: string | null
+    status: PaymentStatus
+    reference: string | null
+    notes: string | null
+    agency: {
+        id: number
+        name: string
+    } | null
+    currency: {
+        id: number
+        code: string
+        symbol: string
+        decimals: number
+    } | null
+    recorded_by: {
+        id: number
+        name: string
+    } | null
+    created_at: string | null
+    updated_at: string | null
+}
+
+export type AgencyPaymentPayload = {
+    agency_id: number
+    currency_id?: number | null
+    amount: number
+    period?: string | null
+    due_date: string
+    reference?: string | null
+    notes?: string | null
+}
+
+/* ------------------------------------------------------------------ */
 /* Dashboard + invoices                                               */
 /* ------------------------------------------------------------------ */
 
@@ -179,6 +233,11 @@ export type PlatformStats = {
         total: number
         active: number
         inactive: number
+    }
+    billing: {
+        outstanding_total: number
+        overdue_agencies: number
+        collected_this_month: number
     }
     users: number
     cars: number

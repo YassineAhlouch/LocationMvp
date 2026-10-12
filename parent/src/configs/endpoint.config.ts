@@ -10,6 +10,7 @@ const endpointConfig = {
     me: '/v1/platform/auth/me',
 
     agencies: '/v1/platform/agencies',
+    agencyPayments: '/v1/platform/agency-payments',
     users: '/v1/platform/users',
     roles: '/v1/platform/roles',
 

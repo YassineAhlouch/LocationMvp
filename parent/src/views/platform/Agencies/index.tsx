@@ -126,6 +126,49 @@ const Agencies = () => {
                 cell: ({ row }) => row.original.invoice_template?.name || '—',
             },
             {
+                header: 'Billing',
+                id: 'billing',
+                cell: ({ row }) => {
+                    const billing = row.original.billing
+                    if (!billing) {
+                        return '—'
+                    }
+
+                    const overdue = billing.has_overdue_payment
+                    const owes = billing.outstanding_amount > 0
+                    const symbol = row.original.currency?.symbol
+                    const label = overdue
+                        ? 'Overdue'
+                        : owes
+                          ? 'Due'
+                          : 'Settled'
+                    const className = overdue
+                        ? 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-100'
+                        : owes
+                          ? 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-100'
+                          : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-100'
+
+                    return (
+                        <div className="flex items-center gap-2">
+                            <span
+                                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${className}`}
+                            >
+                                {label}
+                            </span>
+                            {owes && (
+                                <span className="text-xs">
+                                    {billing.outstanding_amount.toLocaleString(
+                                        'en-US',
+                                        { maximumFractionDigits: 2 },
+                                    )}
+                                    {symbol ? ` ${symbol}` : ''}
+                                </span>
+                            )}
+                        </div>
+                    )
+                },
+            },
+            {
                 header: 'Status',
                 accessorKey: 'is_active',
                 cell: ({ row }) => (

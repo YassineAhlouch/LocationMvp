@@ -7,9 +7,11 @@ import { apiGetPlatformStats } from '@/services/PlatformService'
 import apiErrorMessage from '@/utils/apiErrorMessage'
 import { formatDate } from '@/utils/formatDate'
 import {
+    LiAlertTriangle,
     LiCalendar,
     LiCar,
     LiChartSquare,
+    LiDollarCircle,
     LiStore,
     LiUserCircle,
     LiWalletMoney,
@@ -56,6 +58,27 @@ const Dashboard = () => {
                   hint: `${stats.agencies.inactive} inactive`,
                   icon: <LiChartSquare className="text-3xl" />,
                   color: 'text-emerald-600 dark:text-emerald-400',
+              },
+              {
+                  label: 'Outstanding',
+                  value: amount(stats.billing.outstanding_total),
+                  hint: `${stats.billing.overdue_agencies} overdue`,
+                  icon: <LiDollarCircle className="text-3xl" />,
+                  color: 'text-orange-600 dark:text-orange-400',
+              },
+              {
+                  label: 'Agencies overdue',
+                  value: String(stats.billing.overdue_agencies),
+                  hint: 'Read-only until paid',
+                  icon: <LiAlertTriangle className="text-3xl" />,
+                  color: 'text-red-600 dark:text-red-400',
+              },
+              {
+                  label: 'Collected this month',
+                  value: amount(stats.billing.collected_this_month),
+                  hint: 'Subscription payments',
+                  icon: <LiWalletMoney className="text-3xl" />,
+                  color: 'text-teal-600 dark:text-teal-400',
               },
               {
                   label: 'Users',

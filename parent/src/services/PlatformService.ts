@@ -2,6 +2,8 @@ import ApiService from './ApiService'
 import endpointConfig from '@/configs/endpoint.config'
 import type {
     AgencyPayload,
+    AgencyPayment,
+    AgencyPaymentPayload,
     Brand,
     CarCategory,
     CarModel,
@@ -67,6 +69,58 @@ export async function apiUpdateAgency(id: number, data: AgencyPayload) {
         url: `${endpointConfig.agencies}/${id}`,
         method: 'patch',
         data,
+    })
+}
+
+/* ------------------------------------------------------------------ */
+/* Subscription payments                                               */
+/* ------------------------------------------------------------------ */
+
+export async function apiGetAgencyPayments(params?: ListParams) {
+    return ApiService.fetchDataWithAxios<Paginated<AgencyPayment>>({
+        url: endpointConfig.agencyPayments,
+        method: 'get',
+        params,
+    })
+}
+
+export async function apiCreateAgencyPayment(data: AgencyPaymentPayload) {
+    return ApiService.fetchDataWithAxios<AgencyPayment>({
+        url: endpointConfig.agencyPayments,
+        method: 'post',
+        data,
+    })
+}
+
+export async function apiUpdateAgencyPayment(
+    id: number,
+    data: Partial<AgencyPaymentPayload>,
+) {
+    return ApiService.fetchDataWithAxios<AgencyPayment>({
+        url: `${endpointConfig.agencyPayments}/${id}`,
+        method: 'patch',
+        data,
+    })
+}
+
+export async function apiDeleteAgencyPayment(id: number) {
+    return ApiService.fetchDataWithAxios<null>({
+        url: `${endpointConfig.agencyPayments}/${id}`,
+        method: 'delete',
+    })
+}
+
+export async function apiPayAgencyPayment(id: number) {
+    return ApiService.fetchDataWithAxios<AgencyPayment>({
+        url: `${endpointConfig.agencyPayments}/${id}/pay`,
+        method: 'post',
+    })
+}
+
+export async function apiUnpayAgencyPayment(id: number) {
+    return ApiService.fetchDataWithAxios<AgencyPayment>({
+        url: `${endpointConfig.agencyPayments}/${id}/unpay`,
+        method: 'post',
     })
 }
 

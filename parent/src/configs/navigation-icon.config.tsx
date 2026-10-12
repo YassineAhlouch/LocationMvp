@@ -84,6 +84,7 @@ const navigationIcon: NavigationIcons = {
     platformCategories: <LiElement3 className={CLASS_NAME} />,
     platformDashboard: <LiChart className={CLASS_NAME} />,
     platformInvoices: <LiReceipt className={CLASS_NAME} />,
+    platformPayments: <LiWalletMoney className={CLASS_NAME} />,
     platformCurrencies: <LiDollarCircle className={CLASS_NAME} />,
     documentation: <LiFileText className={CLASS_NAME} />,
     sharedComponentDoc: <LiLayer className={CLASS_NAME} />,

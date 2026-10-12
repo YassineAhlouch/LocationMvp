@@ -63,6 +63,16 @@ const platformNavigationConfig: NavigationTree[] = [
                 subMenu: [],
             },
             {
+                key: 'platform.payments',
+                path: `${PLATFORM_PREFIX_PATH}/payments`,
+                title: 'Payments',
+                translateKey: 'nav.platform.payments',
+                icon: 'platformPayments',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [PLATFORM],
+                subMenu: [],
+            },
+            {
                 key: 'platform.fleet',
                 path: '',
                 title: 'Fleet catalog',
