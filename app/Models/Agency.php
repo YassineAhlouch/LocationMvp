@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'daily_mileage_allowance',
     'extra_mileage_fee_per_km',
     'invoice_template_id',
+    'currency_id',
     'is_active',
 ])]
 class Agency extends Model
@@ -43,6 +44,15 @@ class Agency extends Model
     public function invoiceTemplate(): BelongsTo
     {
         return $this->belongsTo(InvoiceTemplate::class);
+    }
+
+    /**
+     * The currency this agency prices and invoices in. Assigned by the
+     * platform; an agency without one falls back to the platform default.
+     */
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(Currency::class);
     }
 
     public function users(): HasMany

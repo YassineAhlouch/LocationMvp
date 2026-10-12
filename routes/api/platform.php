@@ -5,6 +5,9 @@ use App\Http\Controllers\Api\V1\Platform\AuthController;
 use App\Http\Controllers\Api\V1\Platform\BrandController;
 use App\Http\Controllers\Api\V1\Platform\CarCategoryController;
 use App\Http\Controllers\Api\V1\Platform\CarModelController;
+use App\Http\Controllers\Api\V1\Platform\CurrencyController;
+use App\Http\Controllers\Api\V1\Platform\DashboardController;
+use App\Http\Controllers\Api\V1\Platform\InvoiceController;
 use App\Http\Controllers\Api\V1\Platform\RoleController;
 use App\Http\Controllers\Api\V1\Platform\UserController;
 use App\Http\Middleware\EnsurePlatformAdmin;
@@ -36,6 +39,12 @@ Route::prefix('v1/platform')->group(function () {
         Route::get('agencies/{agency}', [AgencyController::class, 'show'])->name('platform.agencies.show');
         Route::patch('agencies/{agency}', [AgencyController::class, 'update'])->name('platform.agencies.update');
 
+        // Platform dashboard KPIs.
+        Route::get('dashboard/stats', [DashboardController::class, 'stats'])->name('platform.dashboard.stats');
+
+        // Invoices — every reservation across (or within) an agency.
+        Route::get('invoices', [InvoiceController::class, 'index'])->name('platform.invoices.index');
+
         // Staff across every agency.
         Route::get('users', [UserController::class, 'index'])->name('platform.users.index');
         Route::post('users', [UserController::class, 'store'])->name('platform.users.store');
@@ -63,5 +72,12 @@ Route::prefix('v1/platform')->group(function () {
         Route::get('fleet/categories/{category}', [CarCategoryController::class, 'show'])->name('platform.fleet.categories.show');
         Route::patch('fleet/categories/{category}', [CarCategoryController::class, 'update'])->name('platform.fleet.categories.update');
         Route::delete('fleet/categories/{category}', [CarCategoryController::class, 'destroy'])->name('platform.fleet.categories.destroy');
+
+        // Currencies — the units agencies price and invoice in.
+        Route::get('fleet/currencies', [CurrencyController::class, 'index'])->name('platform.fleet.currencies.index');
+        Route::post('fleet/currencies', [CurrencyController::class, 'store'])->name('platform.fleet.currencies.store');
+        Route::get('fleet/currencies/{currency}', [CurrencyController::class, 'show'])->name('platform.fleet.currencies.show');
+        Route::patch('fleet/currencies/{currency}', [CurrencyController::class, 'update'])->name('platform.fleet.currencies.update');
+        Route::delete('fleet/currencies/{currency}', [CurrencyController::class, 'destroy'])->name('platform.fleet.currencies.destroy');
     });
 });

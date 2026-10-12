@@ -28,6 +28,7 @@ class AgencyController extends Controller
 
         return PlatformAgencyResource::collection(
             Agency::query()
+                ->with('currency:id,code,name,symbol,decimals')
                 ->withCount(['users', 'cars'])
                 ->when($filters['q'] ?? null, fn ($query, $term) => $query->where(function ($builder) use ($term) {
                     $like = '%'.trim($term).'%';
@@ -65,21 +66,21 @@ class AgencyController extends Controller
             return $agency;
         });
 
-        return (new PlatformAgencyResource($agency->refresh()->loadCount(['users', 'cars'])))
+        return (new PlatformAgencyResource($agency->refresh()->loadCount(['users', 'cars'])->load('currency:id,code,name,symbol,decimals')))
             ->response()
             ->setStatusCode(201);
     }
 
     public function show(Agency $agency): PlatformAgencyResource
     {
-        return new PlatformAgencyResource($agency->loadCount(['users', 'cars']));
+        return new PlatformAgencyResource($agency->loadCount(['users', 'cars'])->load('currency:id,code,name,symbol,decimals'));
     }
 
     public function update(UpdateAgencyRequest $request, Agency $agency): PlatformAgencyResource
     {
         $agency->update($request->validated());
 
-        return new PlatformAgencyResource($agency->loadCount(['users', 'cars']));
+        return new PlatformAgencyResource($agency->loadCount(['users', 'cars'])->load('currency:id,code,name,symbol,decimals'));
     }
 
     /**

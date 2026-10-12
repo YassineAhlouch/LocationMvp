@@ -30,6 +30,13 @@ class PlatformAgencyResource extends JsonResource
             'daily_mileage_allowance' => (int) $this->daily_mileage_allowance,
             'extra_mileage_fee_per_km' => (float) $this->extra_mileage_fee_per_km,
             'is_active' => $this->is_active,
+            'currency' => $this->whenLoaded('currency', fn () => $this->currency === null ? null : [
+                'id' => $this->currency->id,
+                'code' => $this->currency->code,
+                'name' => $this->currency->name,
+                'symbol' => $this->currency->symbol,
+                'decimals' => $this->currency->decimals,
+            ]),
             'users_count' => $this->whenCounted('users_count'),
             'cars_count' => $this->whenCounted('cars_count'),
             'created_at' => $this->created_at?->toIso8601String(),
