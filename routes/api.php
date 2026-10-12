@@ -47,3 +47,14 @@ Route::prefix('v1')
         require __DIR__.'/api/reports.php';
         require __DIR__.'/api/notifications.php';
     });
+
+/*
+|--------------------------------------------------------------------------
+| Platform (parent) API — /api/v1/platform
+|--------------------------------------------------------------------------
+| Self-contained: its own prefix, its own token holder (PlatformAdmin) and
+| its own middleware stack, so it never inherits agency scoping. See the file
+| for details.
+*/
+
+require __DIR__.'/api/platform.php';
