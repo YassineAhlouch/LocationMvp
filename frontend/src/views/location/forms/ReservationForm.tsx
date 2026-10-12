@@ -24,6 +24,7 @@ import classNames from '@/utils/classNames'
 import {
     apiCreateReservation,
     apiUpdateReservation,
+    apiGetCarAvailability,
     apiGetCars,
     apiGetClients,
     apiGetPayments,
@@ -31,6 +32,7 @@ import {
     apiQuoteReservation,
 } from '@/services/LocationService'
 import type {
+    CarAvailabilityConflict,
     CarStatus,
     Client,
     Payment,
@@ -195,13 +197,20 @@ const editStatusFlowOptions = (
 
 /**
  * Sectioned layout (mirrors apps/sales ProductDetails): a tabbed header
- * switches between Basic info / Trip / Pricing / Payment sections.
+ * switches between Trip / Basic info / Pricing / Payment sections. Trip leads
+ * so the dates are picked before the car, which lets the picker show the real
+ * availability for the chosen window.
  */
 const reservationFormSectionList: {
     label: string
     value: string
     fields: (keyof ReservationFormValues)[]
 }[] = [
+    {
+        label: 'Trip',
+        value: 'trip',
+        fields: ['pickup_datetime', 'expected_return_datetime'],
+    },
     {
         label: 'Basic info',
         value: 'basicInfo',
@@ -211,11 +220,6 @@ const reservationFormSectionList: {
             'secondary_client_id',
             'status',
         ],
-    },
-    {
-        label: 'Trip',
-        value: 'trip',
-        fields: ['pickup_datetime', 'expected_return_datetime'],
     },
     {
         label: 'Pricing',
@@ -461,31 +465,76 @@ const makeStatusFlowOptionRenderer =
 /**
  * A car option as the booking form needs it. `status`/`isActive` are optional
  * because the currently-selected car of an edited reservation may not be part
- * of the loaded page; such an option shows no availability badge.
+ * of the loaded page; such an option shows no availability badge. `conflicts`
+ * carries the bookings the availability probe found in the chosen window.
  */
 type CarOption = {
     value: number
     label: string
     status?: CarStatus
     isActive?: boolean
+    conflicts?: CarAvailabilityConflict[]
+    /** Whether both pickup and return dates are filled in the form. */
+    windowChosen?: boolean
+    /** Whether this car is the one currently picked in the form. */
+    isChosen?: boolean
 }
 
-/** Only a car that is active and sitting at `available` can be booked. */
+/**
+ * A car parked off the road (in the shop or decommissioned) can never be
+ * booked, whatever the dates. Its live `available`/`reserved`/`rented` status
+ * is only a "right now" view and must not gate a future booking.
+ */
+const isCarOffRoad = (option: SingleOption<CarOption>): boolean =>
+    option.status === 'maintenance' ||
+    option.status === 'inactive' ||
+    option.isActive === false
+
+/**
+ * Bookability is period-based: a car is available when it is not off the road
+ * and the availability probe found no reservation overlapping the chosen
+ * window. A car rented today but free next week stays selectable.
+ */
 const isCarAvailable = (option: SingleOption<CarOption>): boolean =>
-    option.status === 'available' && option.isActive !== false
+    !isCarOffRoad(option) && (option.conflicts?.length ?? 0) === 0
 
 const CarOptionBadge = ({ option }: { option: SingleOption<CarOption> }) => {
     if (!option.status) {
         return null
     }
 
+    const conflicts = option.conflicts ?? []
+    const offRoad = isCarOffRoad(option)
     const available = isCarAvailable(option)
+
+    // With no pickup/return picked, the period is unknown: judge nothing and
+    // only flag cars that are off the road.
+    if (option.windowChosen === false && !offRoad) {
+        return null
+    }
+
+    const reason = offRoad
+        ? option.status === 'maintenance'
+            ? 'In maintenance — not bookable'
+            : 'Not active in the fleet — not bookable'
+        : conflicts.length > 0
+          ? `Booked in this period: ${conflicts
+                .map((conflict) => conflict.reservation_number)
+                .join(', ')}`
+          : undefined
+
+    // A period clash on the car the user is picking is an error worth flagging
+    // in red; the same clash on the rest of the fleet is just information.
+    const tone: TagTone = available
+        ? 'success'
+        : offRoad || option.isChosen
+          ? 'error'
+          : 'warning'
 
     return (
         <span
-            className={`inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-[11px] font-semibold ${statusChipClass[
-                available ? 'success' : 'error'
-            ]}`}
+            className={`inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-[11px] font-semibold ${statusChipClass[tone]}`}
+            title={reason}
         >
             {available ? 'Available' : 'Unavailable'}
         </span>
@@ -701,7 +750,9 @@ const ReservationForm = ({
 }: ReservationFormProps) => {
     const isEditing = reservation !== null
     const navigate = useNavigate()
-    const [selectedSection, setSelectedSection] = useState('basicInfo')
+    const [selectedSection, setSelectedSection] = useState(
+        reservationFormSectionList[0].value,
+    )
     const [invalidFields, setInvalidFields] = useState<string[]>([])
     const [cars, setCars] = useState<SingleOption<CarOption>[]>([])
     const [clients, setClients] = useState<{ value: number; label: string }[]>(
@@ -725,6 +776,14 @@ const ReservationForm = ({
     const [quoteFetching, setQuoteFetching] = useState(false)
     const quoteTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
     const quoteSeq = useRef(0)
+
+    // Booking window: car id → the bookings holding it for the dates currently
+    // in the form. Empty while the dates are incomplete or every car is free.
+    const [carConflicts, setCarConflicts] = useState<
+        Record<number, CarAvailabilityConflict[]>
+    >({})
+    const availabilityTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+    const availabilitySeq = useRef(0)
 
     // Car default prices, used only as the fallback estimate while a quote
     // is not resolved (the quote itself is authoritative).
@@ -913,46 +972,86 @@ const ReservationForm = ({
         [clients, reservationClientLabel],
     )
 
+    const hasBookingWindow = Boolean(
+        tripValues.pickup_datetime && tripValues.expected_return_datetime,
+    )
+
     const carOptionFor = useCallback(
         (id?: number): SingleOption<CarOption> | undefined => {
             if (!id) {
                 return undefined
             }
+            const conflicts = carConflicts[id]
+            const isChosen = id === tripValues.car_id
             const found = cars.find((item) => item.value === id)
             if (found) {
-                return found
+                return {
+                    ...found,
+                    conflicts,
+                    windowChosen: hasBookingWindow,
+                    isChosen,
+                }
             }
             const label =
                 carLabels.current.get(id) ??
                 (reservation?.car?.id === id
                     ? reservation.car.registration_number
                     : undefined)
-            return label ? { value: id, label } : undefined
+            return label
+                ? {
+                      value: id,
+                      label,
+                      conflicts,
+                      windowChosen: hasBookingWindow,
+                      isChosen,
+                  }
+                : undefined
         },
-        [cars, reservation],
+        [cars, carConflicts, reservation, hasBookingWindow, tripValues.car_id],
     )
 
     /**
-     * Cars the user may pick: every unavailable car is shown but disabled, so
-     * its status stays visible. The reservation's own car remains enabled even
-     * when it is not `available` (e.g. already reserved by this booking).
+     * Cars the user may pick. Off-road cars (maintenance/inactive) and cars
+     * already held for the chosen window are shown but disabled, so the reason
+     * stays visible. The availability probe is what disables a period conflict.
      */
     const carOptions = useMemo(
         () =>
-            cars.map((car) => ({
-                ...car,
-                disabled:
-                    !isCarAvailable(car) && car.value !== tripValues.car_id,
-            })),
-        [cars, tripValues.car_id],
+            cars.map((car) => {
+                const option = {
+                    ...car,
+                    conflicts: carConflicts[car.value],
+                    windowChosen: hasBookingWindow,
+                    isChosen: car.value === tripValues.car_id,
+                }
+
+                return {
+                    ...option,
+                    disabled:
+                        !isCarAvailable(option) &&
+                        car.value !== tripValues.car_id,
+                }
+            }),
+        [cars, carConflicts, tripValues.car_id, hasBookingWindow],
     )
+
+    /** Cars already held for the dates currently in the form. */
+    const unavailableCars = useMemo(
+        () =>
+            cars.filter((car) => (carConflicts[car.value]?.length ?? 0) > 0),
+        [cars, carConflicts],
+    )
+
+    const selectedCarConflicts = tripValues.car_id
+        ? (carConflicts[tripValues.car_id] ?? [])
+        : []
 
     useEffect(() => {
         reset(defaultsFor(reservation, initialDate))
     }, [reservation, isOpen, initialDate, reset])
 
     useEffect(() => {
-        setSelectedSection('basicInfo')
+        setSelectedSection(reservationFormSectionList[0].value)
         setInvalidFields([])
     }, [isOpen, reservation])
 
@@ -1058,6 +1157,53 @@ const ReservationForm = ({
         tripValues.discount_amount,
     ])
 
+    // Booking-window probe: once both dates are set, ask the backend which
+    // cars are already held for that window so the picker can grey them out
+    // and the form can explain why. Debounced like the quote; `except` keeps
+    // an edited reservation from colliding with itself.
+    useEffect(() => {
+        if (!isOpen) {
+            return
+        }
+        const pickup = tripValues.pickup_datetime
+        const expectedReturn = tripValues.expected_return_datetime
+        if (!pickup || !expectedReturn) {
+            setCarConflicts({})
+            return
+        }
+        if (availabilityTimer.current) {
+            clearTimeout(availabilityTimer.current)
+        }
+        const seq = ++availabilitySeq.current
+        availabilityTimer.current = setTimeout(() => {
+            apiGetCarAvailability({
+                pickup_datetime: pickup.replace('T', ' '),
+                expected_return_datetime: expectedReturn.replace('T', ' '),
+                except_reservation_id: reservation?.id,
+            })
+                .then((result) => {
+                    if (seq === availabilitySeq.current) {
+                        setCarConflicts(result.conflicts ?? {})
+                    }
+                })
+                .catch(() => {
+                    if (seq === availabilitySeq.current) {
+                        setCarConflicts({})
+                    }
+                })
+        }, 400)
+        return () => {
+            if (availabilityTimer.current) {
+                clearTimeout(availabilityTimer.current)
+            }
+        }
+    }, [
+        isOpen,
+        tripValues.pickup_datetime,
+        tripValues.expected_return_datetime,
+        reservation?.id,
+    ])
+
     const refreshPayments = useCallback(async () => {
         if (!isEditing) {
             return
@@ -1157,9 +1303,12 @@ const ReservationForm = ({
             }
             onSaved()
             onCancel()
-        } catch {
+        } catch (error) {
             toast.push(
-                <Notification type="danger" title="Something went wrong" />,
+                <Notification
+                    type="danger"
+                    title={apiErrorMessage(error, 'Something went wrong')}
+                />,
             )
         } finally {
             setSubmitting(false)
@@ -1189,7 +1338,7 @@ const ReservationForm = ({
 
     const onSubmit = handleSubmit(handleValidSubmit, handleInvalidSubmit)
 
-    // "Next" walks the form section by section (Basic info → Trip → Pricing →
+    // "Next" walks the form section by section (Trip → Basic info → Pricing →
     // Payment). It validates the current section's fields first so required
     // fields can't be skipped.
     const handleNextSection = async () => {
@@ -1443,6 +1592,17 @@ const ReservationForm = ({
                             />
                         )}
                     />
+                    {selectedCarConflicts.length > 0 && (
+                        <p className="mt-1 text-xs text-error">
+                            Already booked for this period:{' '}
+                            {selectedCarConflicts
+                                .map(
+                                    (conflict) => conflict.reservation_number,
+                                )
+                                .join(', ')}
+                            . Pick another car or change the dates.
+                        </p>
+                    )}
                 </FormItem>
                 <FormItem
                     label="Primary client"
@@ -1686,6 +1846,28 @@ const ReservationForm = ({
                     />
                 </FormItem>
                     </div>
+                    {hasBookingWindow && unavailableCars.length > 0 && (
+                        <div className="mt-4 rounded-lg bg-warning-subtle px-3 py-2 text-sm text-warning">
+                            <p className="font-semibold">
+                                {unavailableCars.length === 1
+                                    ? '1 car is already booked for this period'
+                                    : `${unavailableCars.length} cars are already booked for this period`}
+                            </p>
+                            <ul className="mt-1 list-inside list-disc text-xs">
+                                {unavailableCars.map((car) => (
+                                    <li key={car.value}>
+                                        {car.label} —{' '}
+                                        {(carConflicts[car.value] ?? [])
+                                            .map(
+                                                (conflict) =>
+                                                    conflict.reservation_number,
+                                            )
+                                            .join(', ')}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                     <div className="mt-4 flex items-center gap-2 rounded-lg bg-gray-100 px-3 py-2 text-sm dark:bg-gray-800">
                         <LiCalendar className="text-base text-gray-400" />
                         <span className="text-gray-500 dark:text-gray-400">

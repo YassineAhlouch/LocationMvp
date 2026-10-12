@@ -141,6 +141,24 @@ class Reservation extends Model
     ): Builder {
         return $query
             ->where('car_id', $carId)
+            ->blockingBetween($pickup, $return, $exceptReservationId);
+    }
+
+    /**
+     * Same holding rule as scopeOverlapping but across every car, so the
+     * booking form can ask "which cars are already held for this window?" in
+     * one query instead of one per car.
+     *
+     * @param  CarbonInterface  $pickup  requested pickup datetime
+     * @param  CarbonInterface  $return  requested return datetime
+     */
+    public function scopeBlockingBetween(
+        Builder $query,
+        CarbonInterface $pickup,
+        CarbonInterface $return,
+        ?int $exceptReservationId = null,
+    ): Builder {
+        return $query
             ->whereIn('status', ReservationStatus::blocking())
             ->where('pickup_datetime', '<', $return)
             ->where('expected_return_datetime', '>', $pickup)

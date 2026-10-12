@@ -122,6 +122,7 @@ const csvHeaders = [
     { label: 'Client', key: 'client' },
     { label: 'Pickup', key: 'pickup_datetime' },
     { label: 'Return', key: 'expected_return_datetime' },
+    { label: 'Created', key: 'created_at' },
     { label: 'Total (MAD)', key: 'total_amount' },
 ]
 
@@ -1045,6 +1046,15 @@ const Reservations = () => {
                 },
             },
             {
+                header: 'Created',
+                accessorKey: 'created_at',
+                cell: (props) => (
+                    <span className="text-nowrap text-gray-500 dark:text-gray-400">
+                        {formatDateTime(props.row.original.created_at)}
+                    </span>
+                ),
+            },
+            {
                 header: 'Total',
                 accessorKey: 'total_amount',
                 cell: (props) => (
@@ -1248,6 +1258,7 @@ const Reservations = () => {
                 expected_return_datetime: formatDateTime(
                     reservation.expected_return_datetime,
                 ),
+                created_at: formatDateTime(reservation.created_at),
                 total_amount: reservation.total_amount,
             })),
         [reservations],

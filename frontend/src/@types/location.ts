@@ -391,6 +391,23 @@ export type Reservation = {
     updated_at?: string | null
 }
 
+/** One blocking booking returned by the car-availability probe. */
+export type CarAvailabilityConflict = {
+    reservation_number: string
+    status: ReservationStatus
+    pickup_datetime: string | null
+    expected_return_datetime: string | null
+}
+
+/**
+ * Which cars a requested window is already holding. A car is absent from
+ * both maps while it is free for the whole window.
+ */
+export type CarAvailability = {
+    unavailable_car_ids: number[]
+    conflicts: Record<number, CarAvailabilityConflict[]>
+}
+
 export type ReservationInspectionType = 'pickup' | 'return'
 
 /** Car areas photographed and checked during an inspection. */

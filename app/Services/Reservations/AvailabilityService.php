@@ -37,6 +37,23 @@ class AvailabilityService
     }
 
     /**
+     * Blocking reservations grouped by car id across the whole agency. Powers
+     * the booking form's "which cars are free for this window?" probe.
+     *
+     * @return Collection<int, Collection<int, Reservation>>
+     */
+    public function conflictsByCar(
+        CarbonInterface $pickup,
+        CarbonInterface $return,
+        ?int $exceptReservationId = null,
+    ): Collection {
+        return Reservation::query()
+            ->blockingBetween($pickup, $return, $exceptReservationId)
+            ->get(['id', 'car_id', 'reservation_number', 'status', 'pickup_datetime', 'expected_return_datetime'])
+            ->groupBy('car_id');
+    }
+
+    /**
      * @throws CarUnavailableException
      */
     public function assertAvailable(

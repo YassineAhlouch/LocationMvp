@@ -851,6 +851,64 @@ class ReservationEngineTest extends TestCase
             ->assertJsonPath('conflicts', []);
     }
 
+    public function test_car_availability_lists_every_car_held_for_the_window(): void
+    {
+        $actor = $this->actor(['reservations.*']);
+        $booked = $this->car();
+        $free = $this->car();
+
+        $pickup = now()->addDay()->setTime(9, 0);
+        $existing = $this->existingReservation($pickup, $pickup->copy()->addDays(3), $booked);
+
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/reservations/car-availability?'.http_build_query([
+                'pickup_datetime' => $pickup->copy()->addDay()->toDateTimeString(),
+                'expected_return_datetime' => $pickup->copy()->addDays(2)->toDateTimeString(),
+            ]))
+            ->assertOk()
+            ->assertJsonCount(1, 'unavailable_car_ids')
+            ->assertJsonPath('unavailable_car_ids.0', $booked->id)
+            ->assertJsonPath('conflicts.'.$booked->id.'.0.reservation_number', $existing->reservation_number)
+            ->assertJsonMissingPath('conflicts.'.$free->id);
+
+        // A window that overlaps nothing leaves the whole fleet free.
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/reservations/car-availability?'.http_build_query([
+                'pickup_datetime' => $pickup->copy()->addDays(10)->toDateTimeString(),
+                'expected_return_datetime' => $pickup->copy()->addDays(12)->toDateTimeString(),
+            ]))
+            ->assertOk()
+            ->assertJsonPath('unavailable_car_ids', []);
+    }
+
+    public function test_car_availability_ignores_the_reservation_being_edited(): void
+    {
+        $actor = $this->actor(['reservations.*']);
+        $car = $this->car();
+
+        $pickup = now()->addDay()->setTime(9, 0);
+        $existing = $this->existingReservation($pickup, $pickup->copy()->addDays(3), $car);
+
+        // Without the exception the car is held by its own booking…
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/reservations/car-availability?'.http_build_query([
+                'pickup_datetime' => $pickup->toDateTimeString(),
+                'expected_return_datetime' => $pickup->copy()->addDays(3)->toDateTimeString(),
+            ]))
+            ->assertOk()
+            ->assertJsonPath('unavailable_car_ids', [$car->id]);
+
+        // …and with it the reservation never conflicts with itself.
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/reservations/car-availability?'.http_build_query([
+                'pickup_datetime' => $pickup->toDateTimeString(),
+                'expected_return_datetime' => $pickup->copy()->addDays(3)->toDateTimeString(),
+                'except_reservation_id' => $existing->id,
+            ]))
+            ->assertOk()
+            ->assertJsonPath('unavailable_car_ids', []);
+    }
+
     public function test_permissions_gate_reservation_writes(): void
     {
         $finance = $this->actor(['payments.*']);

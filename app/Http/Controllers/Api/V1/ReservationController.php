@@ -16,6 +16,7 @@ use App\Http\Requests\Reservations\ActivateReservationRequest;
 use App\Http\Requests\Reservations\AvailabilityCheckRequest;
 use App\Http\Requests\Reservations\CalendarReservationRequest;
 use App\Http\Requests\Reservations\CancelReservationRequest;
+use App\Http\Requests\Reservations\CarAvailabilityRequest;
 use App\Http\Requests\Reservations\CompleteReservationRequest;
 use App\Http\Requests\Reservations\ConfirmReservationRequest;
 use App\Http\Requests\Reservations\ExtendReservationRequest;
@@ -38,6 +39,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * Thin HTTP layer: one method per use-case, actions injected per call.
@@ -83,6 +85,28 @@ class ReservationController extends Controller
         return response()->json([
             'available' => $conflicts->isEmpty(),
             'conflicts' => $this->availability->present($conflicts),
+        ]);
+    }
+
+    /**
+     * Bulk availability probe for the booking form: which cars are already
+     * held for the requested window. Same override rule as the single-car
+     * probe (half-open windows, blocking statuses only), but one round-trip
+     * for the whole fleet instead of one request per car.
+     */
+    public function carAvailability(CarAvailabilityRequest $request): JsonResponse
+    {
+        $conflicts = $this->availability->conflictsByCar(
+            Carbon::parse($request->validated('pickup_datetime')),
+            Carbon::parse($request->validated('expected_return_datetime')),
+            $request->validated('except_reservation_id'),
+        );
+
+        return response()->json([
+            'unavailable_car_ids' => $conflicts->keys()->map(fn ($carId) => (int) $carId)->values(),
+            'conflicts' => $conflicts
+                ->map(fn (Collection $reservations) => $this->availability->present($reservations))
+                ->all(),
         ]);
     }
 

@@ -18,6 +18,10 @@ Route::get('reservations/availability', [ReservationController::class, 'availabi
     ->middleware('permission:reservations.view')
     ->name('reservations.availability');
 
+Route::get('reservations/car-availability', [ReservationController::class, 'carAvailability'])
+    ->middleware('permission:reservations.view')
+    ->name('reservations.car-availability');
+
 Route::get('reservations/calendar', [ReservationController::class, 'calendar'])
     ->middleware('permission:reservations.view')
     ->name('reservations.calendar');

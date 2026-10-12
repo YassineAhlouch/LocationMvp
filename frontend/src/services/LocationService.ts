@@ -3,6 +3,7 @@ import type {
     Agency,
     Brand,
     Car,
+    CarAvailability,
     CarCategory,
     CarFinancing,
     CarFinancingPayload,
@@ -233,6 +234,21 @@ export const apiGetReservation = (id: number) =>
 export const apiGetReservationCalendar = (params?: Record<string, unknown>) =>
     ApiService.fetchDataWithAxios<ReservationCalendarItem[]>({
         url: '/v1/reservations/calendar',
+        method: 'get',
+        params,
+    })
+
+/**
+ * Which cars the agency is already holding for a window. One call for the
+ * whole fleet, so the booking form never probes car-by-car.
+ */
+export const apiGetCarAvailability = (params: {
+    pickup_datetime: string
+    expected_return_datetime: string
+    except_reservation_id?: number
+}) =>
+    ApiService.fetchDataWithAxios<CarAvailability>({
+        url: '/v1/reservations/car-availability',
         method: 'get',
         params,
     })

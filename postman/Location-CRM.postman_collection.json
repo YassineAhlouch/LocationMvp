@@ -622,6 +622,24 @@
           }
         },
         {
+          "name": "Check fleet availability for a window",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reservations/car-availability?pickup_datetime=2026-10-15%2010:00:00&expected_return_datetime=2026-10-20%2010:00:00",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reservations", "car-availability"],
+              "query": [
+                { "key": "pickup_datetime", "value": "2026-10-15 10:00:00" },
+                { "key": "expected_return_datetime", "value": "2026-10-20 10:00:00" },
+                { "key": "except_reservation_id", "value": "", "description": "Optional — ignore this reservation (editing an existing booking)" }
+              ]
+            },
+            "description": "Permission: reservations.view. Whole-fleet version of the availability probe: returns unavailable_car_ids plus the blocking reservations per car for the window."
+          }
+        },
+        {
           "name": "Create reservation",
           "request": {
             "method": "POST",
