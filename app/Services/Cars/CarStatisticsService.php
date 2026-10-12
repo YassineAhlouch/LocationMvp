@@ -112,10 +112,13 @@ final class CarStatisticsService
 
     private function installmentsPaid(Car $car): float
     {
+        // Settled rows count their real paid_amount; COALESCE keeps any legacy
+        // paid row (settled before paid_amount existed) valued at its schedule.
         return (float) CarInstallment::query()
             ->where('car_id', $car->id)
             ->where('status', InstallmentStatus::Paid)
-            ->sum('amount');
+            ->selectRaw('SUM(COALESCE(paid_amount, amount)) as total')
+            ->value('total');
     }
 
     /**
@@ -144,7 +147,9 @@ final class CarStatisticsService
 
         $installments = $financing->installments;
         $paid = $installments->filter(fn (CarInstallment $installment) => $installment->status->isPaid());
-        $paidAmount = $this->money((float) $paid->sum('amount'));
+        $paidAmount = $this->money((float) $paid->sum(
+            fn (CarInstallment $installment) => (float) ($installment->paid_amount ?? $installment->amount),
+        ));
         $financed = $this->money((float) $financing->financed_amount);
         $count = (int) $financing->installments_count;
         $paidCount = $paid->count();
@@ -226,11 +231,11 @@ final class CarStatisticsService
             ->where('status', InstallmentStatus::Paid)
             ->whereNotNull('paid_date')
             ->where('paid_date', '>=', $start->toDateString())
-            ->get(['paid_date', 'amount']) as $installment) {
+            ->get(['paid_date', 'amount', 'paid_amount']) as $installment) {
             $label = $installment->paid_date->format('Y-m');
 
             if (isset($index[$label])) {
-                $series[$index[$label]]['installments'] += (float) $installment->amount;
+                $series[$index[$label]]['installments'] += (float) ($installment->paid_amount ?? $installment->amount);
             }
         }
 

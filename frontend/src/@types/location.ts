@@ -761,6 +761,7 @@ export type CarInstallment = {
     installment_number: number
     due_date: string | null
     amount: number
+    paid_amount: number | null
     paid_date: string | null
     status: InstallmentStatus
     is_overdue: boolean
@@ -879,4 +880,5 @@ export type CarFinancingPayloadUpdate = Partial<CarFinancingPayload>
 export type MarkInstallmentPaidPayload = {
     paid_date?: string
     reference?: string | null
+    paid_amount?: number | null
 }

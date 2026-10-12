@@ -19,6 +19,7 @@ class MarkInstallmentPaidRequest extends FormRequest
         return [
             'paid_date' => ['sometimes', 'date'],
             'reference' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'paid_amount' => ['sometimes', 'nullable', 'numeric', 'min:0'],
         ];
     }
 }

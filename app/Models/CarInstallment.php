@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'installment_number',
     'due_date',
     'amount',
+    'paid_amount',
     'paid_date',
     'status',
     'reference',
@@ -34,6 +35,7 @@ class CarInstallment extends Model
             'due_date' => 'date',
             'paid_date' => 'date',
             'amount' => 'decimal:2',
+            'paid_amount' => 'decimal:2',
             'installment_number' => 'integer',
             'status' => InstallmentStatus::class,
         ];
@@ -67,19 +69,21 @@ class CarInstallment extends Model
     }
 
     /**
-     * Settle the installment. Committed money is immutable, so a second
-     * settlement is a no-op.
+     * Record a payment against the installment. The cash actually handed over
+     * may differ from the scheduled `amount` (a partial or negotiated payment),
+     * so it is stored separately. Calling again corrects the entry instead of
+     * being ignored.
      */
-    public function markPaid(?CarbonInterface $paidDate = null, ?string $reference = null): void
-    {
-        if ($this->status === InstallmentStatus::Paid) {
-            return;
-        }
-
+    public function markPaid(
+        ?CarbonInterface $paidDate = null,
+        ?string $reference = null,
+        ?float $paidAmount = null,
+    ): void {
         $this->forceFill([
             'status' => InstallmentStatus::Paid,
-            'paid_date' => $paidDate ?? today(),
-            'reference' => $reference ?? $this->reference,
+            'paid_date' => $paidDate ?? $this->paid_date ?? today(),
+            'reference' => $reference,
+            'paid_amount' => $paidAmount ?? $this->paid_amount ?? (float) $this->amount,
         ])->save();
     }
 }

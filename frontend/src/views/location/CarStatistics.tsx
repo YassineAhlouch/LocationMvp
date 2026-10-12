@@ -292,6 +292,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
     const [payTarget, setPayTarget] = useState<CarInstallment | null>(null)
     const [payDate, setPayDate] = useState(dayjs().format('YYYY-MM-DD'))
     const [payReference, setPayReference] = useState('')
+    const [payAmount, setPayAmount] = useState('')
     const [paying, setPaying] = useState(false)
 
     const load = useCallback(() => {
@@ -337,8 +338,25 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
         [chartData],
     )
 
+    const openPayDialog = (installment: CarInstallment) => {
+        setPayDate(installment.paid_date ?? dayjs().format('YYYY-MM-DD'))
+        setPayReference(installment.reference ?? '')
+        setPayAmount(String(installment.paid_amount ?? installment.amount))
+        setPayTarget(installment)
+    }
+
     const submitPay = async () => {
         if (!payTarget) {
+            return
+        }
+        const amount = Number(payAmount)
+        if (!Number.isFinite(amount) || amount < 0) {
+            toast.push(
+                <Notification
+                    type="danger"
+                    title="Enter a valid paid amount"
+                />,
+            )
             return
         }
         setPaying(true)
@@ -346,11 +364,16 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
             await apiPayCarInstallment(carId, payTarget.id, {
                 paid_date: payDate,
                 reference: payReference.trim() || null,
+                paid_amount: amount,
             })
             toast.push(
                 <Notification
                     type="success"
-                    title="Installment marked as paid!"
+                    title={
+                        payTarget.status === 'paid'
+                            ? 'Installment payment updated!'
+                            : 'Installment paid!'
+                    }
                 />,
             )
             setPayTarget(null)
@@ -809,6 +832,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                 <Th>#</Th>
                                 <Th>Due date</Th>
                                 <Th className="text-right">Amount</Th>
+                                <Th className="text-right">Paid amount</Th>
                                 <Th>Status</Th>
                                 <Th>Paid date</Th>
                                 <Th>Reference</Th>
@@ -820,7 +844,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                         <TBody>
                             {installments.length === 0 ? (
                                 <Tr>
-                                    <Td colSpan={canManage ? 7 : 6}>
+                                    <Td colSpan={canManage ? 8 : 7}>
                                         <span className="block py-6 text-center text-sm text-gray-400 dark:text-gray-500">
                                             No installments yet.
                                         </span>
@@ -842,6 +866,27 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                                 {MAD(installment.amount)}
                                             </span>
                                         </Td>
+                                        <Td className="text-right">
+                                            {installment.paid_amount ===
+                                            null ? (
+                                                <span className="text-gray-400">
+                                                    —
+                                                </span>
+                                            ) : (
+                                                <span
+                                                    className={`font-semibold ${
+                                                        installment.paid_amount <
+                                                        installment.amount
+                                                            ? 'text-warning'
+                                                            : 'text-success'
+                                                    }`}
+                                                >
+                                                    {MAD(
+                                                        installment.paid_amount,
+                                                    )}
+                                                </span>
+                                            )}
+                                        </Td>
                                         <Td>
                                             <Tag
                                                 className={`capitalize ${tagToneClass[installmentStatusTone[installment.status]]}`}
@@ -861,31 +906,26 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                         </Td>
                                         {canManage && (
                                             <Td className="text-right">
-                                                {installment.status ===
-                                                'paid' ? (
-                                                    <span className="text-xs text-gray-400">
-                                                        —
-                                                    </span>
-                                                ) : (
-                                                    <Button
-                                                        size="sm"
-                                                        variant="link"
-                                                        className="px-2 text-success hover:text-success"
-                                                        onClick={() => {
-                                                            setPayDate(
-                                                                dayjs().format(
-                                                                    'YYYY-MM-DD',
-                                                                ),
-                                                            )
-                                                            setPayReference('')
-                                                            setPayTarget(
-                                                                installment,
-                                                            )
-                                                        }}
-                                                    >
-                                                        Mark paid
-                                                    </Button>
-                                                )}
+                                                <Button
+                                                    size="sm"
+                                                    variant="link"
+                                                    className={
+                                                        installment.status ===
+                                                        'paid'
+                                                            ? 'px-2 text-primary hover:text-primary'
+                                                            : 'px-2 text-success hover:text-success'
+                                                    }
+                                                    onClick={() =>
+                                                        openPayDialog(
+                                                            installment,
+                                                        )
+                                                    }
+                                                >
+                                                    {installment.status ===
+                                                    'paid'
+                                                        ? 'Edit'
+                                                        : 'Mark paid'}
+                                                </Button>
                                             </Td>
                                         )}
                                     </Tr>
@@ -920,14 +960,35 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                 width={440}
             >
                 <h5 className="mb-2 text-base font-bold dark:text-gray-100">
-                    Mark installment as paid
+                    Record installment payment
                 </h5>
                 <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
                     {payTarget
-                        ? `#${payTarget.installment_number} · ${MAD(payTarget.amount)} due ${formatDate(payTarget.due_date)}`
+                        ? `#${payTarget.installment_number} · ${MAD(payTarget.amount)} scheduled · due ${formatDate(payTarget.due_date)}`
                         : ''}
                 </p>
                 <div className="space-y-4">
+                    <div>
+                        <label className="mb-1 block text-sm font-medium">
+                            Paid amount (MAD)
+                        </label>
+                        <Input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            value={payAmount}
+                            onChange={(e) => setPayAmount(e.target.value)}
+                        />
+                        {payTarget &&
+                            Number.isFinite(Number(payAmount)) &&
+                            Number(payAmount) < payTarget.amount && (
+                                <p className="mt-1 text-xs text-warning">
+                                    Less than the scheduled{' '}
+                                    {MAD(payTarget.amount)} — the difference
+                                    still counts as unpaid financing.
+                                </p>
+                            )}
+                    </div>
                     <div>
                         <label className="mb-1 block text-sm font-medium">
                             Paid date
@@ -961,10 +1022,10 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                         type="button"
                         variant="solid"
                         loading={paying}
-                        disabled={!payDate}
+                        disabled={!payDate || payAmount.trim() === ''}
                         onClick={submitPay}
                     >
-                        Mark paid
+                        Save payment
                     </Button>
                 </div>
             </Dialog>

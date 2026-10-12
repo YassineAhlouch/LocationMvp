@@ -198,6 +198,57 @@ class CarFinancingTest extends TestCase
         ]);
     }
 
+    public function test_recording_a_different_paid_amount_keeps_scheduled_amount(): void
+    {
+        $actor = $this->actor(['financing.manage']);
+        $car = $this->car();
+        $financing = CarFinancing::factory()->create([
+            'car_id' => $car->id,
+            'installments_count' => 3,
+            'installment_amount' => 10000,
+            'financed_amount' => 30000,
+        ]);
+        $installment = $financing->installments()->orderBy('installment_number')->first();
+
+        $this->actingAs($actor, 'sanctum')
+            ->postJson("/api/v1/cars/{$car->id}/installments/{$installment->id}/pay", [
+                'paid_date' => today()->toDateString(),
+                'paid_amount' => 4000,
+            ])
+            ->assertOk()
+            ->assertJsonPath('status', 'paid')
+            ->assertJsonPath('paid_amount', 4000);
+
+        $fresh = $installment->fresh();
+        $this->assertEqualsWithDelta(10000, (float) $fresh->amount, 0.01);
+        $this->assertEqualsWithDelta(4000, (float) $fresh->paid_amount, 0.01);
+    }
+
+    public function test_a_settled_installment_can_be_edited(): void
+    {
+        $actor = $this->actor(['financing.manage']);
+        $car = $this->car();
+        $financing = CarFinancing::factory()->create(['car_id' => $car->id, 'installments_count' => 2]);
+        $installment = $financing->installments()->orderBy('installment_number')->first();
+
+        $installment->markPaid(today(), 'CHQ-1', 10000.0);
+
+        $this->actingAs($actor, 'sanctum')
+            ->postJson("/api/v1/cars/{$car->id}/installments/{$installment->id}/pay", [
+                'paid_date' => today()->toDateString(),
+                'reference' => 'CHQ-2',
+                'paid_amount' => 6500,
+            ])
+            ->assertOk()
+            ->assertJsonPath('status', 'paid')
+            ->assertJsonPath('reference', 'CHQ-2')
+            ->assertJsonPath('paid_amount', 6500);
+
+        $fresh = $installment->fresh();
+        $this->assertEqualsWithDelta(6500, (float) $fresh->paid_amount, 0.01);
+        $this->assertSame('CHQ-2', $fresh->reference);
+    }
+
     public function test_paying_an_installment_from_another_car_returns_404(): void
     {
         $actor = $this->actor(['financing.manage']);

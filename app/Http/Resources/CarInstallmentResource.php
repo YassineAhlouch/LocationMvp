@@ -23,6 +23,7 @@ class CarInstallmentResource extends JsonResource
             'installment_number' => $this->installment_number,
             'due_date' => $this->due_date?->toDateString(),
             'amount' => (float) $this->amount,
+            'paid_amount' => $this->paid_amount === null ? null : (float) $this->paid_amount,
             'paid_date' => $this->paid_date?->toDateString(),
             'status' => $this->isOverdue() ? InstallmentStatus::Overdue->value : $this->status?->value,
             'is_overdue' => $this->isOverdue(),

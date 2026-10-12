@@ -37,6 +37,7 @@ class CarInstallmentFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'status' => InstallmentStatus::Paid,
             'paid_date' => now()->subDay()->toDateString(),
+            'paid_amount' => $attributes['amount'] ?? null,
         ]);
     }
 

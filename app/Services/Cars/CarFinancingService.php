@@ -72,11 +72,13 @@ final class CarFinancingService
      */
     public function markPaid(CarInstallment $installment, array $data, User $actor): CarInstallment
     {
-        $old = $installment->only(['status', 'paid_date', 'reference']);
+        $fields = ['status', 'paid_date', 'reference', 'paid_amount'];
+        $old = $installment->only($fields);
 
         $installment->markPaid(
             isset($data['paid_date']) ? Carbon::parse($data['paid_date']) : null,
             $data['reference'] ?? null,
+            isset($data['paid_amount']) ? (float) $data['paid_amount'] : null,
         );
 
         $this->logActivity(
@@ -86,7 +88,7 @@ final class CarFinancingService
             $actor,
             'Car installment paid',
             $old,
-            $installment->only(['status', 'paid_date', 'reference']),
+            $installment->only($fields),
         );
 
         return $installment;

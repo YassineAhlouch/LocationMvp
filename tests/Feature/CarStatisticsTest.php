@@ -189,6 +189,29 @@ class CarStatisticsTest extends TestCase
         $this->assertEqualsWithDelta(5000, $maintenance['paid'], 0.01);
     }
 
+    public function test_statistics_counts_the_actual_paid_amount_when_it_differs_from_the_schedule(): void
+    {
+        $actor = $this->actor(['financing.view']);
+        $car = $this->car();
+        $financing = $this->financing($car);
+
+        // First installment settled for half its scheduled 10000.
+        $first = $financing->installments()->orderBy('installment_number')->first();
+        $first->markPaid(today(), null, 5000.0);
+
+        $data = $this->actingAs($actor, 'sanctum')
+            ->getJson("/api/v1/cars/{$car->id}/statistics?months=1")
+            ->assertOk()
+            ->json();
+
+        $this->assertEqualsWithDelta(5000, $data['kpis']['installments_paid'], 0.01);
+        $this->assertEqualsWithDelta(5000, $data['financing_progress']['installments_paid_amount'], 0.01);
+        $this->assertEqualsWithDelta(75000, $data['financing_progress']['installments_remaining_amount'], 0.01);
+
+        $last = end($data['monthly_series']);
+        $this->assertEqualsWithDelta(5000, $last['installments'], 0.01);
+    }
+
     public function test_statistics_without_financing_or_reservations_is_empty_not_error(): void
     {
         $actor = $this->actor(['financing.view']);
