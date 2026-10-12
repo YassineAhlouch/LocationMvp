@@ -9,6 +9,8 @@ export type LayoutType =
     | 'seamLessSide'
     | 'duoTierHeader'
 
+export type AuthLayoutType = 'simple' | 'centred' | 'side'
+
 export type Theme = {
     themeSchema: string
     direction: Direction

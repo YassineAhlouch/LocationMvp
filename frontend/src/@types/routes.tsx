@@ -1,4 +1,4 @@
-import { LayoutType } from './theme'
+import { LayoutType, AuthLayoutType } from './theme'
 import type { LazyExoticComponent, ReactNode, JSX } from 'react'
 
 export type PageHeaderProps = {
@@ -13,6 +13,7 @@ export interface Meta {
     header?: PageHeaderProps
     footer?: boolean
     layout?: LayoutType
+    authLayout?: AuthLayoutType
 }
 
 export type RouteAccessType = 'protected' | 'auth-only' | 'public'

@@ -8,6 +8,7 @@ const authRoute: Routes = [
         component: lazy(() => import('@/views/auth/SignIn')),
         access: 'auth-only',
         meta: {
+            authLayout: 'simple',
             pageContainerType: 'gutterless',
             footer: false,
         },
