@@ -13,9 +13,13 @@ const endpointConfig = {
     users: '/v1/platform/users',
     roles: '/v1/platform/roles',
 
+    dashboardStats: '/v1/platform/dashboard/stats',
+    invoices: '/v1/platform/invoices',
+
     brands: '/v1/platform/fleet/brands',
     models: '/v1/platform/fleet/models',
     categories: '/v1/platform/fleet/categories',
+    currencies: '/v1/platform/fleet/currencies',
 }
 
 export default endpointConfig

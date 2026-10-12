@@ -5,14 +5,41 @@ import type {
     Brand,
     CarCategory,
     CarModel,
+    Currency,
+    CurrencyPayload,
     Paginated,
     PlatformAgency,
+    PlatformInvoice,
     PlatformRole,
+    PlatformStats,
     PlatformUser,
     UserPayload,
 } from '@/@types/platform'
 
 type ListParams = Record<string, unknown>
+
+/* ------------------------------------------------------------------ */
+/* Dashboard                                                           */
+/* ------------------------------------------------------------------ */
+
+export async function apiGetPlatformStats() {
+    return ApiService.fetchDataWithAxios<PlatformStats>({
+        url: endpointConfig.dashboardStats,
+        method: 'get',
+    })
+}
+
+/* ------------------------------------------------------------------ */
+/* Invoices                                                            */
+/* ------------------------------------------------------------------ */
+
+export async function apiGetInvoices(params?: ListParams) {
+    return ApiService.fetchDataWithAxios<Paginated<PlatformInvoice>>({
+        url: endpointConfig.invoices,
+        method: 'get',
+        params,
+    })
+}
 
 /* ------------------------------------------------------------------ */
 /* Agencies                                                            */
@@ -179,6 +206,44 @@ export async function apiUpdateCategory(
 export async function apiDeleteCategory(id: number) {
     return ApiService.fetchDataWithAxios<null>({
         url: `${endpointConfig.categories}/${id}`,
+        method: 'delete',
+    })
+}
+
+/* ------------------------------------------------------------------ */
+/* Currencies                                                          */
+/* ------------------------------------------------------------------ */
+
+export async function apiGetCurrencies(params?: ListParams) {
+    return ApiService.fetchDataWithAxios<Paginated<Currency>>({
+        url: endpointConfig.currencies,
+        method: 'get',
+        params,
+    })
+}
+
+export async function apiCreateCurrency(data: CurrencyPayload) {
+    return ApiService.fetchDataWithAxios<Currency>({
+        url: endpointConfig.currencies,
+        method: 'post',
+        data,
+    })
+}
+
+export async function apiUpdateCurrency(
+    id: number,
+    data: Partial<CurrencyPayload>,
+) {
+    return ApiService.fetchDataWithAxios<Currency>({
+        url: `${endpointConfig.currencies}/${id}`,
+        method: 'patch',
+        data,
+    })
+}
+
+export async function apiDeleteCurrency(id: number) {
+    return ApiService.fetchDataWithAxios<null>({
+        url: `${endpointConfig.currencies}/${id}`,
         method: 'delete',
     })
 }

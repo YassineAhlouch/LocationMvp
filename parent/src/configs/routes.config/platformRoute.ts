@@ -8,6 +8,16 @@ import type { Routes } from '@/@types/routes'
  */
 const platformRoute: Routes = [
     {
+        key: 'platform.dashboard',
+        path: `${PLATFORM_PREFIX_PATH}/`,
+        component: lazy(() => import('@/views/platform/Dashboard')),
+        access: 'protected',
+        authority: ['platform'],
+        meta: {
+            pageContainerType: 'contained',
+        },
+    },
+    {
         key: 'platform.agencies',
         path: `${PLATFORM_PREFIX_PATH}/agencies`,
         component: lazy(() => import('@/views/platform/Agencies')),
@@ -51,6 +61,26 @@ const platformRoute: Routes = [
         key: 'platform.categories',
         path: `${PLATFORM_PREFIX_PATH}/fleet/categories`,
         component: lazy(() => import('@/views/platform/CarCategories')),
+        access: 'protected',
+        authority: ['platform'],
+        meta: {
+            pageContainerType: 'contained',
+        },
+    },
+    {
+        key: 'platform.invoices',
+        path: `${PLATFORM_PREFIX_PATH}/invoices`,
+        component: lazy(() => import('@/views/platform/Invoices')),
+        access: 'protected',
+        authority: ['platform'],
+        meta: {
+            pageContainerType: 'contained',
+        },
+    },
+    {
+        key: 'platform.currencies',
+        path: `${PLATFORM_PREFIX_PATH}/fleet/currencies`,
+        component: lazy(() => import('@/views/platform/Currencies')),
         access: 'protected',
         authority: ['platform'],
         meta: {

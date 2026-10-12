@@ -15,11 +15,17 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import {
     apiCreateAgency,
+    apiGetCurrencies,
     apiGetRoles,
     apiUpdateAgency,
 } from '@/services/PlatformService'
 import apiErrorMessage from '@/utils/apiErrorMessage'
-import type { AgencyPayload, PlatformAgency, PlatformRole } from '@/@types/platform'
+import type {
+    AgencyPayload,
+    Currency,
+    PlatformAgency,
+    PlatformRole,
+} from '@/@types/platform'
 
 const schema = z.object({
     name: z.string().min(1, 'Name is required'),
@@ -32,6 +38,7 @@ const schema = z.object({
     rc: z.string().optional(),
     daily_mileage_allowance: z.coerce.number().min(0, 'Must be positive'),
     extra_mileage_fee_per_km: z.coerce.number().min(0, 'Must be positive'),
+    currency_id: z.number().nullable().optional(),
     is_active: z.boolean(),
     admin: z
         .object({
@@ -65,6 +72,7 @@ const emptyValues: AgencyFormSchema = {
     rc: '',
     daily_mileage_allowance: 250,
     extra_mileage_fee_per_km: 1,
+    currency_id: null,
     is_active: true,
     admin: {
         first_name: '',
@@ -85,6 +93,7 @@ const AgencyFormDialog = ({
     const isCreate = !agency
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [roles, setRoles] = useState<PlatformRole[]>([])
+    const [currencies, setCurrencies] = useState<Currency[]>([])
 
     const {
         control,
@@ -115,6 +124,7 @@ const AgencyFormDialog = ({
                 rc: agency.rc ?? '',
                 daily_mileage_allowance: agency.daily_mileage_allowance,
                 extra_mileage_fee_per_km: agency.extra_mileage_fee_per_km,
+                currency_id: agency.currency?.id ?? null,
                 is_active: agency.is_active,
             })
         } else {
@@ -130,12 +140,29 @@ const AgencyFormDialog = ({
         }
     }, [isOpen, isCreate])
 
+    useEffect(() => {
+        if (isOpen) {
+            apiGetCurrencies({ per_page: 100, is_active: true })
+                .then((response) => setCurrencies(response.data))
+                .catch(() => setCurrencies([]))
+        }
+    }, [isOpen])
+
     const roleOptions = useMemo(
         () =>
             roles
                 .filter((role) => role.is_active)
                 .map((role) => ({ value: role.id, label: role.name })),
         [roles],
+    )
+
+    const currencyOptions = useMemo(
+        () =>
+            currencies.map((currency) => ({
+                value: currency.id,
+                label: `${currency.code} — ${currency.name} (${currency.symbol})`,
+            })),
+        [currencies],
     )
 
     const onSubmit = async (values: AgencyFormSchema) => {
@@ -152,6 +179,7 @@ const AgencyFormDialog = ({
             rc: values.rc || null,
             daily_mileage_allowance: values.daily_mileage_allowance,
             extra_mileage_fee_per_km: values.extra_mileage_fee_per_km,
+            currency_id: values.currency_id ?? null,
             is_active: values.is_active,
         }
 
@@ -339,6 +367,35 @@ const AgencyFormDialog = ({
                                         invalid={Boolean(
                                             errors.extra_mileage_fee_per_km,
                                         )}
+                                    />
+                                )}
+                            />
+                        </FormItem>
+                        <FormItem
+                            label="Currency"
+                            extra="The unit this agency prices and invoices in."
+                        >
+                            <Controller
+                                name="currency_id"
+                                control={control}
+                                render={({ field }) => (
+                                    <Select
+                                        isSearchable
+                                        isDisabled={isSubmitting}
+                                        placeholder="Select currency"
+                                        options={currencyOptions}
+                                        value={
+                                            currencyOptions.find(
+                                                (option) =>
+                                                    option.value ===
+                                                    field.value,
+                                            ) ?? null
+                                        }
+                                        onChange={(option) =>
+                                            field.onChange(
+                                                option?.value ?? null,
+                                            )
+                                        }
                                     />
                                 )}
                             />

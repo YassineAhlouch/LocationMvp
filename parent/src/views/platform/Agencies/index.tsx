@@ -115,6 +115,14 @@ const Agencies = () => {
                 cell: ({ row }) => row.original.cars_count ?? 0,
             },
             {
+                header: 'Currency',
+                accessorKey: 'currency.code',
+                cell: ({ row }) =>
+                    row.original.currency
+                        ? `${row.original.currency.code} (${row.original.currency.symbol})`
+                        : '—',
+            },
+            {
                 header: 'Status',
                 accessorKey: 'is_active',
                 cell: ({ row }) => (

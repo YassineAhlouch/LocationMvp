@@ -6,7 +6,6 @@ import {
     getAuthOnlyRoutes,
     getPublicRoutes,
 } from '@/configs/routes.config'
-import appConfig from '@/configs/app.config'
 import { useAuth } from '@/auth'
 import { Routes, Route, Navigate } from 'react-router'
 import type { LayoutType } from '@/@types/theme'
@@ -18,8 +17,6 @@ interface ViewsProps {
 }
 
 type AllRoutesProps = ViewsProps
-
-const { authenticatedEntryPath } = appConfig
 
 const AllRoutes = (props: AllRoutesProps) => {
     const { user, authenticated } = useAuth()
@@ -41,11 +38,6 @@ const AllRoutes = (props: AllRoutesProps) => {
 
     return (
         <Routes>
-            <Route
-                path="/"
-                element={<Navigate replace to={authenticatedEntryPath} />}
-            />
-
             <Route element={<ProtectedRoute authenticated={authenticated} />}>
                 {getProtectedRoutes().map(renderRoute)}
             </Route>

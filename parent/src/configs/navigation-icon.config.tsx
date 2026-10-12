@@ -33,6 +33,8 @@ import {
     LiCalendar,
     LiWalletMoney,
     LiBarChartUp,
+    LiReceipt,
+    LiDollarCircle,
 } from '@/icons'
 import type { JSX } from 'react'
 
@@ -80,6 +82,9 @@ const navigationIcon: NavigationIcons = {
     platformBrands: <LiLayer className={CLASS_NAME} />,
     platformModels: <LiSpeedometer className={CLASS_NAME} />,
     platformCategories: <LiElement3 className={CLASS_NAME} />,
+    platformDashboard: <LiChart className={CLASS_NAME} />,
+    platformInvoices: <LiReceipt className={CLASS_NAME} />,
+    platformCurrencies: <LiDollarCircle className={CLASS_NAME} />,
     documentation: <LiFileText className={CLASS_NAME} />,
     sharedComponentDoc: <LiLayer className={CLASS_NAME} />,
     utilsDoc: <LiZapCircle className={CLASS_NAME} />,

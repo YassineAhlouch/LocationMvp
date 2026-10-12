@@ -27,6 +27,13 @@ export type PlatformAgency = {
     daily_mileage_allowance: number
     extra_mileage_fee_per_km: number
     is_active: boolean
+    currency?: {
+        id: number
+        code: string
+        name: string
+        symbol: string
+        decimals: number
+    } | null
     users_count?: number
     cars_count?: number
     created_at: string | null
@@ -44,6 +51,7 @@ export type AgencyPayload = {
     rc?: string | null
     daily_mileage_allowance?: number | null
     extra_mileage_fee_per_km?: number | null
+    currency_id?: number | null
     is_active?: boolean
     admin?: {
         first_name: string
@@ -127,4 +135,125 @@ export type CarCategory = {
     cars_count?: number
     created_at?: string | null
     updated_at?: string | null
+}
+
+export type Currency = {
+    id: number
+    code: string
+    name: string
+    symbol: string
+    decimals: number
+    is_active: boolean
+    agencies_count?: number
+    created_at?: string | null
+    updated_at?: string | null
+}
+
+export type CurrencyPayload = {
+    code: string
+    name: string
+    symbol: string
+    decimals?: number
+    is_active?: boolean
+}
+
+/* ------------------------------------------------------------------ */
+/* Dashboard + invoices                                               */
+/* ------------------------------------------------------------------ */
+
+export type PlatformStats = {
+    agencies: {
+        total: number
+        active: number
+        inactive: number
+    }
+    users: number
+    cars: number
+    clients: number
+    reservations: number
+    monthly_revenue: number
+    recent_agencies: RecentAgency[]
+}
+
+export type RecentAgency = {
+    id: number
+    name: string
+    city: string | null
+    is_active: boolean
+    users_count: number
+    cars_count: number
+    currency: {
+        id: number
+        code: string
+        symbol: string
+    } | null
+    created_at: string | null
+}
+
+export type PlatformInvoice = {
+    id: number
+    reservation_number: string
+    status: string
+    payment_status: string
+    agency: {
+        id: number
+        name: string
+        email: string | null
+        phone: string | null
+        address: string | null
+        city: string | null
+        country: string | null
+        currency: Currency | null
+    }
+    car: {
+        id: number
+        registration_number: string
+        brand: string | null
+        model: string | null
+    }
+    primary_client: InvoiceClient | null
+    secondary_client: InvoiceClient | null
+    pickup_location: string | null
+    return_location: string | null
+    pickup_datetime: string | null
+    expected_return_datetime: string | null
+    actual_return_datetime: string | null
+    daily_rate: number
+    rental_days: number
+    subtotal: number
+    discount_amount: number
+    discount_reason: string | null
+    tax_amount: number
+    deposit_amount: number
+    total_amount: number
+    paid_amount: number | null
+    balance_amount: number | null
+    extras: InvoiceExtra[]
+    payments: InvoicePayment[]
+    created_at: string | null
+}
+
+export type InvoiceClient = {
+    id: number
+    full_name: string
+    phone: string | null
+    email: string | null
+    cin: string | null
+}
+
+export type InvoiceExtra = {
+    name: string
+    quantity: number
+    unit_price: number
+    total_price: number
+}
+
+export type InvoicePayment = {
+    id: number
+    payment_date: string | null
+    amount: number
+    method: string | null
+    reference: string | null
+    status: string
+    notes: string | null
 }
