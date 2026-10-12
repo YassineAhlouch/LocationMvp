@@ -31,6 +31,9 @@ class AgencyController extends Controller
                 ->with('currency:id,code,name,symbol,decimals')
                 ->with('invoiceTemplate:id,slug,name')
                 ->withCount(['users', 'cars'])
+                ->withSum(['agencyPayments as outstanding_amount' => fn ($query) => $query->whereNull('paid_at')], 'amount')
+                ->withExists(['agencyPayments as has_overdue_payment' => fn ($query) => $query->whereNull('paid_at')->whereDate('due_date', '<', today())])
+                ->withMin(['agencyPayments as next_due_date' => fn ($query) => $query->whereNull('paid_at')], 'due_date')
                 ->when($filters['q'] ?? null, fn ($query, $term) => $query->where(function ($builder) use ($term) {
                     $like = '%'.trim($term).'%';
 

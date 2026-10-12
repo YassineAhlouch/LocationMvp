@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\ApplyAgencyScope;
 use App\Http\Middleware\EnsureActiveAccount;
+use App\Http\Middleware\EnsureAgencyCanWrite;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +28,7 @@ Route::prefix('v1')
         'auth:sanctum',
         EnsureActiveAccount::class,
         ApplyAgencyScope::class,
+        EnsureAgencyCanWrite::class,
     ])
     ->group(function () {
         require __DIR__.'/api/session.php';

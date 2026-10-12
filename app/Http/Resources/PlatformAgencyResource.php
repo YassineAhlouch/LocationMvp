@@ -44,6 +44,7 @@ class PlatformAgencyResource extends JsonResource
             ]),
             'users_count' => $this->whenCounted('users_count'),
             'cars_count' => $this->whenCounted('cars_count'),
+            'billing' => $this->billingSummary(),
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
         ];

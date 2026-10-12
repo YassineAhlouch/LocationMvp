@@ -85,6 +85,61 @@ class Agency extends Model
         return $this->hasMany(Payment::class);
     }
 
+    /**
+     * Subscription invoices the platform issues this agency (money the agency
+     * owes the platform — not the customer payments above).
+     */
+    public function agencyPayments(): HasMany
+    {
+        return $this->hasMany(AgencyPayment::class);
+    }
+
+    /**
+     * Whether the agency owes money past its due date. This is the trigger for
+     * the read-only lock enforced by EnsureAgencyCanWrite.
+     */
+    public function hasOverduePayment(): bool
+    {
+        return $this->agencyPayments()->overdue()->exists();
+    }
+
+    /**
+     * Total of every unpaid invoice (overdue or not), in the agency's currency.
+     */
+    public function outstandingAmount(): float
+    {
+        return (float) $this->agencyPayments()->unpaid()->sum('amount');
+    }
+
+    /**
+     * The soonest unpaid due date, or null when nothing is outstanding.
+     */
+    public function nextDueDate(): ?string
+    {
+        return $this->agencyPayments()
+            ->unpaid()
+            ->orderBy('due_date')
+            ->first()
+            ?->due_date
+            ?->toDateString();
+    }
+
+    /**
+     * Billing snapshot for the platform agency list/detail. Prefers aggregate
+     * attributes loaded on the query (withSum/withExists/withMin) so listing
+     * pages stay a single query, and falls back to direct queries otherwise.
+     *
+     * @return array{outstanding_amount: float, has_overdue_payment: bool, next_due_date: string|null}
+     */
+    public function billingSummary(): array
+    {
+        return [
+            'outstanding_amount' => (float) ($this->outstanding_amount ?? $this->outstandingAmount()),
+            'has_overdue_payment' => (bool) ($this->has_overdue_payment ?? $this->hasOverduePayment()),
+            'next_due_date' => $this->next_due_date ?? $this->nextDueDate(),
+        ];
+    }
+
     public function expenses(): HasMany
     {
         return $this->hasMany(CarExpense::class);

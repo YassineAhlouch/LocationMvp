@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Platform;
 use App\Enums\PaymentRecordStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
+use App\Models\AgencyPayment;
 use App\Models\Car;
 use App\Models\Client;
 use App\Models\Payment;
@@ -33,6 +34,14 @@ class DashboardController extends Controller
                 'total' => Agency::query()->count(),
                 'active' => Agency::query()->where('is_active', true)->count(),
                 'inactive' => Agency::query()->where('is_active', false)->count(),
+            ],
+            'billing' => [
+                'outstanding_total' => (float) AgencyPayment::query()->whereNull('paid_at')->sum('amount'),
+                'overdue_agencies' => Agency::query()->whereHas(
+                    'agencyPayments',
+                    fn ($query) => $query->whereNull('paid_at')->whereDate('due_date', '<', today()),
+                )->count(),
+                'collected_this_month' => $revenue,
             ],
             'users' => User::query()->count(),
             'cars' => Car::query()->count(),

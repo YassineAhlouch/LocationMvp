@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\Platform\AgencyController;
+use App\Http\Controllers\Api\V1\Platform\AgencyPaymentController;
 use App\Http\Controllers\Api\V1\Platform\AuthController;
 use App\Http\Controllers\Api\V1\Platform\BrandController;
 use App\Http\Controllers\Api\V1\Platform\CarCategoryController;
@@ -42,6 +43,15 @@ Route::prefix('v1/platform')->group(function () {
 
         // Platform dashboard KPIs.
         Route::get('dashboard/stats', [DashboardController::class, 'stats'])->name('platform.dashboard.stats');
+
+        // Subscription billing — invoices issued to agencies and their payments.
+        Route::get('agency-payments', [AgencyPaymentController::class, 'index'])->name('platform.agency-payments.index');
+        Route::post('agency-payments', [AgencyPaymentController::class, 'store'])->name('platform.agency-payments.store');
+        Route::get('agency-payments/{agency_payment}', [AgencyPaymentController::class, 'show'])->name('platform.agency-payments.show');
+        Route::patch('agency-payments/{agency_payment}', [AgencyPaymentController::class, 'update'])->name('platform.agency-payments.update');
+        Route::delete('agency-payments/{agency_payment}', [AgencyPaymentController::class, 'destroy'])->name('platform.agency-payments.destroy');
+        Route::post('agency-payments/{agency_payment}/pay', [AgencyPaymentController::class, 'pay'])->name('platform.agency-payments.pay');
+        Route::post('agency-payments/{agency_payment}/unpay', [AgencyPaymentController::class, 'unpay'])->name('platform.agency-payments.unpay');
 
         // Invoices — every reservation across (or within) an agency.
         Route::get('invoices', [InvoiceController::class, 'index'])->name('platform.invoices.index');
