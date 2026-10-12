@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\Platform\CarModelController;
 use App\Http\Controllers\Api\V1\Platform\CurrencyController;
 use App\Http\Controllers\Api\V1\Platform\DashboardController;
 use App\Http\Controllers\Api\V1\Platform\InvoiceController;
+use App\Http\Controllers\Api\V1\Platform\InvoiceTemplateController;
 use App\Http\Controllers\Api\V1\Platform\RoleController;
 use App\Http\Controllers\Api\V1\Platform\UserController;
 use App\Http\Middleware\EnsurePlatformAdmin;
@@ -44,6 +45,9 @@ Route::prefix('v1/platform')->group(function () {
 
         // Invoices — every reservation across (or within) an agency.
         Route::get('invoices', [InvoiceController::class, 'index'])->name('platform.invoices.index');
+
+        // Contract/invoice layouts agencies can be assigned.
+        Route::get('invoice-templates', [InvoiceTemplateController::class, 'index'])->name('platform.invoice-templates.index');
 
         // Staff across every agency.
         Route::get('users', [UserController::class, 'index'])->name('platform.users.index');

@@ -123,6 +123,11 @@ const Agencies = () => {
                         : '—',
             },
             {
+                header: 'Invoice template',
+                accessorKey: 'invoice_template.name',
+                cell: ({ row }) => row.original.invoice_template?.name || '—',
+            },
+            {
                 header: 'Status',
                 accessorKey: 'is_active',
                 cell: ({ row }) => (

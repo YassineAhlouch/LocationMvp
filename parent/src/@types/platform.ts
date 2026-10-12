@@ -34,6 +34,11 @@ export type PlatformAgency = {
         symbol: string
         decimals: number
     } | null
+    invoice_template?: {
+        id: number
+        slug: string
+        name: string
+    } | null
     users_count?: number
     cars_count?: number
     created_at: string | null
@@ -52,6 +57,7 @@ export type AgencyPayload = {
     daily_mileage_allowance?: number | null
     extra_mileage_fee_per_km?: number | null
     currency_id?: number | null
+    invoice_template_id?: number | null
     is_active?: boolean
     admin?: {
         first_name: string
@@ -71,6 +77,13 @@ export type PlatformRole = {
     color: string | null
     permissions: string[]
     users_count?: number
+    is_active: boolean
+}
+
+export type InvoiceTemplate = {
+    id: number
+    slug: string
+    name: string
     is_active: boolean
 }
 

@@ -32,6 +32,7 @@ class StoreAgencyRequest extends FormRequest
             'daily_mileage_allowance' => ['nullable', 'integer', 'min:0', 'max:65000'],
             'extra_mileage_fee_per_km' => ['nullable', 'numeric', 'min:0'],
             'currency_id' => ['nullable', 'integer', Rule::exists('currencies', 'id')->where('is_active', true)],
+            'invoice_template_id' => ['nullable', 'integer', Rule::exists('invoice_templates', 'id')->where('is_active', true)],
             'is_active' => ['sometimes', 'boolean'],
 
             'admin' => ['sometimes', 'array'],

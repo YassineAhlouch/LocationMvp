@@ -15,6 +15,7 @@ const endpointConfig = {
 
     dashboardStats: '/v1/platform/dashboard/stats',
     invoices: '/v1/platform/invoices',
+    invoiceTemplates: '/v1/platform/invoice-templates',
 
     brands: '/v1/platform/fleet/brands',
     models: '/v1/platform/fleet/models',

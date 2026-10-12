@@ -7,6 +7,7 @@ import type {
     CarModel,
     Currency,
     CurrencyPayload,
+    InvoiceTemplate,
     Paginated,
     PlatformAgency,
     PlatformInvoice,
@@ -100,6 +101,13 @@ export async function apiUpdateUser(id: number, data: Partial<UserPayload>) {
 export async function apiGetRoles() {
     return ApiService.fetchDataWithAxios<PlatformRole[]>({
         url: endpointConfig.roles,
+        method: 'get',
+    })
+}
+
+export async function apiGetInvoiceTemplates() {
+    return ApiService.fetchDataWithAxios<InvoiceTemplate[]>({
+        url: endpointConfig.invoiceTemplates,
         method: 'get',
     })
 }

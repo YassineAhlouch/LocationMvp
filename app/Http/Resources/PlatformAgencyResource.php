@@ -37,6 +37,11 @@ class PlatformAgencyResource extends JsonResource
                 'symbol' => $this->currency->symbol,
                 'decimals' => $this->currency->decimals,
             ]),
+            'invoice_template' => $this->whenLoaded('invoiceTemplate', fn () => $this->invoiceTemplate === null ? null : [
+                'id' => $this->invoiceTemplate->id,
+                'slug' => $this->invoiceTemplate->slug,
+                'name' => $this->invoiceTemplate->name,
+            ]),
             'users_count' => $this->whenCounted('users_count'),
             'cars_count' => $this->whenCounted('cars_count'),
             'created_at' => $this->created_at?->toIso8601String(),

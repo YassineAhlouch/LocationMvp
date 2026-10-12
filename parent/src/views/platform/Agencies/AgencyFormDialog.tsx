@@ -16,6 +16,7 @@ import { z } from 'zod'
 import {
     apiCreateAgency,
     apiGetCurrencies,
+    apiGetInvoiceTemplates,
     apiGetRoles,
     apiUpdateAgency,
 } from '@/services/PlatformService'
@@ -23,6 +24,7 @@ import apiErrorMessage from '@/utils/apiErrorMessage'
 import type {
     AgencyPayload,
     Currency,
+    InvoiceTemplate,
     PlatformAgency,
     PlatformRole,
 } from '@/@types/platform'
@@ -39,6 +41,7 @@ const schema = z.object({
     daily_mileage_allowance: z.coerce.number().min(0, 'Must be positive'),
     extra_mileage_fee_per_km: z.coerce.number().min(0, 'Must be positive'),
     currency_id: z.number().nullable().optional(),
+    invoice_template_id: z.number().nullable().optional(),
     is_active: z.boolean(),
     admin: z
         .object({
@@ -73,6 +76,7 @@ const emptyValues: AgencyFormSchema = {
     daily_mileage_allowance: 250,
     extra_mileage_fee_per_km: 1,
     currency_id: null,
+    invoice_template_id: null,
     is_active: true,
     admin: {
         first_name: '',
@@ -94,6 +98,7 @@ const AgencyFormDialog = ({
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [roles, setRoles] = useState<PlatformRole[]>([])
     const [currencies, setCurrencies] = useState<Currency[]>([])
+    const [templates, setTemplates] = useState<InvoiceTemplate[]>([])
 
     const {
         control,
@@ -125,6 +130,7 @@ const AgencyFormDialog = ({
                 daily_mileage_allowance: agency.daily_mileage_allowance,
                 extra_mileage_fee_per_km: agency.extra_mileage_fee_per_km,
                 currency_id: agency.currency?.id ?? null,
+                invoice_template_id: agency.invoice_template?.id ?? null,
                 is_active: agency.is_active,
             })
         } else {
@@ -148,6 +154,14 @@ const AgencyFormDialog = ({
         }
     }, [isOpen])
 
+    useEffect(() => {
+        if (isOpen) {
+            apiGetInvoiceTemplates()
+                .then(setTemplates)
+                .catch(() => setTemplates([]))
+        }
+    }, [isOpen])
+
     const roleOptions = useMemo(
         () =>
             roles
@@ -165,6 +179,17 @@ const AgencyFormDialog = ({
         [currencies],
     )
 
+    const templateOptions = useMemo(
+        () =>
+            templates
+                .filter((template) => template.is_active)
+                .map((template) => ({
+                    value: template.id,
+                    label: template.name,
+                })),
+        [templates],
+    )
+
     const onSubmit = async (values: AgencyFormSchema) => {
         setIsSubmitting(true)
 
@@ -180,6 +205,7 @@ const AgencyFormDialog = ({
             daily_mileage_allowance: values.daily_mileage_allowance,
             extra_mileage_fee_per_km: values.extra_mileage_fee_per_km,
             currency_id: values.currency_id ?? null,
+            invoice_template_id: values.invoice_template_id ?? null,
             is_active: values.is_active,
         }
 
@@ -386,6 +412,35 @@ const AgencyFormDialog = ({
                                         options={currencyOptions}
                                         value={
                                             currencyOptions.find(
+                                                (option) =>
+                                                    option.value ===
+                                                    field.value,
+                                            ) ?? null
+                                        }
+                                        onChange={(option) =>
+                                            field.onChange(
+                                                option?.value ?? null,
+                                            )
+                                        }
+                                    />
+                                )}
+                            />
+                        </FormItem>
+                        <FormItem
+                            label="Invoice template"
+                            extra="Contract layout used for this agency's invoices."
+                        >
+                            <Controller
+                                name="invoice_template_id"
+                                control={control}
+                                render={({ field }) => (
+                                    <Select
+                                        isSearchable
+                                        isDisabled={isSubmitting}
+                                        placeholder="Select template"
+                                        options={templateOptions}
+                                        value={
+                                            templateOptions.find(
                                                 (option) =>
                                                     option.value ===
                                                     field.value,
