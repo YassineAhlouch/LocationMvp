@@ -564,6 +564,33 @@ export type Agency = {
     invoice_template: InvoiceTemplate
 }
 
+/**
+ * Platform subscription standing for the signed-in agency (mirrors the
+ * /v1/subscription payload). `locked` means an invoice is past due and the
+ * workspace is read-only until it is paid.
+ */
+export type Subscription = {
+    locked: boolean
+    outstanding_amount: number
+    currency: {
+        code: string
+        symbol: string
+        decimals: number
+    } | null
+    next_due_date: string | null
+    invoices: SubscriptionInvoice[]
+}
+
+export type SubscriptionInvoice = {
+    id: number
+    amount: number
+    period: string | null
+    due_date: string | null
+    paid_at: string | null
+    status: 'pending' | 'overdue' | 'paid'
+    reference: string | null
+}
+
 /** Vehicle identity/specs printed on the contract (distinct from Reservation.car). */
 export type ReservationContractCar = {
     id: number | null

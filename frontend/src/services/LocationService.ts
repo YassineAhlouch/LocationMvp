@@ -1,4 +1,5 @@
 import ApiService from './ApiService'
+import { SUBSCRIPTION_SWR_KEY } from '@/constants/billing.constant'
 import type {
     Agency,
     Brand,
@@ -39,6 +40,7 @@ import type {
     RolePayload,
     StaffUser,
     StaffUserPayload,
+    Subscription,
 } from '@/@types/location'
 
 /**
@@ -270,6 +272,18 @@ export const apiGetReservationContract = (id: number) =>
 export const apiGetAgency = () =>
     ApiService.fetchDataWithAxios<Agency>({
         url: '/v1/agency',
+        method: 'get',
+    })
+
+// ---- Subscription --------------------------------------------------------
+
+/**
+ * The agency's platform billing standing (what it owes the platform and its
+ * recent invoices). Read-only; backs the workspace "please pay" banner.
+ */
+export const apiGetSubscription = () =>
+    ApiService.fetchDataWithAxios<Subscription>({
+        url: SUBSCRIPTION_SWR_KEY,
         method: 'get',
     })
 

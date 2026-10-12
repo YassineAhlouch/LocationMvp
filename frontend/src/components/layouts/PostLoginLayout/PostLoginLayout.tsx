@@ -8,6 +8,7 @@ import {
     LAYOUT_BLANK,
 } from '@/constants/theme.constant'
 import Loading from '@/components/shared/Loading'
+import SubscriptionBanner from '@/components/shared/SubscriptionBanner'
 import type { CommonProps } from '@/@types/common'
 import type { LazyExoticComponent, JSX } from 'react'
 import type { LayoutType } from '@/@types/theme'
@@ -41,7 +42,10 @@ const PostLoginLayout = ({ layoutType, children }: PostLoginLayoutProps) => {
                 </div>
             }
         >
-            <AppLayout>{children}</AppLayout>
+            <AppLayout>
+                <SubscriptionBanner />
+                {children}
+            </AppLayout>
         </Suspense>
     )
 }
