@@ -1,13 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import {
-    Button,
-    Card,
-    Dialog,
-    Form,
-    FormItem,
-    Input,
-    toast,
-} from '@/components/ui'
+import { Button, Card, Dialog, Form, FormItem, Input, Notification, toast } from '@/components/ui'
 import DataTable from '@/components/shared/DataTable'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import DebouceInput from '@/components/shared/DebouceInput'
@@ -68,9 +60,7 @@ const Brands = () => {
             setTotal(response.total)
         } catch (error) {
             toast.push(
-                <div className="text-red-600 font-medium">
-                    {apiErrorMessage(error)}
-                </div>,
+                <Notification type="danger">{apiErrorMessage(error)}</Notification>,
             )
         } finally {
             setLoading(false)
@@ -99,25 +89,19 @@ const Brands = () => {
             if (editing) {
                 await apiUpdateBrand(editing.id, values)
                 toast.push(
-                    <div className="text-emerald-600 font-medium">
-                        Brand updated
-                    </div>,
+                    <Notification type="success" title="Brand updated" />,
                 )
             } else {
                 await apiCreateBrand(values)
                 toast.push(
-                    <div className="text-emerald-600 font-medium">
-                        Brand created
-                    </div>,
+                    <Notification type="success" title="Brand created" />,
                 )
             }
             setDialogOpen(false)
             fetchData()
         } catch (error) {
             toast.push(
-                <div className="text-red-600 font-medium">
-                    {apiErrorMessage(error)}
-                </div>,
+                <Notification type="danger">{apiErrorMessage(error)}</Notification>,
             )
         } finally {
             setIsSubmitting(false)
@@ -132,18 +116,14 @@ const Brands = () => {
         try {
             await apiDeleteBrand(deleteTarget.id)
             toast.push(
-                <div className="text-emerald-600 font-medium">
-                    Brand deleted
-                </div>,
+                <Notification type="success" title="Brand deleted" />,
             )
             setDeleteTarget(null)
             fetchData()
         } catch (error) {
             setDeleteTarget(null)
             toast.push(
-                <div className="text-red-600 font-medium">
-                    {apiErrorMessage(error)}
-                </div>,
+                <Notification type="danger">{apiErrorMessage(error)}</Notification>,
             )
         }
     }

@@ -1,14 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import {
-    Button,
-    Card,
-    Dialog,
-    Form,
-    FormItem,
-    Input,
-    Select,
-    toast,
-} from '@/components/ui'
+import { Button, Card, Dialog, Form, FormItem, Input, Notification, Select, toast } from '@/components/ui'
 import DataTable from '@/components/shared/DataTable'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import DebouceInput from '@/components/shared/DebouceInput'
@@ -77,9 +68,7 @@ const CarModels = () => {
             setTotal(response.total)
         } catch (error) {
             toast.push(
-                <div className="text-red-600 font-medium">
-                    {apiErrorMessage(error)}
-                </div>,
+                <Notification type="danger">{apiErrorMessage(error)}</Notification>,
             )
         } finally {
             setLoading(false)
@@ -131,25 +120,19 @@ const CarModels = () => {
             if (editing) {
                 await apiUpdateModel(editing.id, values)
                 toast.push(
-                    <div className="text-emerald-600 font-medium">
-                        Model updated
-                    </div>,
+                    <Notification type="success" title="Model updated" />,
                 )
             } else {
                 await apiCreateModel(values)
                 toast.push(
-                    <div className="text-emerald-600 font-medium">
-                        Model created
-                    </div>,
+                    <Notification type="success" title="Model created" />,
                 )
             }
             setDialogOpen(false)
             fetchData()
         } catch (error) {
             toast.push(
-                <div className="text-red-600 font-medium">
-                    {apiErrorMessage(error)}
-                </div>,
+                <Notification type="danger">{apiErrorMessage(error)}</Notification>,
             )
         } finally {
             setIsSubmitting(false)
@@ -164,18 +147,14 @@ const CarModels = () => {
         try {
             await apiDeleteModel(deleteTarget.id)
             toast.push(
-                <div className="text-emerald-600 font-medium">
-                    Model deleted
-                </div>,
+                <Notification type="success" title="Model deleted" />,
             )
             setDeleteTarget(null)
             fetchData()
         } catch (error) {
             setDeleteTarget(null)
             toast.push(
-                <div className="text-red-600 font-medium">
-                    {apiErrorMessage(error)}
-                </div>,
+                <Notification type="danger">{apiErrorMessage(error)}</Notification>,
             )
         }
     }

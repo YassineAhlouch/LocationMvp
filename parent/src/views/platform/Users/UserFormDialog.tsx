@@ -1,14 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import {
-    Button,
-    Dialog,
-    Form,
-    FormItem,
-    Input,
-    Select,
-    Switcher,
-    toast,
-} from '@/components/ui'
+import { Button, Dialog, Form, FormItem, Input, Notification, Select, Switcher, toast } from '@/components/ui'
 import { Controller, useForm } from 'react-hook-form'
 import type { Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -164,25 +155,19 @@ const UserFormDialog = ({
             if (user) {
                 await apiUpdateUser(user.id, payload)
                 toast.push(
-                    <div className="text-emerald-600 font-medium">
-                        User updated
-                    </div>,
+                    <Notification type="success" title="User updated" />,
                 )
             } else {
                 await apiCreateUser(payload)
                 toast.push(
-                    <div className="text-emerald-600 font-medium">
-                        User created
-                    </div>,
+                    <Notification type="success" title="User created" />,
                 )
             }
             onSaved()
             onClose()
         } catch (error) {
             toast.push(
-                <div className="text-red-600 font-medium">
-                    {apiErrorMessage(error)}
-                </div>,
+                <Notification type="danger">{apiErrorMessage(error)}</Notification>,
             )
         } finally {
             setIsSubmitting(false)

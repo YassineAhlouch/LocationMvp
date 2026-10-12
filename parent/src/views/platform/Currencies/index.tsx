@@ -1,15 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import {
-    Button,
-    Card,
-    Dialog,
-    Form,
-    FormItem,
-    Input,
-    Select,
-    Switcher,
-    toast,
-} from '@/components/ui'
+import { Button, Card, Dialog, Form, FormItem, Input, Notification, Select, Switcher, toast } from '@/components/ui'
 import DataTable from '@/components/shared/DataTable'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import DebouceInput from '@/components/shared/DebouceInput'
@@ -95,9 +85,7 @@ const Currencies = () => {
             setTotal(response.total)
         } catch (error) {
             toast.push(
-                <div className="text-red-600 font-medium">
-                    {apiErrorMessage(error)}
-                </div>,
+                <Notification type="danger">{apiErrorMessage(error)}</Notification>,
             )
         } finally {
             setLoading(false)
@@ -139,25 +127,19 @@ const Currencies = () => {
             if (editing) {
                 await apiUpdateCurrency(editing.id, payload)
                 toast.push(
-                    <div className="text-emerald-600 font-medium">
-                        Currency updated
-                    </div>,
+                    <Notification type="success" title="Currency updated" />,
                 )
             } else {
                 await apiCreateCurrency(payload)
                 toast.push(
-                    <div className="text-emerald-600 font-medium">
-                        Currency created
-                    </div>,
+                    <Notification type="success" title="Currency created" />,
                 )
             }
             setDialogOpen(false)
             fetchData()
         } catch (error) {
             toast.push(
-                <div className="text-red-600 font-medium">
-                    {apiErrorMessage(error)}
-                </div>,
+                <Notification type="danger">{apiErrorMessage(error)}</Notification>,
             )
         } finally {
             setIsSubmitting(false)
@@ -172,18 +154,14 @@ const Currencies = () => {
         try {
             await apiDeleteCurrency(deleteTarget.id)
             toast.push(
-                <div className="text-emerald-600 font-medium">
-                    Currency deleted
-                </div>,
+                <Notification type="success" title="Currency deleted" />,
             )
             setDeleteTarget(null)
             fetchData()
         } catch (error) {
             setDeleteTarget(null)
             toast.push(
-                <div className="text-red-600 font-medium">
-                    {apiErrorMessage(error)}
-                </div>,
+                <Notification type="danger">{apiErrorMessage(error)}</Notification>,
             )
         }
     }

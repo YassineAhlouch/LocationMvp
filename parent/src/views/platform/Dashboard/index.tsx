@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Card, Spinner, toast } from '@/components/ui'
+import { Card, Notification, Spinner, toast } from '@/components/ui'
 import StatisticCard from '@/components/shared/StatisticCard'
 import PageHeading from '../components/PageHeading'
 import StatusPill from '../components/StatusPill'
@@ -29,9 +29,7 @@ const Dashboard = () => {
             .then(setStats)
             .catch((error) => {
                 toast.push(
-                    <div className="text-red-600 font-medium">
-                        {apiErrorMessage(error)}
-                    </div>,
+                    <Notification type="danger">{apiErrorMessage(error)}</Notification>,
                 )
             })
             .finally(() => setLoading(false))

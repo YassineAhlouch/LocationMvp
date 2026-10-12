@@ -1,13 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import {
-    Button,
-    Card,
-    Dialog,
-    Form,
-    FormItem,
-    Input,
-    toast,
-} from '@/components/ui'
+import { Button, Card, Dialog, Form, FormItem, Input, Notification, toast } from '@/components/ui'
 import DataTable from '@/components/shared/DataTable'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import DebouceInput from '@/components/shared/DebouceInput'
@@ -69,9 +61,7 @@ const CarCategories = () => {
             setTotal(response.total)
         } catch (error) {
             toast.push(
-                <div className="text-red-600 font-medium">
-                    {apiErrorMessage(error)}
-                </div>,
+                <Notification type="danger">{apiErrorMessage(error)}</Notification>,
             )
         } finally {
             setLoading(false)
@@ -109,25 +99,19 @@ const CarCategories = () => {
             if (editing) {
                 await apiUpdateCategory(editing.id, payload)
                 toast.push(
-                    <div className="text-emerald-600 font-medium">
-                        Category updated
-                    </div>,
+                    <Notification type="success" title="Category updated" />,
                 )
             } else {
                 await apiCreateCategory(payload)
                 toast.push(
-                    <div className="text-emerald-600 font-medium">
-                        Category created
-                    </div>,
+                    <Notification type="success" title="Category created" />,
                 )
             }
             setDialogOpen(false)
             fetchData()
         } catch (error) {
             toast.push(
-                <div className="text-red-600 font-medium">
-                    {apiErrorMessage(error)}
-                </div>,
+                <Notification type="danger">{apiErrorMessage(error)}</Notification>,
             )
         } finally {
             setIsSubmitting(false)
@@ -142,18 +126,14 @@ const CarCategories = () => {
         try {
             await apiDeleteCategory(deleteTarget.id)
             toast.push(
-                <div className="text-emerald-600 font-medium">
-                    Category deleted
-                </div>,
+                <Notification type="success" title="Category deleted" />,
             )
             setDeleteTarget(null)
             fetchData()
         } catch (error) {
             setDeleteTarget(null)
             toast.push(
-                <div className="text-red-600 font-medium">
-                    {apiErrorMessage(error)}
-                </div>,
+                <Notification type="danger">{apiErrorMessage(error)}</Notification>,
             )
         }
     }

@@ -1,14 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import {
-    Button,
-    Dialog,
-    Form,
-    FormItem,
-    Input,
-    Select,
-    Switcher,
-    toast,
-} from '@/components/ui'
+import { Button, Dialog, Form, FormItem, Input, Notification, Select, Switcher, toast } from '@/components/ui'
 import { Controller, useForm } from 'react-hook-form'
 import type { Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -225,25 +216,19 @@ const AgencyFormDialog = ({
             if (agency) {
                 await apiUpdateAgency(agency.id, payload)
                 toast.push(
-                    <div className="text-emerald-600 font-medium">
-                        Agency updated
-                    </div>,
+                    <Notification type="success" title="Agency updated" />,
                 )
             } else {
                 await apiCreateAgency(payload)
                 toast.push(
-                    <div className="text-emerald-600 font-medium">
-                        Agency created
-                    </div>,
+                    <Notification type="success" title="Agency created" />,
                 )
             }
             onSaved()
             onClose()
         } catch (error) {
             toast.push(
-                <div className="text-red-600 font-medium">
-                    {apiErrorMessage(error)}
-                </div>,
+                <Notification type="danger">{apiErrorMessage(error)}</Notification>,
             )
         } finally {
             setIsSubmitting(false)
@@ -397,10 +382,7 @@ const AgencyFormDialog = ({
                                 )}
                             />
                         </FormItem>
-                        <FormItem
-                            label="Currency"
-                            extra="The unit this agency prices and invoices in."
-                        >
+                        <FormItem label="Currency">
                             <Controller
                                 name="currency_id"
                                 control={control}
@@ -426,10 +408,7 @@ const AgencyFormDialog = ({
                                 )}
                             />
                         </FormItem>
-                        <FormItem
-                            label="Invoice template"
-                            extra="Contract layout used for this agency's invoices."
-                        >
+                        <FormItem label="Invoice template">
                             <Controller
                                 name="invoice_template_id"
                                 control={control}

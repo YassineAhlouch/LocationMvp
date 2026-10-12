@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Button, Card, Select, toast } from '@/components/ui'
+import { Button, Card, Notification, Select, toast } from '@/components/ui'
 import DataTable from '@/components/shared/DataTable'
 import DebouceInput from '@/components/shared/DebouceInput'
 import PageHeading from '../components/PageHeading'
@@ -43,9 +43,7 @@ const Agencies = () => {
             setTotal(response.total)
         } catch (error) {
             toast.push(
-                <div className="text-red-600 font-medium">
-                    {apiErrorMessage(error)}
-                </div>,
+                <Notification type="danger">{apiErrorMessage(error)}</Notification>,
             )
         } finally {
             setLoading(false)
