@@ -1,0 +1,43 @@
+{
+  "component_id": "hook-randomcolor-001",
+  "name": "useRandomColor",
+  "display_name": "Random Color Generator Hook",
+  "category": "Hooks / Styling",
+  "import_path": "@/utils/hooks/useRandomColor",
+  "description": "A hook that generates consistent random colors from a predefined palette based on string input, useful for avatars and tags.",
+  "usage_guidelines": [
+    "Use for generating consistent colors for user avatars without images.",
+    "Use for tag/label color assignment.",
+    "Same input string always returns same color (deterministic).",
+    "Returns both background and text color classes."
+  ],
+  "params": [],
+  "return_value": {
+    "type": "(name: string) => {background: string, text: string}",
+    "description": "Function that generates color object based on input string.",
+    "structure": {
+      "background": {
+        "type": "string",
+        "description": "Tailwind CSS background color classes."
+      },
+      "text": {
+        "type": "string",
+        "description": "Tailwind CSS text color classes."
+      }
+    }
+  },
+  "best_practices": {
+    "Do": [
+      "Use for avatar backgrounds",
+      "Use for tag/label colors",
+      "Use consistent input for same entity",
+      "Apply both background and text classes",
+      "Use for visual differentiation"
+    ],
+    "Dont": [
+      "Don't use for critical color coding",
+      "Don't expect specific colors for inputs",
+      "Don't use for accessibility-critical elements"
+    ]
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "component_id": "toast-001",
+  "name": "toast",
+  "display_name": "Toast Notification System",
+  "category": "Feedback / Notifications",
+  "import_path": "@/components/ui/toast",
+  "description": "A programmatic toast notification system for displaying temporary messages with customizable placement, transitions, and auto-dismiss functionality.",
+  "usage_guidelines": [
+    "Use for non-intrusive feedback messages (success, errors, info).",
+    "Call toast.push() to show notifications programmatically.",
+    "Customize placement (top-start, top-end, bottom-start, etc.).",
+    "Set block: true for full-width toasts.",
+    "Use toast.remove() or toast.removeAll() for manual dismissal.",
+    "Toasts auto-dismiss based on Notification component duration."
+  ],
+  "params": [],
+  "return_value": {
+    "type": "Toast",
+    "description": "Toast API object with methods for managing notifications.",
+    "structure": {
+      "push": {
+        "type": "(message: ReactNode, options?: ToastProps) => Promise<string | undefined>",
+        "description": "Displays a toast notification. Returns toast key for later removal."
+      },
+      "remove": {
+        "type": "(key: string) => void",
+        "description": "Removes specific toast by key."
+      },
+      "removeAll": {
+        "type": "() => void",
+        "description": "Removes all active toasts."
+      }
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with Framer Motion",
+    "visual_description": "Toasts appear at specified screen corners with smooth scale or fade animations. Multiple toasts stack vertically with spacing. Supports full-width block mode."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for temporary feedback messages",
+      "Choose appropriate placement for context",
+      "Use Notification component as message content",
+      "Set reasonable durations",
+      "Remove toasts on navigation if needed",
+      "Use block mode for important messages"
+    ],
+    "Dont": [
+      "Don't use for critical errors (use Dialog)",
+      "Don't show too many toasts simultaneously",
+      "Don't use for permanent information",
+      "Don't forget to handle toast removal",
+      "Don't block user interactions"
+    ]
+  },
+  "code_examples": {
+    "AlertToast": {
+      "title": "Alert Toast",
+      "code": "import Alert from '@/components/ui/Alert'\nimport toast from '@/components/ui/toast'\nimport Button from '@/components/ui/Button'\n\nconst AlertToast = () => {\n    function blockAlert() {\n        toast.push(\n            <Alert\n                showIcon\n                closable\n                type=\"success\"\n                className=\"dark:bg-gray-700\"\n            >\n                Success\n            </Alert>,\n            {\n                offsetX: 0,\n                offsetY: 0,\n                transitionType: 'fade',\n                block: true,\n            },\n        )\n    }\n\n    return (\n        <div>\n            <Button className=\"mr-2\" onClick={blockAlert}>\n                Show Alert\n            </Button>\n        </div>\n    )\n}\n\nexport default AlertToast"
+    },
+    "Closable": {
+      "title": "Closable",
+      "code": "import toast from '@/components/ui/toast'\nimport Button from '@/components/ui/Button'\nimport Notification from '@/components/ui/Notification'\n\nconst Closable = () => {\n    const toastNotification = (\n        <Notification closable title=\"Message\">\n            The fat cat sat on the mat bat away with paws annoy owner.\n        </Notification>\n    )\n\n    function openNotification() {\n        toast.push(toastNotification)\n    }\n\n    return (\n        <div>\n            <Button onClick={openNotification}>Show toast</Button>\n        </div>\n    )\n}\n\nexport default Closable"
+    },
+    "CustomClose": {
+      "title": "Custom Close",
+      "code": "import toast from '@/components/ui/toast'\nimport Button from '@/components/ui/Button'\nimport Notification from '@/components/ui/Notification'\n\nconst CustomClose = () => {\n    function closeNotification(key: string | Promise<string>) {\n        if (typeof key !== 'string') {\n            key.then((resolvedValue) => {\n                toast.remove(resolvedValue)\n            })\n        } else {\n            toast.remove(key)\n        }\n    }\n\n    function openNotification() {\n        const notificationKey = toast.push(\n            <Notification title=\"Message\" duration={0}>\n                <div>\n                    The fat cat sat on the mat bat away with paws annoy owner.\n                </div>\n                <div className=\"text-right mt-3\">\n                    <Button\n                        size=\"sm\"\n                        variant=\"solid\"\n                        className=\"mr-2\"\n                        onClick={() =>\n                            closeNotification(notificationKey as string | Promise<string>)\n                        }\n                    >\n                        Confirm\n                    </Button>\n                    <Button\n                        size=\"sm\"\n                        onClick={() =>\n                            closeNotification(notificationKey as string | Promise<string>)\n                        }\n                    >\n                        Close\n                    </Button>\n                </div>\n            </Notification>\n        )\n    }\n\n    return <Button onClick={openNotification}>Show toast</Button>\n}\n\nexport default CustomClose"
+    },
+    "CustomIcon": {
+      "title": "Custom Icon",
+      "code": "import toast from '@/components/ui/toast'\nimport Button from '@/components/ui/Button'\nimport Notification from '@/components/ui/Notification'\nimport Avatar from '@/components/ui/Avatar'\nimport { HiOutlineGift } from 'react-icons/hi'\n\nconst CustomIcon = () => {\n    const notificationWithIcon = (\n        <Notification\n            title=\"You received a Gift!\"\n            customIcon={<HiOutlineGift className=\"text-2xl\" />}\n        >\n            Something you may like.\n        </Notification>\n    )\n\n    const notificationWithAvatar = (\n        <Notification\n            title=\"Emily Gale\"\n            titleClass=\"mb-0 text-sm font-bold\"\n            customIcon={\n                <Avatar shape=\"circle\" src=\"/img/avatars/thumb-1.jpg\" />\n            }\n        >\n            Sent you a friend request.\n        </Notification>\n    )\n\n    function openNotification(type: string) {\n        toast.push(\n            type === 'icon' ? notificationWithIcon : notificationWithAvatar,\n        )\n    }\n\n    return (\n        <div>\n            <Button className=\"mr-2\" onClick={() => openNotification('icon')}>\n                Custom icon\n            </Button>\n            <Button onClick={() => openNotification('avatar')}>Avatar</Button>\n        </div>\n    )\n}\n\nexport default CustomIcon"
+    },
+    "Duration": {
+      "title": "Duration",
+      "code": "import toast from '@/components/ui/toast'\nimport Button from '@/components/ui/Button'\nimport Notification from '@/components/ui/Notification'\n\nconst Duration = () => {\n    function notificationNeverClose() {\n        toast.push(\n            <Notification closable type=\"success\" duration={0}>\n                Success\n            </Notification>,\n        )\n    }\n\n    function closeAfter2000ms() {\n        toast.push(\n            <Notification closable type=\"success\" duration={2000}>\n                Success\n            </Notification>,\n        )\n    }\n\n    return (\n        <div>\n            <Button className=\"mr-2\" onClick={notificationNeverClose}>\n                Persist\n            </Button>\n            <Button className=\"mr-2\" onClick={closeAfter2000ms}>\n                Close after 2s\n            </Button>\n        </div>\n    )\n}\n\nexport default Duration"
+    },
+    "Notification": {
+      "title": "Notification",
+      "code": "import toast from '@/components/ui/toast'\nimport Button from '@/components/ui/Button'\nimport Notification from '@/components/ui/Notification'\n\nconst Basic = () => {\n    const toastNotification = (\n        <Notification title=\"Message\">\n            The fat cat sat on the mat bat away with paws annoy owner.\n        </Notification>\n    )\n\n    function openNotification() {\n        toast.push(toastNotification)\n    }\n\n    return (\n        <div>\n            <Button className=\"mr-2 mb-2\" onClick={openNotification}>\n                Show toast\n            </Button>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "NotificationType": {
+      "title": "Notification Type",
+      "code": "import toast from '@/components/ui/toast'\nimport Button from '@/components/ui/Button'\nimport Notification from '@/components/ui/Notification'\n\nconst NotificationType = () => {\n    const openNotification = (\n        type: 'success' | 'warning' | 'danger' | 'info'\n    ) => {\n        toast.push(\n            <Notification\n                title={type.charAt(0).toUpperCase() + type.slice(1)}\n                type={type}\n            >\n                The fat cat sat on the mat bat away with paws annoy owner.\n            </Notification>\n        )\n    }\n\n    return (\n        <div>\n            <Button\n                className=\"mr-2 mb-2\"\n                onClick={() => openNotification('success')}\n            >\n                Success\n            </Button>\n            <Button\n                className=\"mr-2 mb-2\"\n                onClick={() => openNotification('info')}\n            >\n                Info\n            </Button>\n            <Button\n                className=\"mr-2 mb-2\"\n                onClick={() => openNotification('danger')}\n            >\n                Danger\n            </Button>\n            <Button\n                className=\"mr-2 mb-2\"\n                onClick={() => openNotification('warning')}\n            >\n                Warning\n            </Button>\n        </div>\n    )\n}\n\nexport default NotificationType"
+    },
+    "Placement": {
+      "title": "Placement",
+      "code": "import toast from '@/components/ui/toast'\nimport Button from '@/components/ui/Button'\nimport Notification from '@/components/ui/Notification'\n\nconst Placement = () => {\n    const openNotification = (\n        placement:\n            | 'top-start'\n            | 'top-center'\n            | 'top-end'\n            | 'bottom-start'\n            | 'bottom-center'\n            | 'bottom-end'\n    ) => {\n        toast.push(<Notification type=\"success\" title=\"Message\" />, {\n            placement: placement,\n        })\n    }\n\n    return (\n        <div className=\"grid md:grid-cols-3 gap-4 max-w-xl\">\n            <Button\n                className=\"mb-2\"\n                onClick={() => openNotification('top-start')}\n            >\n                Top Start\n            </Button>\n            <Button\n                className=\"mb-2\"\n                onClick={() => openNotification('top-center')}\n            >\n                Top Center\n            </Button>\n            <Button\n                className=\"mb-2\"\n                onClick={() => openNotification('top-end')}\n            >\n                Top End\n            </Button>\n            <Button\n                className=\"mb-2\"\n                onClick={() => openNotification('bottom-start')}\n            >\n                Bottom Start\n            </Button>\n            <Button\n                className=\"mb-2\"\n                onClick={() => openNotification('bottom-center')}\n            >\n                Bottom Center\n            </Button>\n            <Button\n                className=\"mb-2\"\n                onClick={() => openNotification('bottom-end')}\n            >\n                Bottom End\n            </Button>\n        </div>\n    )\n}\n\nexport default Placement"
+    }
+  }
+}

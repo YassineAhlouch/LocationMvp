@@ -1,0 +1,39 @@
+{
+  "component_id": "hook-scrolltop-001",
+  "name": "useScrollTop",
+  "display_name": "Scroll Position Hook",
+  "category": "Hooks / Scroll",
+  "import_path": "@/utils/hooks/useScrollTop",
+  "description": "A hook that tracks whether the page has been scrolled from the top, useful for sticky headers and scroll-based UI changes.",
+  "usage_guidelines": [
+    "Use for sticky header behavior.",
+    "Use for showing/hiding scroll-to-top buttons.",
+    "Use for scroll-based UI transitions.",
+    "Automatically cleans up scroll listener on unmount."
+  ],
+  "params": [],
+  "return_value": {
+    "type": "{isSticky: boolean}",
+    "description": "Object containing scroll state.",
+    "structure": {
+      "isSticky": {
+        "type": "boolean",
+        "description": "True if page has been scrolled (scrollY > 0), false otherwise."
+      }
+    }
+  },
+  "best_practices": {
+    "Do": [
+      "Use for sticky headers",
+      "Use for scroll-to-top buttons",
+      "Use for scroll-based animations",
+      "Combine with CSS transitions",
+      "Throttle expensive operations"
+    ],
+    "Dont": [
+      "Don't trigger expensive operations on every scroll",
+      "Don't forget to handle mobile scroll behavior",
+      "Don't use for precise scroll position tracking"
+    ]
+  }
+}

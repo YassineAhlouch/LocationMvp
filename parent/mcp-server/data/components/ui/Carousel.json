@@ -1,0 +1,219 @@
+{
+  "component_id": "carousel-001",
+  "name": "Carousel",
+  "display_name": "Carousel Component",
+  "category": "Data Display / Carousel",
+  "import_path": "@/components/ui/Carousel",
+  "description": "A carousel component for cycling through content with touch/drag support, keyboard navigation, and smooth animations. Built without external dependencies, following shadcn/ui patterns.",
+  "usage_guidelines": [
+    "Use to display a series of content items in a limited space.",
+    "Compose with Carousel.Content, Carousel.Item, Carousel.Previous, and Carousel.Next.",
+    "Set orientation to 'vertical' for vertical carousels.",
+    "Use opts.loop for infinite scrolling behavior.",
+    "Access carousel state via setApi callback for external control.",
+    "Use basis-* classes on Carousel.Item for multi-item views (e.g., basis-1/3)."
+  ],
+  "compound_components": {
+    "Carousel": {
+      "description": "Root component that provides carousel context and handles drag/touch interactions.",
+      "props": {
+        "orientation": {
+          "type": "'horizontal' | 'vertical'",
+          "required": false,
+          "default": "'horizontal'",
+          "description": "Direction of carousel scrolling."
+        },
+        "opts": {
+          "type": "CarouselOptions",
+          "required": false,
+          "description": "Configuration options for carousel behavior."
+        },
+        "setApi": {
+          "type": "(api: CarouselApi) => void",
+          "required": false,
+          "description": "Callback to receive carousel API for external control."
+        }
+      }
+    },
+    "Carousel.Content": {
+      "description": "Container for carousel items. Handles scroll position and snap calculations.",
+      "props": {
+        "className": {
+          "type": "string",
+          "required": false,
+          "description": "Additional CSS classes. Use negative margin to adjust item spacing (e.g., -ml-4)."
+        }
+      }
+    },
+    "Carousel.Item": {
+      "description": "Individual slide container. Use basis-* classes for multi-item views.",
+      "props": {
+        "className": {
+          "type": "string",
+          "required": false,
+          "description": "Additional CSS classes. Use basis-1/2, basis-1/3, etc. for multiple visible items."
+        }
+      }
+    },
+    "Carousel.Previous": {
+      "description": "Navigation button to go to previous slide. Auto-disables at start.",
+      "props": {
+        "variant": {
+          "type": "ButtonVariant",
+          "required": false,
+          "default": "'default'",
+          "description": "Button visual variant."
+        },
+        "size": {
+          "type": "ButtonSize",
+          "required": false,
+          "default": "'sm'",
+          "description": "Button size."
+        }
+      }
+    },
+    "Carousel.Next": {
+      "description": "Navigation button to go to next slide. Auto-disables at end.",
+      "props": {
+        "variant": {
+          "type": "ButtonVariant",
+          "required": false,
+          "default": "'default'",
+          "description": "Button visual variant."
+        },
+        "size": {
+          "type": "ButtonSize",
+          "required": false,
+          "default": "'sm'",
+          "description": "Button size."
+        }
+      }
+    }
+  },
+  "opts_options": {
+    "loop": {
+      "type": "boolean",
+      "default": "false",
+      "description": "Enable infinite loop scrolling."
+    },
+    "startIndex": {
+      "type": "number",
+      "default": "0",
+      "description": "Initial slide index."
+    },
+    "align": {
+      "type": "'start' | 'center' | 'end'",
+      "default": "'start'",
+      "description": "Alignment of slides within the viewport."
+    },
+    "dragFree": {
+      "type": "boolean",
+      "default": "false",
+      "description": "Allow free-form dragging without snapping."
+    },
+    "skipSnaps": {
+      "type": "boolean",
+      "default": "false",
+      "description": "Allow skipping multiple snaps with fast swipes."
+    }
+  },
+  "api_interface": {
+    "scrollPrev": {
+      "type": "() => void",
+      "description": "Navigate to previous slide."
+    },
+    "scrollNext": {
+      "type": "() => void",
+      "description": "Navigate to next slide."
+    },
+    "scrollTo": {
+      "type": "(index: number) => void",
+      "description": "Navigate to specific slide by index."
+    },
+    "canScrollPrev": {
+      "type": "boolean",
+      "description": "Whether previous navigation is available."
+    },
+    "canScrollNext": {
+      "type": "boolean",
+      "description": "Whether next navigation is available."
+    },
+    "selectedIndex": {
+      "type": "number",
+      "description": "Current active slide index."
+    },
+    "scrollSnapCount": {
+      "type": "number",
+      "description": "Total number of snap positions."
+    }
+  },
+  "features": [
+    "Touch and mouse drag support with velocity-based scrolling",
+    "Keyboard navigation (Arrow keys)",
+    "Rubber band effect at boundaries",
+    "Smooth CSS transitions",
+    "Multi-item views with basis-* classes",
+    "Horizontal and vertical orientations",
+    "Loop mode for infinite scrolling",
+    "Accessible with ARIA attributes",
+    "No external dependencies"
+  ],
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Slides arranged in a flex container with overflow hidden. Navigation buttons positioned absolutely outside the carousel. Smooth transform transitions for slide changes."
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import Carousel from '@/components/ui/Carousel'\nimport Card from '@/components/ui/Card'\n\nconst Basic = () => {\n    return (\n        <div className=\"w-full max-w-xs mx-auto\">\n            <div className=\"relative\">\n                <Carousel>\n                    <Carousel.Content>\n                        {Array.from({ length: 5 }).map((_, index) => (\n                            <Carousel.Item key={index}>\n                                <Card className=\"p-1\">\n                                    <div className=\"flex aspect-square items-center justify-center p-6\">\n                                        <span className=\"text-4xl font-semibold\">\n                                            {index + 1}\n                                        </span>\n                                    </div>\n                                </Card>\n                            </Carousel.Item>\n                        ))}\n                    </Carousel.Content>\n                    <Carousel.Previous className=\"absolute -left-12 top-1/2 -translate-y-1/2\" />\n                    <Carousel.Next className=\"absolute -right-12 top-1/2 -translate-y-1/2\" />\n                </Carousel>\n            </div>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Loop": {
+      "title": "Loop",
+      "code": "import Carousel from '@/components/ui/Carousel'\nimport Card from '@/components/ui/Card'\n\nconst Loop = () => {\n    return (\n        <div className=\"w-full max-w-xs mx-auto\">\n            <div className=\"relative\">\n                <Carousel opts={{ loop: true }}>\n                    <Carousel.Content>\n                        {Array.from({ length: 5 }).map((_, index) => (\n                            <Carousel.Item key={index}>\n                                <Card className=\"p-1\">\n                                    <div className=\"flex aspect-square items-center justify-center p-6\">\n                                        <span className=\"text-4xl font-semibold\">\n                                            {index + 1}\n                                        </span>\n                                    </div>\n                                </Card>\n                            </Carousel.Item>\n                        ))}\n                    </Carousel.Content>\n                    <Carousel.Previous className=\"absolute -left-12 top-1/2 -translate-y-1/2\" />\n                    <Carousel.Next className=\"absolute -right-12 top-1/2 -translate-y-1/2\" />\n                </Carousel>\n            </div>\n        </div>\n    )\n}\n\nexport default Loop"
+    },
+    "Positioning": {
+      "title": "Positioning",
+      "code": "import Carousel from '@/components/ui/Carousel'\nimport Card from '@/components/ui/Card'\n\nconst Positioning = () => {\n    return (\n        <div className=\"space-y-8\">\n            {/* Default positioning (outside) */}\n            <div>\n                <h3 className=\"text-lg font-semibold mb-4\">\n                    Outside positioning (default)\n                </h3>\n                <div className=\"w-full max-w-xs mx-auto\">\n                    <div className=\"relative\">\n                        <Carousel>\n                            <Carousel.Content>\n                                {Array.from({ length: 3 }).map((_, index) => (\n                                    <Carousel.Item key={index}>\n                                        <Card className=\"p-1\">\n                                            <div className=\"flex aspect-square items-center justify-center p-6\">\n                                                <span className=\"text-4xl font-semibold\">\n                                                    {index + 1}\n                                                </span>\n                                            </div>\n                                        </Card>\n                                    </Carousel.Item>\n                                ))}\n                            </Carousel.Content>\n                            <Carousel.Previous className=\"absolute -left-12 top-1/2 -translate-y-1/2\" />\n                            <Carousel.Next className=\"absolute -right-12 top-1/2 -translate-y-1/2\" />\n                        </Carousel>\n                    </div>\n                </div>\n            </div>\n\n            {/* Inside positioning */}\n            <div>\n                <h3 className=\"text-lg font-semibold mb-4\">\n                    Inside positioning\n                </h3>\n                <div className=\"w-full max-w-xs mx-auto\">\n                    <div className=\"relative\">\n                        <Carousel>\n                            <Carousel.Content>\n                                {Array.from({ length: 3 }).map((_, index) => (\n                                    <Carousel.Item key={index}>\n                                        <Card className=\"p-1\">\n                                            <div className=\"flex aspect-square items-center justify-center p-6\">\n                                                <span className=\"text-4xl font-semibold\">\n                                                    {index + 1}\n                                                </span>\n                                            </div>\n                                        </Card>\n                                    </Carousel.Item>\n                                ))}\n                            </Carousel.Content>\n                            <Carousel.Previous className=\"absolute left-2 top-1/2 -translate-y-1/2 z-10\" />\n                            <Carousel.Next className=\"absolute right-2 top-1/2 -translate-y-1/2 z-10\" />\n                        </Carousel>\n                    </div>\n                </div>\n            </div>\n\n            {/* Bottom positioning */}\n            <div>\n                <h3 className=\"text-lg font-semibold mb-4\">\n                    Bottom positioning\n                </h3>\n                <div className=\"w-full max-w-xs mx-auto\">\n                    <div className=\"relative\">\n                        <Carousel>\n                            <Carousel.Content>\n                                {Array.from({ length: 3 }).map((_, index) => (\n                                    <Carousel.Item key={index}>\n                                        <Card className=\"p-1\">\n                                            <div className=\"flex aspect-square items-center justify-center p-6\">\n                                                <span className=\"text-4xl font-semibold\">\n                                                    {index + 1}\n                                                </span>\n                                            </div>\n                                        </Card>\n                                    </Carousel.Item>\n                                ))}\n                            </Carousel.Content>\n                            <div className=\"flex justify-center gap-2 mt-4\">\n                                <Carousel.Previous />\n                                <Carousel.Next />\n                            </div>\n                        </Carousel>\n                    </div>\n                </div>\n            </div>\n\n            {/* Custom styling */}\n            <div>\n                <h3 className=\"text-lg font-semibold mb-4\">Custom styling</h3>\n                <div className=\"w-full max-w-xs mx-auto\">\n                    <div className=\"relative\">\n                        <Carousel>\n                            <Carousel.Content>\n                                {Array.from({ length: 3 }).map((_, index) => (\n                                    <Carousel.Item key={index}>\n                                        <Card className=\"p-1\">\n                                            <div className=\"flex aspect-square items-center justify-center p-6\">\n                                                <span className=\"text-4xl font-semibold\">\n                                                    {index + 1}\n                                                </span>\n                                            </div>\n                                        </Card>\n                                    </Carousel.Item>\n                                ))}\n                            </Carousel.Content>\n                            <Carousel.Previous\n                                className=\"absolute -left-12 top-1/2 -translate-y-1/2 bg-blue-500 hover:bg-blue-600 text-white border-blue-500\"\n                                variant=\"solid\"\n                            />\n                            <Carousel.Next\n                                className=\"absolute -right-12 top-1/2 -translate-y-1/2 bg-blue-500 hover:bg-blue-600 text-white border-blue-500\"\n                                variant=\"solid\"\n                            />\n                        </Carousel>\n                    </div>\n                </div>\n            </div>\n        </div>\n    )\n}\n\nexport default Positioning"
+    },
+    "Sizes": {
+      "title": "Sizes",
+      "code": "import Carousel from '@/components/ui/Carousel'\nimport Card from '@/components/ui/Card'\n\nconst Sizes = () => {\n    return (\n        <div className=\"w-full max-w-sm mx-auto\">\n            <div className=\"relative\">\n                <Carousel>\n                    <Carousel.Content className=\"-ml-2 md:-ml-4\">\n                        {Array.from({ length: 5 }).map((_, index) => (\n                            <Carousel.Item\n                                key={index}\n                                className=\"pl-2 md:pl-4 basis-1/2 md:basis-1/3\"\n                            >\n                                <Card>\n                                    <div className=\"flex aspect-square items-center justify-center p-6\">\n                                        <span className=\"text-3xl font-semibold\">\n                                            {index + 1}\n                                        </span>\n                                    </div>\n                                </Card>\n                            </Carousel.Item>\n                        ))}\n                    </Carousel.Content>\n                    <Carousel.Previous className=\"absolute -left-12 top-1/2 -translate-y-1/2\" />\n                    <Carousel.Next className=\"absolute -right-12 top-1/2 -translate-y-1/2\" />\n                </Carousel>\n            </div>\n        </div>\n    )\n}\n\nexport default Sizes"
+    },
+    "Vertical": {
+      "title": "Vertical",
+      "code": "import Carousel from '@/components/ui/Carousel'\nimport Card from '@/components/ui/Card'\n\nconst Vertical = () => {\n    return (\n        <div className=\"w-full max-w-xs mx-auto\">\n            <div className=\"h-[330px] py-12 relative\">\n                <Carousel orientation=\"vertical\">\n                    <Carousel.Content className=\"h-[250px]\">\n                        {Array.from({ length: 5 }).map((_, index) => (\n                            <Carousel.Item key={index} className=\"basis-full\">\n                                <Card className=\"p-1\">\n                                    <div className=\"flex h-[180px] items-center justify-center p-6\">\n                                        <span className=\"text-4xl font-semibold\">\n                                            {index + 1}\n                                        </span>\n                                    </div>\n                                </Card>\n                            </Carousel.Item>\n                        ))}\n                    </Carousel.Content>\n                    <Carousel.Previous className=\"absolute -top-12 left-1/2 -translate-x-1/2\" />\n                    <Carousel.Next className=\"absolute -bottom-12 left-1/2 -translate-x-1/2\" />\n                </Carousel>\n            </div>\n        </div>\n    )\n}\n\nexport default Vertical"
+    },
+    "WithApi": {
+      "title": "With Api",
+      "code": "import { useState, useEffect } from 'react'\nimport Carousel from '@/components/ui/Carousel'\nimport Card from '@/components/ui/Card'\nimport type { CarouselApi } from '@/components/ui/Carousel'\n\nconst WithApi = () => {\n    const [api, setApi] = useState<CarouselApi>()\n    const [current, setCurrent] = useState(0)\n    const [count, setCount] = useState(0)\n\n    useEffect(() => {\n        if (!api) return\n\n        setCount(api.scrollSnapCount)\n        setCurrent(api.selectedIndex + 1)\n    }, [api])\n\n    useEffect(() => {\n        if (api && api.selectedIndex + 1 !== current) {\n            setCurrent(api.selectedIndex + 1)\n        }\n    }, [api, current])\n\n    return (\n        <div className=\"w-full max-w-xs mx-auto\">\n            <div className=\"relative\">\n                <Carousel setApi={setApi}>\n                    <Carousel.Content>\n                        {Array.from({ length: 5 }).map((_, index) => (\n                            <Carousel.Item key={index}>\n                                <Card className=\"p-1\">\n                                    <div className=\"flex aspect-square items-center justify-center p-6\">\n                                        <span className=\"text-4xl font-semibold\">\n                                            {index + 1}\n                                        </span>\n                                    </div>\n                                </Card>\n                            </Carousel.Item>\n                        ))}\n                    </Carousel.Content>\n                    <Carousel.Previous className=\"absolute -left-12 top-1/2 -translate-y-1/2\" />\n                    <Carousel.Next className=\"absolute -right-12 top-1/2 -translate-y-1/2\" />\n                </Carousel>\n            </div>\n            <div className=\"py-2 text-center\">\n                Slide {current} of {count}\n            </div>\n        </div>\n    )\n}\n\nexport default WithApi"
+    }
+  },
+  "best_practices": {
+    "Do": [
+      "Use meaningful content that benefits from carousel presentation",
+      "Provide navigation controls for accessibility",
+      "Use appropriate basis-* classes for multi-item layouts",
+      "Handle the API callback for external state management",
+      "Consider touch users when designing interactions"
+    ],
+    "Dont": [
+      "Don't use for critical content that users might miss",
+      "Don't auto-play without user control",
+      "Don't nest carousels within carousels",
+      "Don't use too many items without pagination indicators"
+    ]
+  },
+  "accessibility": {
+    "keyboard_support": [
+      "ArrowLeft/ArrowRight: Navigate horizontal carousel",
+      "ArrowUp/ArrowDown: Navigate vertical carousel"
+    ],
+    "aria_attributes": [
+      "role=\"region\" on carousel container",
+      "aria-roledescription=\"carousel\" on container",
+      "role=\"group\" on each slide",
+      "aria-roledescription=\"slide\" on each slide",
+      "aria-label on navigation buttons"
+    ]
+  }
+}

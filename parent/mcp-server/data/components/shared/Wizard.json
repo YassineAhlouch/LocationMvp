@@ -1,0 +1,272 @@
+{
+  "component_id": "wizard-001",
+  "name": "Wizard",
+  "display_name": "Multi-Step Wizard Component",
+  "category": "Navigation / Wizards",
+  "import_path": "@/components/shared/Wizard",
+  "description": "A reusable, generic multi-step wizard component for guiding users through complex processes. Supports both horizontal and vertical layouts with smooth Framer Motion animations, click navigation between steps, custom icons, completed step indicators, and controlled component behavior. Perfect for onboarding flows, multi-step forms, and sequential processes.",
+  "usage_guidelines": [
+    "Use for multi-step forms, onboarding flows, KYC processes, or complex data entry workflows.",
+    "Control current step with current prop and handle changes via onChange callback.",
+    "Define steps using Wizard.Step compound component pattern.",
+    "Provide clear, descriptive titles for each step.",
+    "Use customIcon prop for visual step identification.",
+    "Choose vertical layout for detailed step content, horizontal for compact navigation.",
+    "Handle step validation in parent component before allowing navigation.",
+    "Use disabled prop on steps to prevent navigation to incomplete steps.",
+    "Provide navigation controls (Next/Previous buttons) in step content."
+  ],
+  "props": {
+    "current": {
+      "type": "number",
+      "required": true,
+      "description": "Currently active step index (0-based). Controls which step is displayed."
+    },
+    "onChange": {
+      "type": "(index: number) => void",
+      "required": false,
+      "description": "Callback fired when any step indicator is clicked. Receives the clicked step index."
+    },
+    "vertical": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Display steps vertically with inline content. False for horizontal slider layout."
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "Wizard.Step components defining each step of the wizard."
+    },
+    "className": {
+      "type": "string",
+      "required": false,
+      "description": "Additional CSS classes for wizard container."
+    }
+  },
+  "step_props": {
+    "title": {
+      "type": "string | ReactNode",
+      "required": true,
+      "description": "Step title displayed in the indicator. Can be string or custom React element."
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "Step content to display when step is active."
+    },
+    "customIcon": {
+      "type": "ReactNode | string",
+      "required": false,
+      "description": "Custom icon or string for step indicator. Overrides default step number. Completed steps show checkmark."
+    },
+    "className": {
+      "type": "string",
+      "required": false,
+      "description": "Additional CSS classes for step."
+    },
+    "disabled": {
+      "type": "boolean",
+      "required": false,
+      "description": "Disables step navigation. Step appears grayed out and cannot be clicked."
+    }
+  },
+  "layouts": {
+    "horizontal": {
+      "description": "Default layout with step indicators at top and content below",
+      "features": [
+        "Step indicators in horizontal row with connecting lines",
+        "Content slides horizontally like a carousel",
+        "Only active step content is visible",
+        "Compact design suitable for limited vertical space",
+        "Responsive with wrapping on small screens"
+      ],
+      "best_for": [
+        "Simple multi-step forms",
+        "Compact interfaces",
+        "Mobile-friendly wizards",
+        "Quick processes (3-5 steps)"
+      ]
+    },
+    "vertical": {
+      "description": "Vertical layout with steps stacked and content inline",
+      "features": [
+        "Steps stacked vertically with connecting lines",
+        "Content appears directly under active step title",
+        "Expand/collapse animations for step content",
+        "All step titles visible simultaneously",
+        "Better for detailed step content"
+      ],
+      "best_for": [
+        "Complex multi-step processes",
+        "Forms with extensive content per step",
+        "Desktop interfaces with vertical space",
+        "Processes requiring step overview"
+      ]
+    }
+  },
+  "step_states": {
+    "active": {
+      "description": "Current step being displayed",
+      "visual": "Primary color indicator, highlighted title, content visible",
+      "indicator": "Step number or custom icon with primary background"
+    },
+    "completed": {
+      "description": "Steps before current step (index < current)",
+      "visual": "Checkmark icon, primary color, connecting line filled",
+      "indicator": "Checkmark icon with primary background"
+    },
+    "inactive": {
+      "description": "Steps after current step (index > current)",
+      "visual": "Gray indicator, normal title, no content",
+      "indicator": "Step number or custom icon with gray background"
+    },
+    "disabled": {
+      "description": "Steps marked as disabled",
+      "visual": "Grayed out, reduced opacity, not clickable",
+      "indicator": "Gray background, cursor-not-allowed"
+    }
+  },
+  "animations": {
+    "horizontal_mode": {
+      "content_transition": "Slide horizontally with transform animations (0.5s)",
+      "easing": "Custom cubic-bezier [0.4, 0, 0.2, 1]",
+      "connector_lines": "Fill progressively with color transition (0.5s)"
+    },
+    "vertical_mode": {
+      "content_transition": "Expand/collapse with height-based animations (0.4s)",
+      "easing": "Custom cubic-bezier [0.4, 0, 0.2, 1]",
+      "connector_lines": "Fill progressively with color transition (0.5s)"
+    },
+    "step_indicators": {
+      "hover": "Scale transform (1.05x)",
+      "active": "Scale transform (1.1x) with shadow",
+      "transition": "All properties 0.3s"
+    },
+    "performance": "Uses Framer Motion with transform-based animations for optimal performance"
+  },
+  "compound_component_pattern": {
+    "description": "Uses compound component pattern with Wizard.Step",
+    "usage": "Wizard.Step components are children of Wizard component",
+    "benefits": [
+      "Clear, declarative API",
+      "Type-safe step definitions",
+      "Flexible step content",
+      "Easy to understand structure"
+    ]
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with Framer Motion",
+    "visual_description": "Step indicators show as numbered circles (or custom icons) connected by lines. Active step highlighted with primary color. Completed steps show checkmarks. Content area displays current step with smooth transitions. Vertical mode shows steps stacked with inline content. Horizontal mode shows steps in row with content below.",
+    "responsive": "Horizontal indicators wrap on small screens. Vertical layout maintains structure across breakpoints.",
+    "dark_mode": "Full dark mode support with appropriate color adjustments"
+  },
+  "best_practices": {
+    "Do": [
+      "Use controlled component pattern (manage current state in parent)",
+      "Provide clear, descriptive step titles",
+      "Validate step data before allowing navigation to next step",
+      "Use disabled prop to prevent navigation to incomplete steps",
+      "Provide Next/Previous buttons in step content for navigation",
+      "Show progress indication (e.g., 'Step 2 of 5')",
+      "Use custom icons for better visual identification",
+      "Handle form validation per step",
+      "Save progress at each step for better UX",
+      "Provide clear completion feedback on final step",
+      "Use vertical layout for complex, detailed steps",
+      "Use horizontal layout for simple, quick processes"
+    ],
+    "Dont": [
+      "Don't use for simple forms (use regular form instead)",
+      "Don't allow skipping required steps without validation",
+      "Don't forget to handle validation errors",
+      "Don't make steps too long or complex (break into smaller steps)",
+      "Don't use too many steps (optimal: 3-7 steps)",
+      "Don't forget to provide navigation controls",
+      "Don't allow navigation to disabled steps",
+      "Don't forget to handle browser back button",
+      "Don't lose user progress on page refresh (persist state)"
+    ]
+  },
+  "examples": [
+    {
+      "title": "Basic Horizontal Wizard",
+      "code": "import Wizard from '@/components/shared/Wizard';\nimport { useState } from 'react';\n\nconst MyWizard = () => {\n  const [currentStep, setCurrentStep] = useState(0);\n\n  return (\n    <Wizard current={currentStep} onChange={setCurrentStep}>\n      <Wizard.Step title=\"Personal Info\">\n        <div>\n          <h3>Enter your personal information</h3>\n          <Input label=\"Name\" />\n          <Input label=\"Email\" />\n          <Button onClick={() => setCurrentStep(1)}>Next</Button>\n        </div>\n      </Wizard.Step>\n      \n      <Wizard.Step title=\"Address\">\n        <div>\n          <h3>Enter your address</h3>\n          <Input label=\"Street\" />\n          <Input label=\"City\" />\n          <div className=\"flex gap-2\">\n            <Button onClick={() => setCurrentStep(0)}>Previous</Button>\n            <Button onClick={() => setCurrentStep(2)}>Next</Button>\n          </div>\n        </div>\n      </Wizard.Step>\n      \n      <Wizard.Step title=\"Review\">\n        <div>\n          <h3>Review your information</h3>\n          <Button onClick={() => setCurrentStep(1)}>Previous</Button>\n          <Button onClick={handleSubmit}>Submit</Button>\n        </div>\n      </Wizard.Step>\n    </Wizard>\n  );\n};"
+    },
+    {
+      "title": "Vertical Wizard with Custom Icons",
+      "code": "import Wizard from '@/components/shared/Wizard';\nimport { LuUser, LuFileText, LuCheckCircle } from 'react-icons/lu';\n\nconst KYCWizard = () => {\n  const [currentStep, setCurrentStep] = useState(0);\n\n  return (\n    <Wizard current={currentStep} vertical onChange={setCurrentStep}>\n      <Wizard.Step \n        title=\"Personal Information\" \n        customIcon={<LuUser />}\n      >\n        <PersonalInfoForm onNext={() => setCurrentStep(1)} />\n      </Wizard.Step>\n      \n      <Wizard.Step \n        title=\"Document Upload\" \n        customIcon={<LuFileText />}\n      >\n        <DocumentUploadForm \n          onPrevious={() => setCurrentStep(0)}\n          onNext={() => setCurrentStep(2)}\n        />\n      </Wizard.Step>\n      \n      <Wizard.Step \n        title=\"Verification\" \n        customIcon={<LuCheckCircle />}\n      >\n        <VerificationStep onPrevious={() => setCurrentStep(1)} />\n      </Wizard.Step>\n    </Wizard>\n  );\n};"
+    },
+    {
+      "title": "With Validation and Disabled Steps",
+      "code": "const [currentStep, setCurrentStep] = useState(0);\nconst [formData, setFormData] = useState({\n  step1Complete: false,\n  step2Complete: false\n});\n\nconst handleStepChange = (index: number) => {\n  // Validate before allowing navigation\n  if (index > currentStep) {\n    // Moving forward - check if current step is complete\n    if (currentStep === 0 && !formData.step1Complete) {\n      toast.error('Please complete step 1 first');\n      return;\n    }\n    if (currentStep === 1 && !formData.step2Complete) {\n      toast.error('Please complete step 2 first');\n      return;\n    }\n  }\n  setCurrentStep(index);\n};\n\n<Wizard current={currentStep} onChange={handleStepChange}>\n  <Wizard.Step title=\"Step 1\">\n    <Step1Form \n      onComplete={() => {\n        setFormData({ ...formData, step1Complete: true });\n        setCurrentStep(1);\n      }}\n    />\n  </Wizard.Step>\n  \n  <Wizard.Step \n    title=\"Step 2\" \n    disabled={!formData.step1Complete}\n  >\n    <Step2Form \n      onComplete={() => {\n        setFormData({ ...formData, step2Complete: true });\n        setCurrentStep(2);\n      }}\n    />\n  </Wizard.Step>\n  \n  <Wizard.Step \n    title=\"Complete\" \n    disabled={!formData.step2Complete}\n  >\n    <CompletionStep />\n  </Wizard.Step>\n</Wizard>"
+    },
+    {
+      "title": "With Progress Persistence",
+      "code": "import { useEffect } from 'react';\n\nconst [currentStep, setCurrentStep] = useState(() => {\n  // Load saved progress from localStorage\n  const saved = localStorage.getItem('wizardProgress');\n  return saved ? JSON.parse(saved).currentStep : 0;\n});\n\nconst [formData, setFormData] = useState(() => {\n  const saved = localStorage.getItem('wizardProgress');\n  return saved ? JSON.parse(saved).formData : {};\n});\n\n// Save progress whenever it changes\nuseEffect(() => {\n  localStorage.setItem('wizardProgress', JSON.stringify({\n    currentStep,\n    formData\n  }));\n}, [currentStep, formData]);\n\nconst handleComplete = () => {\n  // Clear saved progress on completion\n  localStorage.removeItem('wizardProgress');\n  // Submit form...\n};\n\n<Wizard current={currentStep} onChange={setCurrentStep}>\n  {/* Steps... */}\n</Wizard>"
+    },
+    {
+      "title": "With Custom Step Titles",
+      "code": "<Wizard current={currentStep} onChange={setCurrentStep}>\n  <Wizard.Step \n    title={\n      <div className=\"flex flex-col\">\n        <span className=\"font-semibold\">Personal Info</span>\n        <span className=\"text-xs text-gray-500\">Basic details</span>\n      </div>\n    }\n  >\n    <PersonalInfoForm />\n  </Wizard.Step>\n  \n  <Wizard.Step \n    title={\n      <div className=\"flex items-center gap-2\">\n        <span>Documents</span>\n        <Badge>Required</Badge>\n      </div>\n    }\n  >\n    <DocumentUploadForm />\n  </Wizard.Step>\n</Wizard>"
+    }
+  ],
+  "integration_notes": [
+    "Uses Framer Motion for animations (peer dependency)",
+    "Controlled component - parent manages current step state",
+    "Compound component pattern with Wizard.Step",
+    "Context-based internal state management",
+    "Animations disabled on initial mount for better UX",
+    "Click navigation on step indicators",
+    "Responsive design with proper wrapping",
+    "Full TypeScript support with exported types"
+  ],
+  "accessibility": {
+    "features": [
+      "Keyboard navigation support",
+      "ARIA attributes on interactive elements",
+      "Focus management",
+      "Screen reader compatible",
+      "Clear visual indicators for states"
+    ],
+    "recommendations": [
+      "Provide clear step titles",
+      "Include progress indication (e.g., 'Step 2 of 5')",
+      "Ensure sufficient color contrast",
+      "Test with keyboard navigation",
+      "Provide skip navigation option if appropriate",
+      "Announce step changes to screen readers"
+    ]
+  },
+  "performance_notes": [
+    "Uses transform-based animations for optimal performance",
+    "AnimatePresence for efficient mount/unmount animations",
+    "Lazy rendering - only active step content is fully rendered in horizontal mode",
+    "Memoization opportunities for step content components",
+    "Animations can be disabled by modifying animationsEnabled context value"
+  ],
+  "common_use_cases": [
+    "Multi-step registration forms",
+    "Onboarding flows",
+    "KYC (Know Your Customer) processes",
+    "Checkout processes",
+    "Survey/questionnaire flows",
+    "Setup wizards",
+    "Configuration wizards",
+    "Data import/export wizards",
+    "Tutorial/walkthrough flows"
+  ],
+  "code_examples": {
+    "Horizontal": {
+      "title": "Horizontal",
+      "code": "import { useState } from 'react'\nimport Wizard from '@/components/shared/Wizard'\nimport Button from '@/components/ui/Button'\n\nconst Horizontal = () => {\n    const [currentStep, setCurrentStep] = useState(0)\n\n    return (\n        <div className=\"w-full\">\n            <Wizard current={currentStep} onChange={setCurrentStep}>\n                <Wizard.Step title=\"Account\">\n                    <div className=\"p-4\">\n                        <h4 className=\"font-semibold mb-2\">\n                            Account Information\n                        </h4>\n                        <p className=\"text-gray-500\">\n                            Enter your account details here.\n                        </p>\n                    </div>\n                </Wizard.Step>\n                <Wizard.Step title=\"Profile\">\n                    <div className=\"p-4\">\n                        <h4 className=\"font-semibold mb-2\">Profile Setup</h4>\n                        <p className=\"text-gray-500\">\n                            Complete your profile information.\n                        </p>\n                    </div>\n                </Wizard.Step>\n                <Wizard.Step title=\"Review\">\n                    <div className=\"p-4\">\n                        <h4 className=\"font-semibold mb-2\">Review & Submit</h4>\n                        <p className=\"text-gray-500\">\n                            Review your information before submitting.\n                        </p>\n                    </div>\n                </Wizard.Step>\n            </Wizard>\n            <div className=\"flex justify-between mt-4\">\n                <Button\n                    disabled={currentStep === 0}\n                    onClick={() => setCurrentStep((prev) => prev - 1)}\n                >\n                    Previous\n                </Button>\n                <Button\n                    disabled={currentStep === 2}\n                    onClick={() => setCurrentStep((prev) => prev + 1)}\n                >\n                    Next\n                </Button>\n            </div>\n        </div>\n    )\n}\n\nexport default Horizontal"
+    },
+    "Vertical": {
+      "title": "Vertical",
+      "code": "import { useState } from 'react'\nimport Wizard from '@/components/shared/Wizard'\nimport Button from '@/components/ui/Button'\n\nconst Vertical = () => {\n    const [currentStep, setCurrentStep] = useState(0)\n\n    return (\n        <div className=\"w-full max-w-md\">\n            <Wizard current={currentStep} onChange={setCurrentStep} vertical>\n                <Wizard.Step title=\"Personal Info\">\n                    <div className=\"p-4 border border-gray-200 dark:border-gray-700 rounded-lg\">\n                        <p className=\"mb-4\">Enter your personal information.</p>\n                        <Button onClick={() => setCurrentStep(1)}>\n                            Continue\n                        </Button>\n                    </div>\n                </Wizard.Step>\n                <Wizard.Step title=\"Address\">\n                    <div className=\"p-4 border border-gray-200 dark:border-gray-700 rounded-lg\">\n                        <p className=\"mb-4\">Enter your address details.</p>\n                        <div className=\"flex gap-2\">\n                            <Button\n                                variant=\"default\"\n                                onClick={() => setCurrentStep(0)}\n                            >\n                                Back\n                            </Button>\n                            <Button onClick={() => setCurrentStep(2)}>\n                                Continue\n                            </Button>\n                        </div>\n                    </div>\n                </Wizard.Step>\n                <Wizard.Step title=\"Confirmation\">\n                    <div className=\"p-4 border border-gray-200 dark:border-gray-700 rounded-lg\">\n                        <p className=\"mb-4\">Confirm your details.</p>\n                        <div className=\"flex gap-2\">\n                            <Button\n                                variant=\"default\"\n                                onClick={() => setCurrentStep(1)}\n                            >\n                                Back\n                            </Button>\n                            <Button variant=\"solid\">Submit</Button>\n                        </div>\n                    </div>\n                </Wizard.Step>\n            </Wizard>\n        </div>\n    )\n}\n\nexport default Vertical"
+    },
+    "WithCustomIcons": {
+      "title": "With Custom Icons",
+      "code": "import { useState } from 'react'\nimport Wizard from '@/components/shared/Wizard'\nimport { LuUser, LuCreditCard, LuCheck } from 'react-icons/lu'\n\nconst WithCustomIcons = () => {\n    const [currentStep, setCurrentStep] = useState(1)\n\n    return (\n        <div className=\"w-full\">\n            <Wizard current={currentStep} onChange={setCurrentStep}>\n                <Wizard.Step\n                    title=\"Account\"\n                    customIcon={<LuUser className=\"text-sm\" />}\n                >\n                    <div className=\"p-4\">\n                        <p className=\"text-gray-500\">Account step content</p>\n                    </div>\n                </Wizard.Step>\n                <Wizard.Step\n                    title=\"Payment\"\n                    customIcon={<LuCreditCard className=\"text-sm\" />}\n                >\n                    <div className=\"p-4\">\n                        <p className=\"text-gray-500\">Payment step content</p>\n                    </div>\n                </Wizard.Step>\n                <Wizard.Step\n                    title=\"Complete\"\n                    customIcon={<LuCheck className=\"text-sm\" />}\n                    disabled\n                >\n                    <div className=\"p-4\">\n                        <p className=\"text-gray-500\">Complete step content</p>\n                    </div>\n                </Wizard.Step>\n            </Wizard>\n        </div>\n    )\n}\n\nexport default WithCustomIcons"
+    }
+  }
+}

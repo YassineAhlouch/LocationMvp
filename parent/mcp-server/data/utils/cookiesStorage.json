@@ -1,0 +1,48 @@
+{
+  "component_id": "util-cookiesstorage-001",
+  "name": "cookiesStorage",
+  "display_name": "Cookie Storage Adapter",
+  "category": "Utils / Storage",
+  "import_path": "@/utils/cookiesStorage",
+  "description": "A storage adapter implementing StateStorage interface for cookie-based persistence using js-cookie library.",
+  "usage_guidelines": [
+    "Use for persisting state in cookies (auth tokens, preferences).",
+    "Compatible with state management libraries expecting StateStorage interface.",
+    "Set appropriate expiration for cookies.",
+    "Consider cookie size limits (4KB)."
+  ],
+  "params": [],
+  "return_value": {
+    "type": "StateStorage",
+    "description": "Storage adapter object with getItem, setItem, and removeItem methods.",
+    "structure": {
+      "getItem": {
+        "type": "(name: string) => string | null",
+        "description": "Retrieves cookie value by name."
+      },
+      "setItem": {
+        "type": "(name: string, value: string, expires?: number | Date) => void",
+        "description": "Sets cookie with optional expiration (defaults to 1 day)."
+      },
+      "removeItem": {
+        "type": "(name: string) => void",
+        "description": "Removes cookie by name."
+      }
+    }
+  },
+  "best_practices": {
+    "Do": [
+      "Use for auth tokens and preferences",
+      "Set appropriate expiration times",
+      "Handle cookie size limits",
+      "Consider security (httpOnly, secure flags)",
+      "Use with state persistence libraries"
+    ],
+    "Dont": [
+      "Don't store sensitive data without encryption",
+      "Don't exceed 4KB cookie size limit",
+      "Don't forget GDPR compliance",
+      "Don't store large amounts of data"
+    ]
+  }
+}

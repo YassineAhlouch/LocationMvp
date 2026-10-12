@@ -1,0 +1,84 @@
+{
+  "component_id": "notification-001",
+  "name": "Notification",
+  "display_name": "Notification Toast Component",
+  "category": "Feedback / Notifications",
+  "import_path": "@/components/ui/Notification",
+  "description": "A notification component for displaying temporary messages with various types, custom icons, auto-dismiss functionality, and close button support.",
+  "usage_guidelines": [
+    "Use for non-intrusive feedback messages and system notifications.",
+    "Choose appropriate type (success, info, warning, danger) for message severity.",
+    "Set duration for auto-dismiss behavior (0 for persistent notifications).",
+    "Use title for notification heading and children for detailed message.",
+    "Enable closable for user-dismissible notifications."
+  ],
+  "props": {
+    "closable": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Shows close button for manual dismissal."
+    },
+    "customIcon": {
+      "type": "ReactNode | string",
+      "required": false,
+      "description": "Custom icon to replace default status icon."
+    },
+    "duration": {
+      "type": "number",
+      "required": false,
+      "default": "3000",
+      "description": "Auto-dismiss duration in milliseconds. Set to 0 for persistent."
+    },
+    "onClose": {
+      "type": "(e: MouseEvent<HTMLSpanElement>) => void",
+      "required": false,
+      "description": "Callback fired when notification is closed."
+    },
+    "title": {
+      "type": "string",
+      "required": false,
+      "description": "Notification title text."
+    },
+    "titleClass": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for the title element."
+    },
+    "triggerByToast": {
+      "type": "boolean",
+      "required": false,
+      "description": "Internal flag for toast-triggered notifications."
+    },
+    "type": {
+      "type": "'success' | 'info' | 'warning' | 'danger'",
+      "required": false,
+      "description": "Visual style indicating message severity."
+    },
+    "width": {
+      "type": "number | string",
+      "required": false,
+      "default": "350",
+      "description": "Notification width."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A rectangular card with rounded corners, status icon, title, message content, and optional close button. Positioned typically at screen corners. Includes smooth fade-out animation on dismiss."
+  },
+  "best_practices": {
+    "Do": [
+      "Use appropriate type for message severity",
+      "Keep messages concise and actionable",
+      "Set reasonable duration for readability",
+      "Use title for quick scanning",
+      "Enable closable for important messages"
+    ],
+    "Dont": [
+      "Don't use for critical errors requiring action (use Dialog instead)",
+      "Don't set very short durations users can't read",
+      "Don't stack too many notifications",
+      "Don't use for permanent information (use Alert instead)"
+    ]
+  }
+}

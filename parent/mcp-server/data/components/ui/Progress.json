@@ -1,0 +1,126 @@
+{
+  "component_id": "progress-001",
+  "name": "Progress",
+  "display_name": "Progress Indicator Component",
+  "category": "Feedback / Progress",
+  "import_path": "@/components/ui/Progress",
+  "description": "A progress indicator component supporting line and circle variants for visualizing task completion or loading states.",
+  "usage_guidelines": [
+    "Use to show progress of operations, uploads, or multi-step processes.",
+    "Choose 'line' variant for horizontal progress bars.",
+    "Choose 'circle' variant for circular progress indicators.",
+    "Set percent value between 0-100 to indicate completion.",
+    "Use showInfo to display percentage text.",
+    "Customize strokeClass for different color themes."
+  ],
+  "props": {
+    "customInfo": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Custom content to display instead of percentage."
+    },
+    "strokeClass": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for progress bar/circle color."
+    },
+    "gapDegree": {
+      "type": "number",
+      "required": false,
+      "default": "0",
+      "description": "Gap degree for circle variant (0-360)."
+    },
+    "gapPosition": {
+      "type": "'top' | 'bottom' | 'left' | 'right'",
+      "required": false,
+      "default": "'top'",
+      "description": "Position of gap in circle variant."
+    },
+    "percent": {
+      "type": "number",
+      "required": false,
+      "default": "0",
+      "description": "Progress percentage (0-100)."
+    },
+    "showInfo": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Shows percentage text."
+    },
+    "size": {
+      "type": "'sm' | 'md'",
+      "required": false,
+      "default": "'md'",
+      "description": "Progress bar size."
+    },
+    "strokeLinecap": {
+      "type": "'round' | 'square' | 'butt'",
+      "required": false,
+      "default": "'round'",
+      "description": "Shape of progress bar ends."
+    },
+    "strokeWidth": {
+      "type": "number",
+      "required": false,
+      "default": "6",
+      "description": "Width of progress stroke."
+    },
+    "width": {
+      "type": "string | number",
+      "required": false,
+      "default": "120",
+      "description": "Width for circle variant."
+    },
+    "variant": {
+      "type": "'line' | 'circle'",
+      "required": false,
+      "default": "'line'",
+      "description": "Progress indicator style."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with SVG",
+    "visual_description": "Line variant: horizontal bar with filled portion. Circle variant: circular ring with filled arc. Both use primary color by default with smooth animations."
+  },
+  "best_practices": {
+    "Do": [
+      "Update percent value smoothly for better UX",
+      "Use line variant for horizontal layouts",
+      "Use circle variant for compact spaces",
+      "Show info for user feedback",
+      "Use appropriate size for context"
+    ],
+    "Dont": [
+      "Don't update percent too frequently (causes jank)",
+      "Don't use for indeterminate loading (use Spinner)",
+      "Don't forget to handle completion state"
+    ]
+  },
+  "code_examples": {
+    "Circle": {
+      "title": "Circle",
+      "code": "import Progress from '@/components/ui/Progress'\n\nconst Circle = () => {\n    return (\n        <div className=\"md:inline-flex items-center\">\n            <Progress\n                className=\"md:mb-0 md:mr-4 mb-4\"\n                variant=\"circle\"\n                percent={40}\n            />\n            <Progress\n                variant=\"circle\"\n                percent={70}\n                gapDegree={70}\n                gapPosition=\"bottom\"\n            />\n        </div>\n    )\n}\n\nexport default Circle"
+    },
+    "Colors": {
+      "title": "Colors",
+      "code": "import Progress from '@/components/ui/Progress'\n\nconst Colors = () => {\n    return (\n        <div>\n            <Progress strokeClass=\"bg-red-500\" percent={20} className=\"mb-4\" />\n            <Progress\n                strokeClass=\"bg-green-500\"\n                percent={30}\n                className=\"mb-4\"\n            />\n        </div>\n    )\n}\n\nexport default Colors"
+    },
+    "CustomInfo": {
+      "title": "Custom Info",
+      "code": "import Progress from '@/components/ui/Progress'\nimport { HiXCircle, HiCheckCircle } from 'react-icons/hi'\n\nconst CircleCustomInfo = ({ percent }: { percent: number }) => {\n    return (\n        <div className=\"text-center\">\n            <h3>{percent}%</h3>\n            <span>completion</span>\n        </div>\n    )\n}\n\nconst CustomInfo = () => {\n    return (\n        <div className=\"md:flex items-center\">\n            <div style={{ minWidth: '50%' }} className=\"md:mb-0 mb-4 mx-6\">\n                <Progress\n                    strokeClass=\"bg-red-500\"\n                    percent={60}\n                    className=\"mb-4\"\n                    customInfo={<HiXCircle className=\"text-red-500 text-xl\" />}\n                />\n                <Progress\n                    strokeClass=\"bg-green-500\"\n                    percent={100}\n                    customInfo={\n                        <HiCheckCircle className=\"text-emerald-500 text-xl\" />\n                    }\n                />\n            </div>\n            <Progress\n                variant=\"circle\"\n                percent={40}\n                width={150}\n                customInfo={<CircleCustomInfo percent={40} />}\n            />\n        </div>\n    )\n}\n\nexport default CustomInfo"
+    },
+    "Dynamic": {
+      "title": "Dynamic",
+      "code": "import { useState, useCallback } from 'react'\nimport Progress from '@/components/ui/Progress'\nimport Button from '@/components/ui/Button'\nimport InputGroup from '@/components/ui/InputGroup'\nimport { HiPlus, HiMinus } from 'react-icons/hi'\n\nconst Dynamic = () => {\n    const [percentage, setPercentage] = useState(20)\n\n    const onIncrease = useCallback(() => {\n        let value = percentage + 10\n        if (value > 100) {\n            value = 100\n        }\n        setPercentage(value)\n    }, [percentage])\n\n    const onDecrease = useCallback(() => {\n        let value = percentage - 10\n        if (value < 0) {\n            value = 0\n        }\n        setPercentage(value)\n    }, [percentage])\n\n    return (\n        <div>\n            <InputGroup size=\"sm\">\n                <Button icon={<HiMinus />} onClick={onDecrease} />\n                <Button icon={<HiPlus />} onClick={onIncrease} />\n            </InputGroup>\n            <div className=\"mt-4 flex items-center\">\n                <Progress className=\"mx-0 md:mx-4\" percent={percentage} />\n                <Progress variant=\"circle\" percent={percentage} />\n            </div>\n        </div>\n    )\n}\n\nexport default Dynamic"
+    },
+    "ProgressBar": {
+      "title": "Progress Bar",
+      "code": "import Progress from '@/components/ui/Progress'\n\nconst ProgressBar = () => {\n    return (\n        <div>\n            <Progress percent={30} />\n        </div>\n    )\n}\n\nexport default ProgressBar"
+    },
+    "Size": {
+      "title": "Size",
+      "code": "import Progress from '@/components/ui/Progress'\n\nconst Size = () => {\n    return (\n        <div className=\"flex items-center\">\n            <Progress className=\"mx-6\" size=\"sm\" percent={60} />\n            <Progress variant=\"circle\" percent={40} width={80} />\n        </div>\n    )\n}\n\nexport default Size"
+    }
+  }
+}

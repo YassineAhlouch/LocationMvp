@@ -1,0 +1,41 @@
+{
+  "component_id": "configprovider-001",
+  "name": "ConfigProvider",
+  "display_name": "Configuration Provider Component",
+  "category": "Context / Configuration",
+  "import_path": "@/components/ui/ConfigProvider",
+  "description": "A context provider that manages global UI configuration including theme, locale, direction (RTL/LTR), and default component sizes. Wraps the entire application to provide consistent configuration.",
+  "usage_guidelines": [
+    "Wrap at the root of your application.",
+    "Use to set default size for all interactive components.",
+    "Configure direction for RTL language support.",
+    "Access configuration in child components via useConfig hook."
+  ],
+  "props": {
+    "value": {
+      "type": "Config",
+      "required": true,
+      "description": "Configuration object containing themeColor, direction, mode, locale, controlSize, and other settings."
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "Application content."
+    }
+  },
+  "styling_info": {
+    "method": "React Context",
+    "visual_description": "No visual output — provides configuration context to all child components."
+  },
+  "best_practices": {
+    "Do": [
+      "Place at application root",
+      "Use useConfig hook to access config in components",
+      "Provide all required config values"
+    ],
+    "Dont": [
+      "Don't nest multiple ConfigProviders unless intentional",
+      "Don't modify config object directly, use the store"
+    ]
+  }
+}

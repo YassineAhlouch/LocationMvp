@@ -1,0 +1,64 @@
+{
+  "component_id": "growshrinktag-001",
+  "name": "GrowShrinkTag",
+  "display_name": "Growth/Decline Indicator Tag",
+  "category": "Data Display / Indicators",
+  "import_path": "@/components/shared/GrowShrinkTag",
+  "description": "A tag component that visually indicates positive or negative changes with color coding and directional icons.",
+  "usage_guidelines": [
+    "Use for displaying percentage changes, growth metrics, or trends.",
+    "Positive values show green with up arrow, negative show red with down arrow.",
+    "Use prefix/suffix for units (%, $, etc.).",
+    "Set showIcon to false to hide directional arrows."
+  ],
+  "props": {
+    "value": {
+      "type": "number",
+      "required": false,
+      "default": "0",
+      "description": "Numeric value determining color and icon direction."
+    },
+    "showIcon": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Shows directional arrow icon."
+    },
+    "prefix": {
+      "type": "ReactNode | string",
+      "required": false,
+      "description": "Content before value."
+    },
+    "suffix": {
+      "type": "ReactNode | string",
+      "required": false,
+      "description": "Content after value (e.g., '%')."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A pill-shaped tag with success (green) background for positive values, error (red) for negative, and neutral for zero. Includes up/down arrow icons."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for metrics showing change",
+      "Add suffix for units ('%', 'pts')",
+      "Use consistent across dashboards",
+      "Show icon for clarity"
+    ],
+    "Dont": [
+      "Don't use for non-comparative data",
+      "Don't forget to format values appropriately"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import GrowShrinkTag from '@/components/shared/GrowShrinkTag'\n\nconst Basic = () => {\n    return (\n        <div className=\"flex items-center gap-4\">\n            <GrowShrinkTag value={12.5} suffix=\"%\" />\n            <GrowShrinkTag value={-8.3} suffix=\"%\" />\n            <GrowShrinkTag value={0} suffix=\"%\" />\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "WithoutIcon": {
+      "title": "Without Icon",
+      "code": "import GrowShrinkTag from '@/components/shared/GrowShrinkTag'\n\nconst WithoutIcon = () => {\n    return (\n        <div className=\"flex items-center gap-4\">\n            <GrowShrinkTag\n                value={25}\n                showIcon={false}\n                prefix=\"+\"\n                suffix=\" units\"\n            />\n            <GrowShrinkTag value={-15} showIcon={false} suffix=\" units\" />\n        </div>\n    )\n}\n\nexport default WithoutIcon"
+    }
+  }
+}

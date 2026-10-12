@@ -1,0 +1,49 @@
+{
+  "component_id": "statusicon-001",
+  "name": "StatusIcon",
+  "display_name": "Status Icon Component",
+  "category": "Data Display / Icons",
+  "import_path": "@/components/ui/StatusIcon",
+  "description": "A status icon component that displays contextual icons with appropriate colors for success, info, warning, and danger states.",
+  "usage_guidelines": [
+    "Use for displaying status indicators in alerts, notifications, and messages.",
+    "Choose appropriate type based on message severity.",
+    "Provide custom icon if default doesn't fit context.",
+    "Customize color with iconColor prop if needed."
+  ],
+  "props": {
+    "type": {
+      "type": "'success' | 'info' | 'warning' | 'danger'",
+      "required": true,
+      "description": "Status type determining icon and color."
+    },
+    "custom": {
+      "type": "ReactNode | JSX.Element",
+      "required": false,
+      "description": "Custom icon to replace default status icon."
+    },
+    "iconColor": {
+      "type": "string",
+      "required": false,
+      "description": "Custom color class to override default status color."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Icon with color matching status type: success (green), info (blue), warning (yellow), danger (red). Default size is text-xl."
+  },
+  "best_practices": {
+    "Do": [
+      "Use appropriate type for context",
+      "Use in alerts and notifications",
+      "Provide custom icons when needed",
+      "Maintain consistent icon sizing",
+      "Use with status messages"
+    ],
+    "Dont": [
+      "Don't use without context",
+      "Don't override colors arbitrarily",
+      "Don't use for decorative purposes only"
+    ]
+  }
+}

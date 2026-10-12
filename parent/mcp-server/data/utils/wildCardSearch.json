@@ -1,0 +1,52 @@
+{
+  "component_id": "util-wildcardsearch-001",
+  "name": "wildCardSearch",
+  "display_name": "Wildcard Search Utility",
+  "category": "Utils / Search & Filter",
+  "import_path": "@/utils/wildCardSearch",
+  "description": "Performs case-insensitive wildcard search across object properties, useful for filtering lists and tables.",
+  "usage_guidelines": [
+    "Use for client-side search/filter functionality.",
+    "Searches all object properties by default.",
+    "Use specifyKey to search specific property only.",
+    "Case-insensitive search for better UX."
+  ],
+  "params": [
+    {
+      "name": "list",
+      "type": "T[]",
+      "required": true,
+      "description": "Array of objects to search through."
+    },
+    {
+      "name": "input",
+      "type": "string",
+      "required": true,
+      "description": "Search query string."
+    },
+    {
+      "name": "specifyKey",
+      "type": "keyof T | string",
+      "required": false,
+      "description": "Specific object key to search in. If omitted, searches all keys."
+    }
+  ],
+  "return_value": {
+    "type": "T[]",
+    "description": "Filtered array containing only matching items."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for client-side filtering",
+      "Specify key for better performance",
+      "Handle empty search strings",
+      "Debounce search input",
+      "Show 'no results' message"
+    ],
+    "Dont": [
+      "Don't use for very large datasets (use server-side)",
+      "Don't forget to handle null values",
+      "Don't block UI during search"
+    ]
+  }
+}

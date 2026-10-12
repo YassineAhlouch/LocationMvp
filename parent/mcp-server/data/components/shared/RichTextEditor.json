@@ -1,0 +1,279 @@
+{
+  "component_id": "richtexteditor-001",
+  "name": "RichTextEditor",
+  "display_name": "Rich Text Editor Component",
+  "category": "Form Elements / Text Editor",
+  "import_path": "@/components/shared/RichTextEditor",
+  "description": "A feature-rich WYSIWYG text editor built on TipTap with StarterKit extensions. Provides formatting tools including bold, italic, strikethrough, code, headings, lists, blockquotes, code blocks, and horizontal rules. Includes built-in toolbar with undo/redo functionality and supports custom toolbar configuration.",
+  "usage_guidelines": [
+    "Use for content creation, blog posts, comments, documentation, or any rich text input needs.",
+    "Provide initial content via content prop (HTML string).",
+    "Handle content changes via onChange callback which provides text, HTML, and JSON formats.",
+    "Customize toolbar with customToolBar render prop for specific use cases.",
+    "Use customEditor prop to provide your own TipTap editor instance with custom extensions.",
+    "Set invalid prop to show error state styling.",
+    "Style editor content area with editorContentClass prop.",
+    "Access editor ref for programmatic control."
+  ],
+  "props": {
+    "content": {
+      "type": "string",
+      "required": false,
+      "default": "''",
+      "description": "Initial editor content as HTML string. Updates will sync with editor."
+    },
+    "onChange": {
+      "type": "(content: { text: string, html: string, json: JSONContent }) => void",
+      "required": false,
+      "description": "Callback fired when content changes. Receives content in three formats: plain text, HTML, and TipTap JSON."
+    },
+    "customToolBar": {
+      "type": "(editor: Editor, components: ToolButtonComponents) => ReactNode",
+      "required": false,
+      "description": "Custom toolbar renderer. Receives editor instance and all available tool button components. Return custom toolbar layout."
+    },
+    "customEditor": {
+      "type": "Editor | null",
+      "required": false,
+      "description": "Custom TipTap editor instance. Use this to provide editor with custom extensions or configuration."
+    },
+    "invalid": {
+      "type": "boolean",
+      "required": false,
+      "description": "Shows error state styling with red border and background."
+    },
+    "editorContentClass": {
+      "type": "string",
+      "required": false,
+      "description": "Additional CSS classes for editor content area."
+    },
+    "ref": {
+      "type": "Ref<HTMLDivElement>",
+      "required": false,
+      "description": "Ref to editor container div element."
+    }
+  },
+  "default_toolbar": {
+    "description": "Default toolbar includes these formatting tools",
+    "tools": [
+      "ToolButtonBold - Bold text formatting",
+      "ToolButtonItalic - Italic text formatting",
+      "ToolButtonStrike - Strikethrough text formatting",
+      "ToolButtonCode - Inline code formatting",
+      "ToolButtonBlockquote - Blockquote formatting",
+      "ToolButtonHeading - Heading levels (H1-H6) dropdown",
+      "ToolButtonBulletList - Bullet list formatting",
+      "ToolButtonOrderedList - Numbered list formatting",
+      "ToolButtonCodeBlock - Code block formatting",
+      "ToolButtonHorizontalRule - Insert horizontal rule"
+    ],
+    "note": "Undo/Redo buttons available but not included in default toolbar"
+  },
+  "available_tool_buttons": {
+    "ToolButtonBold": "Bold text formatting (Ctrl+B)",
+    "ToolButtonItalic": "Italic text formatting (Ctrl+I)",
+    "ToolButtonStrike": "Strikethrough text formatting",
+    "ToolButtonCode": "Inline code formatting",
+    "ToolButtonBlockquote": "Blockquote formatting",
+    "ToolButtonHeading": "Heading levels (H1-H6) with dropdown",
+    "ToolButtonParagraph": "Convert to paragraph",
+    "ToolButtonBulletList": "Bullet list formatting",
+    "ToolButtonOrderedList": "Numbered list formatting",
+    "ToolButtonCodeBlock": "Code block formatting",
+    "ToolButtonHorizontalRule": "Insert horizontal rule",
+    "ToolButtonUndo": "Undo last action (Ctrl+Z)",
+    "ToolButtonRedo": "Redo last undone action (Ctrl+Y)"
+  },
+  "tiptap_extensions": {
+    "StarterKit": {
+      "description": "Default TipTap extension bundle including most basic formatting",
+      "includes": [
+        "Bold",
+        "Italic",
+        "Strike",
+        "Code",
+        "Paragraph",
+        "Heading",
+        "BulletList",
+        "OrderedList",
+        "Blockquote",
+        "CodeBlock",
+        "HorizontalRule",
+        "HardBreak",
+        "History (undo/redo)",
+        "Dropcursor",
+        "Gapcursor"
+      ],
+      "configuration": {
+        "bulletList": "{ keepMarks: true } - Preserves marks when creating lists",
+        "orderedList": "{ keepMarks: true } - Preserves marks when creating lists"
+      }
+    }
+  },
+  "content_formats": {
+    "text": {
+      "description": "Plain text without formatting",
+      "method": "editor.getText()",
+      "example": "Hello World"
+    },
+    "html": {
+      "description": "HTML string with formatting tags",
+      "method": "editor.getHTML()",
+      "example": "<p><strong>Hello</strong> World</p>"
+    },
+    "json": {
+      "description": "TipTap JSON document structure",
+      "method": "editor.getJSON()",
+      "example": "{ type: 'doc', content: [{ type: 'paragraph', content: [...] }] }",
+      "note": "Useful for storing in database and restoring exact editor state"
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with TipTap prose classes",
+    "visual_description": "Rounded container with border. Toolbar at top with formatting buttons. Main editor area below with prose styling for content. Focus state shows primary color ring. Invalid state shows red border and background. Max height 600px with scroll.",
+    "editor_classes": "prose prose-p:text-sm prose-p:my-1 dark:prose-p:text-gray-400 max-w-full",
+    "container_classes": "rounded-lg ring-1 ring-transparent border border-gray-200 dark:border-gray-600",
+    "focus_classes": "ring-primary border-primary",
+    "invalid_classes": "bg-error-subtle border-error ring-error"
+  },
+  "keyboard_shortcuts": {
+    "Ctrl+B": "Bold",
+    "Ctrl+I": "Italic",
+    "Ctrl+Shift+X": "Strikethrough",
+    "Ctrl+E": "Code",
+    "Ctrl+Shift+7": "Ordered list",
+    "Ctrl+Shift+8": "Bullet list",
+    "Ctrl+Shift+B": "Blockquote",
+    "Ctrl+Alt+C": "Code block",
+    "Ctrl+Z": "Undo",
+    "Ctrl+Y": "Redo (Windows)",
+    "Ctrl+Shift+Z": "Redo (Mac)",
+    "Ctrl+Alt+0": "Paragraph",
+    "Ctrl+Alt+1": "Heading 1",
+    "Ctrl+Alt+2": "Heading 2",
+    "Ctrl+Alt+3": "Heading 3",
+    "Ctrl+Alt+4": "Heading 4",
+    "Ctrl+Alt+5": "Heading 5",
+    "Ctrl+Alt+6": "Heading 6"
+  },
+  "best_practices": {
+    "Do": [
+      "Use for content creation interfaces (blogs, comments, documentation)",
+      "Handle onChange to persist content",
+      "Provide initial content for editing existing content",
+      "Use customToolBar for specific use cases (e.g., minimal toolbar for comments)",
+      "Validate content before submission",
+      "Sanitize HTML output before rendering in other contexts",
+      "Use JSON format for database storage (preserves exact structure)",
+      "Provide clear placeholder or instructions for empty editor",
+      "Test with keyboard shortcuts for accessibility",
+      "Use customEditor for advanced features (mentions, images, etc.)"
+    ],
+    "Dont": [
+      "Don't use for simple text input (use Input or Textarea components)",
+      "Don't forget to sanitize HTML output to prevent XSS",
+      "Don't overload toolbar with too many options",
+      "Don't forget to handle paste events (TipTap handles this)",
+      "Don't mutate editor content directly (use editor.commands)",
+      "Don't forget to handle empty content validation",
+      "Don't use without onChange if you need to track content",
+      "Don't forget to provide loading state while editor initializes"
+    ]
+  },
+  "examples": [
+    {
+      "title": "Basic Usage",
+      "code": "import RichTextEditor from '@/components/shared/RichTextEditor';\n\nconst [content, setContent] = useState('<p>Hello World!</p>');\n\n<RichTextEditor\n  content={content}\n  onChange={({ html }) => setContent(html)}\n/>"
+    },
+    {
+      "title": "With Custom Toolbar",
+      "code": "import RichTextEditor from '@/components/shared/RichTextEditor';\n\nconst [content, setContent] = useState('');\n\n<RichTextEditor\n  content={content}\n  onChange={({ html }) => setContent(html)}\n  customToolBar={(editor, components) => (\n    <div className=\"flex gap-2\">\n      {/* Minimal toolbar for comments */}\n      <components.ToolButtonBold editor={editor} />\n      <components.ToolButtonItalic editor={editor} />\n      <components.ToolButtonCode editor={editor} />\n      <div className=\"w-px h-6 bg-gray-300\" />\n      <components.ToolButtonBulletList editor={editor} />\n      <components.ToolButtonOrderedList editor={editor} />\n      <div className=\"w-px h-6 bg-gray-300\" />\n      <components.ToolButtonUndo editor={editor} />\n      <components.ToolButtonRedo editor={editor} />\n    </div>\n  )}\n/>"
+    },
+    {
+      "title": "With Form Validation",
+      "code": "import { useForm } from 'react-hook-form';\nimport RichTextEditor from '@/components/shared/RichTextEditor';\n\nconst { register, handleSubmit, setValue, formState: { errors } } = useForm();\n\nconst onSubmit = (data) => {\n  console.log('Content:', data.content);\n};\n\n<form onSubmit={handleSubmit(onSubmit)}>\n  <RichTextEditor\n    content=\"\"\n    invalid={!!errors.content}\n    onChange={({ html, text }) => {\n      setValue('content', html);\n      // Validate minimum length\n      if (text.trim().length < 10) {\n        setError('content', { message: 'Content too short' });\n      } else {\n        clearErrors('content');\n      }\n    }}\n  />\n  {errors.content && (\n    <p className=\"text-error text-sm mt-1\">{errors.content.message}</p>\n  )}\n  <Button type=\"submit\">Submit</Button>\n</form>"
+    },
+    {
+      "title": "With Custom Editor and Extensions",
+      "code": "import { useEditor } from '@tiptap/react';\nimport StarterKit from '@tiptap/starter-kit';\nimport Image from '@tiptap/extension-image';\nimport Link from '@tiptap/extension-link';\nimport Placeholder from '@tiptap/extension-placeholder';\nimport RichTextEditor from '@/components/shared/RichTextEditor';\n\nconst editor = useEditor({\n  extensions: [\n    StarterKit,\n    Image.configure({\n      inline: true,\n      allowBase64: true,\n    }),\n    Link.configure({\n      openOnClick: false,\n    }),\n    Placeholder.configure({\n      placeholder: 'Write something amazing...',\n    }),\n  ],\n  content: '<p>Hello World!</p>',\n  onUpdate({ editor }) {\n    console.log('Content updated:', editor.getHTML());\n  },\n});\n\nif (!editor) return <div>Loading editor...</div>;\n\n<RichTextEditor\n  customEditor={editor}\n  customToolBar={(editor, components) => (\n    <div className=\"flex gap-2\">\n      <components.ToolButtonBold editor={editor} />\n      <components.ToolButtonItalic editor={editor} />\n      <components.ToolButtonHeading editor={editor} />\n      {/* Add custom image button */}\n      <ToolButtonImage editor={editor} onUpload={handleImageUpload} />\n      {/* Add custom link button */}\n      <ToolButtonLink editor={editor} />\n    </div>\n  )}\n/>"
+    },
+    {
+      "title": "Saving and Loading Content",
+      "code": "import RichTextEditor from '@/components/shared/RichTextEditor';\n\nconst [content, setContent] = useState('');\n\n// Load content from API\nuseEffect(() => {\n  fetchArticle(articleId).then(article => {\n    setContent(article.content);\n  });\n}, [articleId]);\n\n// Save content\nconst handleSave = async () => {\n  await updateArticle(articleId, { content });\n  toast.success('Article saved!');\n};\n\n<div>\n  <RichTextEditor\n    content={content}\n    onChange={({ html, json }) => {\n      setContent(html);\n      // Optionally save JSON for better structure preservation\n      // setContentJson(json);\n    }}\n  />\n  <Button onClick={handleSave}>Save Article</Button>\n</div>"
+    }
+  ],
+  "advanced_usage": {
+    "custom_extensions": {
+      "description": "Add custom TipTap extensions for advanced features",
+      "examples": [
+        "Image - Image upload and display",
+        "Link - Hyperlink support",
+        "Mention - @mentions functionality",
+        "Placeholder - Placeholder text",
+        "TextAlign - Text alignment",
+        "Highlight - Text highlighting",
+        "Underline - Underline formatting",
+        "Table - Table support",
+        "TaskList - Checkbox lists",
+        "Color - Text and background colors"
+      ]
+    },
+    "custom_styling": {
+      "description": "Customize editor appearance",
+      "methods": [
+        "Use editorContentClass prop for content area styling",
+        "Override prose classes for typography",
+        "Customize toolbar button styles",
+        "Add custom CSS for editor container"
+      ]
+    },
+    "programmatic_control": {
+      "description": "Control editor programmatically",
+      "methods": [
+        "editor.commands.setContent(html) - Set content",
+        "editor.commands.clearContent() - Clear content",
+        "editor.commands.focus() - Focus editor",
+        "editor.commands.blur() - Blur editor",
+        "editor.getHTML() - Get HTML content",
+        "editor.getText() - Get plain text",
+        "editor.getJSON() - Get JSON content",
+        "editor.isEmpty - Check if empty"
+      ]
+    }
+  },
+  "integration_notes": [
+    "Built on TipTap v2 (ProseMirror-based editor)",
+    "Uses StarterKit extension by default",
+    "Supports all TipTap extensions and configurations",
+    "Content syncs automatically when content prop changes",
+    "Editor initializes asynchronously (check for null)",
+    "Prose classes provide default typography styling",
+    "Focus state managed automatically",
+    "Keyboard shortcuts work out of the box",
+    "Paste handling includes smart formatting cleanup"
+  ],
+  "accessibility": {
+    "features": [
+      "Keyboard navigation support",
+      "Screen reader compatible",
+      "Focus management",
+      "ARIA attributes on toolbar buttons",
+      "Keyboard shortcuts for all formatting"
+    ],
+    "recommendations": [
+      "Provide clear labels for toolbar buttons",
+      "Include keyboard shortcut hints in tooltips",
+      "Ensure sufficient color contrast",
+      "Test with screen readers",
+      "Provide alternative text input method"
+    ]
+  },
+  "performance_notes": [
+    "Editor initializes asynchronously",
+    "Content updates are debounced internally by TipTap",
+    "Large documents may impact performance (consider pagination)",
+    "JSON format is more efficient for storage than HTML",
+    "Use React.memo for custom toolbar components",
+    "Avoid unnecessary re-renders by memoizing onChange handler"
+  ]
+}

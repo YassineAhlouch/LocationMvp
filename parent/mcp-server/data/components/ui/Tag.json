@@ -1,0 +1,68 @@
+{
+  "component_id": "tag-001",
+  "name": "Tag",
+  "display_name": "Tag Label Component",
+  "category": "Data Display / Labels",
+  "import_path": "@/components/ui/Tag",
+  "description": "A tag component for labeling, categorizing, or highlighting content with optional prefix and suffix elements.",
+  "usage_guidelines": [
+    "Use for labels, categories, or status indicators.",
+    "Add prefix for icons or indicators before text.",
+    "Add suffix for icons or indicators after text.",
+    "Use for filtering or selection interfaces.",
+    "Keep tag text concise and scannable."
+  ],
+  "props": {
+    "prefix": {
+      "type": "boolean | ReactNode",
+      "required": false,
+      "description": "Prefix element or boolean for default prefix."
+    },
+    "prefixClass": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for prefix element."
+    },
+    "suffix": {
+      "type": "boolean | ReactNode",
+      "required": false,
+      "description": "Suffix element or boolean for default suffix."
+    },
+    "suffixClass": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for suffix element."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A small pill-shaped label with rounded corners. Supports prefix and suffix elements. Typically uses muted background colors."
+  },
+  "best_practices": {
+    "Do": [
+      "Keep text short and descriptive",
+      "Use consistent colors for categories",
+      "Add icons for better recognition",
+      "Use for filtering and categorization"
+    ],
+    "Dont": [
+      "Don't use for long text",
+      "Don't overuse in dense layouts",
+      "Don't forget semantic meaning"
+    ]
+  },
+  "code_examples": {
+    "Affix": {
+      "title": "Affix",
+      "code": "import Tag from '@/components/ui/Tag'\nimport { HiPlusCircle, HiX } from 'react-icons/hi'\n\nconst Affix = () => {\n    return (\n        <div className=\"flex\">\n            <div className=\"mr-2 rtl:ml-2\">\n                <Tag prefix>Tag 1</Tag>\n            </div>\n            <div className=\"mr-2 rtl:ml-2\">\n                <Tag prefix prefixClass=\"bg-emerald-500\">\n                    Tag 2\n                </Tag>\n            </div>\n            <div className=\"mr-2 rtl:ml-2\">\n                <Tag\n                    prefix={\n                        <HiPlusCircle className=\"text-base text-blue-500 mr-1 rtl:ml-1\" />\n                    }\n                >\n                    Tag 3\n                </Tag>\n            </div>\n            <div className=\"mr-2 rtl:ml-2\">\n                <Tag suffix suffixClass=\"bg-rose-500\">\n                    Tag 4\n                </Tag>\n            </div>\n            <div className=\"mr-2 rtl:ml-2\">\n                <Tag suffix={<HiX className=\"ml-1 rtl:mr-1 cursor-pointer\" />}>\n                    Tag 5\n                </Tag>\n            </div>\n        </div>\n    )\n}\n\nexport default Affix"
+    },
+    "Basic": {
+      "title": "Basic",
+      "code": "import Tag from '@/components/ui/Tag'\n\nconst Basic = () => {\n    return (\n        <div className=\"flex\">\n            <div className=\"mr-2 rtl:ml-2\">\n                <Tag>Basic Tag</Tag>\n            </div>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Custom": {
+      "title": "Custom",
+      "code": "import Tag from '@/components/ui/Tag'\nimport { PiCommandLight } from 'react-icons/pi'\nconst Custom = () => {\n    return (\n        <div className=\"flex flex-wrap gap-2\">\n            <Tag className=\"text-red-600 bg-red-100 dark:text-red-100 dark:bg-red-500/20 rounded-full border-0\">\n                Tag 1\n            </Tag>\n            <Tag className=\"bg-emerald-500 dark:bg-emerald-500 text-white border-0 rounded-sm\">\n                Tag 2\n            </Tag>\n            <Tag className=\"p-1\">\n                <PiCommandLight className=\"text-base\" />\n            </Tag>\n            <Tag className=\"p-1 font-mono\">Ctrl</Tag>\n        </div>\n    )\n}\n\nexport default Custom"
+    }
+  }
+}

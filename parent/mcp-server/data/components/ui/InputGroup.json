@@ -1,0 +1,74 @@
+{
+  "component_id": "inputgroup-001",
+  "name": "InputGroup",
+  "display_name": "Input Group Component",
+  "category": "Form Elements / Input",
+  "import_path": "@/components/ui/InputGroup",
+  "description": "A component for grouping related input elements together with addons (prefix/suffix buttons, text, or icons) for a cohesive form control appearance.",
+  "usage_guidelines": [
+    "Use InputGroup.Addon for prefix/suffix decorations.",
+    "Combine with Input, Select, or Button components.",
+    "Use for URL inputs, search fields, or currency inputs."
+  ],
+  "compound_components": {
+    "InputGroup.Addon": {
+      "description": "Addon element that attaches to the input as prefix or suffix.",
+      "props": {
+        "size": {
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "description": "Addon size matching the input."
+        },
+        "className": {
+          "type": "string",
+          "required": false,
+          "description": "Additional CSS classes."
+        }
+      }
+    }
+  },
+  "props": {
+    "size": {
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "description": "Size of the input group."
+    },
+    "className": {
+      "type": "string",
+      "required": false,
+      "description": "Additional CSS classes."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Grouped input with seamless border connection between input and addons."
+  },
+  "best_practices": {
+    "Do": [
+      "Use Addon for contextual prefix/suffix",
+      "Match addon size with input size"
+    ],
+    "Dont": [
+      "Don't nest InputGroups",
+      "Don't use for unrelated inputs"
+    ]
+  },
+  "code_examples": {
+    "Addons": {
+      "title": "Addons",
+      "code": "import InputGroup from '@/components/ui/InputGroup'\nimport Input from '@/components/ui/Input'\n\nconst { Addon } = InputGroup\n\nconst Addons = () => {\n    return (\n        <div>\n            <InputGroup className=\"mb-4\">\n                <Addon>@</Addon>\n                <Input />\n            </InputGroup>\n            <InputGroup className=\"mb-4\">\n                <Input />\n                <Addon>.exmaple.com</Addon>\n            </InputGroup>\n            <InputGroup className=\"mb-4\">\n                <Addon>http://</Addon>\n                <Input />\n                <Addon>.com</Addon>\n            </InputGroup>\n            <InputGroup className=\"mb-4\">\n                <Input />\n                <Addon>to</Addon>\n                <Input />\n            </InputGroup>\n        </div>\n    )\n}\n\nexport default Addons"
+    },
+    "OtherCombination": {
+      "title": "Other Combination",
+      "code": "import InputGroup from '@/components/ui/InputGroup'\nimport Input from '@/components/ui/Input'\nimport Button from '@/components/ui/Button'\nimport Select from '@/components/ui/Select'\nimport DatePicker from '@/components/ui/DatePicker'\nimport { HiOutlineMicrophone } from 'react-icons/hi'\n\nconst { Addon } = InputGroup\n\nconst options1 = [\n    { value: '.com', label: '.com' },\n    { value: '.net', label: '.net' },\n    { value: '.io', label: '.io' },\n]\n\nconst options2 = [\n    { value: '12.00 AM', label: '12.00 AM' },\n    { value: '1.00 AM ', label: '1.00 AM' },\n    { value: '2.00 AM ', label: '2.00 AM' },\n    { value: '3.00 AM ', label: '3.00 AM' },\n    { value: '4.00 AM ', label: '4.00 AM' },\n    { value: '5.00 AM ', label: '5.00 AM' },\n    { value: '6.00 AM ', label: '6.00 AM' },\n    { value: '7.00 AM ', label: '7.00 AM' },\n    { value: '8.00 AM ', label: '8.00 AM' },\n    { value: '9.00 AM ', label: '9.00 AM' },\n    { value: '10.00 AM ', label: '10.00 AM' },\n    { value: '11.00 AM ', label: '11.00 AM' },\n    { value: '12.00 PM ', label: '12.00 PM' },\n    { value: '1.00 PM ', label: '1.00 PM' },\n    { value: '2.00 PM ', label: '2.00 PM' },\n    { value: '3.00 PM ', label: '3.00 PM' },\n    { value: '4.00 PM ', label: '4.00 PM' },\n    { value: '5.00 PM ', label: '5.00 PM' },\n    { value: '6.00 PM ', label: '6.00 PM' },\n    { value: '7.00 PM ', label: '7.00 PM' },\n    { value: '8.00 PM ', label: '8.00 PM' },\n    { value: '9.00 PM ', label: '9.00 PM' },\n    { value: '10.00 PM ', label: '10.00 PM' },\n    { value: '11.00 PM ', label: '11.00 PM' },\n]\n\nconst OtherCombination = () => {\n    return (\n        <div>\n            <InputGroup className=\"mb-4\">\n                <Input\n                    prefix={\n                        <HiOutlineMicrophone className=\"text-xl text-indigo-600 cursor-pointer\" />\n                    }\n                />\n                <Button>Send</Button>\n            </InputGroup>\n            <InputGroup className=\"mb-4\">\n                <DatePicker placeholder=\"Start Date\" />\n                <Addon>To</Addon>\n                <DatePicker placeholder=\"End Date\" />\n            </InputGroup>\n            <InputGroup className=\"mb-4\">\n                <Input />\n                <div style={{ minWidth: 120 }}>\n                    <Select\n                        isSearchable={false}\n                        defaultValue={{ label: '.com', value: '.com' }}\n                        options={options1}\n                    />\n                </div>\n            </InputGroup>\n            <InputGroup className=\"mb-4\">\n                <DatePicker placeholder=\"Select Date\" />\n                <div style={{ minWidth: 140 }}>\n                    <Select\n                        isSearchable={false}\n                        placeholder=\"Time\"\n                        options={options2}\n                    />\n                </div>\n            </InputGroup>\n        </div>\n    )\n}\n\nexport default OtherCombination"
+    },
+    "Sizes": {
+      "title": "Sizes",
+      "code": "import InputGroup from '@/components/ui/InputGroup'\nimport Input from '@/components/ui/Input'\nimport Button from '@/components/ui/Button'\n\nconst Sizes = () => {\n    return (\n        <div>\n            <InputGroup size=\"sm\" className=\"mb-4\">\n                <InputGroup.Addon>@</InputGroup.Addon>\n                <Input placeholder=\"Small Input\" />\n                <Button variant=\"solid\">Submit</Button>\n            </InputGroup>\n            <InputGroup size=\"lg\" className=\"mb-4\">\n                <InputGroup.Addon>@</InputGroup.Addon>\n                <Input placeholder=\"Small Input\" />\n                <Button variant=\"solid\">Submit</Button>\n            </InputGroup>\n        </div>\n    )\n}\n\nexport default Sizes"
+    },
+    "WithButtons": {
+      "title": "With Buttons",
+      "code": "import InputGroup from '@/components/ui/InputGroup'\nimport Input from '@/components/ui/Input'\nimport Button from '@/components/ui/Button'\nimport { HiOutlineMicrophone, HiOutlineSearch } from 'react-icons/hi'\n\nconst WithButtons = () => {\n    return (\n        <div>\n            <InputGroup className=\"mb-4\">\n                <Input placeholder=\"Input text to search\" />\n                <Button>Search</Button>\n            </InputGroup>\n            <InputGroup className=\"mb-4\">\n                <Input placeholder=\"Input text to search\" />\n                <Button icon={<HiOutlineSearch className=\"text-xl\" />} />\n            </InputGroup>\n            <InputGroup className=\"mb-4\">\n                <Button\n                    variant=\"solid\"\n                    icon={<HiOutlineMicrophone className=\"text-xl\" />}\n                />\n                <Input placeholder=\"Input text to search\" />\n            </InputGroup>\n        </div>\n    )\n}\n\nexport default WithButtons"
+    }
+  }
+}

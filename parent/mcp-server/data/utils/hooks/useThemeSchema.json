@@ -1,0 +1,21 @@
+{
+  "name": "useThemeSchema",
+  "category": "hook",
+  "path": "src/utils/hooks/useThemeSchema.ts",
+  "description": "A hook that applies theme color variables to the document root based on the current theme schema and mode.",
+  "usage": "import useThemeSchema from '@/utils/hooks/useThemeSchema'\n\nconst App = () => {\n    useThemeSchema()\n    return <div>...</div>\n}",
+  "parameters": [],
+  "returns": {
+    "type": "void",
+    "description": "This hook has no return value. It applies CSS variables to :root."
+  },
+  "examples": [
+    {
+      "title": "Basic Usage",
+      "description": "Call at the root of your app to apply theme CSS variables",
+      "code": "import useThemeSchema from '@/utils/hooks/useThemeSchema'\n\nconst App = () => {\n    useThemeSchema()\n    return (\n        <div>\n            {/* Theme variables are now applied */}\n        </div>\n    )\n}"
+    }
+  ],
+  "relatedHooks": ["useDarkMode"],
+  "tags": ["theme", "styling", "css-variables"]
+}

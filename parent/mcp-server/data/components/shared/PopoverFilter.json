@@ -1,0 +1,97 @@
+{
+  "component_id": "popoverfilter-001",
+  "name": "PopoverFilter",
+  "display_name": "Popover Filter Component",
+  "category": "Data Display / Filtering",
+  "import_path": "@/components/shared/PopoverFilter",
+  "description": "A popover-based multi-select filter component with search functionality. Displays a list of checkboxes within a popover, allowing users to filter data by selecting multiple options with real-time search.",
+  "usage_guidelines": [
+    "Use for filtering tables, lists, or data views.",
+    "Provide data as array of {label, value} objects.",
+    "Handle selection changes via onChange callback.",
+    "Use renderTrigger for custom trigger buttons.",
+    "Enable showReset to allow clearing all filters."
+  ],
+  "props": {
+    "data": {
+      "type": "Array<{ label: string; value: string }>",
+      "required": true,
+      "default": "[]",
+      "description": "Array of filter options with label and value properties."
+    },
+    "onChange": {
+      "type": "(data: Array<{ label: string; value: string }>) => void",
+      "required": false,
+      "description": "Callback fired when selection changes. Receives array of selected items."
+    },
+    "title": {
+      "type": "string | ReactNode",
+      "required": false,
+      "default": "'Filter'",
+      "description": "Title displayed in the popover header."
+    },
+    "placement": {
+      "type": "'bottom-start' | 'bottom-end'",
+      "required": false,
+      "default": "'bottom-start'",
+      "description": "Popover placement relative to trigger element."
+    },
+    "inputPlaceholder": {
+      "type": "string",
+      "required": false,
+      "default": "'Search...'",
+      "description": "Placeholder text for the search input."
+    },
+    "showReset": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Shows 'Clear filters' button when items are selected."
+    },
+    "value": {
+      "type": "string[]",
+      "required": false,
+      "description": "Controlled value - array of selected option values."
+    },
+    "renderTrigger": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Custom trigger element to open the popover."
+    },
+    "width": {
+      "type": "number",
+      "required": false,
+      "default": "220",
+      "description": "Width of the popover in pixels."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A popover containing a search input at the top, followed by a vertical list of checkboxes. Each checkbox item has hover highlighting. A 'Clear filters' button appears at the bottom when items are selected. Supports dark mode."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for multi-select filtering scenarios",
+      "Provide meaningful labels for filter options",
+      "Use controlled value prop for external state management",
+      "Customize trigger button to match your UI",
+      "Keep filter lists reasonably sized"
+    ],
+    "Dont": [
+      "Don't use for single-select scenarios (use Select instead)",
+      "Don't use with very large datasets without virtualization",
+      "Don't forget to handle empty states",
+      "Don't hide the reset button for better UX"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import { useState } from 'react'\nimport PopoverFilter from '@/components/shared/PopoverFilter'\nimport Button from '@/components/ui/Button'\nimport { LuFilter } from 'react-icons/lu'\n\nconst filterData = [\n    { label: 'Electronics', value: 'electronics' },\n    { label: 'Clothing', value: 'clothing' },\n    { label: 'Books', value: 'books' },\n    { label: 'Home & Garden', value: 'home' },\n    { label: 'Sports', value: 'sports' },\n    { label: 'Toys', value: 'toys' },\n]\n\nconst Basic = () => {\n    const [selected, setSelected] = useState<typeof filterData>([])\n\n    return (\n        <div>\n            <PopoverFilter\n                data={filterData}\n                onChange={setSelected}\n                title=\"Categories\"\n                renderTrigger={\n                    <Button icon={<LuFilter />}>\n                        Filter {selected.length > 0 && `(${selected.length})`}\n                    </Button>\n                }\n            />\n            {selected.length > 0 && (\n                <p className=\"mt-2 text-sm text-gray-500\">\n                    Selected: {selected.map((s) => s.label).join(', ')}\n                </p>\n            )}\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "CustomTrigger": {
+      "title": "Custom Trigger",
+      "code": "import { useState } from 'react'\nimport PopoverFilter from '@/components/shared/PopoverFilter'\nimport Tag from '@/components/ui/Tag'\n\nconst statusData = [\n    { label: 'Active', value: 'active' },\n    { label: 'Pending', value: 'pending' },\n    { label: 'Completed', value: 'completed' },\n    { label: 'Cancelled', value: 'cancelled' },\n]\n\nconst CustomTrigger = () => {\n    const [selected, setSelected] = useState<string[]>(['active'])\n\n    return (\n        <PopoverFilter\n            data={statusData}\n            value={selected}\n            onChange={(data) => setSelected(data.map((d) => d.value))}\n            title=\"Status\"\n            renderTrigger={\n                <Tag className=\"cursor-pointer\">\n                    Status: {selected.length > 0 ? selected.join(', ') : 'All'}\n                </Tag>\n            }\n        />\n    )\n}\n\nexport default CustomTrigger"
+    }
+  }
+}

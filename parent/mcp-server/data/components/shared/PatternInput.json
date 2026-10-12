@@ -1,0 +1,81 @@
+{
+  "component_id": "patterninput-001",
+  "name": "PatternInput",
+  "display_name": "Pattern Format Input Component",
+  "category": "Form / Input",
+  "import_path": "@/components/shared/PatternInput",
+  "description": "A formatted input component that applies pattern-based formatting to user input using react-number-format. Ideal for phone numbers, credit cards, dates, and other structured data entry with automatic formatting.",
+  "usage_guidelines": [
+    "Use for inputs requiring specific formatting patterns.",
+    "Define format pattern using # as digit placeholders.",
+    "Use mask prop to show placeholder characters.",
+    "Handle formatted and raw values via onValueChange.",
+    "Supports prefix and suffix elements."
+  ],
+  "props": {
+    "format": {
+      "type": "string",
+      "required": true,
+      "description": "Pattern string where # represents a digit. Example: '###-###-####' for phone numbers."
+    },
+    "mask": {
+      "type": "string | string[]",
+      "required": false,
+      "description": "Character(s) to show as placeholder in unfilled positions. Example: '_' shows '___-___-____'."
+    },
+    "onValueChange": {
+      "type": "(values: NumberFormatValues) => void",
+      "required": false,
+      "description": "Callback with formatted value, raw value, and float value. Preferred over onChange for accessing unformatted data."
+    },
+    "inputPrefix": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Element or text to display before the input value."
+    },
+    "inputSuffix": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Element or text to display after the input value."
+    },
+    "allowEmptyFormatting": {
+      "type": "boolean",
+      "required": false,
+      "description": "Shows format pattern even when input is empty."
+    },
+    "...InputProps": {
+      "type": "InputProps",
+      "required": false,
+      "description": "All standard Input component props are supported."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Renders as a standard Input component with automatic formatting applied as the user types. Supports all Input styling variants and states."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for phone numbers, credit cards, SSN, dates",
+      "Provide clear format hints via placeholder or mask",
+      "Use onValueChange to get unformatted values",
+      "Add appropriate inputMode for mobile keyboards",
+      "Validate the raw value, not formatted value"
+    ],
+    "Dont": [
+      "Don't use for free-form text input",
+      "Don't forget to handle partial input states",
+      "Don't use complex patterns without user guidance",
+      "Don't store formatted values in database"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import { useState } from 'react'\nimport PatternInput from '@/components/shared/PatternInput'\n\nconst Basic = () => {\n    const [value, setValue] = useState(0)\n\n    const handleValueChange = (e: {\n        floatValue?: number\n        formattedValue: string\n        value: string\n    }) => {\n        console.log(e)\n        setValue(e.floatValue as number)\n    }\n\n    return (\n        <PatternInput\n            value={value}\n            format=\"### ###\"\n            onValueChange={handleValueChange}\n        />\n    )\n}\n\nexport default Basic"
+    },
+    "WithForm": {
+      "title": "With Form",
+      "code": "import Button from '@/components/ui/Button'\nimport { Form, FormItem } from '@/components/ui/Form'\nimport PatternInput from '@/components/shared/PatternInput'\nimport { useForm, Controller } from 'react-hook-form'\n\nconst WithForm = () => {\n    const {\n        handleSubmit,\n        formState: { errors },\n        control\n    } = useForm<{amount?: string}>();\n\n    const onSubmit = (value: {amount?: string}) => {\n        console.log(value)\n    }\n\n    return (\n        <Form className=\"mt-6\" onSubmit={handleSubmit(onSubmit)}>\n            <FormItem\n                label=\"Amount\"\n                invalid={Boolean(errors.amount)}\n                errorMessage={errors.amount?.message}\n            >\n                <Controller\n                    name=\"amount\"\n                    control={control}\n                    render={({ field }) =>\n                        <PatternInput\n                            format=\"#### #### #### ####\"\n                            mask=\"_\"\n                            placeholder=\"Card Number\"\n                            value={field.value}\n                            onValueChange={(e) => {\n                                field.onChange(e.floatValue)\n                            }}\n                        />\n                    }\n                />\n            </FormItem>\n            <Button variant=\"solid\" type=\"submit\" block>\n                Submit\n            </Button>\n        </Form>\n    )\n}\n\nexport default WithForm"
+    }
+  }
+}

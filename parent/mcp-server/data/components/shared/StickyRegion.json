@@ -1,0 +1,97 @@
+{
+  "component_id": "sticky-region-001",
+  "name": "StickyRegion",
+  "display_name": "Sticky Region Component",
+  "category": "Layout / Positioning",
+  "import_path": "@/components/shared/StickyRegion",
+  "description": "A performant sticky container that fixes its children to the viewport when scrolling past a configurable threshold. Optimized to only trigger re-renders when crossing the sticky threshold, not on every scroll event.",
+  "usage_guidelines": [
+    "Use for sticky headers, navigation bars, or toolbars that should remain visible during scroll.",
+    "Set triggerOffset to control exactly when the element becomes sticky.",
+    "Automatically handles spacer element to prevent content jump when element becomes fixed.",
+    "Ideal for secondary navigation or extended header sections."
+  ],
+  "props": {
+    "offsetTop": {
+      "type": "number",
+      "required": false,
+      "default": "0",
+      "description": "Distance from top of viewport (in pixels) where element sticks when in sticky mode."
+    },
+    "triggerOffset": {
+      "type": "number",
+      "required": false,
+      "default": "element's natural position",
+      "description": "Scroll position (in pixels) at which the element becomes sticky. If not provided, uses the element's natural offset position."
+    },
+    "shadow": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Whether to show a shadow when the element is in sticky mode."
+    },
+    "stickyClassName": {
+      "type": "string",
+      "required": false,
+      "default": "undefined",
+      "description": "Additional CSS classes to apply when the element is in sticky mode."
+    },
+    "zIndex": {
+      "type": "number",
+      "required": false,
+      "default": "40",
+      "description": "Z-index value when the element is in sticky mode."
+    },
+    "transitionDuration": {
+      "type": "number",
+      "required": false,
+      "default": "300",
+      "description": "Duration of the shadow transition animation in milliseconds."
+    },
+    "onStickyChange": {
+      "type": "(isSticky: boolean) => void",
+      "required": false,
+      "default": "undefined",
+      "description": "Callback function triggered when sticky state changes."
+    },
+    "className": {
+      "type": "string",
+      "required": false,
+      "default": "undefined",
+      "description": "Additional CSS classes to apply to the container."
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "Content to render inside the sticky region."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Container with white/dark background that transitions to fixed positioning with optional shadow when scrolling past threshold. Automatically inserts a spacer to prevent content jump."
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import StickyRegion from '@/components/shared/StickyRegion'\n\nconst Basic = () => {\n    return (\n        <div className=\"h-64 overflow-auto border border-gray-200 dark:border-gray-700 rounded\">\n            <div className=\"p-4\">\n                <p className=\"mb-4\">\n                    Scroll down to see the sticky header in action.\n                </p>\n                <StickyRegion className=\"bg-white dark:bg-gray-900 p-4 border-b border-gray-200 dark:border-gray-700\">\n                    <h5>Sticky Header</h5>\n                </StickyRegion>\n                <div className=\"space-y-4 mt-4\">\n                    {Array.from({ length: 10 }).map((_, i) => (\n                        <p\n                            key={i}\n                            className=\"p-4 bg-gray-50 dark:bg-gray-800 rounded\"\n                        >\n                            Content item {i + 1}\n                        </p>\n                    ))}\n                </div>\n            </div>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "WithOffset": {
+      "title": "With Offset",
+      "code": "import { useState } from 'react'\nimport StickyRegion from '@/components/shared/StickyRegion'\n\nconst WithOffset = () => {\n    const [isSticky, setIsSticky] = useState(false)\n\n    return (\n        <div className=\"h-64 overflow-auto border border-gray-200 dark:border-gray-700 rounded\">\n            <div className=\"p-4\">\n                <p className=\"mb-4\">\n                    This sticky region has a custom offset and callback.\n                </p>\n                <StickyRegion\n                    offsetTop={10}\n                    shadow={true}\n                    onStickyChange={setIsSticky}\n                    className=\"bg-white dark:bg-gray-900 p-2 rounded-lg border border-gray-200 dark:border-gray-800\"\n                    stickyClassName=\"rounded-b\"\n                >\n                    <h5>{isSticky ? 'Now Sticky!' : 'Not Sticky Yet'}</h5>\n                </StickyRegion>\n                <div className=\"space-y-4 mt-4\">\n                    {Array.from({ length: 10 }).map((_, i) => (\n                        <p\n                            key={i}\n                            className=\"p-4 bg-gray-50 dark:bg-gray-800 rounded\"\n                        >\n                            Content item {i + 1}\n                        </p>\n                    ))}\n                </div>\n            </div>\n        </div>\n    )\n}\n\nexport default WithOffset"
+    }
+  },
+  "best_practices": {
+    "Do": [
+      "Use for navigation or important controls that should remain accessible",
+      "Set appropriate triggerOffset based on your layout structure",
+      "Consider z-index stacking with other fixed/sticky elements",
+      "Use onStickyChange callback if you need to sync other UI elements"
+    ],
+    "Dont": [
+      "Don't nest multiple StickyRegion components",
+      "Don't use for large content areas that would block too much viewport",
+      "Don't forget to account for mobile viewports",
+      "Don't set triggerOffset to negative values"
+    ]
+  }
+}

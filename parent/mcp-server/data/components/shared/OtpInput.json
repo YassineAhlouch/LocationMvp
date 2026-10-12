@@ -1,0 +1,97 @@
+{
+  "component_id": "otpinput-001",
+  "name": "OtpInput",
+  "display_name": "OTP Input Component",
+  "category": "Form / Input",
+  "import_path": "@/components/shared/OtpInput",
+  "description": "A one-time password input component that renders multiple single-character input fields. Supports auto-focus navigation, paste handling, keyboard navigation, and validation states.",
+  "usage_guidelines": [
+    "Use for OTP/verification code entry forms.",
+    "Set length prop to match expected code length.",
+    "Handle value changes via onChange callback.",
+    "Use invalid prop to show validation errors.",
+    "Supports paste functionality for full code entry."
+  ],
+  "props": {
+    "length": {
+      "type": "number",
+      "required": false,
+      "default": "6",
+      "description": "Number of input fields to render for the OTP code."
+    },
+    "value": {
+      "type": "string",
+      "required": false,
+      "default": "''",
+      "description": "Current OTP value as a string."
+    },
+    "onChange": {
+      "type": "(value: string) => void",
+      "required": false,
+      "description": "Callback fired when OTP value changes."
+    },
+    "disabled": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Disables all input fields when true."
+    },
+    "className": {
+      "type": "string",
+      "required": false,
+      "default": "''",
+      "description": "Additional CSS classes for the container div."
+    },
+    "inputClass": {
+      "type": "string",
+      "required": false,
+      "description": "Additional CSS classes for individual input fields."
+    },
+    "autoFocus": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Auto-focuses the first input field on mount."
+    },
+    "placeholder": {
+      "type": "string",
+      "required": false,
+      "description": "Placeholder text for each input field."
+    },
+    "invalid": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Shows invalid/error state styling on all inputs."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A horizontal row of square input fields (58x58px by default) with centered text. Each field accepts a single numeric character. Supports dark mode and invalid state styling."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for verification code entry",
+      "Set appropriate length for your OTP format",
+      "Enable autoFocus for better UX",
+      "Show invalid state on verification failure",
+      "Handle paste events for user convenience"
+    ],
+    "Dont": [
+      "Don't use for regular text input",
+      "Don't set length greater than needed",
+      "Don't forget to handle form submission",
+      "Don't use without proper validation feedback"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import { useState } from 'react'\nimport OtpInput from '@/components/shared/OtpInput'\n\nconst Basic = () => {\n\n    const [value, setValue] = useState('')\n\n    const handleChange = (value: string) => {\n        console.log(value)\n        setValue(value)\n    }\n\n    return (\n        <OtpInput value={value} onChange={handleChange} />\n    )\n}\n\nexport default Basic"
+    },
+    "Length": {
+      "title": "Length",
+      "code": "import { useState } from 'react'\nimport OtpInput from '@/components/shared/OtpInput'\n\nconst Length = () => {\n\n    const [value, setValue] = useState('')\n\n    const handleChange = (value: string) => {\n        console.log(value)\n        setValue(value)\n    }\n\n    return (\n        <OtpInput\n            value={value}\n            length={4}\n            onChange={handleChange}\n        />\n    )\n}\n\nexport default Length"
+    }
+  }
+}

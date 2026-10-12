@@ -1,0 +1,38 @@
+{
+  "component_id": "util-classnames-001",
+  "name": "classNames",
+  "display_name": "Class Names Utility",
+  "category": "Utils / Styling",
+  "import_path": "@/utils/classNames",
+  "description": "A utility function that combines classnames library with tailwind-merge to intelligently merge Tailwind CSS classes, resolving conflicts.",
+  "usage_guidelines": [
+    "Use for combining multiple CSS class strings.",
+    "Automatically resolves Tailwind CSS class conflicts (e.g., 'p-4' overrides 'p-2').",
+    "Supports conditional classes, arrays, and objects.",
+    "Essential for component styling with dynamic classes."
+  ],
+  "params": [
+    {
+      "name": "args",
+      "type": "cn.ArgumentArray",
+      "required": true,
+      "description": "Variable number of class arguments (strings, objects, arrays, conditionals)."
+    }
+  ],
+  "return_value": {
+    "type": "string",
+    "description": "Merged and deduplicated class string with Tailwind conflicts resolved."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for all component className props",
+      "Leverage for conditional styling",
+      "Use with Tailwind utility classes",
+      "Combine with component variants"
+    ],
+    "Dont": [
+      "Don't manually concatenate class strings",
+      "Don't worry about Tailwind class conflicts"
+    ]
+  }
+}

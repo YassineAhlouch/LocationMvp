@@ -1,0 +1,85 @@
+{
+  "component_id": "confirmdialog-001",
+  "name": "ConfirmDialog",
+  "display_name": "Confirmation Dialog Component",
+  "category": "Overlay / Dialogs",
+  "import_path": "@/components/shared/ConfirmDialog",
+  "description": "A confirmation dialog component with status icons, customizable buttons, and action handlers for user confirmations.",
+  "usage_guidelines": [
+    "Use for actions requiring user confirmation (delete, submit, etc.).",
+    "Choose appropriate type (info, success, warning, danger) for action severity.",
+    "Provide clear title and description of the action.",
+    "Customize button text to match the action (e.g., 'Delete', 'Confirm').",
+    "Handle onConfirm and onCancel callbacks."
+  ],
+  "props": {
+    "cancelText": {
+      "type": "ReactNode | string",
+      "required": false,
+      "default": "'Cancel'",
+      "description": "Cancel button text."
+    },
+    "confirmText": {
+      "type": "ReactNode | string",
+      "required": false,
+      "default": "'Confirm'",
+      "description": "Confirm button text."
+    },
+    "confirmButtonProps": {
+      "type": "ButtonProps",
+      "required": false,
+      "description": "Additional props for confirm button."
+    },
+    "cancelButtonProps": {
+      "type": "ButtonProps",
+      "required": false,
+      "description": "Additional props for cancel button."
+    },
+    "type": {
+      "type": "'info' | 'success' | 'warning' | 'danger'",
+      "required": false,
+      "default": "'info'",
+      "description": "Dialog type with corresponding icon and color."
+    },
+    "title": {
+      "type": "ReactNode | string",
+      "required": false,
+      "description": "Dialog title."
+    },
+    "onCancel": {
+      "type": "() => void",
+      "required": false,
+      "description": "Callback fired when cancel button is clicked."
+    },
+    "onConfirm": {
+      "type": "() => void",
+      "required": false,
+      "description": "Callback fired when confirm button is clicked."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A dialog with status icon (info, success, warning, danger), title, message content, and action buttons in footer. Icon color matches dialog type."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for destructive or important actions",
+      "Choose appropriate type for action severity",
+      "Provide clear, specific confirmation text",
+      "Use danger type for destructive actions",
+      "Handle both onConfirm and onCancel"
+    ],
+    "Dont": [
+      "Don't use for non-critical actions",
+      "Don't use vague button text like 'OK'",
+      "Don't forget to close dialog after action",
+      "Don't overuse confirmations (causes fatigue)"
+    ]
+  },
+  "code_examples": {
+    "Example": {
+      "title": "Example",
+      "code": "import { useState } from 'react'\nimport ConfirmDialog from '@/components/shared/ConfirmDialog'\nimport Radio from '@/components/ui/Radio'\nimport Button from '@/components/ui/Button'\n\ntype DialogTypeKey = 'Info' | 'Success' | 'Warning' | 'Danger'\n\ntype DialogType = Record<\n    DialogTypeKey,\n    {\n        type: 'info' | 'success' | 'warning' | 'danger'\n        title: string\n        children: string\n        cancelText: string\n        confirmText: string\n    }\n>\n\nconst dialogType: DialogType = {\n    Info: {\n        type: 'info',\n        title: 'Note',\n        children: 'Just some information for you!',\n        cancelText: 'Cancel',\n        confirmText: 'Okay',\n    },\n    Success: {\n        type: 'success',\n        title: 'Complete!',\n        children: 'Just some success message for you!',\n        cancelText: 'Cancel',\n        confirmText: 'All Good',\n    },\n    Warning: {\n        type: 'warning',\n        title: 'Warning',\n        children: 'Just some warning message for you!',\n        cancelText: 'Cancel',\n        confirmText: 'Understand',\n    },\n    Danger: {\n        type: 'danger',\n        title: 'Delete',\n        children: 'Are you sure you wan to delete?',\n        cancelText: 'Cancel',\n        confirmText: 'Delete',\n    },\n}\n\nconst Example = () => {\n    const [selected, setSelected] = useState<DialogTypeKey>(\n        Object.keys(dialogType)[0] as DialogTypeKey\n    )\n    const [open, setOpen] = useState(false)\n\n    const handleClose = () => {\n        console.log('Close')\n        setOpen(false)\n    }\n\n    const handleConfirm = () => {\n        console.log('Confirm')\n        setOpen(false)\n    }\n\n    return (\n        <div className=\"flex flex-col gap-6\">\n            <Radio.Group value={selected} onChange={(val) => setSelected(val)}>\n                {Object.keys(dialogType).map((value) => {\n                    return (\n                        <Radio key={value} value={value}>\n                            {value}\n                        </Radio>\n                    )\n                })}\n            </Radio.Group>\n            <div>\n                <Button onClick={() => setOpen(true)}>Trigger</Button>\n            </div>\n            <ConfirmDialog\n                isOpen={open}\n                type={dialogType[selected].type}\n                title={dialogType[selected].title}\n                onClose={handleClose}\n                onCancel={handleClose}\n                onConfirm={handleConfirm}\n            >\n                <p>{dialogType[selected].children}</p>\n            </ConfirmDialog>\n        </div>\n    )\n}\n\nexport default Example"
+    }
+  }
+}

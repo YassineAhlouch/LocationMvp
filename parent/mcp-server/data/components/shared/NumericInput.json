@@ -1,0 +1,80 @@
+{
+  "component_id": "numericinput-001",
+  "name": "NumericInput",
+  "display_name": "Numeric Input Component",
+  "category": "Form Elements / Input",
+  "import_path": "@/components/shared/NumericInput",
+  "description": "A specialized input component for numeric values with formatting support using react-number-format library.",
+  "usage_guidelines": [
+    "Use for numeric inputs requiring formatting (currency, percentages, etc.).",
+    "Supports thousands separators, decimal precision, and custom formats.",
+    "Use inputPrefix/inputSuffix for currency symbols or units.",
+    "Handle onValueChange for formatted and raw values."
+  ],
+  "props": {
+    "inputPrefix": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Prefix element (e.g., currency symbol)."
+    },
+    "inputSuffix": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Suffix element (e.g., unit label)."
+    },
+    "onValueChange": {
+      "type": "(values: NumberFormatValues) => void",
+      "required": false,
+      "description": "Callback with formatted and raw numeric values."
+    },
+    "thousandSeparator": {
+      "type": "boolean | string",
+      "required": false,
+      "description": "Enables thousands separator (e.g., comma)."
+    },
+    "decimalScale": {
+      "type": "number",
+      "required": false,
+      "description": "Number of decimal places allowed."
+    },
+    "fixedDecimalScale": {
+      "type": "boolean",
+      "required": false,
+      "description": "Forces display of decimal places."
+    },
+    "allowNegative": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Allows negative numbers."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Standard input field with automatic number formatting. Maintains cursor position during formatting."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for currency, percentages, quantities",
+      "Set appropriate decimal scale",
+      "Use prefix/suffix for context",
+      "Handle onValueChange for form state",
+      "Set allowNegative based on context"
+    ],
+    "Dont": [
+      "Don't use for simple text inputs",
+      "Don't forget to extract raw values",
+      "Don't over-restrict user input"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import { useState } from 'react'\nimport NumericInput from '@/components/shared/NumericInput'\n\nconst Basic = () => {\n    const [value, setValue] = useState(0)\n\n    const handleValueChange = (e: {\n        floatValue?: number\n        formattedValue: string\n        value: string\n    }) => {\n        console.log(e)\n        setValue(e.floatValue as number)\n    }\n\n    return (\n        <NumericInput\n            fixedDecimalScale\n            value={value}\n            decimalScale={2}\n            onValueChange={handleValueChange}\n        />\n    )\n}\n\nexport default Basic"
+    },
+    "WithForm": {
+      "title": "With Form",
+      "code": "import Button from '@/components/ui/Button'\nimport { Form, FormItem } from '@/components/ui/Form'\nimport NumericInput from '@/components/shared/NumericInput'\nimport { useForm, Controller } from 'react-hook-form'\n\nconst WithForm = () => {\n    const {\n        handleSubmit,\n        formState: { errors },\n        control\n    } = useForm<{amount?: string}>();\n\n    const onSubmit = (value: {amount?: string}) => {\n        console.log(value)\n    }\n\n    return (\n        <Form className=\"mt-6\" onSubmit={handleSubmit(onSubmit)}>\n            <FormItem\n                label=\"Amount\"\n                invalid={Boolean(errors.amount)}\n                errorMessage={errors.amount?.message}\n            >\n                <Controller\n                    name=\"amount\"\n                    control={control}\n                    render={({ field }) =>\n                        <NumericInput\n                            thousandSeparator\n                            placeholder=\"Amount\"\n                            value={field.value}\n                            onValueChange={(e) => {\n                                field.onChange(e.floatValue)\n                            }}\n                        />\n                    }\n                />\n            </FormItem>\n            <Button variant=\"solid\" type=\"submit\" block>\n                Submit\n            </Button>\n        </Form>\n    )\n}\n\nexport default WithForm"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "component_id": "divider-001",
+  "name": "Divider",
+  "display_name": "Visual Divider Component",
+  "category": "Layout / Separators",
+  "import_path": "@/components/shared/Divider",
+  "description": "A simple divider component for visually separating content with horizontal or vertical orientation.",
+  "usage_guidelines": [
+    "Use to separate sections of content.",
+    "Use horizontal orientation for vertical layouts.",
+    "Use vertical orientation for horizontal layouts.",
+    "Provides semantic separator role for accessibility."
+  ],
+  "props": {
+    "orientation": {
+      "type": "'horizontal' | 'vertical'",
+      "required": false,
+      "default": "'horizontal'",
+      "description": "Divider orientation."
+    },
+    "className": {
+      "type": "string",
+      "required": false,
+      "default": "''",
+      "description": "Additional CSS classes."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A thin line (1px) in gray color. Horizontal dividers span full width with vertical margins. Vertical dividers span full height with horizontal margins."
+  },
+  "best_practices": {
+    "Do": [
+      "Use to separate content sections",
+      "Choose appropriate orientation",
+      "Use consistent spacing",
+      "Leverage semantic separator role"
+    ],
+    "Dont": [
+      "Don't overuse dividers",
+      "Don't use when whitespace suffices"
+    ]
+  },
+  "code_examples": {
+    "Horizontal": {
+      "title": "Horizontal",
+      "code": "import Divider from '@/components/shared/Divider'\n\nconst Horizontal = () => {\n    return (\n        <div className=\"w-full\">\n            <p>Content above the divider</p>\n            <Divider />\n            <p>Content below the divider</p>\n        </div>\n    )\n}\n\nexport default Horizontal"
+    },
+    "Vertical": {
+      "title": "Vertical",
+      "code": "import Divider from '@/components/shared/Divider'\n\nconst Vertical = () => {\n    return (\n        <div className=\"flex items-center h-8\">\n            <span>Left content</span>\n            <Divider orientation=\"vertical\" />\n            <span>Right content</span>\n        </div>\n    )\n}\n\nexport default Vertical"
+    }
+  }
+}

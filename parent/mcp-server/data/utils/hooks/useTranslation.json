@@ -1,0 +1,54 @@
+{
+  "component_id": "hook-translation-001",
+  "name": "useTranslation",
+  "display_name": "Translation Hook",
+  "category": "Hooks / Internationalization",
+  "import_path": "@/utils/hooks/useTranslation",
+  "description": "A wrapper hook around react-i18next for internationalization with optional placeholder mode for development.",
+  "usage_guidelines": [
+    "Use for translating UI text in components.",
+    "Enable placeholder mode during development to use fallback text.",
+    "Access translation function via returned 't' method.",
+    "Provide translation keys and fallback values."
+  ],
+  "params": [
+    {
+      "name": "usePlaceholder",
+      "type": "boolean",
+      "required": false,
+      "description": "If true, returns placeholder translation function using fallback values."
+    }
+  ],
+  "return_value": {
+    "type": "{t: Function, ready: boolean, i18n: any}",
+    "description": "Translation object from react-i18next or placeholder version.",
+    "structure": {
+      "t": {
+        "type": "(key: string, fallback?: string | object) => string",
+        "description": "Translation function that returns translated text or fallback."
+      },
+      "ready": {
+        "type": "boolean",
+        "description": "Indicates if translations are loaded."
+      },
+      "i18n": {
+        "type": "any",
+        "description": "i18next instance for advanced usage."
+      }
+    }
+  },
+  "best_practices": {
+    "Do": [
+      "Use for all user-facing text",
+      "Provide meaningful fallback text",
+      "Organize translation keys logically",
+      "Use placeholder mode in development",
+      "Handle pluralization and interpolation"
+    ],
+    "Dont": [
+      "Don't hardcode user-facing text",
+      "Don't forget to add translations for new keys",
+      "Don't use placeholder mode in production"
+    ]
+  }
+}

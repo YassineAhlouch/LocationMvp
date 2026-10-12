@@ -1,0 +1,42 @@
+{
+  "component_id": "util-getcontrast-001",
+  "name": "getContrast",
+  "display_name": "Color Contrast Detector",
+  "category": "Utils / Color",
+  "import_path": "@/utils/getContrast",
+  "description": "Determines whether a color is light or dark using W3C perceived brightness formula, useful for choosing contrasting text colors.",
+  "usage_guidelines": [
+    "Use to determine appropriate text color for backgrounds.",
+    "Supports hex (#RGB, #RRGGBB) and rgb(r, g, b) formats.",
+    "Uses W3C formula for perceived brightness calculation.",
+    "Returns 'light' or 'dark' for easy conditional styling.",
+    "Threshold is 130 for brightness classification."
+  ],
+  "params": [
+    {
+      "name": "color",
+      "type": "string",
+      "required": true,
+      "description": "Color string in hex (#RGB or #RRGGBB) or rgb(r, g, b) format."
+    }
+  ],
+  "return_value": {
+    "type": "'light' | 'dark'",
+    "description": "Returns 'light' if brightness > 130, otherwise 'dark'."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for dynamic text color selection",
+      "Use for accessibility compliance",
+      "Validate color format before calling",
+      "Use with user-selected colors",
+      "Apply to background colors"
+    ],
+    "Dont": [
+      "Don't use for precise WCAG contrast ratios",
+      "Don't pass invalid color formats",
+      "Don't use for alpha/transparent colors",
+      "Don't rely solely on this for accessibility"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "component_id": "util-acronym-001",
+  "name": "acronym",
+  "display_name": "Acronym Generator Utility",
+  "category": "Utils / String Manipulation",
+  "import_path": "@/utils/acronym",
+  "description": "Generates an acronym from a given name by extracting the first letter of each word.",
+  "usage_guidelines": [
+    "Use for creating initials from full names.",
+    "Useful for avatar placeholders when no image is available.",
+    "Works with multi-word names and handles edge cases.",
+    "Returns original name if no word boundaries are found."
+  ],
+  "params": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": false,
+      "default": "''",
+      "description": "The full name string to convert to acronym."
+    }
+  ],
+  "return_value": {
+    "type": "string",
+    "description": "Acronym string composed of first letters of each word, or original name if no matches."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for user initials in avatars",
+      "Handle empty or undefined inputs",
+      "Use for display purposes only"
+    ],
+    "Dont": [
+      "Don't use for unique identifiers",
+      "Don't assume consistent output length"
+    ]
+  }
+}

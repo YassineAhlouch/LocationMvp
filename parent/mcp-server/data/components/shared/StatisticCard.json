@@ -1,0 +1,88 @@
+{
+  "component_id": "statisticcard-001",
+  "name": "StatisticCard",
+  "display_name": "Statistic Card Component",
+  "category": "Data Display / Cards",
+  "import_path": "@/components/shared/StatisticCard",
+  "description": "A flexible card component designed for displaying statistics and metrics. Supports two visual styles: default bordered card and inset card with nested appearance. Includes optional header and footer sections.",
+  "usage_guidelines": [
+    "Use for displaying KPIs, metrics, and statistics.",
+    "Enable inset prop for nested card appearance.",
+    "Use header prop for card titles or labels.",
+    "Use footer prop for additional context or actions.",
+    "Customize body styling via bodyClass prop."
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Main content of the card, typically statistics or metrics."
+    },
+    "className": {
+      "type": "string",
+      "required": false,
+      "description": "Additional CSS classes for the outer container."
+    },
+    "bodyClass": {
+      "type": "string",
+      "required": false,
+      "description": "Additional CSS classes for the body/content area."
+    },
+    "header": {
+      "type": "ReactNode | string",
+      "required": false,
+      "description": "Content displayed in the header section above the main content."
+    },
+    "footer": {
+      "type": "ReactNode | string",
+      "required": false,
+      "description": "Content displayed in the footer section below the main content."
+    },
+    "inset": {
+      "type": "boolean",
+      "required": false,
+      "description": "Enables inset card style with gray background wrapper and nested white card appearance."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Default style: White card with gray border and rounded corners. Inset style: Gray outer wrapper with padding containing a white inner card. Both support header/footer sections with border separators. Full dark mode support."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for dashboard statistics and KPIs",
+      "Use inset style for visual hierarchy",
+      "Add descriptive headers for context",
+      "Use footer for trends or comparisons",
+      "Group related statistics together"
+    ],
+    "Dont": [
+      "Don't overload with too much content",
+      "Don't use for non-statistical content",
+      "Don't forget to handle loading states",
+      "Don't mix inset and default styles inconsistently"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import Button from '@/components/ui/Button'\nimport Dropdown from '@/components/ui/Dropdown'\nimport StatisticCard from '@/components/shared/StatisticCard'\nimport { LuEllipsisVertical } from 'react-icons/lu'\nimport { LiEye, LiEdit, LiCopy } from '@/icons'\n\nconst Basic = () => {\n    return (\n        <div className=\"w-full max-w-sm mx-auto\">\n            <StatisticCard>\n                <div className=\"flex items-center justify-between\">\n                    <div className=\"font-medium heading-text\">Total Client</div>\n                    <Dropdown\n                        placement=\"bottom-end\"\n                        renderTitle={\n                            <Button\n                                icon={<LuEllipsisVertical />}\n                                className=\"w-6 h-6 text-sm\"\n                                variant=\"ghost\"\n                            />\n                        }\n                    >\n                        <Dropdown.Item eventKey=\"viewMore\">\n                            <LiEye className=\"text-lg\" />\n                            <span>View More</span>\n                        </Dropdown.Item>\n                        <Dropdown.Item eventKey=\"edit\">\n                            <LiEdit className=\"text-lg\" />\n                            <span>Edit</span>\n                        </Dropdown.Item>\n                        <Dropdown.Item eventKey=\"copy\">\n                            <LiCopy className=\"text-lg\" />\n                            <span>Copy</span>\n                        </Dropdown.Item>\n                    </Dropdown>\n                </div>\n                <div className=\"mt-4\">\n                    <h4>1,862</h4>\n                    <div className=\"flex items-center gap-1\">\n                        <span>vs yesterday</span>\n                        <span className=\"font-medium text-success\">+12.5%</span>\n                    </div>\n                </div>\n            </StatisticCard>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Inset": {
+      "title": "Inset",
+      "code": "import Button from '@/components/ui/Button'\nimport Dropdown from '@/components/ui/Dropdown'\nimport StatisticCard from '@/components/shared/StatisticCard'\nimport { LuEllipsisVertical } from 'react-icons/lu'\nimport { LiEye, LiEdit, LiCopy } from '@/icons'\n\nconst Inset = () => {\n    return (\n        <div className=\"w-full max-w-sm mx-auto\">\n            <StatisticCard inset>\n                <div className=\"flex items-center justify-between\">\n                    <div className=\"font-medium heading-text\">Total Client</div>\n                    <Dropdown\n                        placement=\"bottom-end\"\n                        renderTitle={\n                            <Button\n                                icon={<LuEllipsisVertical />}\n                                className=\"w-6 h-6 text-sm\"\n                                variant=\"ghost\"\n                            />\n                        }\n                    >\n                        <Dropdown.Item eventKey=\"viewMore\">\n                            <LiEye className=\"text-lg\" />\n                            <span>View More</span>\n                        </Dropdown.Item>\n                        <Dropdown.Item eventKey=\"edit\">\n                            <LiEdit className=\"text-lg\" />\n                            <span>Edit</span>\n                        </Dropdown.Item>\n                        <Dropdown.Item eventKey=\"copy\">\n                            <LiCopy className=\"text-lg\" />\n                            <span>Copy</span>\n                        </Dropdown.Item>\n                    </Dropdown>\n                </div>\n                <div className=\"mt-4\">\n                    <h4>1,862</h4>\n                    <div className=\"flex items-center gap-1\">\n                        <span>vs yesterday</span>\n                        <span className=\"font-medium text-success\">+12.5%</span>\n                    </div>\n                </div>\n            </StatisticCard>\n        </div>\n    )\n}\n\nexport default Inset"
+    },
+    "WithHeaderFooter": {
+      "title": "With Header Footer",
+      "code": "import Button from '@/components/ui/Button'\nimport Dropdown from '@/components/ui/Dropdown'\nimport StatisticCard from '@/components/shared/StatisticCard'\nimport { LuEllipsisVertical } from 'react-icons/lu'\nimport { LiEye, LiEdit, LiCopy } from '@/icons'\n\nconst WithHeaderFooter = () => {\n    return (\n        <div className=\"w-full max-w-sm mx-auto\">\n            <StatisticCard\n                header={\n                    <div className=\"flex items-center justify-between\">\n                        <span className=\"heading-text font-medium\">Sales</span>\n                        <Dropdown\n                            placement=\"bottom-end\"\n                            renderTitle={\n                                <Button\n                                    icon={<LuEllipsisVertical />}\n                                    size=\"sm\"\n                                    variant=\"ghost\"\n                                />\n                            }\n                        >\n                            <Dropdown.Item eventKey=\"viewMore\">\n                                <LiEye className=\"text-lg\" />\n                                <span>View More</span>\n                            </Dropdown.Item>\n                            <Dropdown.Item eventKey=\"edit\">\n                                <LiEdit className=\"text-lg\" />\n                                <span>Edit</span>\n                            </Dropdown.Item>\n                            <Dropdown.Item eventKey=\"copy\">\n                                <LiCopy className=\"text-lg\" />\n                                <span>Copy</span>\n                            </Dropdown.Item>\n                        </Dropdown>\n                    </div>\n                }\n                footer={\n                    <div className=\"flex items-center justify-end\">\n                        <Button size=\"sm\">View Report</Button>\n                    </div>\n                }\n            >\n                <div>\n                    <h4>$1,862</h4>\n                    <div className=\"flex items-center gap-1\">\n                        <span>vs yesterday</span>\n                        <span className=\"font-medium text-success\">+12.5%</span>\n                    </div>\n                </div>\n            </StatisticCard>\n        </div>\n    )\n}\n\nexport default WithHeaderFooter"
+    },
+    "WithInsetFooter": {
+      "title": "With Inset Footer",
+      "code": "import StatisticCard from '@/components/shared/StatisticCard'\nimport { LiDollarCircle } from '@/icons'\n\nconst WithInsetFooter = () => {\n    return (\n        <div className=\"w-full max-w-sm mx-auto\">\n            <StatisticCard\n                inset\n                footer={\n                    <div className=\"flex items-center justify-between px-2\">\n                        <span className=\"font-medium text-success\">+12.5%</span>\n                        <span>vs last period</span>\n                    </div>\n                }\n            >\n                <div className=\"space-y-4\">\n                    <div className=\"h-10 w-10 flex items-center justify-center rounded-lg text-xl border border-gray-200 dark:border-gray-700 heading-text\">\n                        <LiDollarCircle />\n                    </div>\n                    <div>\n                        <h4>$1,862</h4>\n                        <span>Total Revenue</span>\n                    </div>\n                </div>\n            </StatisticCard>\n        </div>\n    )\n}\n\nexport default WithInsetFooter"
+    },
+    "WithInsetHeader": {
+      "title": "With Inset Header",
+      "code": "import Button from '@/components/ui/Button'\nimport Dropdown from '@/components/ui/Dropdown'\nimport StatisticCard from '@/components/shared/StatisticCard'\nimport { LuEllipsisVertical } from 'react-icons/lu'\nimport { LiEye, LiEdit, LiCopy } from '@/icons'\n\nconst WithInsetHeader = () => {\n    return (\n        <div className=\"w-full max-w-sm mx-auto\">\n            <StatisticCard\n                inset\n                header={\n                    <div className=\"flex items-center justify-between\">\n                        <span className=\"heading-text font-medium\">Sales</span>\n                        <Dropdown\n                            placement=\"bottom-end\"\n                            renderTitle={\n                                <Button\n                                    icon={<LuEllipsisVertical />}\n                                    size=\"sm\"\n                                    variant=\"ghost\"\n                                />\n                            }\n                        >\n                            <Dropdown.Item eventKey=\"viewMore\">\n                                <LiEye className=\"text-lg\" />\n                                <span>View More</span>\n                            </Dropdown.Item>\n                            <Dropdown.Item eventKey=\"edit\">\n                                <LiEdit className=\"text-lg\" />\n                                <span>Edit</span>\n                            </Dropdown.Item>\n                            <Dropdown.Item eventKey=\"copy\">\n                                <LiCopy className=\"text-lg\" />\n                                <span>Copy</span>\n                            </Dropdown.Item>\n                        </Dropdown>\n                    </div>\n                }\n            >\n                <div>\n                    <h4>$1,862</h4>\n                    <div className=\"flex items-center gap-1\">\n                        <span>vs yesterday</span>\n                        <span className=\"font-medium text-success\">+12.5%</span>\n                    </div>\n                </div>\n            </StatisticCard>\n        </div>\n    )\n}\n\nexport default WithInsetHeader"
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "component_id": "customformatinput-001",
+  "name": "CustomFormatInput",
+  "display_name": "Custom Format Input Component",
+  "category": "Form Elements / Input",
+  "import_path": "@/components/shared/CustomFormatInput",
+  "description": "A specialized input component for custom number formatting (phone numbers, credit cards, etc.) using react-number-format.",
+  "usage_guidelines": [
+    "Use for inputs requiring specific formatting patterns.",
+    "Implement format function to define display format.",
+    "Implement removeFormatting to extract raw value.",
+    "Use for phone numbers, credit cards, postal codes, etc.",
+    "Handle onValueChange for formatted value updates."
+  ],
+  "props": {
+    "format": {
+      "type": "(value: string) => string",
+      "required": false,
+      "description": "Function to format the input value for display."
+    },
+    "removeFormatting": {
+      "type": "(value: string) => string",
+      "required": false,
+      "description": "Function to remove formatting and extract raw value."
+    },
+    "getCaretBoundary": {
+      "type": "(formattedValue: string) => boolean[]",
+      "required": false,
+      "description": "Function to determine valid caret positions."
+    },
+    "onValueChange": {
+      "type": "(values: NumberFormatValues) => void",
+      "required": false,
+      "description": "Callback fired when value changes with formatted and raw values."
+    },
+    "inputPrefix": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Prefix element for the input."
+    },
+    "inputSuffix": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Suffix element for the input."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "An input field that automatically formats user input according to custom rules. Maintains cursor position during formatting."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for structured input formats",
+      "Implement both format and removeFormatting",
+      "Test caret positioning",
+      "Provide clear format examples",
+      "Handle paste events properly"
+    ],
+    "Dont": [
+      "Don't use for simple text inputs",
+      "Don't forget to extract raw values",
+      "Don't make formatting too restrictive"
+    ]
+  },
+  "code_examples": {
+    "Simple": {
+      "title": "Simple",
+      "code": "import { useState } from 'react'\nimport FormCustomFormatInput from '@/components/shared/CustomFormatInput'\n\nconst format = (numStr: string) => {\n    if (numStr === '') {\n        return ''\n    }\n    const num = parseFloat(numStr) // Parse the string into a number\n    return new Intl.NumberFormat('en-US', {\n        style: 'currency',\n        currency: 'USD',\n        maximumFractionDigits: 0,\n    }).format(num)\n}\n\nconst Simple = () => {\n    const [value, setValue] = useState(0)\n\n    const handleValueChange = (e: {\n        floatValue?: number\n        formattedValue: string\n        value: string\n    }) => {\n        console.log(e)\n        setValue(e.floatValue as number)\n    }\n\n    return (\n        <FormCustomFormatInput\n            value={value}\n            format={format}\n            onValueChange={handleValueChange}\n        />\n    )\n}\n\nexport default Simple"
+    },
+    "WithForm": {
+      "title": "With Form",
+      "code": "import Button from '@/components/ui/Button'\nimport { Form, FormItem } from '@/components/ui/Form'\nimport FormCustomFormatInput from '@/components/shared/CustomFormatInput'\nimport { useForm, Controller } from 'react-hook-form'\n\nfunction limit(val: string, max: string) {\n    if (val.length === 1 && val[0] > max[0]) {\n        val = '0' + val\n    }\n\n    if (val.length === 2) {\n        if (Number(val) === 0) {\n            val = '01'\n        } else if (val > max) {\n            val = max\n        }\n    }\n\n    return val\n}\n\nfunction cardExpiryFormat(val: string) {\n    const month = limit(val.substring(0, 2), '12')\n    const date = limit(val.substring(2, 4), '31')\n\n    return month + (date.length ? '/' + date : '')\n}\n\nconst WithForm = () => {\n\n    const {\n        handleSubmit,\n        formState: { errors },\n        control\n    } = useForm<{cardExpiry?: string}>();\n\n    const onSubmit = (value: {cardExpiry?: string}) => {\n        console.log(value)\n    }\n\n    return (\n        <Form className=\"mt-6\" onSubmit={handleSubmit(onSubmit)}>\n            <FormItem\n                label=\"Expiration date\"\n                invalid={Boolean(errors.cardExpiry)}\n                errorMessage={errors.cardExpiry?.message}\n            >\n                <Controller\n                    name=\"cardExpiry\"\n                    control={control}\n                    render={({ field }) =>\n                        <FormCustomFormatInput\n                            placeholder=\"••/••\"\n                            format={cardExpiryFormat}\n                            onValueChange={(e) => {\n                                field.onChange(e.value)\n                            }}\n                            value={field.value}\n                        />\n                    }\n                />\n            </FormItem>\n            <Button variant=\"solid\" type=\"submit\" block>\n                Submit\n            </Button>\n        </Form>\n    )\n}\n\nexport default WithForm"
+    }
+  }
+}

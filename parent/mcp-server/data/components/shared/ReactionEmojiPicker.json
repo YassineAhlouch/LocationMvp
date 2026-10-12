@@ -1,0 +1,71 @@
+{
+  "component_id": "reactionemojipicker-001",
+  "name": "ReactionEmojiPicker",
+  "display_name": "Reaction Emoji Picker Component",
+  "category": "User Interaction / Pickers",
+  "import_path": "@/components/shared/ReactionEmojiPicker",
+  "description": "A popover-based emoji picker for quick reactions with customizable emoji set and trigger button.",
+  "usage_guidelines": [
+    "Use for social reactions (like, love, etc.).",
+    "Customize emoji set for your use case.",
+    "Provide custom trigger button if needed.",
+    "Handle onSelect to process emoji selection."
+  ],
+  "props": {
+    "emojis": {
+      "type": "readonly Emoji[]",
+      "required": false,
+      "default": "['👍', '❤️', '😂', '😮', '😢', '😡', '👏', '🎉']",
+      "description": "Array of emoji strings to display."
+    },
+    "onSelect": {
+      "type": "(emoji: Emoji) => void",
+      "required": false,
+      "description": "Callback fired when emoji is selected."
+    },
+    "trigger": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Custom trigger button. Defaults to smile icon button."
+    },
+    "placement": {
+      "type": "Popover placement",
+      "required": false,
+      "default": "'top'",
+      "description": "Popover placement relative to trigger."
+    },
+    "width": {
+      "type": "number",
+      "required": false,
+      "default": "250",
+      "description": "Popover width in pixels."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Button with smile icon that opens popover with emoji grid. Emojis scale on hover. Closes automatically on selection."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for quick reactions",
+      "Customize emoji set for context",
+      "Handle onSelect appropriately",
+      "Provide clear trigger button"
+    ],
+    "Dont": [
+      "Don't use for extensive emoji selection",
+      "Don't forget to handle selection",
+      "Don't overload with too many emojis"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import { useState } from 'react'\nimport ReactionEmojiPicker from '@/components/shared/ReactionEmojiPicker'\n\nconst Basic = () => {\n    const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null)\n\n    return (\n        <div className=\"flex items-center gap-4\">\n            <ReactionEmojiPicker onSelect={setSelectedEmoji} />\n            {selectedEmoji && <span>Selected: {selectedEmoji}</span>}\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "CustomEmojis": {
+      "title": "Custom Emojis",
+      "code": "import { useState } from 'react'\nimport ReactionEmojiPicker from '@/components/shared/ReactionEmojiPicker'\nimport Button from '@/components/ui/Button'\n\nconst customEmojis = ['🚀', '⭐', '💯', '🔥', '✨', '💪', '✅', '🙏'] as const\n\nconst CustomEmojis = () => {\n    const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null)\n\n    return (\n        <div className=\"flex items-center gap-4\">\n            <ReactionEmojiPicker\n                emojis={customEmojis}\n                onSelect={setSelectedEmoji}\n                trigger={<Button>React {selectedEmoji || '😊'}</Button>}\n            />\n            {selectedEmoji && <span>Selected: {selectedEmoji}</span>}\n        </div>\n    )\n}\n\nexport default CustomEmojis"
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "component_id": "growshrinkvalue-001",
+  "name": "GrowShrinkValue",
+  "display_name": "Growth/Decline Value Display",
+  "category": "Data Display / Indicators",
+  "import_path": "@/components/shared/GrowShrinkValue",
+  "description": "A component for displaying numeric values with directional indicators and customizable positive/negative styling.",
+  "usage_guidelines": [
+    "Use for displaying changes, trends, or comparative metrics.",
+    "Customize icons and colors for positive/negative values.",
+    "Use prefix/suffix for units or context.",
+    "More flexible than GrowShrinkTag with custom styling options."
+  ],
+  "props": {
+    "value": {
+      "type": "number",
+      "required": false,
+      "default": "0",
+      "description": "Numeric value determining direction and color."
+    },
+    "showIcon": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Shows directional icon."
+    },
+    "prefix": {
+      "type": "ReactNode | string",
+      "required": false,
+      "description": "Content before value."
+    },
+    "suffix": {
+      "type": "ReactNode | string",
+      "required": false,
+      "description": "Content after value."
+    },
+    "positiveIcon": {
+      "type": "ReactNode | string",
+      "required": false,
+      "description": "Custom icon for positive values."
+    },
+    "negativeIcon": {
+      "type": "ReactNode | string",
+      "required": false,
+      "description": "Custom icon for negative values."
+    },
+    "positiveClass": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for positive values."
+    },
+    "negativeClass": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for negative values."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Inline text with directional icon. Success color for positive, error color for negative. Fully customizable styling."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for inline metric displays",
+      "Customize icons for context",
+      "Use appropriate colors",
+      "Add suffix for units"
+    ],
+    "Dont": [
+      "Don't use for non-comparative data",
+      "Don't forget to format values"
+    ]
+  }
+}

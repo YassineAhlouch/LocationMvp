@@ -1,0 +1,52 @@
+{
+  "component_id": "hook-timeoutmessage-001",
+  "name": "useTimeOutMessage",
+  "display_name": "Auto-Clearing Message Hook",
+  "category": "Hooks / State Management",
+  "import_path": "@/utils/hooks/useTimeOutMessage",
+  "description": "A hook for managing temporary messages that automatically clear after a specified interval, useful for success/error notifications.",
+  "usage_guidelines": [
+    "Use for temporary success/error messages.",
+    "Message automatically clears after interval.",
+    "Set message via returned setter function.",
+    "Customize interval based on message importance."
+  ],
+  "params": [
+    {
+      "name": "interval",
+      "type": "number",
+      "required": false,
+      "default": "3000",
+      "description": "Duration in milliseconds before message auto-clears."
+    }
+  ],
+  "return_value": {
+    "type": "[string, Dispatch<SetStateAction<string>>]",
+    "description": "Tuple with current message and setter function.",
+    "structure": {
+      "message": {
+        "type": "string",
+        "description": "Current message text."
+      },
+      "setMessage": {
+        "type": "Dispatch<SetStateAction<string>>",
+        "description": "Function to set new message (triggers auto-clear timer)."
+      }
+    }
+  },
+  "best_practices": {
+    "Do": [
+      "Use for form submission feedback",
+      "Use for temporary notifications",
+      "Set appropriate interval for readability",
+      "Clear message manually if needed",
+      "Use for non-critical messages"
+    ],
+    "Dont": [
+      "Don't use for critical errors",
+      "Don't set interval too short",
+      "Don't use for permanent messages",
+      "Don't forget to handle empty messages"
+    ]
+  }
+}

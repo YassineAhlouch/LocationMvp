@@ -1,0 +1,86 @@
+{
+  "component_id": "loaders-001",
+  "name": "loaders",
+  "display_name": "Skeleton Loader Components",
+  "category": "Feedback / Loading",
+  "import_path": "@/components/shared/loaders",
+  "description": "A collection of specialized skeleton loader components for common UI patterns including media items, table rows, and text blocks.",
+  "usage_guidelines": [
+    "Use MediaSkeleton for user profiles, media items, or cards with avatars.",
+    "Use TableRowSkeleton for loading states in tables.",
+    "Use TextBlockSkeleton for article content, descriptions, or text-heavy areas.",
+    "Match skeleton structure to actual content for smooth transitions.",
+    "Customize dimensions and appearance with props."
+  ],
+  "props": {},
+  "return_value": {
+    "type": "object",
+    "description": "Collection of skeleton loader components.",
+    "structure": {
+      "MediaSkeleton": {
+        "type": "Component",
+        "description": "Skeleton for media items with optional avatar, title, and text lines.",
+        "props": {
+          "showAvatar": "boolean (default: true) - Shows circular avatar skeleton",
+          "avatarProps": "SkeletonProps - Props for avatar skeleton",
+          "titleProps": "SkeletonProps - Props for title skeleton",
+          "textProps": "SkeletonProps - Props for text skeleton"
+        }
+      },
+      "TableRowSkeleton": {
+        "type": "Component",
+        "description": "Skeleton for table rows with configurable columns and avatar positions.",
+        "props": {
+          "columns": "number (default: 1) - Number of columns",
+          "rows": "number (default: 10) - Number of rows",
+          "avatarInColumns": "number[] (default: []) - Column indices with avatars",
+          "avatarProps": "SkeletonProps - Props for avatar skeletons"
+        }
+      },
+      "TextBlockSkeleton": {
+        "type": "Component",
+        "description": "Skeleton for text content blocks with optional title and multiple lines.",
+        "props": {
+          "rowCount": "number (default: 3) - Number of text lines",
+          "title": "boolean (default: true) - Shows title skeleton",
+          "titleWidth": "string | number (default: '40%') - Title width",
+          "lastChildWidth": "string | number (default: '60%') - Last line width",
+          "height": "string | number - Line height"
+        }
+      }
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with Skeleton component",
+    "visual_description": "Animated pulse skeletons matching common UI patterns. Gray backgrounds with smooth animations. Responsive widths and configurable dimensions."
+  },
+  "best_practices": {
+    "Do": [
+      "Match skeleton to actual content structure",
+      "Use appropriate loader for content type",
+      "Configure dimensions to match real content",
+      "Show skeletons during initial load",
+      "Use consistent skeleton patterns"
+    ],
+    "Dont": [
+      "Don't mismatch skeleton and content layouts",
+      "Don't show skeletons for very fast loads",
+      "Don't forget to replace with actual content",
+      "Don't use too many skeleton rows"
+    ]
+  },
+  "code_examples": {
+    "MediaSkeletonDemo": {
+      "title": "Media Skeleton Demo",
+      "code": "import MediaSkeleton from '@/components/shared/loaders/MediaSkeleton'\n\nconst MediaSkeletonDemo = () => {\n    return (\n        <div className=\"space-y-4 w-full max-w-md\">\n            <MediaSkeleton />\n            <MediaSkeleton showAvatar={false} />\n        </div>\n    )\n}\n\nexport default MediaSkeletonDemo"
+    },
+    "TableRowSkeletonDemo": {
+      "title": "Table Row Skeleton Demo",
+      "code": "import TableRowSkeleton from '@/components/shared/loaders/TableRowSkeleton'\nimport Table from '@/components/ui/Table'\n\nconst { THead, Tr, Th } = Table\n\nconst TableRowSkeletonDemo = () => {\n    return (\n        <Table>\n            <THead>\n                <Tr>\n                    <Th>User</Th>\n                    <Th>Email</Th>\n                    <Th>Status</Th>\n                </Tr>\n            </THead>\n            <TableRowSkeleton columns={3} rows={3} avatarInColumns={[0]} />\n        </Table>\n    )\n}\n\nexport default TableRowSkeletonDemo"
+    },
+    "TextBlockSkeletonDemo": {
+      "title": "Text Block Skeleton Demo",
+      "code": "import TextBlockSkeleton from '@/components/shared/loaders/TextBlockSkeleton'\n\nconst TextBlockSkeletonDemo = () => {\n    return (\n        <div className=\"space-y-8 w-full max-w-md\">\n            <div>\n                <p className=\"text-sm text-gray-500 mb-2\">With title:</p>\n                <TextBlockSkeleton rowCount={3} />\n            </div>\n            <div>\n                <p className=\"text-sm text-gray-500 mb-2\">Without title:</p>\n                <TextBlockSkeleton title={false} rowCount={4} />\n            </div>\n        </div>\n    )\n}\n\nexport default TextBlockSkeletonDemo"
+    }
+  }
+}

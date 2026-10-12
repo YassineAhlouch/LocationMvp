@@ -1,0 +1,112 @@
+{
+  "component_id": "switcher-001",
+  "name": "Switcher",
+  "display_name": "Toggle Switch Component",
+  "category": "Form Elements / Input",
+  "import_path": "@/components/ui/Switcher",
+  "description": "A toggle switch component for binary on/off states with loading support and custom content.",
+  "usage_guidelines": [
+    "Use for binary settings or feature toggles.",
+    "Provide clear labels indicating on/off states.",
+    "Use checkedContent and unCheckedContent for state labels.",
+    "Set isLoading during async state changes.",
+    "Handle onChange to update application state."
+  ],
+  "props": {
+    "checked": {
+      "type": "boolean",
+      "required": false,
+      "description": "Controlled checked state."
+    },
+    "checkedContent": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Content displayed when checked."
+    },
+    "toggledClass": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for checked state."
+    },
+    "defaultChecked": {
+      "type": "boolean",
+      "required": false,
+      "description": "Default checked state."
+    },
+    "disabled": {
+      "type": "boolean",
+      "required": false,
+      "description": "Disables switch interaction."
+    },
+    "isLoading": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Shows loading spinner."
+    },
+    "name": {
+      "type": "string",
+      "required": false,
+      "description": "Input name for form submission."
+    },
+    "onChange": {
+      "type": "(checked: boolean, e: ChangeEvent<HTMLInputElement>) => void",
+      "required": false,
+      "description": "Callback fired when state changes."
+    },
+    "readOnly": {
+      "type": "boolean",
+      "required": false,
+      "description": "Makes switch read-only."
+    },
+    "unCheckedContent": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Content displayed when unchecked."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A pill-shaped toggle with sliding circle indicator. Checked state uses primary color. Smooth transition animation. Optional text labels inside switch."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for binary on/off settings",
+      "Provide clear state labels",
+      "Use isLoading for async operations",
+      "Handle onChange immediately",
+      "Provide feedback for state changes"
+    ],
+    "Dont": [
+      "Don't use for multi-option selections (use Radio/Select)",
+      "Don't forget to handle onChange",
+      "Don't use for actions requiring confirmation"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import Switcher from '@/components/ui/Switcher'\nimport type { ChangeEvent } from 'react'\n\nconst Basic = () => {\n    const onSwitcherToggle = (val: boolean, e: ChangeEvent) => {\n        console.log(val, e)\n    }\n\n    return (\n        <div>\n            <Switcher defaultChecked onChange={onSwitcherToggle} />\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Colors": {
+      "title": "Colors",
+      "code": "import Switcher from '@/components/ui/Switcher'\n\nconst Colors = () => {\n    return (\n        <div>\n            <div className=\"mb-4\">\n                <Switcher defaultChecked toggledClass=\"bg-green-500\" />\n            </div>\n            <div className=\"mb-4\">\n                <Switcher defaultChecked toggledClass=\"bg-red-500\" />\n            </div>\n        </div>\n    )\n}\n\nexport default Colors"
+    },
+    "Content": {
+      "title": "Content",
+      "code": "import Switcher from '@/components/ui/Switcher'\nimport { RiMoonClearLine, RiSunLine } from 'react-icons/ri'\nimport type { ReactNode } from 'react'\n\nconst withIcon = (component: ReactNode) => {\n    return <div className=\"text-lg\">{component}</div>\n}\n\nconst Content = () => {\n    return (\n        <div>\n            <div className=\"mb-4\">\n                <Switcher checkedContent=\"a\" unCheckedContent=\"b\" />\n            </div>\n            <div className=\"mb-4\">\n                <Switcher\n                    unCheckedContent={withIcon(<RiMoonClearLine />)}\n                    checkedContent={withIcon(<RiSunLine />)}\n                />\n            </div>\n        </div>\n    )\n}\n\nexport default Content"
+    },
+    "Controlled": {
+      "title": "Controlled",
+      "code": "import { useState } from 'react'\nimport Switcher from '@/components/ui/Switcher'\n\nconst Controlled = () => {\n    const [checked, setChecked] = useState(false)\n\n    const onSwitcherToggle = (val: boolean) => {\n        console.log('value', val)\n        setChecked(!val)\n    }\n\n    return (\n        <div>\n            <Switcher checked={checked} onChange={onSwitcherToggle} />\n        </div>\n    )\n}\n\nexport default Controlled"
+    },
+    "Disabled": {
+      "title": "Disabled",
+      "code": "import Switcher from '@/components/ui/Switcher'\n\nconst Disabled = () => {\n    return (\n        <div>\n            <div className=\"mb-4\">\n                <Switcher disabled />\n            </div>\n            <div className=\"mb-4\">\n                <Switcher disabled defaultChecked />\n            </div>\n        </div>\n    )\n}\n\nexport default Disabled"
+    },
+    "Loading": {
+      "title": "Loading",
+      "code": "import { useState } from 'react'\nimport Switcher from '@/components/ui/Switcher'\n\nconst Loading = () => {\n    const [checked, setChecked] = useState(false)\n    const [isLoading, setIsLoading] = useState(false)\n\n    const onSwitcherToggle = () => {\n        setIsLoading(true)\n        setTimeout(() => {\n            setChecked((checked) => !checked)\n            setIsLoading(false)\n        }, 1000)\n    }\n\n    return (\n        <div>\n            <Switcher\n                checked={checked}\n                isLoading={isLoading}\n                onChange={onSwitcherToggle}\n            />\n        </div>\n    )\n}\n\nexport default Loading"
+    }
+  }
+}

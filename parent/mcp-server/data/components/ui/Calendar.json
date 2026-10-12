@@ -1,0 +1,120 @@
+{
+  "component_id": "calendar-001",
+  "name": "Calendar",
+  "display_name": "Calendar Date Selector",
+  "category": "Form Elements / Date & Time",
+  "import_path": "@/components/ui/Calendar",
+  "description": "A calendar component for selecting single or multiple dates with month/year navigation and date range restrictions.",
+  "usage_guidelines": [
+    "Use for date selection in forms and date pickers.",
+    "Enable multipleSelection for selecting multiple dates.",
+    "Set minDate/maxDate to restrict selectable range.",
+    "Use disableDate function for complex date restrictions.",
+    "Customize appearance with dayClassName and dayStyle.",
+    "Handle onChange to capture selected date(s)."
+  ],
+  "props": {
+    "multipleSelection": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Enables selection of multiple dates."
+    },
+    "value": {
+      "type": "Date | Date[] | null",
+      "required": false,
+      "description": "Selected date(s). Array when multipleSelection is true."
+    },
+    "onChange": {
+      "type": "(value: Date | Date[] | null) => void",
+      "required": false,
+      "description": "Callback fired when date selection changes."
+    },
+    "minDate": {
+      "type": "Date",
+      "required": false,
+      "description": "Minimum selectable date."
+    },
+    "maxDate": {
+      "type": "Date",
+      "required": false,
+      "description": "Maximum selectable date."
+    },
+    "disableDate": {
+      "type": "(date: Date) => boolean",
+      "required": false,
+      "description": "Function to disable specific dates."
+    },
+    "firstDayOfWeek": {
+      "type": "'monday' | 'sunday'",
+      "required": false,
+      "default": "'monday'",
+      "description": "First day of week in calendar."
+    },
+    "locale": {
+      "type": "string",
+      "required": false,
+      "description": "Locale for date formatting."
+    },
+    "dayClassName": {
+      "type": "string | ((date: Date) => string)",
+      "required": false,
+      "description": "CSS classes for day cells."
+    },
+    "hideOutOfMonthDates": {
+      "type": "boolean",
+      "required": false,
+      "description": "Hides dates from adjacent months."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Grid-based calendar with month/year header navigation. Days are clickable cells with hover and selected states. Disabled dates have reduced opacity. Multiple selections show all selected dates highlighted."
+  },
+  "best_practices": {
+    "Do": [
+      "Set appropriate min/max dates",
+      "Use disableDate for complex rules",
+      "Handle onChange properly",
+      "Provide locale for internationalization",
+      "Use multipleSelection for date ranges",
+      "Validate selected dates"
+    ],
+    "Dont": [
+      "Don't forget to handle null values",
+      "Don't allow invalid date selections",
+      "Don't use for time selection (use TimeInput)",
+      "Don't forget accessibility"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import { useState } from 'react'\nimport Calendar from '@/components/ui/Calendar'\n\nconst Basic = () => {\n    const [value, setValue] = (useState < Date) | (null > null)\n\n    return (\n        <div className=\"md:w-[252px] max-w-[252px] mx-auto\">\n            <Calendar value={value} onChange={setValue} />\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "CustomRender": {
+      "title": "Custom Render",
+      "code": "import { useState } from 'react'\nimport Calendar from '@/components/ui/Calendar'\nimport Badge from '@/components/ui/Badge'\n\nconst CustomRender = () => {\n    const [value, setValue] = (useState < Date) | (null > null)\n\n    return (\n        <div className=\"md:w-[252px] max-w-[252px] mx-auto\">\n            <Calendar\n                value={value}\n                dayClassName={(date, { selected }) => {\n                    if (date.getDate() === 12 && !selected) {\n                        return 'text-red-600'\n                    }\n\n                    if (selected) {\n                        return 'text-white'\n                    }\n\n                    return 'text-gray-700 dark:text-gray-200'\n                }}\n                dayStyle={(date, { selected, outOfMonth }) => {\n                    if (date.getDate() === 18 && !selected) {\n                        return { color: '#15c39a' }\n                    }\n\n                    if (outOfMonth) {\n                        return {\n                            opacity: 0,\n                            pointerEvents: 'none',\n                            cursor: 'default',\n                        }\n                    }\n\n                    return {}\n                }}\n                renderDay={(date) => {\n                    const day = date.getDate()\n\n                    if (day !== 12) {\n                        return <span>{day}</span>\n                    }\n\n                    return (\n                        <span className=\"relative flex justify-center items-center w-full h-full\">\n                            {day}\n                            <Badge\n                                className=\"absolute bottom-1\"\n                                innerClass=\"h-1 w-1\"\n                            />\n                        </span>\n                    )\n                }}\n                onChange={setValue}\n            />\n        </div>\n    )\n}\n\nexport default CustomRender"
+    },
+    "DisabledCertainDate": {
+      "title": "Disabled Certain Date",
+      "code": "import { useState } from 'react'\nimport Calendar from '@/components/ui/Calendar'\n\nconst DisabledCertainDate = () => {\n    const [value, setValue] = useState<Date | null>(null)\n\n    const disableCertainDate = (date: Date) => {\n        const banDate = [7, 15, 21]\n        return banDate.includes(date.getDate())\n    }\n\n    return (\n        <div className=\"md:w-[252px] max-w-[252px] mx-auto\">\n            <Calendar\n                value={value}\n                disableDate={disableCertainDate}\n                onChange={setValue}\n            />\n        </div>\n    )\n}\n\nexport default DisabledCertainDate"
+    },
+    "DisableOutOfPeriodDate": {
+      "title": "Disable Out Of Period Date",
+      "code": "import { useState } from 'react'\nimport Calendar from '@/components/ui/Calendar'\nimport dayjs from 'dayjs'\n\nconst Basic = () => {\n    const [value, setValue] = (useState < Date) | (null > null)\n\n    const dateGap = 7\n\n    // Only able to select previos & future 7 days start from today\n    const minDate = dayjs(new Date())\n        .subtract(dateGap, 'day')\n        .startOf('day')\n        .toDate()\n    const maxDate = dayjs(new Date()).add(dateGap, 'day').toDate()\n\n    return (\n        <div className=\"md:w-[252px] max-w-[252px] mx-auto\">\n            <Calendar\n                value={value}\n                onChange={setValue}\n                minDate={minDate}\n                maxDate={maxDate}\n            />\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "MultipleDateView": {
+      "title": "Multiple Date View",
+      "code": "import { useState } from 'react'\nimport Calendar from '@/components/ui/Calendar'\n\nconst MultipleDateView = () => {\n    const [value, setValue] = (useState < Date) | (null > null)\n\n    return (\n        <div className=\"overflow-x-auto \">\n            <div className=\"w-[504x] mx-auto\">\n                <Calendar value={value} dateViewCount={2} onChange={setValue} />\n            </div>\n        </div>\n    )\n}\n\nexport default MultipleDateView"
+    },
+    "MultipleSelection": {
+      "title": "Multiple Selection",
+      "code": "import { useState } from 'react'\nimport Calendar from '@/components/ui/Calendar'\n\nconst MultipleSelection = () => {\n    const [value, setValue] = useState<Date[]>([])\n\n    return (\n        <div className=\"md:w-[252px] max-w-[252px] mx-auto\">\n            <Calendar multipleSelection value={value} onChange={setValue} />\n        </div>\n    )\n}\n\nexport default MultipleSelection"
+    },
+    "Range": {
+      "title": "Range",
+      "code": "import { useState } from 'react'\nimport RangeCalendar from '@/components/ui/RangeCalendar'\nimport dayjs from 'dayjs'\n\nconst Range = () => {\n    const [value, setValue] =\n        useState <\n        [Date | null, Date | null] >\n        [new Date(), dayjs(new Date()).add(5, 'days').toDate()]\n\n    return (\n        <div className=\"md:w-[252px] max-w-[252px] mx-auto\">\n            <RangeCalendar value={value} onChange={setValue} />\n        </div>\n    )\n}\n\nexport default Range"
+    }
+  }
+}

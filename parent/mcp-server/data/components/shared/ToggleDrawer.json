@@ -1,0 +1,62 @@
+{
+  "component_id": "toggledrawer-001",
+  "name": "ToggleDrawer",
+  "display_name": "Toggle Drawer Component",
+  "category": "Overlay / Navigation",
+  "import_path": "@/components/shared/ToggleDrawer",
+  "description": "A drawer component with built-in toggle button and imperative handle for programmatic control.",
+  "usage_guidelines": [
+    "Use for navigation menus or side panels with toggle button.",
+    "Provides ref handle for external open/close control.",
+    "Includes NavToggle icon button by default.",
+    "Inherits all Drawer component functionality."
+  ],
+  "props": {
+    "placement": {
+      "type": "'top' | 'right' | 'bottom' | 'left'",
+      "required": false,
+      "default": "'left'",
+      "description": "Drawer slide-in direction."
+    }
+  },
+  "return_value": {
+    "type": "ToggleDrawerRef",
+    "description": "Ref handle with control methods.",
+    "structure": {
+      "handleCloseDrawer": {
+        "type": "() => void",
+        "description": "Programmatically close drawer."
+      },
+      "handleOpenDrawer": {
+        "type": "() => void",
+        "description": "Programmatically open drawer."
+      }
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Toggle button with NavToggle icon. Drawer slides from specified edge with default 330px width."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for navigation sidebars",
+      "Use ref for programmatic control",
+      "Provide clear drawer content",
+      "Handle close events"
+    ],
+    "Dont": [
+      "Don't use for critical modal content",
+      "Don't forget to handle ref properly"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import ToggleDrawer from '@/components/shared/ToggleDrawer'\n\nconst Basic = () => {\n    return (\n        <div className=\"flex items-center gap-4\">\n            <ToggleDrawer title=\"Menu\">\n                <div className=\"p-4\">\n                    <h5 className=\"mb-4\">Navigation</h5>\n                    <ul className=\"space-y-2\">\n                        <li className=\"p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer\">\n                            Home\n                        </li>\n                        <li className=\"p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer\">\n                            Dashboard\n                        </li>\n                        <li className=\"p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer\">\n                            Settings\n                        </li>\n                        <li className=\"p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer\">\n                            Profile\n                        </li>\n                    </ul>\n                </div>\n            </ToggleDrawer>\n            <span>Click the toggle button to open the drawer</span>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Placement": {
+      "title": "Placement",
+      "code": "import ToggleDrawer from '@/components/shared/ToggleDrawer'\n\nconst Placement = () => {\n    return (\n        <div className=\"flex items-center gap-4\">\n            <ToggleDrawer placement=\"right\" title=\"Right Drawer\">\n                <div className=\"p-4\">\n                    <h5 className=\"mb-4\">Right Side Panel</h5>\n                    <p className=\"text-gray-500\">\n                        This drawer opens from the right side of the screen.\n                    </p>\n                </div>\n            </ToggleDrawer>\n            <span>Opens from the right</span>\n        </div>\n    )\n}\n\nexport default Placement"
+    }
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "component_id": "dropdown-001",
+  "name": "Dropdown",
+  "display_name": "Dropdown Menu Component",
+  "category": "Navigation / Menus",
+  "import_path": "@/components/ui/Dropdown",
+  "description": "A flexible dropdown menu component with nested menu support, keyboard navigation, and customizable triggers for displaying contextual actions and options.",
+  "usage_guidelines": [
+    "Use for action menus, context menus, or navigation options.",
+    "Compose with DropdownItem, DropdownMenu components for menu structure.",
+    "Use activeKey to highlight currently active menu item.",
+    "Handle onSelect to respond to menu item selections.",
+    "Supports nested dropdowns for hierarchical menus."
+  ],
+  "props": {
+    "activeKey": {
+      "type": "string",
+      "required": false,
+      "description": "Currently active menu item key for highlighting."
+    },
+    "eventKey": {
+      "type": "string",
+      "required": false,
+      "description": "Unique identifier for this dropdown item."
+    },
+    "id": {
+      "type": "string",
+      "required": false,
+      "description": "HTML id attribute for the dropdown."
+    },
+    "onSelect": {
+      "type": "(eventKey: string, e: SyntheticEvent) => void",
+      "required": false,
+      "description": "Callback fired when a menu item is selected."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with Floating UI",
+    "visual_description": "A floating menu panel that appears below or beside a trigger element. Menu items are listed vertically with hover effects. Supports nested submenus that appear on hover or click."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for contextual actions and navigation",
+      "Provide clear, action-oriented menu item labels",
+      "Group related items logically",
+      "Use dividers to separate item groups",
+      "Handle onSelect for menu actions"
+    ],
+    "Dont": [
+      "Don't nest dropdowns too deeply (max 2-3 levels)",
+      "Don't use for form inputs (use Select instead)",
+      "Don't overload with too many items (consider alternative UI)",
+      "Don't forget keyboard navigation support"
+    ]
+  },
+  "code_examples": {
+    "ContextMenu": {
+      "title": "Context Menu",
+      "code": "import Dropdown from '@/components/ui/Dropdown'\n\nconst ContextMenu = () => {\n    return (\n        <Dropdown.ContextMenu\n            areaClass=\"bg-gray-100 dark:bg-gray-700 rounded-lg h-[150px] flex items-center justify-center\"\n            areaContent={<span className=\"font-medium\">Right click here</span>}\n        >\n            <Dropdown.Item>Item 1</Dropdown.Item>\n            <Dropdown.Menu title=\"Right Item 2\">\n                <Dropdown.Menu title=\"Item 2-1\">\n                    <Dropdown.Item active>Item 2-1-1</Dropdown.Item>\n                    <Dropdown.Item>Item 2-1-2</Dropdown.Item>\n                    <Dropdown.Item>Item 2-1-3</Dropdown.Item>\n                </Dropdown.Menu>\n                <Dropdown.Item>Item 2-2</Dropdown.Item>\n                <Dropdown.Item>Item 2-3</Dropdown.Item>\n            </Dropdown.Menu>\n            <Dropdown.Menu title=\"Right Item 3\">\n                <Dropdown.Menu title=\"Item 3-1\">\n                    <Dropdown.Item>Item 3-1-1</Dropdown.Item>\n                    <Dropdown.Item>Item 3-1-2</Dropdown.Item>\n                    <Dropdown.Item>Item 3-1-3</Dropdown.Item>\n                </Dropdown.Menu>\n                <Dropdown.Item>Item 3-2</Dropdown.Item>\n                <Dropdown.Item>Item 3-3</Dropdown.Item>\n            </Dropdown.Menu>\n            <Dropdown.Item>Item 4</Dropdown.Item>\n        </Dropdown.ContextMenu>\n    )\n}\n\nexport default ContextMenu"
+    },
+    "CustomToggle": {
+      "title": "Custom Toggle",
+      "code": "import Dropdown from '@/components/ui/Dropdown'\nimport Button from '@/components/ui/Button'\n\nconst CustomToggle = () => {\n    const Toggle = <Button>Toggle as Button</Button>\n\n    return (\n        <div>\n            <Dropdown renderTitle={Toggle}>\n                <Dropdown.Item eventKey=\"a\">Item A</Dropdown.Item>\n                <Dropdown.Item eventKey=\"b\">Item B</Dropdown.Item>\n                <Dropdown.Item eventKey=\"c\">Item C</Dropdown.Item>\n                <Dropdown.Item eventKey=\"d\">Item D</Dropdown.Item>\n            </Dropdown>\n        </div>\n    )\n}\n\nexport default CustomToggle"
+    },
+    "Default": {
+      "title": "Default",
+      "code": "import Dropdown from '@/components/ui/Dropdown'\nimport type { SyntheticEvent } from 'react'\n\nconst Default = () => {\n    const dropdownItems = [\n        { key: 'a', name: 'Item A' },\n        { key: 'b', name: 'Item B' },\n        { key: 'c', name: 'Item C' },\n        { key: 'd', name: 'Item D' },\n    ]\n\n    const onDropdownItemClick = (eventKey: string, e: SyntheticEvent) => {\n        console.log('Dropdown Item Clicked', eventKey, e)\n    }\n\n    const onDropdownClick = (e: SyntheticEvent) => {\n        console.log('Dropdown Clicked', e)\n    }\n\n    return (\n        <div>\n            <Dropdown title=\"Click Me!\" onClick={onDropdownClick}>\n                {dropdownItems.map((item) => (\n                    <Dropdown.Item\n                        key={item.key}\n                        eventKey={item.key}\n                        onSelect={onDropdownItemClick}\n                    >\n                        {item.name}\n                    </Dropdown.Item>\n                ))}\n            </Dropdown>\n        </div>\n    )\n}\n\nexport default Default"
+    },
+    "DefaultActive": {
+      "title": "Default Active",
+      "code": "import Dropdown from '@/components/ui/Dropdown'\n\nconst DefaultActive = () => {\n    return (\n        <div>\n            <Dropdown title=\"Click Me!\" activeKey=\"a\">\n                <Dropdown.Item eventKey=\"a\">Item A</Dropdown.Item>\n                <Dropdown.Item eventKey=\"b\">Item B</Dropdown.Item>\n                <Dropdown.Item eventKey=\"c\">Item C</Dropdown.Item>\n                <Dropdown.Item eventKey=\"d\">Item D</Dropdown.Item>\n            </Dropdown>\n            <Dropdown title=\"Click Me!\" activeKey=\"item-2-1-2\">\n                <Dropdown.Item eventKey=\"item-1\">Item 1</Dropdown.Item>\n                <Dropdown.Menu eventKey=\"item-2\" title=\"Item 2\">\n                    <Dropdown.Menu eventKey=\"item-2-1\" title=\"Item 2-1\">\n                        <Dropdown.Item eventKey=\"item-2-1-1\">\n                            Item 2-1-1\n                        </Dropdown.Item>\n                        <Dropdown.Item eventKey=\"item-2-1-2\">\n                            Item 2-1-2\n                        </Dropdown.Item>\n                        <Dropdown.Item eventKey=\"item-2-1-3\">\n                            Item 2-1-3\n                        </Dropdown.Item>\n                    </Dropdown.Menu>\n                    <Dropdown.Item eventKey=\"item-2-2\">Item 2-2</Dropdown.Item>\n                    <Dropdown.Item eventKey=\"item-2-3\">Item 2-3</Dropdown.Item>\n                </Dropdown.Menu>\n                <Dropdown.Item>Item 3</Dropdown.Item>\n            </Dropdown>\n        </div>\n    )\n}\n\nexport default DefaultActive"
+    },
+    "Disabled": {
+      "title": "Disabled",
+      "code": "import Dropdown from '@/components/ui/Dropdown'\n\nconst Disabled = () => {\n    return (\n        <div>\n            <Dropdown disabled title=\"Click Me!\">\n                <Dropdown.Item>Item A</Dropdown.Item>\n                <Dropdown.Item>Item B</Dropdown.Item>\n                <Dropdown.Item>Item C</Dropdown.Item>\n                <Dropdown.Item>Item D</Dropdown.Item>\n            </Dropdown>\n            <Dropdown title=\"Click Me!\">\n                <Dropdown.Item>Item A</Dropdown.Item>\n                <Dropdown.Item disabled>Item B</Dropdown.Item>\n                <Dropdown.Item>Item C</Dropdown.Item>\n                <Dropdown.Item>Item D</Dropdown.Item>\n            </Dropdown>\n        </div>\n    )\n}\n\nexport default Disabled"
+    },
+    "DropdownItemVariant": {
+      "title": "Dropdown Item Variant",
+      "code": "import Dropdown from '@/components/ui/Dropdown'\nimport { TbUser, TbSettings2, TbLicense, TbHeadphones, TbUsers, TbHome, TbLogout } from \"react-icons/tb\";\nimport type { PropsWithChildren,  ReactNode } from 'react'\n\nconst DropdownItemWrapper = ({ children, icon, suffix }: PropsWithChildren<{\n    icon: ReactNode\n    suffix?: string | ReactNode\n}>) => {\n    return (\n        <div className=\"flex items-center justify-between gap-2 w-full\">\n            <div className=\"flex items-center gap-2\">\n                <span className=\"text-lg text-gray-400 dark:text-gray-400\">{icon}</span>\n                {children}\n            </div>\n            <span className=\"opacity-40\">{suffix}</span>\n        </div>\n    )\n}\n\nconst DropdownItemVariant = () => {\n    return (\n        <div>\n            <Dropdown title=\"Click Me!\">\n                <Dropdown.Item variant=\"header\">\n                    <div className=\"px-2 py-1.5 text-sm font-bold heading-text\">\n                        My Account\n                    </div>\n                </Dropdown.Item>\n                <Dropdown.Item variant=\"divider\" />\n                <Dropdown.Item>\n                    <DropdownItemWrapper icon={<TbUser />} suffix=\"⇧ ⌘ P\">\n                        <span>Profile</span>\n                    </DropdownItemWrapper>\n                </Dropdown.Item>\n                <Dropdown.Item>\n                    <DropdownItemWrapper icon={<TbSettings2 />} suffix=\"⌘ T\">\n                        <span>Setting</span>\n                    </DropdownItemWrapper>\n                </Dropdown.Item>\n                <Dropdown.Item>\n                    <DropdownItemWrapper icon={<TbLicense />} suffix=\"⌘ L\">\n                        <span>License</span>\n                    </DropdownItemWrapper>\n                </Dropdown.Item>\n                <Dropdown.Item>\n                    <DropdownItemWrapper icon={<TbHeadphones />} suffix=\"⌘ Y\">\n                        <span>Support</span>\n                    </DropdownItemWrapper>\n                </Dropdown.Item>\n                <Dropdown.Item variant=\"divider\" />\n                <Dropdown.Item>\n                    <DropdownItemWrapper icon={<TbUsers />} >\n                        <span>Team</span>\n                    </DropdownItemWrapper>\n                </Dropdown.Item>\n                <Dropdown.Item>\n                    <DropdownItemWrapper icon={<TbHome />}>\n                        <span>Company Profile</span>\n                    </DropdownItemWrapper>\n                </Dropdown.Item>\n                <Dropdown.Item variant=\"divider\" />\n                <Dropdown.Item variant=\"custom\">\n                    <div\n                        className=\"\n\t\t\t\t\t\t\tcursor-pointer\n\t\t\t\t\t\t\tpx-3\n\t\t\t\t\t\t\tpy-2\n                            rounded-lg\n\t\t\t\t\t\t\tfont-semibold\n\t\t\t\t\t\t\thover:bg-gray-100\n\t\t\t\t\t\t\tdark:hover:bg-black/20\n                            text-red-400\n\t\t\t\t\t\t\"\n                    >\n                        <DropdownItemWrapper icon={<TbLogout />}>\n                            Logout\n                        </DropdownItemWrapper>\n                    </div>\n                </Dropdown.Item>\n            </Dropdown>\n        </div>\n    )\n}\n\nexport default DropdownItemVariant"
+    },
+    "Placement": {
+      "title": "Placement",
+      "code": "import Dropdown from '@/components/ui/Dropdown'\n\nconst DropdownItems = () => (\n    <>\n        <Dropdown.Item eventKey=\"a\">Item A</Dropdown.Item>\n        <Dropdown.Item eventKey=\"b\">Item B</Dropdown.Item>\n        <Dropdown.Item eventKey=\"c\">Item C</Dropdown.Item>\n        <Dropdown.Item eventKey=\"d\">Item D</Dropdown.Item>\n    </>\n)\n\nconst Placement = () => {\n    return (\n        <div className=\"grid grid-cols-3 gap-4 max-w-xl\">\n            <div>\n                <Dropdown placement=\"top-start\" title=\"Top start\">\n                    <DropdownItems />\n                </Dropdown>\n            </div>\n            <div>\n                <Dropdown placement=\"top\" title=\"Top center\">\n                    <DropdownItems />\n                </Dropdown>\n            </div>\n            <div>\n                <Dropdown placement=\"top-end\" title=\"Top end\">\n                    <DropdownItems />\n                </Dropdown>\n            </div>\n            <div>\n                <Dropdown placement=\"bottom-start\" title=\"Bottom start\">\n                    <DropdownItems />\n                </Dropdown>\n            </div>\n            <div>\n                <Dropdown placement=\"bottom\" title=\"Bottom center\">\n                    <DropdownItems />\n                </Dropdown>\n            </div>\n            <div>\n                <Dropdown placement=\"bottom-end\" title=\"Bottom end\">\n                    <DropdownItems />\n                </Dropdown>\n            </div>\n            <div>\n                <Dropdown placement=\"right-start\" title=\"Right start\">\n                    <DropdownItems />\n                </Dropdown>\n            </div>\n            <div>\n                <Dropdown placement=\"right\" title=\"Right center\">\n                    <DropdownItems />\n                </Dropdown>\n            </div>\n            <div>\n                <Dropdown placement=\"right-end\" title=\"Right end\">\n                    <DropdownItems />\n                </Dropdown>\n            </div>\n            <div>\n                <Dropdown placement=\"left-start\" title=\"Left start\">\n                    <DropdownItems />\n                </Dropdown>\n            </div>\n            <div>\n                <Dropdown placement=\"left\" title=\"Left center\">\n                    <DropdownItems />\n                </Dropdown>\n            </div>\n            <div>\n                <Dropdown placement=\"left-end\" title=\"Left end\">\n                    <DropdownItems />\n                </Dropdown>\n            </div>\n        </div>\n    )\n}\n\nexport default Placement"
+    },
+    "Submenu": {
+      "title": "Submenu",
+      "code": "import Dropdown from '@/components/ui/Dropdown'\n\nconst Submenu = () => {\n    return (\n        <Dropdown title=\"Click Me!\">\n            <Dropdown.Item>Item 1</Dropdown.Item>\n            <Dropdown.Menu title=\"Right Item 2\">\n                <Dropdown.Menu title=\"Item 2-1\">\n                    <Dropdown.Item active>Item 2-1-1</Dropdown.Item>\n                    <Dropdown.Item>Item 2-1-2</Dropdown.Item>\n                    <Dropdown.Item>Item 2-1-3</Dropdown.Item>\n                </Dropdown.Menu>\n                <Dropdown.Item>Item 2-2</Dropdown.Item>\n                <Dropdown.Item>Item 2-3</Dropdown.Item>\n            </Dropdown.Menu>\n            <Dropdown.Menu title=\"Right Item 3\">\n                <Dropdown.Menu title=\"Item 3-1\">\n                    <Dropdown.Item>Item 3-1-1</Dropdown.Item>\n                    <Dropdown.Item>Item 3-1-2</Dropdown.Item>\n                    <Dropdown.Item>Item 3-1-3</Dropdown.Item>\n                </Dropdown.Menu>\n                <Dropdown.Item>Item 3-2</Dropdown.Item>\n                <Dropdown.Item>Item 3-3</Dropdown.Item>\n            </Dropdown.Menu>\n            <Dropdown.Item>Item 4</Dropdown.Item>\n        </Dropdown>\n    )\n}\n\nexport default Submenu"
+    },
+    "Trigger": {
+      "title": "Trigger",
+      "code": "import Dropdown from '@/components/ui/Dropdown'\n\nconst Trigger = () => {\n    return (\n        <div className=\"flex\">\n            <Dropdown title=\"Click\" className=\"mr-2\">\n                <Dropdown.Item eventKey=\"a\">Item A</Dropdown.Item>\n                <Dropdown.Item eventKey=\"b\">Item B</Dropdown.Item>\n                <Dropdown.Item eventKey=\"c\">Item C</Dropdown.Item>\n                <Dropdown.Item eventKey=\"d\">Item D</Dropdown.Item>\n            </Dropdown>\n            <Dropdown title=\"Hover\" trigger=\"hover\" className=\"mr-2\">\n                <Dropdown.Item eventKey=\"a\">Item A</Dropdown.Item>\n                <Dropdown.Item eventKey=\"b\">Item B</Dropdown.Item>\n                <Dropdown.Item eventKey=\"c\">Item C</Dropdown.Item>\n                <Dropdown.Item eventKey=\"d\">Item D</Dropdown.Item>\n            </Dropdown>\n            <Dropdown title=\"Right Click\" trigger=\"context\" className=\"mr-2\">\n                <Dropdown.Item eventKey=\"a\">Item A</Dropdown.Item>\n                <Dropdown.Item eventKey=\"b\">Item B</Dropdown.Item>\n                <Dropdown.Item eventKey=\"c\">Item C</Dropdown.Item>\n                <Dropdown.Item eventKey=\"d\">Item D</Dropdown.Item>\n            </Dropdown>\n        </div>\n    )\n}\n\nexport default Trigger"
+    },
+    "WithRouterLink": {
+      "title": "With Router Link",
+      "code": "import Dropdown from '@/components/ui/Dropdown'\nimport { Link } from 'react-router'\n\nconst WithRouterLink = () => {\n    return (\n        <div>\n            <Dropdown title=\"Click Me!\">\n                <Dropdown.Item>\n                    <Link\n                        className=\"menu-item-link\"\n                        to=\"/ui-components/checkbox\"\n                    >\n                        Checkbox\n                    </Link>\n                </Dropdown.Item>\n                <Dropdown.Item>\n                    <Link className=\"menu-item-link\" to=\"/ui-components/button\">\n                        Button\n                    </Link>\n                </Dropdown.Item>\n                <Dropdown.Item>\n                    <Link className=\"menu-item-link\" to=\"/ui-components/alert\">\n                        Alert\n                    </Link>\n                </Dropdown.Item>\n                <Dropdown.Item>\n                    <Link className=\"menu-item-link\" to=\"/ui-components/dialog\">\n                        Dialog\n                    </Link>\n                </Dropdown.Item>\n            </Dropdown>\n        </div>\n    )\n}\n\nexport default WithRouterLink"
+    }
+  },
+  "compound_components": {
+    "Dropdown": {
+      "description": "Root component that provides dropdown context.",
+      "props": {
+        "renderTitle": {
+          "type": "ReactNode",
+          "required": true,
+          "description": "Trigger element for the dropdown."
+        },
+        "placement": {
+          "type": "string",
+          "required": false,
+          "default": "'bottom-start'",
+          "description": "Dropdown position relative to trigger."
+        },
+        "disabled": {
+          "type": "boolean",
+          "required": false,
+          "description": "Disable the dropdown."
+        }
+      }
+    },
+    "Dropdown.Item": {
+      "description": "Individual dropdown menu item.",
+      "props": {
+        "eventKey": {
+          "type": "string",
+          "required": false,
+          "description": "Unique key for the item."
+        },
+        "active": {
+          "type": "boolean",
+          "required": false,
+          "description": "Active/highlighted state."
+        },
+        "disabled": {
+          "type": "boolean",
+          "required": false,
+          "description": "Disable this item."
+        },
+        "className": {
+          "type": "string",
+          "required": false,
+          "description": "Additional CSS classes."
+        }
+      }
+    },
+    "Dropdown.Menu": {
+      "description": "Nested submenu container.",
+      "props": {
+        "title": {
+          "type": "ReactNode",
+          "required": true,
+          "description": "Submenu trigger content."
+        },
+        "eventKey": {
+          "type": "string",
+          "required": false,
+          "description": "Unique key for the submenu."
+        }
+      }
+    }
+  }
+}

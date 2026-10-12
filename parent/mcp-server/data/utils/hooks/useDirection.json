@@ -1,0 +1,44 @@
+{
+  "component_id": "hook-direction-001",
+  "name": "useDirection",
+  "display_name": "Text Direction Hook",
+  "category": "Hooks / Internationalization",
+  "import_path": "@/utils/hooks/useDirection",
+  "description": "A hook for managing text direction (LTR/RTL) with automatic DOM attribute updates for internationalization support.",
+  "usage_guidelines": [
+    "Use for implementing RTL language support.",
+    "Automatically updates document dir attribute.",
+    "Syncs with theme store for persistence.",
+    "Essential for Arabic, Hebrew, and other RTL languages.",
+    "Use in layout components for direction-aware styling."
+  ],
+  "params": [],
+  "return_value": {
+    "type": "[direction: Direction, setDirection: (dir: Direction) => void]",
+    "description": "Tuple with current direction and setter function.",
+    "structure": {
+      "direction": {
+        "type": "'ltr' | 'rtl'",
+        "description": "Current text direction."
+      },
+      "setDirection": {
+        "type": "(dir: Direction) => void",
+        "description": "Function to change text direction."
+      }
+    }
+  },
+  "best_practices": {
+    "Do": [
+      "Use for multi-language applications",
+      "Update direction when language changes",
+      "Test layouts in both directions",
+      "Use logical CSS properties (start/end)",
+      "Persist user's direction preference"
+    ],
+    "Dont": [
+      "Don't hardcode left/right in styles",
+      "Don't forget to test RTL layouts",
+      "Don't assume LTR for all users"
+    ]
+  }
+}

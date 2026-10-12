@@ -1,0 +1,41 @@
+{
+  "component_id": "hook-appendqueryparams-001",
+  "name": "useAppendQueryParams",
+  "display_name": "Query Parameters Append Hook",
+  "category": "Hooks / Routing",
+  "import_path": "@/utils/hooks/useAppendQueryParams",
+  "description": "A hook for programmatically appending or updating URL query parameters with support for replace/push navigation and override modes.",
+  "usage_guidelines": [
+    "Use for updating URL query parameters without full page reload.",
+    "Set replace: true to replace current history entry instead of pushing new one.",
+    "Set override: true to replace all query params instead of merging.",
+    "Empty, null, or undefined values automatically remove the parameter.",
+    "Useful for filters, pagination, and search state in URL."
+  ],
+  "params": [],
+  "return_value": {
+    "type": "{onAppendQueryParams: Function}",
+    "description": "Object containing the append function.",
+    "structure": {
+      "onAppendQueryParams": {
+        "type": "(params: Record<string, unknown>, options?: {replace?: boolean, override?: boolean}) => void",
+        "description": "Function to append/update query parameters. Options: replace (use replaceState), override (replace all params)."
+      }
+    }
+  },
+  "best_practices": {
+    "Do": [
+      "Use for filter and pagination state",
+      "Use replace: true for filter updates",
+      "Use override: true when resetting filters",
+      "Remove params by setting to null/undefined",
+      "Sync URL with component state"
+    ],
+    "Dont": [
+      "Don't use for sensitive data",
+      "Don't store large objects in URL",
+      "Don't forget to parse params on mount",
+      "Don't use for temporary UI state"
+    ]
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "component_id": "checkbox-001",
+  "name": "Checkbox",
+  "display_name": "Checkbox Input Component",
+  "category": "Form Elements / Input",
+  "import_path": "@/components/ui/Checkbox",
+  "description": "A customizable checkbox component with support for controlled/uncontrolled states, indeterminate state, and checkbox groups.",
+  "usage_guidelines": [
+    "Use for binary choices or multi-select options in forms.",
+    "Use within CheckboxGroup for related options that can be selected together.",
+    "Set indeterminate for parent checkboxes representing partial selection.",
+    "Provide clear labels as children for accessibility.",
+    "Use controlled (checked prop) or uncontrolled (defaultChecked) based on your state management needs."
+  ],
+  "props": {
+    "checked": {
+      "type": "boolean",
+      "required": false,
+      "description": "Controlled checked state."
+    },
+    "checkboxClass": {
+      "type": "string",
+      "required": false,
+      "description": "Additional CSS classes for the checkbox input element."
+    },
+    "defaultChecked": {
+      "type": "boolean",
+      "required": false,
+      "description": "Default checked state for uncontrolled component."
+    },
+    "disabled": {
+      "type": "boolean",
+      "required": false,
+      "description": "Disables checkbox interaction."
+    },
+    "indeterminate": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Shows indeterminate state (dash icon) for partial selection."
+    },
+    "name": {
+      "type": "string",
+      "required": false,
+      "description": "Input name attribute for form submission."
+    },
+    "onChange": {
+      "type": "(values: boolean, e: ChangeEvent<HTMLInputElement>) => void",
+      "required": false,
+      "description": "Callback fired when checkbox state changes."
+    },
+    "readOnly": {
+      "type": "boolean",
+      "required": false,
+      "description": "Makes checkbox read-only (visible but not interactive)."
+    },
+    "value": {
+      "type": "CheckboxValue",
+      "required": false,
+      "description": "Checkbox value used in checkbox groups."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A square checkbox with rounded corners, showing a checkmark when checked or a dash when indeterminate. Uses primary color for checked state. Includes smooth transitions and hover effects."
+  },
+  "best_practices": {
+    "Do": [
+      "Always provide descriptive labels as children",
+      "Use indeterminate for parent checkboxes in hierarchical selections",
+      "Group related checkboxes using CheckboxGroup",
+      "Handle onChange for controlled components"
+    ],
+    "Dont": [
+      "Don't use for mutually exclusive options (use Radio instead)",
+      "Don't forget to provide labels for accessibility",
+      "Don't use both checked and defaultChecked simultaneously"
+    ]
+  },
+  "code_examples": {
+    "Color": {
+      "title": "Color",
+      "code": "import { useState } from 'react'\nimport Checkbox from '@/components/ui/Checkbox'\n\nconst Color = () => {\n    const [checkboxList] = useState(['A', 'B', 'C'])\n\n    return (\n        <div>\n            <div className=\"mb-5\">\n                <Checkbox checked checkboxClass=\"text-emerald-500\">\n                    Checkbox 1\n                </Checkbox>\n            </div>\n            <Checkbox.Group checkboxClass=\"text-amber-500\" value={checkboxList}>\n                <Checkbox checkboxClass=\"text-indigo-500\" value=\"A\">\n                    Selection A{' '}\n                </Checkbox>\n                <Checkbox value=\"B\">Selection B </Checkbox>\n                <Checkbox value=\"C\">Selection C </Checkbox>\n            </Checkbox.Group>\n        </div>\n    )\n}\n\nexport default Color"
+    },
+    "Controlled": {
+      "title": "Controlled",
+      "code": "import { useState } from 'react'\nimport Checkbox from '@/components/ui/Checkbox'\n\nconst Controlled = () => {\n    const [checked, setChecked] = useState(false)\n    const [checkboxList, setCheckboxList] = useState(['Selection A'])\n\n    return (\n        <div className=\"flex flex-col gap-4\">\n            <Checkbox value={checked} onChange={setChecked}>\n                Checkbox\n            </Checkbox>\n            <Checkbox.Group value={checkboxList} onChange={setCheckboxList}>\n                <Checkbox value=\"Selection A\">Selection A </Checkbox>\n                <Checkbox value=\"Selection B\">Selection B </Checkbox>\n                <Checkbox value=\"Selection C\">Selection C </Checkbox>\n            </Checkbox.Group>\n        </div>\n    )\n}\n\nexport default Controlled"
+    },
+    "Default": {
+      "title": "Default",
+      "code": "import Checkbox from '@/components/ui/Checkbox'\nimport type { ChangeEvent } from 'react'\n\nconst Default = () => {\n    const onCheck = (value: boolean, e: ChangeEvent<HTMLInputElement>) => {\n        console.log(value, e)\n    }\n\n    return (\n        <div>\n            <Checkbox defaultChecked onChange={onCheck}>\n                Checkbox\n            </Checkbox>\n        </div>\n    )\n}\n\nexport default Default"
+    },
+    "Disabled": {
+      "title": "Disabled",
+      "code": "import { useState } from 'react'\nimport Checkbox from '@/components/ui/Checkbox'\n\nconst Disabled = () => {\n    const [selected] = useState(['A'])\n\n    const checkboxes = [\n        { value: 'A', label: 'Selection A', disabled: true },\n        { value: 'B', label: 'Selection B', disabled: true },\n        { value: 'C', label: 'Selection C', disabled: false },\n    ]\n\n    return (\n        <div>\n            <div className=\"flex gap-3 mb-3\">\n                <Checkbox disabled>Disabled</Checkbox>\n                <Checkbox defaultChecked disabled>\n                    Checked Disabled\n                </Checkbox>\n            </div>\n            <Checkbox.Group value={selected}>\n                {checkboxes.map((checkbox) => (\n                    <Checkbox\n                        key={checkbox.label}\n                        value={checkbox.value}\n                        disabled={checkbox.disabled}\n                    >\n                        {checkbox.label}\n                    </Checkbox>\n                ))}\n            </Checkbox.Group>\n        </div>\n    )\n}\n\nexport default Disabled"
+    },
+    "Group": {
+      "title": "Group",
+      "code": "import { useState } from 'react'\nimport Checkbox from '@/components/ui/Checkbox'\nimport type { SyntheticEvent } from 'react'\n\nconst Group = () => {\n    const [checkboxList, setCheckboxList] = useState<(string)[]>([\n        'Selection A',\n    ])\n\n    const onCheckboxChange = (\n        options: string[],\n        e: SyntheticEvent,\n    ) => {\n        console.log('Checkbox change', options, e)\n        setCheckboxList(options)\n    }\n\n    return (\n        <div>\n            <Checkbox.Group value={checkboxList} onChange={onCheckboxChange}>\n                <Checkbox value=\"Selection A\">Selection A </Checkbox>\n                <Checkbox value=\"Selection B\">Selection B </Checkbox>\n                <Checkbox value=\"Selection C\">Selection C </Checkbox>\n            </Checkbox.Group>\n        </div>\n    )\n}\n\nexport default Group"
+    },
+    "Vertical": {
+      "title": "Vertical",
+      "code": "import { useState } from 'react'\nimport Checkbox from '@/components/ui/Checkbox'\n\nconst Vertical = () => {\n    const [checkboxList] = useState(['Selection A'])\n\n    return (\n        <div>\n            <div className=\"flex flex-col mb-5\">\n                <Checkbox className=\"mb-2\">Checkbox 1</Checkbox>\n                <Checkbox>Checkbox 2</Checkbox>\n            </div>\n            <Checkbox.Group vertical value={checkboxList}>\n                <Checkbox value=\"Selection A\">Selection A </Checkbox>\n                <Checkbox value=\"Selection B\">Selection B </Checkbox>\n                <Checkbox value=\"Selection C\">Selection C </Checkbox>\n            </Checkbox.Group>\n        </div>\n    )\n}\n\nexport default Vertical"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "component_id": "util-formatcurrency-001",
+  "name": "formatCurrency",
+  "display_name": "Currency Formatting Utility",
+  "category": "Utils / Number Formatting",
+  "import_path": "@/utils/formatCurrency",
+  "description": "Formats numbers as currency strings using Intl.NumberFormat with locale and currency support.",
+  "usage_guidelines": [
+    "Use for displaying monetary values consistently.",
+    "Specify currency code (USD, EUR, GBP, etc.) for proper symbol.",
+    "Set locale for region-specific formatting.",
+    "Handles decimal places and thousands separators automatically."
+  ],
+  "params": [
+    {
+      "name": "number",
+      "type": "number",
+      "required": true,
+      "description": "The numeric value to format as currency."
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "required": false,
+      "default": "'USD'",
+      "description": "ISO 4217 currency code (e.g., 'USD', 'EUR', 'GBP')."
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "required": false,
+      "default": "'en-US'",
+      "description": "Locale string for formatting rules (e.g., 'en-US', 'de-DE')."
+    }
+  ],
+  "return_value": {
+    "type": "string",
+    "description": "Formatted currency string with symbol and proper separators."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for all monetary displays",
+      "Set appropriate currency code",
+      "Use user's locale when available",
+      "Handle zero and negative values",
+      "Be consistent across application"
+    ],
+    "Dont": [
+      "Don't manually format currency",
+      "Don't forget currency code",
+      "Don't assume USD for all users"
+    ]
+  }
+}

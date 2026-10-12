@@ -1,0 +1,40 @@
+{
+  "component_id": "util-formatrelativetime-001",
+  "name": "formatRelativeTime",
+  "display_name": "Relative Time Formatting Utility",
+  "category": "Utils / Date & Time",
+  "import_path": "@/utils/formatRelativeTime",
+  "description": "Formats dates as human-readable relative time strings (e.g., '2 hours ago', 'in 3 days') using Intl.RelativeTimeFormat.",
+  "usage_guidelines": [
+    "Use for displaying recent timestamps (posts, comments, updates).",
+    "Automatically selects appropriate time unit (seconds, minutes, hours, days, etc.).",
+    "Returns 'just now' for very recent times (< 60 seconds).",
+    "Handles invalid dates gracefully."
+  ],
+  "params": [
+    {
+      "name": "date",
+      "type": "Date | string | number",
+      "required": true,
+      "description": "Date to format as relative time."
+    }
+  ],
+  "return_value": {
+    "type": "string",
+    "description": "Human-readable relative time string or 'Invalid date' for invalid inputs."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for recent timestamps",
+      "Update periodically for accuracy",
+      "Handle invalid dates",
+      "Provide absolute time in tooltip",
+      "Use for social features"
+    ],
+    "Dont": [
+      "Don't use for future dates far ahead",
+      "Don't forget to validate dates",
+      "Don't use for precise timing"
+    ]
+  }
+}

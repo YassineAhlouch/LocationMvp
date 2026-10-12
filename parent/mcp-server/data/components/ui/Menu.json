@@ -1,0 +1,108 @@
+{
+  "component_id": "menu-001",
+  "name": "Menu",
+  "display_name": "Navigation Menu Component",
+  "category": "Navigation / Menus",
+  "import_path": "@/components/ui/Menu",
+  "description": "A flexible menu component for navigation with support for nested items, collapsible sections, active state management, and sidebar integration.",
+  "usage_guidelines": [
+    "Use for application navigation, sidebars, or hierarchical menu structures.",
+    "Compose with MenuItem and MenuGroup components for menu structure.",
+    "Use defaultActiveKeys to set initially active menu items.",
+    "Use defaultExpandedKeys for initially expanded menu groups.",
+    "Set sideCollapsed for collapsed sidebar state.",
+    "Handle onSelect to respond to menu item clicks."
+  ],
+  "props": {
+    "defaultActiveKeys": {
+      "type": "Array<string>",
+      "required": false,
+      "default": "[]",
+      "description": "Initially active menu item keys."
+    },
+    "defaultExpandedKeys": {
+      "type": "Array<string>",
+      "required": false,
+      "default": "[]",
+      "description": "Initially expanded menu group keys."
+    },
+    "defaultCollapseActiveKeys": {
+      "type": "Array<string>",
+      "required": false,
+      "default": "[]",
+      "description": "Active keys when sidebar is collapsed."
+    },
+    "menuItemHeight": {
+      "type": "number",
+      "required": false,
+      "default": "36",
+      "description": "Height of menu items in pixels."
+    },
+    "onSelect": {
+      "type": "(eventKey: string, e: MouseEvent) => void",
+      "required": false,
+      "description": "Callback fired when menu item is selected."
+    },
+    "sideCollapsed": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Collapsed state for sidebar menus."
+    },
+    "variant": {
+      "type": "'default' | 'subtle'",
+      "required": false,
+      "default": "'default'",
+      "description": "Visual style variant of the menu."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A vertical list of menu items with hover and active states. Supports nested items with indentation. Collapsible groups show expand/collapse icons. Active items are highlighted with primary color."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for primary navigation in applications",
+      "Group related items logically",
+      "Provide clear, concise menu item labels",
+      "Use icons for better visual recognition",
+      "Handle onSelect for navigation actions"
+    ],
+    "Dont": [
+      "Don't nest menus too deeply (max 2-3 levels)",
+      "Don't use for form selections (use Select instead)",
+      "Don't forget to manage active state",
+      "Don't overload with too many top-level items"
+    ]
+  },
+  "code_examples": {
+    "CollapsableMenuItem": {
+      "title": "Collapsable Menu Item",
+      "code": "import Menu from '@/components/ui/Menu'\nimport type { MouseEvent } from 'react'\n\nconst CollapsableMenuItem = () => {\n    const handleToggle = (expanded: boolean, e: MouseEvent) => {\n        console.log('expanded', expanded)\n        console.log('event', e)\n    }\n\n    return (\n        <div className=\"border border-gray-200 dark:border-gray-700 rounded-md p-2\" style={{ maxWidth: 250 }}>\n            <Menu>\n                <Menu.MenuItem eventKey=\"item-1\">Item 1</Menu.MenuItem>\n                <Menu.MenuItem eventKey=\"item-2\">Item 2</Menu.MenuItem>\n                <Menu.MenuCollapse\n                    eventKey=\"item-3\"\n                    label=\"Item 3\"\n                    onToggle={handleToggle}\n                >\n                    <Menu.MenuItem eventKey=\"item-3-1\">Item 3.1</Menu.MenuItem>\n                    <Menu.MenuItem eventKey=\"item-3-2\">Item 3.2</Menu.MenuItem>\n                </Menu.MenuCollapse>\n                <Menu.MenuCollapse\n                    eventKey=\"item-4\"\n                    label=\"Item 4\"\n                    onToggle={handleToggle}\n                >\n                    <Menu.MenuItem eventKey=\"item-4-1\">Item 4.1</Menu.MenuItem>\n                    <Menu.MenuItem eventKey=\"item-4-2\">Item 4.2</Menu.MenuItem>\n                    <Menu.MenuCollapse\n                        eventKey=\"item-4-3\"\n                        label=\"Item 4.3\"\n                        onToggle={handleToggle}\n                    >\n                        <Menu.MenuItem eventKey=\"item-4-3-1\">Item 4.3.1</Menu.MenuItem>\n                        <Menu.MenuItem eventKey=\"item-4-2-1\">Item 4.3.2</Menu.MenuItem>\n                    </Menu.MenuCollapse>\n                </Menu.MenuCollapse>\n            </Menu>\n        </div>\n    )\n}\n\nexport default CollapsableMenuItem"
+    },
+    "DefaultActive": {
+      "title": "Default Active",
+      "code": "import { useState } from 'react'\nimport Menu from '@/components/ui/Menu'\n\nconst DefaultActive = () => {\n    const [defaultActiveKey] = useState(['item-2', 'item-3-2'])\n\n    return (\n        <div\n            className=\"border border-gray-200 dark:border-gray-700 rounded-md p-2\"\n            style={{ maxWidth: 250 }}\n        >\n            <Menu defaultActiveKeys={defaultActiveKey}>\n                <Menu.MenuItem eventKey=\"item-1\">Item 1</Menu.MenuItem>\n                <Menu.MenuItem eventKey=\"item-2\">Item 2</Menu.MenuItem>\n                <Menu.MenuCollapse eventKey=\"item-3\" label=\"Item 3\">\n                    <Menu.MenuItem eventKey=\"item-3-1\">Item 3.1</Menu.MenuItem>\n                    <Menu.MenuItem eventKey=\"item-3-2\">Item 3.2</Menu.MenuItem>\n                </Menu.MenuCollapse>\n            </Menu>\n        </div>\n    )\n}\n\nexport default DefaultActive"
+    },
+    "DefaultExpand": {
+      "title": "Default Expand",
+      "code": "import { useState } from 'react'\nimport Menu from '@/components/ui/Menu'\n\nconst DefaultExpand = () => {\n    const [defaultExpandKey] = useState(['item-3'])\n\n    return (\n        <div\n            className=\"border border-gray-200 dark:border-gray-700 rounded-md p-2\"\n            style={{ maxWidth: 250 }}\n        >\n            <Menu defaultExpandedKeys={defaultExpandKey}>\n                <Menu.MenuItem eventKey=\"item-1\">Item 1</Menu.MenuItem>\n                <Menu.MenuItem eventKey=\"item-2\">Item 2</Menu.MenuItem>\n                <Menu.MenuCollapse eventKey=\"item-3\" label=\"Item 3\">\n                    <Menu.MenuItem eventKey=\"item-3-1\">Item 3.1</Menu.MenuItem>\n                    <Menu.MenuItem eventKey=\"item-3-2\">Item 3.2</Menu.MenuItem>\n                </Menu.MenuCollapse>\n                <Menu.MenuCollapse eventKey=\"item-4\" label=\"Item 4\">\n                    <Menu.MenuItem eventKey=\"item-4-1\">Item 4.1</Menu.MenuItem>\n                    <Menu.MenuItem eventKey=\"item-4-2\">Item 4.2</Menu.MenuItem>\n                </Menu.MenuCollapse>\n            </Menu>\n        </div>\n    )\n}\n\nexport default DefaultExpand"
+    },
+    "DisabledMenuItem": {
+      "title": "Disabled Menu Item",
+      "code": "import Menu from '@/components/ui/Menu'\n\nconst DisabledMenuItem = () => {\n    return (\n        <div\n            className=\"border border-gray-200 dark:border-gray-700 rounded-md p-2\"\n            style={{ maxWidth: 250 }}\n        >\n            <Menu>\n                <Menu.MenuItem eventKey=\"settings\">Settings</Menu.MenuItem>\n                <Menu.MenuItem eventKey=\"message\" disabled>\n                    Message\n                </Menu.MenuItem>\n                <Menu.MenuItem eventKey=\"gallery\">Gallery</Menu.MenuItem>\n            </Menu>\n        </div>\n    )\n}\n\nexport default DisabledMenuItem"
+    },
+    "MenuGroup": {
+      "title": "Menu Group",
+      "code": "import Menu from '@/components/ui/Menu'\n\nconst MenuGroup = () => {\n    return (\n        <div\n            className=\"border border-gray-200 dark:border-gray-700 rounded-md p-2\"\n            style={{ maxWidth: 250 }}\n        >\n            <Menu>\n                <Menu.MenuGroup key=\"group-1\" label=\"Group 1\">\n                    <Menu.MenuItem eventKey=\"group-1-item-1\">\n                        Item 1\n                    </Menu.MenuItem>\n                    <Menu.MenuItem eventKey=\"group-1-item-2\">\n                        Item 2\n                    </Menu.MenuItem>\n                    <Menu.MenuCollapse eventKey=\"group-1-item-3\" label=\"Item 3\">\n                        <Menu.MenuItem eventKey=\"group-1-item-3-1\">\n                            Item 3.1\n                        </Menu.MenuItem>\n                        <Menu.MenuItem eventKey=\"group-1-item-3-2\">\n                            Item 3.2\n                        </Menu.MenuItem>\n                    </Menu.MenuCollapse>\n                </Menu.MenuGroup>\n                <Menu.MenuGroup key=\"group-2\" label=\"Group 2\">\n                    <Menu.MenuItem eventKey=\"group-2-item-1\">\n                        Item 1\n                    </Menu.MenuItem>\n                    <Menu.MenuItem eventKey=\"group-2-item-2\">\n                        Item 2\n                    </Menu.MenuItem>\n                </Menu.MenuGroup>\n            </Menu>\n        </div>\n    )\n}\n\nexport default MenuGroup"
+    },
+    "MenuWithIcon": {
+      "title": "Menu With Icon",
+      "code": "import Menu from '@/components/ui/Menu'\nimport {\n    HiOutlineCog,\n    HiOutlineChat,\n    HiOutlineGlobeAlt,\n    HiOutlineSupport,\n    HiWifi,\n} from 'react-icons/hi'\nimport type { ReactNode } from 'react'\n\nconst MenuContent = ({ icon, label }: { icon: ReactNode, label: string }) => {\n    return (\n        <div className=\"flex items-center gap-2\">\n            <span className={'text-2xl'}>{icon}</span>\n            <span>{label}</span>\n        </div>\n    )\n}\n\nconst MenuWithIcon = () => {\n    return (\n        <div className=\"border border-gray-200 dark:border-gray-700 rounded-md p-2\" style={{ maxWidth: 250 }}>\n            <Menu>\n                <Menu.MenuItem eventKey=\"settings\">\n                    <MenuContent icon={<HiOutlineCog />} label=\"Settings\" />\n                </Menu.MenuItem>\n                <Menu.MenuItem eventKey=\"messages\">\n                    <MenuContent icon={<HiOutlineChat />} label=\"Messages\" />\n                </Menu.MenuItem>\n                <Menu.MenuCollapse\n                    eventKey=\"others\"\n                    label={\n                        <MenuContent\n                            icon={<HiOutlineGlobeAlt />}\n                            label=\"Network\"\n                        />\n                    }\n                >\n                    <Menu.MenuItem eventKey=\"wifi\">\n                        <MenuContent icon={<HiWifi />} label=\"Wifi\" />\n                    </Menu.MenuItem>\n                    <Menu.MenuItem eventKey=\"support\">\n                        <MenuContent\n                            icon={<HiOutlineSupport />}\n                            label=\"Support\"\n                        />\n                    </Menu.MenuItem>\n                </Menu.MenuCollapse>\n            </Menu>\n        </div>\n    )\n}\n\nexport default MenuWithIcon"
+    },
+    "Simple": {
+      "title": "Simple",
+      "code": "import Menu from '@/components/ui/Menu'\n\nconst Simple = () => {\n    const handleSelect = (key: string, e: MouseEvent) => {\n        console.log('key', key)\n        console.log('event', e)\n    }\n\n    return (\n        <div className=\"border border-gray-200 dark:border-gray-700 rounded-md p-2\" style={{ maxWidth: 250 }}>\n            <Menu onSelect={handleSelect}>\n                <Menu.MenuItem eventKey=\"settings\">Settings</Menu.MenuItem>\n                <Menu.MenuItem eventKey=\"message\">Message</Menu.MenuItem>\n                <Menu.MenuItem eventKey=\"gallery\">Gallery</Menu.MenuItem>\n            </Menu>\n        </div>\n    )\n}\n\nexport default Simple"
+    }
+  }
+}

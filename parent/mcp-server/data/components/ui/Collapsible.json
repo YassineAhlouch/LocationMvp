@@ -1,0 +1,107 @@
+{
+  "component_id": "collapsible-001",
+  "name": "Collapsible",
+  "display_name": "Collapsible Container Component",
+  "category": "Layout / Containers",
+  "import_path": "@/components/ui/Collapsible",
+  "description": "A container component that manages collapsible/expandable content with controlled and uncontrolled state support.",
+  "usage_guidelines": [
+    "Use for accordion-style content.",
+    "Compose with CollapsibleTrigger and CollapsibleContent components.",
+    "Use controlled (open prop) or uncontrolled (defaultOpen) state.",
+    "Handle onOpenChange for state updates.",
+    "Provides context for child components."
+  ],
+  "props": {
+    "open": {
+      "type": "boolean",
+      "required": false,
+      "description": "Controlled open state."
+    },
+    "defaultOpen": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Default open state for uncontrolled component."
+    },
+    "onOpenChange": {
+      "type": "(open: boolean) => void",
+      "required": false,
+      "description": "Callback fired when open state changes."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Container component that provides context for collapsible behavior. Visual styling depends on child components."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for accordion interfaces",
+      "Compose with trigger and content components",
+      "Handle onOpenChange for controlled state",
+      "Provide clear trigger affordances",
+      "Use for FAQ sections"
+    ],
+    "Dont": [
+      "Don't use without trigger component",
+      "Don't nest collapsibles too deeply",
+      "Don't forget accessibility attributes"
+    ]
+  },
+  "code_examples": {
+    "Accordion": {
+      "title": "Accordion",
+      "code": "import { useState } from 'react'\nimport Collapsible from '@/components/ui/Collapsible'\n\nconst Accordion = () => {\n    const [openIndex, setOpenIndex] = useState<number | null>(0)\n\n    const items = [\n        {\n            title: 'What is Collapsible?',\n            content:\n                'Collapsible is a component that allows you to show and hide content with smooth animations. It is useful for FAQs, accordions, and expandable sections.',\n        },\n        {\n            title: 'How does it work?',\n            content:\n                'The component uses Framer Motion for smooth height animations. It supports both controlled and uncontrolled modes, and provides a flexible trigger system.',\n        },\n        {\n            title: 'Can I customize the trigger?',\n            content:\n                'Yes! You can use the render props pattern to create fully custom triggers. The function receives isOpen and toggle props for complete control.',\n        },\n    ]\n\n    const handleOpenChange = (index: number) => (open: boolean) => {\n        setOpenIndex(open ? index : null)\n    }\n\n    return (\n        <div className=\"max-w-md space-y-2 mx-auto\">\n            {items.map((item, index) => (\n                <Collapsible\n                    key={index}\n                    open={openIndex === index}\n                    onOpenChange={handleOpenChange(index)}\n                    className=\"border border-gray-200 dark:border-gray-600 rounded-lg\"\n                >\n                    <Collapsible.Trigger>{item.title}</Collapsible.Trigger>\n                    <Collapsible.Content className=\"px-4 pb-4\">\n                        <p>{item.content}</p>\n                    </Collapsible.Content>\n                </Collapsible>\n            ))}\n        </div>\n    )\n}\n\nexport default Accordion"
+    },
+    "Basic": {
+      "title": "Basic",
+      "code": "import Collapsible from '@/components/ui/Collapsible'\n\nconst Basic = () => {\n    return (\n        <div className=\"max-w-md mx-auto\">\n            <Collapsible className=\"border border-gray-200 dark:border-gray-700 rounded-lg\">\n                <Collapsible.Trigger>Click to expand</Collapsible.Trigger>\n                <Collapsible.Content className=\"px-4 pb-4\">\n                    <p>\n                        This is the collapsible content. It can contain any\n                        elements you want to show or hide. The animation is\n                        smooth and the content height is automatically\n                        calculated.\n                    </p>\n                </Collapsible.Content>\n            </Collapsible>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Controlled": {
+      "title": "Controlled",
+      "code": "import { useState } from 'react'\nimport Collapsible from '@/components/ui/Collapsible'\nimport Button from '@/components/ui/Button'\n\nconst Controlled = () => {\n    const [isOpen, setIsOpen] = useState(false)\n\n    return (\n        <div className=\"max-w-md mx-auto\">\n            <div className=\"mb-4\">\n                <Button variant=\"solid\" onClick={() => setIsOpen(!isOpen)}>\n                    {isOpen ? 'Close' : 'Open'} Collapsible\n                </Button>\n            </div>\n            <Collapsible\n                open={isOpen}\n                onOpenChange={setIsOpen}\n                className=\"border border-gray-200 dark:border-gray-700 rounded-lg\"\n            >\n                <Collapsible.Trigger>\n                    Controlled Collapsible\n                </Collapsible.Trigger>\n                <Collapsible.Content className=\"px-4 pb-4\">\n                    <p>\n                        This collapsible is controlled externally. You can use\n                        the button above or click the trigger to toggle it. The\n                        state is managed by the parent component.\n                    </p>\n                </Collapsible.Content>\n            </Collapsible>\n        </div>\n    )\n}\n\nexport default Controlled"
+    },
+    "CustomTrigger": {
+      "title": "Custom Trigger",
+      "code": "import Collapsible from '@/components/ui/Collapsible'\nimport Button from '@/components/ui/Button'\nimport { HiChevronRight } from 'react-icons/hi'\n\nconst CustomTrigger = () => {\n    return (\n        <div className=\"max-w-md mx-auto\">\n            <Collapsible>\n                <Collapsible.Trigger>\n                    {({ isOpen, toggle }) => (\n                        <Button\n                            variant=\"subtle\"\n                            className=\"w-full justify-between\"\n                            onClick={toggle}\n                            iconAlignment=\"end\"\n                            icon={\n                                <HiChevronRight\n                                    className={`transition-transform duration-200 ${isOpen ? 'rotate-90' : 'rotate-0'}`}\n                                />\n                            }\n                        >\n                            <span>Custom Trigger Button</span>\n                        </Button>\n                    )}\n                </Collapsible.Trigger>\n                <Collapsible.Content className=\"pt-4\">\n                    <p>\n                        Using the render props pattern, you have full control\n                        over the trigger appearance and behavior. The function\n                        receives <code>isOpen</code> and <code>toggle</code>{' '}\n                        props.\n                    </p>\n                </Collapsible.Content>\n            </Collapsible>\n        </div>\n    )\n}\n\nexport default CustomTrigger"
+    }
+  },
+  "compound_components": {
+    "Collapsible": {
+      "description": "Root component managing collapsible state.",
+      "props": {
+        "open": {
+          "type": "boolean",
+          "required": false,
+          "description": "Controlled open state."
+        },
+        "defaultOpen": {
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Initial open state."
+        }
+      }
+    },
+    "Collapsible.Trigger": {
+      "description": "Trigger element that toggles the collapsible content.",
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "required": false,
+          "description": "Render as child element instead of wrapper."
+        }
+      }
+    },
+    "Collapsible.Content": {
+      "description": "Content that is shown/hidden when toggled.",
+      "props": {
+        "className": {
+          "type": "string",
+          "required": false,
+          "description": "Additional CSS classes."
+        }
+      }
+    }
+  }
+}

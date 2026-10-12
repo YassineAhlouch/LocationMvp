@@ -1,0 +1,152 @@
+{
+  "component_id": "slider-001",
+  "name": "Slider",
+  "display_name": "Range Slider Component",
+  "category": "Form Elements / Input",
+  "import_path": "@/components/ui/Slider",
+  "description": "An interactive slider component for selecting numeric values within a range with keyboard support, marks, and tooltips.",
+  "usage_guidelines": [
+    "Use for selecting numeric values within a defined range.",
+    "Set min and max to define selectable range.",
+    "Use step to control value increments.",
+    "Add marks for visual reference points.",
+    "Enable tooltip to show current value.",
+    "Handle onChange and onDraggingStop for value updates."
+  ],
+  "props": {
+    "alwaysShowTooltip": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Always displays tooltip."
+    },
+    "defaultValue": {
+      "type": "number",
+      "required": false,
+      "default": "0",
+      "description": "Default slider value."
+    },
+    "disabled": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Disables slider interaction."
+    },
+    "marks": {
+      "type": "Array<{value: number, label?: ReactNode}>",
+      "required": false,
+      "default": "[]",
+      "description": "Mark points on slider track."
+    },
+    "max": {
+      "type": "number",
+      "required": false,
+      "default": "100",
+      "description": "Maximum value."
+    },
+    "min": {
+      "type": "number",
+      "required": false,
+      "default": "0",
+      "description": "Minimum value."
+    },
+    "onChange": {
+      "type": "(value: number) => void",
+      "required": false,
+      "description": "Callback fired during value change."
+    },
+    "onDraggingStop": {
+      "type": "(value: number) => void",
+      "required": false,
+      "description": "Callback fired when dragging stops."
+    },
+    "precision": {
+      "type": "number",
+      "required": false,
+      "description": "Decimal precision for value."
+    },
+    "showTooltipOnHover": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Shows tooltip on hover."
+    },
+    "step": {
+      "type": "number",
+      "required": false,
+      "default": "1",
+      "description": "Value increment step."
+    },
+    "stepOnMarks": {
+      "type": "boolean",
+      "required": false,
+      "description": "Snaps to mark values only."
+    },
+    "tooltip": {
+      "type": "ReactNode | ((value: number) => ReactNode)",
+      "required": false,
+      "description": "Tooltip content or render function."
+    },
+    "value": {
+      "type": "number",
+      "required": false,
+      "description": "Controlled slider value."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A horizontal track with draggable thumb. Filled portion shows selected range. Optional marks and tooltip. Supports keyboard navigation."
+  },
+  "best_practices": {
+    "Do": [
+      "Set appropriate min, max, and step values",
+      "Use marks for important reference points",
+      "Enable tooltip for value feedback",
+      "Handle onChange for real-time updates",
+      "Use onDraggingStop for final value"
+    ],
+    "Dont": [
+      "Don't use for precise numeric input (use Input instead)",
+      "Don't set step too small (hard to control)",
+      "Don't forget keyboard accessibility"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import Slider from '@/components/ui/Slider'\n\nconst Basic = () => {\n    return <Slider defaultValue={60} />\n}\n\nexport default Basic"
+    },
+    "Controlled": {
+      "title": "Controlled",
+      "code": "import { useState } from 'react'\nimport Slider from '@/components/ui/Slider'\n\nconst Controlled = () => {\n    const [sliderValue, setSliderValue] = useState(50)\n    const [rangeSliderValue, setRangeSliderValue] = useState<[number, number]>([\n        20, 50,\n    ])\n\n    return (\n        <div className=\"flex flex-col gap-5\">\n            <div className=\"my-5\">\n                <Slider value={sliderValue} onChange={(value) => setSliderValue(value as number)} />\n                <div className=\"mt-2\">\n                    Slider value: <strong>{sliderValue}</strong>\n                </div>\n            </div>\n            <div className=\"my-5\">\n                <Slider.Range\n                    value={rangeSliderValue}\n                    onChange={setRangeSliderValue}\n                />\n                <div className=\"mt-2\">\n                    Range slider value:{' '}\n                    <strong>{JSON.stringify(rangeSliderValue)}</strong>\n                </div>\n            </div>\n        </div>\n    )\n}\n\nexport default Controlled"
+    },
+    "CustomColor": {
+      "title": "Custom Color",
+      "code": "import Slider from '@/components/ui/Slider'\n\nconst CustomColor = () => {\n    return (\n        <div className=\"flex flex-col gap-6\">\n            <Slider\n                defaultValue={60}\n                classNames={{\n                    bar: 'bg-amber-500',\n                    mark: 'bg-amber-500',\n                    thumb: 'border-amber-500',\n                }}\n            />\n            <Slider.Range\n                defaultValue={[20, 50]}\n                classNames={{\n                    bar: 'bg-linear-to-r from-pink-500 via-purple-500 to-blue-500',\n                    mark: 'bg-red-500',\n                    thumb: ['border-pink-500', 'border-blue-500'],\n                }}\n            />\n        </div>\n    )\n}\n\nexport default CustomColor"
+    },
+    "Disabled": {
+      "title": "Disabled",
+      "code": "import Slider from '@/components/ui/Slider'\n\nconst Disabled = () => {\n    return (\n        <div className=\"flex flex-col gap-6\">\n            <Slider disabled defaultValue={60} />\n            <Slider.Range disabled defaultValue={[20, 50]} />\n        </div>\n    )\n}\n\nexport default Disabled"
+    },
+    "Marks": {
+      "title": "Marks",
+      "code": "import Slider from '@/components/ui/Slider'\n\nconst Marks = () => {\n    return (\n        <div className=\"my-5\">\n            <Slider\n                defaultValue={40}\n                marks={[\n                    { value: 20, label: '$20,000' },\n                    { value: 50, label: '$50,000' },\n                    { value: 80, label: '$80,000' },\n                ]}\n            />\n        </div>\n    )\n}\n\nexport default Marks"
+    },
+    "MinAndMax": {
+      "title": "Min And Max",
+      "code": "import Slider from '@/components/ui/Slider'\n\nconst MinAndMax = () => {\n    return <Slider showTooltipOnHover defaultValue={0} min={-20} max={20} />\n}\n\nexport default MinAndMax"
+    },
+    "Range": {
+      "title": "Range",
+      "code": "import Slider from '@/components/ui/Slider'\n\nconst Range = () => {\n    return <Slider.Range defaultValue={[20, 50]} />\n}\n\nexport default Range"
+    },
+    "Step": {
+      "title": "Step",
+      "code": "import Slider from '@/components/ui/Slider'\n\nconst marks1 = [\n    { value: 0, label: '0°C' },\n    { value: 25, label: '25°C' },\n    { value: 50, label: '50°C' },\n    { value: 75, label: '75°C' },\n    { value: 100, label: '100°C' },\n];\n\nconst marks2 = [\n    { value: 0, label: '0°C' },\n    { value: 26, label: '26°C' },\n    { value: 37, label: '37°C' },\n    { value: 100, label: '100°C' },\n];\n\nconst Step = () => {\n    return (\n        <div className=\"flex flex-col gap-10\">\n            <div className=\"my-5 mx-3\">\n                <Slider\n                    defaultValue={marks1[1].value}\n                    tooltip={(val) => marks1.find((mark) => mark.value === val)!.label}\n                    step={25}\n                    marks={marks1}\n                />\n            </div>\n            <div className=\"my-5 mx-3\">\n                <Slider\n                    stepOnMarks\n                    defaultValue={marks2[1].value}\n                    tooltip={(val) => marks2.find((mark) => mark.value === val)!.label}\n                    marks={marks2}\n                />\n            </div>\n        </div>\n    )\n}\n\nexport default Step"
+    },
+    "Tooltip": {
+      "title": "Tooltip",
+      "code": "import Slider from '@/components/ui/Slider'\n\nconst SliderTootltip = () => {\n    return (\n        <div className=\"flex flex-col gap-y-6\">\n            <div className=\"my-5 flex flex-col\">\n                <strong className=\"mb-2 text-gray-900 dark:text-white\">\n                    Show tooltip on hover\n                </strong>\n                <Slider showTooltipOnHover defaultValue={60} />\n            </div>\n            <div className=\"my-5 flex flex-col\">\n                <strong className=\"mb-2 text-gray-900 dark:text-white\">\n                    Always show tooltip\n                </strong>\n                <Slider alwaysShowTooltip defaultValue={60} />\n            </div>\n            <div className=\"my-5 flex flex-col\">\n                <strong className=\"mb-2 text-gray-900 dark:text-white\">\n                    Custom tooltip\n                </strong>\n                <Slider\n                    showTooltipOnHover\n                    tooltip={(value) => `${value}%`}\n                    defaultValue={60}\n                />\n            </div>\n        </div>\n    )\n}\n\nexport default SliderTootltip"
+    }
+  }
+}

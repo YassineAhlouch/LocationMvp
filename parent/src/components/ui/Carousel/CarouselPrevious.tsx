@@ -1,0 +1,36 @@
+import Button from '../Button'
+import { ChevronLeft } from '../Icons'
+import classNames from '../utils/classNames'
+import { useCarousel } from './context'
+import type { ComponentPropsWithoutRef } from 'react'
+
+export type CarouselPreviousProps = Omit<
+    ComponentPropsWithoutRef<typeof Button>,
+    'icon' | 'shape' | 'aria-label'
+>
+
+const CarouselPrevious = (props: CarouselPreviousProps) => {
+    const { className, variant = 'default', size = 'sm', ...rest } = props
+    const { orientation, scrollPrev, canScrollPrev } = useCarousel()
+
+    const buttonClass = classNames(
+        orientation === 'vertical' && 'rotate-90',
+        className,
+    )
+
+    return (
+        <Button
+            variant={variant}
+            size={size}
+            className={buttonClass}
+            disabled={!canScrollPrev}
+            onClick={scrollPrev}
+            shape="circle"
+            aria-label="Previous slide"
+            icon={<ChevronLeft />}
+            {...rest}
+        />
+    )
+}
+
+export default CarouselPrevious

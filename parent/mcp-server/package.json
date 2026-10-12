@@ -1,0 +1,32 @@
+{
+    "name": "eyris-mcp-server",
+    "version": "1.0.0",
+    "description": "MCP server for Eyris React Admin Template - provides component, hook, and utility documentation to AI agents",
+    "type": "module",
+    "main": "dist/index.js",
+    "bin": {
+        "eyris-mcp": "dist/index.js"
+    },
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "start": "node dist/index.js",
+        "test": "node test-server.js"
+    },
+    "keywords": [
+        "mcp",
+        "model-context-protocol",
+        "eyris",
+        "react",
+        "admin-template",
+        "components"
+    ],
+    "license": "MIT",
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.0.4"
+    },
+    "devDependencies": {
+        "@types/node": "^22.10.2",
+        "typescript": "^5.7.2"
+    }
+}

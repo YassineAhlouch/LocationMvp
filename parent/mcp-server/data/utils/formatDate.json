@@ -1,0 +1,48 @@
+{
+  "component_id": "util-formatdate-001",
+  "name": "formatDate",
+  "display_name": "Date Formatting Utilities",
+  "category": "Utils / Date & Time",
+  "import_path": "@/utils/formatDate",
+  "description": "A collection of date formatting utilities using dayjs for consistent date display across the application.",
+  "usage_guidelines": [
+    "Use formatDate for standard date formatting with custom format strings.",
+    "Use formatDateTime for date with time display.",
+    "Use formatRelativeTime for human-readable relative times (e.g., '2 hours ago').",
+    "Use isValidDate to validate date inputs before formatting.",
+    "Always handle empty or invalid dates gracefully."
+  ],
+  "params": [
+    {
+      "name": "date",
+      "type": "string | Date",
+      "required": true,
+      "description": "The date value to format."
+    },
+    {
+      "name": "format",
+      "type": "string",
+      "required": false,
+      "default": "'MMM DD, YYYY'",
+      "description": "Dayjs format string (only for formatDate function)."
+    }
+  ],
+  "return_value": {
+    "type": "string",
+    "description": "Formatted date string, or empty string if date is invalid/empty."
+  },
+  "best_practices": {
+    "Do": [
+      "Use consistent format strings across app",
+      "Validate dates before formatting",
+      "Handle empty/null dates",
+      "Use formatRelativeTime for recent dates",
+      "Use formatDateTime for timestamps"
+    ],
+    "Dont": [
+      "Don't format dates without validation",
+      "Don't use native Date methods directly",
+      "Don't forget timezone considerations"
+    ]
+  }
+}

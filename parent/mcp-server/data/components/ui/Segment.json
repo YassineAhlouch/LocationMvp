@@ -1,0 +1,87 @@
+{
+  "component_id": "segment-001",
+  "name": "Segment",
+  "display_name": "Segmented Control Component",
+  "category": "Form Elements / Selection",
+  "import_path": "@/components/ui/Segment",
+  "description": "A segmented control component for single or multiple selection with visual indicator and size variants.",
+  "usage_guidelines": [
+    "Use for mutually exclusive options (single mode) or multi-select (multiple mode).",
+    "Compose with SegmentItem components for options.",
+    "Set selectionType to 'single' or 'multiple'.",
+    "Handle onChange to respond to selection changes.",
+    "Visual indicator shows active selection in single mode."
+  ],
+  "props": {
+    "defaultValue": {
+      "type": "SegmentValue<T>",
+      "required": false,
+      "description": "Default selected value(s)."
+    },
+    "onChange": {
+      "type": "(segmentValue: SegmentValue<T>) => void",
+      "required": false,
+      "description": "Callback fired when selection changes."
+    },
+    "selectionType": {
+      "type": "'single' | 'multiple'",
+      "required": false,
+      "default": "'single'",
+      "description": "Selection mode."
+    },
+    "size": {
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "description": "Segment size variant."
+    },
+    "value": {
+      "type": "SegmentValue<T>",
+      "required": false,
+      "description": "Controlled selected value(s)."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Horizontal group of segments with rounded container. Active segment highlighted with sliding indicator (single mode) or individual highlighting (multiple mode). Gray background with primary color for active state."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for 2-5 options",
+      "Use single mode for mutually exclusive choices",
+      "Use multiple mode for filter selections",
+      "Provide clear segment labels",
+      "Handle onChange appropriately"
+    ],
+    "Dont": [
+      "Don't use for too many options (use Select)",
+      "Don't use for binary choices (use Switch)",
+      "Don't forget to manage selection state"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import Segment from '@/components/ui/Segment'\n\nconst Basic = () => {\n    return (\n        <Segment>\n            <Segment.Item value=\"left\">Left</Segment.Item>\n            <Segment.Item value=\"center\">Center</Segment.Item>\n            <Segment.Item value=\"right\">Right</Segment.Item>\n        </Segment>\n    )\n}\n\nexport default Basic"
+    },
+    "Controlled": {
+      "title": "Controlled",
+      "code": "import { useState, useCallback } from 'react'\nimport Segment from '@/components/ui/Segment'\n\nconst Controlled = () => {\n    const [singleSegmentValue, setSingleSegmentValue] = useState('left')\n    const [multipleSegmentValue, setMultipleSegmentValue] = useState(['center'])\n\n    const onSingleSelectionSegmentChange = useCallback(\n        (val: string) => {\n            setSingleSegmentValue(val)\n        },\n        [setSingleSegmentValue],\n    )\n\n    const onMultipleSegmentValueChange = useCallback(\n        (val: string[]) => {\n            setMultipleSegmentValue(val)\n        },\n        [setMultipleSegmentValue],\n    )\n\n    return (\n        <>\n            <div className=\"mb-6\">\n                <h6 className=\"mb-3\">Single Selection</h6>\n                <Segment\n                    value={singleSegmentValue}\n                    onChange={(val) =>\n                        onSingleSelectionSegmentChange(val)\n                    }\n                >\n                    <Segment.Item value=\"left\">Left</Segment.Item>\n                    <Segment.Item value=\"center\">Center</Segment.Item>\n                    <Segment.Item value=\"right\">Right</Segment.Item>\n                </Segment>\n            </div>\n            <div>\n                <h6 className=\"mb-3\">Multiple Selection</h6>\n                <Segment<'multiple'>\n                    selectionType=\"multiple\"\n                    value={multipleSegmentValue}\n                    onChange={(val) =>\n                        onMultipleSegmentValueChange(val)\n                    }\n                >\n                    <Segment.Item value=\"left\" >Left</Segment.Item>\n                    <Segment.Item value=\"center\">Center</Segment.Item>\n                    <Segment.Item value=\"right\">Right</Segment.Item>\n                </Segment>\n            </div>\n        </>\n    )\n}\n\nexport default Controlled"
+    },
+    "Custom": {
+      "title": "Custom",
+      "code": "import classNames from 'classnames'\nimport Segment from '@/components/ui/Segment'\nimport { HiCheckCircle } from 'react-icons/hi'\n\nconst segmentSelections = [\n    { value: 'Personal', desc: 'The plan for personal.', disabled: false },\n    { value: 'Team', desc: 'The plan for team', disabled: false },\n    {\n        value: 'Business',\n        desc: 'Talk to us for business plan.',\n        disabled: true,\n    },\n]\n\nconst Custom = () => {\n    return (\n        <Segment\n            defaultValue={'Team'}\n            className=\"gap-4 md:flex-row flex-col bg-transparent dark:bg-transparent\"\n        >\n            {segmentSelections.map((item) => (\n                <Segment.Item\n                    key={item.value}\n                    value={item.value}\n                    disabled={item.disabled}\n                >\n                    {({ active, value, onSegmentItemClick, disabled }) => {\n                        return (\n                            <div\n                                className={classNames(\n                                    'flex',\n                                    'ring-1',\n                                    'justify-between',\n                                    'border',\n                                    'rounded-xl ',\n                                    'dark:bg-transparent',\n                                    'border-gray-300',\n                                    'dark:border-gray-600',\n                                    'py-5 px-4',\n                                    'select-none',\n                                    'w-100',\n                                    'md:w-[260px]',\n                                    active\n                                        ? 'ring-primary border-primary '\n                                        : 'ring-transparent bg-gray-100',\n                                    disabled\n                                        ? 'opacity-50 cursor-not-allowed'\n                                        : 'hover:ring-primary hover:border-primary cursor-pointer',\n                                )}\n                                role=\"button\"\n                                onClick={onSegmentItemClick}\n                            >\n                                <div>\n                                    <h6>{value}</h6>\n                                    <p>{item.desc}</p>\n                                </div>\n                                {active && (\n                                    <HiCheckCircle className=\"text-primary text-xl\" />\n                                )}\n                            </div>\n                        )\n                    }}\n                </Segment.Item>\n            ))}\n        </Segment>\n    )\n}\n\nexport default Custom"
+    },
+    "Disabled": {
+      "title": "Disabled",
+      "code": "import Segment from '@/components/ui/Segment'\n\nconst Disabled = () => {\n    return (\n        <Segment>\n            <Segment.Item value=\"left\">Left</Segment.Item>\n            <Segment.Item disabled value=\"center\">\n                Center\n            </Segment.Item>\n            <Segment.Item value=\"right\">Right</Segment.Item>\n        </Segment>\n    )\n}\n\nexport default Disabled"
+    },
+    "MultipleSelection": {
+      "title": "Multiple Selection",
+      "code": "import Segment from '@/components/ui/Segment'\n\nconst MultipleSelection = () => {\n    return (\n        <Segment selectionType=\"multiple\">\n            <Segment.Item value=\"left\">Left</Segment.Item>\n            <Segment.Item value=\"center\">Center</Segment.Item>\n            <Segment.Item value=\"right\">Right</Segment.Item>\n        </Segment>\n    )\n}\n\nexport default MultipleSelection"
+    },
+    "Size": {
+      "title": "Size",
+      "code": "import { useState } from 'react'\nimport Segment from '@/components/ui/Segment'\n\ntype SizeType = 'lg' | 'md' | 'sm'\n\nconst Size = () => {\n    const [size, setSize] = useState<SizeType>('md')\n\n    const onSizeChange = (val: SizeType) => {\n        setSize(val)\n    }\n\n    return (\n        <Segment\n            size={size}\n            value={size}\n            onChange={(value) => onSizeChange(value as SizeType)}\n        >\n            <Segment.Item value=\"sm\">Small</Segment.Item>\n            <Segment.Item value=\"md\">Medium</Segment.Item>\n            <Segment.Item value=\"lg\">Large</Segment.Item>\n        </Segment>\n    )\n}\n\nexport default Size"
+    }
+  }
+}

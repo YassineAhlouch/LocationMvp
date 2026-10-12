@@ -1,0 +1,54 @@
+{
+  "component_id": "util-filesizeunit-001",
+  "name": "fileSizeUnit",
+  "display_name": "File Size Formatting Utility",
+  "category": "Utils / Formatting",
+  "import_path": "@/utils/fileSizeUnit",
+  "description": "Converts byte values to human-readable file size strings with appropriate units (KB, MB, GB, etc.).",
+  "usage_guidelines": [
+    "Use for displaying file sizes in UI.",
+    "Supports both SI (1000-based) and binary (1024-based) units.",
+    "Set decimal places for precision.",
+    "Handles negative values and edge cases."
+  ],
+  "params": [
+    {
+      "name": "bytes",
+      "type": "number",
+      "required": true,
+      "description": "File size in bytes."
+    },
+    {
+      "name": "si",
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Use SI units (1000-based) if true, binary (1024-based) if false."
+    },
+    {
+      "name": "dp",
+      "type": "number",
+      "required": false,
+      "default": "1",
+      "description": "Number of decimal places."
+    }
+  ],
+  "return_value": {
+    "type": "string",
+    "description": "Formatted file size string with unit (e.g., '1.5 MB', '2.3 GB')."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for file upload displays",
+      "Use for storage indicators",
+      "Be consistent with SI vs binary",
+      "Set appropriate decimal places",
+      "Use in file lists and details"
+    ],
+    "Dont": [
+      "Don't mix SI and binary units",
+      "Don't use for non-file-size data",
+      "Don't forget to handle zero bytes"
+    ]
+  }
+}

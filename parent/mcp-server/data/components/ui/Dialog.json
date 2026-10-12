@@ -1,0 +1,167 @@
+{
+  "component_id": "dialog-001",
+  "name": "Dialog",
+  "display_name": "Modal Dialog Component",
+  "category": "Overlay / Modals",
+  "import_path": "@/components/ui/Dialog",
+  "description": "A modal dialog component with backdrop overlay, focus management, keyboard navigation, and smooth animations for displaying content that requires user attention.",
+  "usage_guidelines": [
+    "Use for critical information or actions that require user focus.",
+    "Set isOpen to control dialog visibility.",
+    "Use onClose callback to handle dialog dismissal.",
+    "Set shouldCloseOnOverlayClick and shouldCloseOnEsc based on dialog importance.",
+    "Provide closable prop to show/hide the close button.",
+    "Use lockScroll to prevent background scrolling when dialog is open."
+  ],
+  "props": {
+    "closable": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Shows close button in top-right corner."
+    },
+    "height": {
+      "type": "string | number",
+      "required": false,
+      "description": "Dialog content height."
+    },
+    "isOpen": {
+      "type": "boolean",
+      "required": false,
+      "description": "Controls dialog visibility."
+    },
+    "lockScroll": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Prevents body scrolling when dialog is open."
+    },
+    "onClose": {
+      "type": "(close: boolean) => void",
+      "required": false,
+      "description": "Callback fired when dialog is closed."
+    },
+    "onOpen": {
+      "type": "(open: boolean) => void",
+      "required": false,
+      "description": "Callback fired when dialog is opened."
+    },
+    "overlayClassName": {
+      "type": "string",
+      "required": false,
+      "description": "CSS classes for the backdrop overlay."
+    },
+    "shouldCloseOnOverlayClick": {
+      "type": "boolean",
+      "required": false,
+      "description": "Closes dialog when clicking outside content area."
+    },
+    "shouldCloseOnEsc": {
+      "type": "boolean",
+      "required": false,
+      "description": "Closes dialog when pressing Escape key."
+    },
+    "width": {
+      "type": "number",
+      "required": false,
+      "default": "520",
+      "description": "Dialog content width in pixels."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with Floating UI and Framer Motion",
+    "visual_description": "A centered modal window with backdrop overlay. Content appears with scale and fade animation. Includes smooth transitions for open/close states. Responsive width adapts to screen size."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for important actions requiring user attention",
+      "Provide clear action buttons in dialog content",
+      "Set appropriate width for content",
+      "Handle onClose to update isOpen state",
+      "Use lockScroll for better UX"
+    ],
+    "Dont": [
+      "Don't use for non-critical information (use Popover or Tooltip instead)",
+      "Don't nest dialogs within dialogs",
+      "Don't make dialogs too large (consider Drawer for extensive content)",
+      "Don't forget to manage focus for accessibility",
+      "Don't define space css to the dialog, as its already come with 16px spacing for the body"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport Dialog from '@/components/ui/Dialog'\n\nconst Basic = () => {\n    const [dialogIsOpen, setIsOpen] = useState(false)\n\n    const openDialog = () => {\n        setIsOpen(true)\n    }\n\n    const onDialogClose = (currentState: boolean) => {\n        console.log('onDialogClose', currentState)\n        setIsOpen(false)\n    }\n\n    return (\n        <div>\n            <Button variant=\"solid\" onClick={() => openDialog()}>\n                Open Dialog\n            </Button>\n            <Dialog\n                isOpen={dialogIsOpen}\n                onClose={onDialogClose}\n            >\n                <h5 className=\"mb-4\">Dialog Title</h5>\n                <p>\n                    There are many variations of passages of Lorem Ipsum\n                    available, but the majority have suffered alteration in some\n                    form, by injected humour, or randomised words which dont\n                    look even slightly believable.\n                </p>\n                <div className=\"text-right mt-6\">\n                    <Button\n                        className=\"ltr:mr-2 rtl:ml-2\"\n                        variant=\"subtle\"\n                        onClick={() => setIsOpen(false)}\n                    >\n                        Cancel\n                    </Button>\n                    <Button variant=\"solid\" onClick={() => setIsOpen(false)}>\n                        Okay\n                    </Button>\n                </div>\n            </Dialog>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Closable": {
+      "title": "Closable",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport Dialog from '@/components/ui/Dialog'\n\nconst Closable = () => {\n    const [dialogIsOpen, setIsOpen] = useState(false)\n\n    const openDialog = () => {\n        setIsOpen(true)\n    }\n\n    return (\n        <div>\n            <Button variant=\"solid\" onClick={() => openDialog()}>\n                Open Dialog\n            </Button>\n            <Dialog isOpen={dialogIsOpen} closable={false}>\n                <h5 className=\"mb-4\">Dialog Title</h5>\n                <p>\n                    There are many variations of passages of Lorem Ipsum\n                    available, but the majority have suffered alteration in some\n                    form, by injected humour, or randomised words which dont\n                    look even slightly believable.\n                </p>\n                <div className=\"text-right mt-6\">\n                    <Button\n                        className=\"ltr:mr-2 rtl:ml-2\"\n                        onClick={() => setIsOpen(false)}\n                    >\n                        Cancel\n                    </Button>\n                    <Button variant=\"solid\" onClick={() => setIsOpen(false)}>\n                        Okay\n                    </Button>\n                </div>\n            </Dialog>\n        </div>\n    )\n}\n\nexport default Closable"
+    },
+    "CloseWithEscBackdrop": {
+      "title": "Close With Esc Backdrop",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport Dialog from '@/components/ui/Dialog'\n\nconst CloseWithEscBackdrop = () => {\n    const [dialogIsOpen, setIsOpen] = useState(false)\n\n    const openDialog = () => {\n        setIsOpen(true)\n    }\n\n    const onDialogClose = (currentState: boolean) => {\n        console.log('onDialogClose', currentState)\n        setIsOpen(false)\n    }\n\n    return (\n        <div>\n            <Button variant=\"solid\" onClick={() => openDialog()}>\n                Open Dialog\n            </Button>\n            <Dialog\n                isOpen={dialogIsOpen}\n                shouldCloseOnOverlayClick={false}\n                shouldCloseOnEsc={false}\n                onClose={onDialogClose}\n            >\n                <h5 className=\"mb-4\">Dialog Title</h5>\n                <p>\n                    There are many variations of passages of Lorem Ipsum\n                    available, but the majority have suffered alteration in some\n                    form, by injected humour, or randomised words which dont\n                    look even slightly believable.\n                </p>\n                <div className=\"text-right mt-6\">\n                    <Button\n                        className=\"ltr:mr-2 rtl:ml-2\"\n                        variant=\"subtle\"\n                        onClick={() => setIsOpen(false)}\n                    >\n                        Cancel\n                    </Button>\n                    <Button variant=\"solid\" onClick={() => setIsOpen(false)}>\n                        Okay\n                    </Button>\n                </div>\n            </Dialog>\n        </div>\n    )\n}\n\nexport default CloseWithEscBackdrop"
+    },
+    "CustomStyle": {
+      "title": "Custom Style",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport Dialog from '@/components/ui/Dialog'\n\nconst CustomStyle = () => {\n    const [dialogIsOpen, setIsOpen] = useState(false)\n\n    const openDialog = () => {\n        setIsOpen(true)\n    }\n\n    const onDialogClose = (currentState: boolean) => {\n        console.log('onDialogClose', currentState)\n        setIsOpen(false)\n    }\n\n    return (\n        <div>\n            <Button variant=\"solid\" onClick={() => openDialog()}>\n                Open Dialog\n            </Button>\n            <Dialog\n                isOpen={dialogIsOpen}\n                className=\"pb-0 px-0\"\n                onClose={onDialogClose}\n            >\n                <div className=\"px-6 pb-6\">\n                    <h5 className=\"mb-4\">Dialog Title</h5>\n                    <p>\n                        There are many variations of passages of Lorem Ipsum\n                        available, but the majority have suffered alteration in\n                        some form, by injected humour, or randomised words which\n                        dont look even slightly believable.\n                    </p>\n                </div>\n                <div className=\"text-right px-6 py-3 bg-gray-100 dark:bg-gray-700 rounded-bl-lg rounded-br-lg\">\n                    <Button\n                        className=\"ltr:mr-2 rtl:ml-2\"\n                        onClick={() => setIsOpen(false)}\n                    >\n                        Cancel\n                    </Button>\n                    <Button variant=\"solid\" onClick={() => setIsOpen(false)}>\n                        Okay\n                    </Button>\n                </div>\n            </Dialog>\n        </div>\n    )\n}\n\nexport default CustomStyle"
+    },
+    "InternalScroll": {
+      "title": "Internal Scroll",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport Dialog from '@/components/ui/Dialog'\n\nconst InternalScroll = () => {\n    const [dialogIsOpen, setIsOpen] = useState(false)\n\n    const openDialog = () => {\n        setIsOpen(true)\n    }\n\n    const onDialogClose = (currentState: boolean) => {\n        console.log('onDialogClose', currentState)\n        setIsOpen(false)\n    }\n\n    return (\n        <div>\n            <Button variant=\"solid\" onClick={() => openDialog()}>\n                Open\n            </Button>\n            <Dialog\n                isOpen={dialogIsOpen}\n                onClose={onDialogClose}\n            >\n                <div className=\"flex flex-col h-full justify-between\">\n                    <h5 className=\"mb-4\">Dialog Title</h5>\n                    <div className=\"max-h-96 overflow-y-auto\">\n                        <p>\n                            There are only two kinds of programming languages:\n                            those people always bitch about and those nobody\n                            uses. (Bjarne Stroustrup) Walking on water and\n                            developing software from a specification are easy if\n                            both are frozen. (Edward V Berard) Any fool can use\n                            a computer. Many do. (Ted Nelson) If debugging is\n                            the process of removing bugs, then programming must\n                            be the process of putting them in. (Edsger W.\n                            Dijkstra)\n                        </p>\n                        <p>\n                            Any fool can use a computer. Many do. (Ted Nelson)\n                            If the automobile had followed the same development\n                            cycle as the computer, a Rolls-Royce would today\n                            cost $100, get a million miles per gallon, and\n                            explode once a year, killing everyone inside.\n                            (Robert X. Cringely) Every operating system out\n                            there is about equal… We all suck. (Microsoft senior\n                            vice president Brian Valentine describing the state\n                            of the art in OS security, 2003) It is practically\n                            impossible to teach good programming style to\n                            students that have had prior exposure to BASIC. As\n                            potential programmers, they are mentally mutilated\n                            beyond hope of regeneration. (E. W. Dijkstra) It has\n                            been said that the great scientific disciplines are\n                            examples of giants standing on the shoulders of\n                            other giants. It has also been said that the\n                            software industry is an example of midgets standing\n                            on the toes of other midgets. (Alan Cooper)\n                        </p>\n                        <p>\n                            Always code as if the guy who ends up maintaining\n                            your code will be a violent psychopath who knows\n                            where you live. (Martin Golding) There is no\n                            programming language–no matter how structured-that\n                            will prevent programmers from making bad programs.\n                            (Larry Flon) If builders built buildings the way\n                            programmers wrote programs, then the first\n                            woodpecker that came along would destroy\n                            civilization. (Gerald Weinberg)\n                        </p>\n                    </div>\n                    <div className=\"text-right mt-6\">\n                        <Button\n                            className=\"ltr:mr-2 rtl:ml-2\"\n                            variant=\"subtle\"\n                            onClick={() => setIsOpen(false)}\n                        >\n                            Cancel\n                        </Button>\n                        <Button variant=\"solid\" onClick={() => setIsOpen(false)}>\n                            Okay\n                        </Button>\n                    </div>\n                </div>\n            </Dialog>\n        </div>\n    )\n}\n\nexport default InternalScroll"
+    },
+    "Size": {
+      "title": "Size",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport Dialog from '@/components/ui/Dialog'\n\nconst Size = () => {\n    const [dialogIsOpen, setIsOpen] = useState(false)\n\n    const openDialog = () => {\n        setIsOpen(true)\n    }\n\n    const onDialogClose = (currentState: boolean) => {\n        console.log('onDialogClose', currentState)\n        setIsOpen(false)\n    }\n\n    return (\n        <div>\n            <Button variant=\"solid\" onClick={() => openDialog()}>\n                Custom Size Dialog\n            </Button>\n            <Dialog\n                isOpen={dialogIsOpen}\n                width={1000}\n                height={250}\n                onClose={onDialogClose}\n            >\n                <div className=\"flex flex-col h-full justify-between\">\n                    <h5 className=\"mb-4\">Dialog Title</h5>\n                    <p>\n                        There are many variations of passages of Lorem Ipsum\n                        available, but the majority have suffered alteration in\n                        some form, by injected humour, or randomised words which\n                        dont look even slightly believable.\n                    </p>\n                    <div className=\"text-right mt-6\">\n                        <Button\n                            className=\"ltr:mr-2 rtl:ml-2\"\n                            variant=\"subtle\"\n                            onClick={() => setIsOpen(false)}\n                        >\n                            Cancel\n                        </Button>\n                        <Button variant=\"solid\" onClick={() => setIsOpen(false)}>\n                            Okay\n                        </Button>\n                    </div>\n                </div>\n            </Dialog>\n        </div>\n    )\n}\n\nexport default Size"
+    },
+    "StaticBackdrop": {
+      "title": "Static Backdrop",
+      "code": "import { useState } from 'react'\nimport Button from '@/components/ui/Button'\nimport Dialog from '@/components/ui/Dialog'\n\nconst StaticBackdrop = () => {\n    const [dialogIsOpen, setIsOpen] = useState(false)\n\n    const openDialog = () => {\n        setIsOpen(true)\n    }\n\n    const onDialogClose = (currentState: boolean) => {\n        console.log('onDialogClose', currentState)\n        setIsOpen(false)\n    }\n\n    return (\n        <div>\n            <Button variant=\"solid\" onClick={() => openDialog()}>\n                Open Dialog\n            </Button>\n            <Dialog\n                lockScroll\n                isOpen={dialogIsOpen}\n                onClose={onDialogClose}\n            >\n                <h5 className=\"mb-4\">Dialog Title</h5>\n                <p>\n                    There are many variations of passages of Lorem Ipsum\n                    available, but the majority have suffered alteration in some\n                    form, by injected humour, or randomised words which dont\n                    look even slightly believable.\n                </p>\n                <div className=\"text-right mt-6\">\n                    <Button\n                        className=\"ltr:mr-2 rtl:ml-2\"\n                        variant=\"subtle\"\n                        onClick={() => setIsOpen(false)}\n                    >\n                        Cancel\n                    </Button>\n                    <Button variant=\"solid\" onClick={() => setIsOpen(false)}>\n                        Okay\n                    </Button>\n                </div>\n            </Dialog>\n        </div>\n    )\n}\n\nexport default StaticBackdrop"
+    }
+  },
+  "compound_components": {
+    "Dialog": {
+      "description": "Root modal dialog component.",
+      "props": {
+        "isOpen": {
+          "type": "boolean",
+          "required": true,
+          "description": "Controls dialog visibility."
+        },
+        "onClose": {
+          "type": "() => void",
+          "required": true,
+          "description": "Callback when dialog should close."
+        },
+        "closable": {
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Show close button."
+        },
+        "width": {
+          "type": "number | string",
+          "required": false,
+          "default": "520",
+          "description": "Dialog width."
+        },
+        "height": {
+          "type": "number | string",
+          "required": false,
+          "description": "Dialog height (enables internal scroll)."
+        },
+        "closeOnEsc": {
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Close on Escape key."
+        },
+        "closeOnOverlayClick": {
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Close when clicking overlay."
+        }
+      }
+    }
+  }
+}

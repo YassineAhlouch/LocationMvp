@@ -1,0 +1,146 @@
+{
+  "component_id": "tabs-001",
+  "name": "Tabs",
+  "display_name": "Tab Navigation Component",
+  "category": "Navigation / Tabs",
+  "import_path": "@/components/ui/Tabs",
+  "description": "A tab navigation component for organizing content into switchable panels with underline or pill variants.",
+  "usage_guidelines": [
+    "Use to organize related content into separate views.",
+    "Compose with TabList, Tab, and TabContent components.",
+    "Set defaultValue for initial active tab.",
+    "Handle onChange to respond to tab switches.",
+    "Choose variant based on design needs (underline or pill)."
+  ],
+  "props": {
+    "defaultValue": {
+      "type": "TabsValue",
+      "required": false,
+      "description": "Initially active tab value."
+    },
+    "onChange": {
+      "type": "(tabValue: TabsValue) => void",
+      "required": false,
+      "description": "Callback fired when active tab changes."
+    },
+    "value": {
+      "type": "TabsValue",
+      "required": false,
+      "description": "Controlled active tab value."
+    },
+    "variant": {
+      "type": "'underline' | 'pill'",
+      "required": false,
+      "default": "'underline'",
+      "description": "Visual style variant."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Underline variant: tabs with bottom border indicator. Pill variant: tabs with rounded background. Active tab is highlighted with primary color."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for 2-7 tabs (optimal range)",
+      "Provide clear, concise tab labels",
+      "Handle onChange for content switching",
+      "Use consistent tab order",
+      "Consider mobile layout"
+    ],
+    "Dont": [
+      "Don't use for too many tabs (use Menu instead)",
+      "Don't nest tabs within tabs",
+      "Don't forget to manage active state"
+    ]
+  },
+  "code_examples": {
+    "ControlledTabs": {
+      "title": "Controlled Tabs",
+      "code": "import { useState } from 'react'\nimport Tabs from '@/components/ui/Tabs'\n\nconst { TabNav, TabList, TabContent } = Tabs\n\nconst ControlledTabs = () => {\n    const [currentTab, setCurrentTab] = useState('tab1')\n\n    return (\n        <div>\n            <Tabs value={currentTab} onChange={(val) => setCurrentTab(val)}>\n                <TabList>\n                    <TabNav value=\"tab1\">Home</TabNav>\n                    <TabNav value=\"tab2\">Profile</TabNav>\n                    <TabNav value=\"tab3\">Contact</TabNav>\n                </TabList>\n                <div className=\"p-4\">\n                    <TabContent value=\"tab1\">\n                        <p>\n                            If builders built buildings the way programmers\n                            wrote programs, then the first woodpecker that came\n                            along would destroy civilization. (Gerald Weinberg)\n                        </p>\n                    </TabContent>\n                    <TabContent value=\"tab2\">\n                        <p>\n                            A computer lets you make more mistakes faster than\n                            any invention in human history with the possible\n                            exceptions of handguns and tequila. (Mitch\n                            Radcliffe).\n                        </p>\n                    </TabContent>\n                    <TabContent value=\"tab3\">\n                        <p>\n                            In C++ its harder to shoot yourself in the foot, but\n                            when you do, you blow off your whole leg. (Bjarne\n                            Stroustrup)\n                        </p>\n                    </TabContent>\n                </div>\n            </Tabs>\n        </div>\n    )\n}\n\nexport default ControlledTabs"
+    },
+    "Default": {
+      "title": "Default",
+      "code": "import Tabs from '@/components/ui/Tabs'\n\nconst { TabNav, TabList, TabContent } = Tabs\n\nconst Default = () => {\n    return (\n        <div>\n            <Tabs defaultValue=\"tab1\">\n                <TabList>\n                    <TabNav value=\"tab1\">Home</TabNav>\n                    <TabNav value=\"tab2\">Profile</TabNav>\n                    <TabNav value=\"tab3\">Contact</TabNav>\n                </TabList>\n                <div className=\"p-4\">\n                    <TabContent value=\"tab1\">\n                        <p>\n                            If builders built buildings the way programmers\n                            wrote programs, then the first woodpecker that came\n                            along would destroy civilization. (Gerald Weinberg)\n                        </p>\n                    </TabContent>\n                    <TabContent value=\"tab2\">\n                        <p>\n                            A computer lets you make more mistakes faster than\n                            any invention in human history with the possible\n                            exceptions of handguns and tequila. (Mitch\n                            Radcliffe).\n                        </p>\n                    </TabContent>\n                    <TabContent value=\"tab3\">\n                        <p>\n                            In C++ its harder to shoot yourself in the foot, but\n                            when you do, you blow off your whole leg. (Bjarne\n                            Stroustrup)\n                        </p>\n                    </TabContent>\n                </div>\n            </Tabs>\n        </div>\n    )\n}\n\nexport default Default"
+    },
+    "Disabled": {
+      "title": "Disabled",
+      "code": "import Tabs from '@/components/ui/Tabs'\n\nconst { TabNav, TabList } = Tabs\n\nconst Disabled = () => {\n    return (\n        <div>\n            <Tabs defaultValue=\"tab1\" className=\"mb-4\">\n                <TabList>\n                    <TabNav value=\"tab1\">Home</TabNav>\n                    <TabNav disabled value=\"tab2\">\n                        Profile\n                    </TabNav>\n                    <TabNav value=\"tab3\">Contact</TabNav>\n                </TabList>\n            </Tabs>\n            <Tabs defaultValue=\"tab1\" variant=\"pill\">\n                <TabList>\n                    <TabNav value=\"tab1\">Home</TabNav>\n                    <TabNav disabled value=\"tab2\">\n                        Profile\n                    </TabNav>\n                    <TabNav value=\"tab3\">Contact</TabNav>\n                </TabList>\n            </Tabs>\n        </div>\n    )\n}\n\nexport default Disabled"
+    },
+    "Icons": {
+      "title": "Icons",
+      "code": "import Tabs from '@/components/ui/Tabs'\nimport { HiOutlineHome, TbUser, HiOutlinePhone } from 'react-icons/hi'\n\nconst { TabNav, TabList, TabContent } = Tabs\n\nconst Icons = () => {\n    return (\n        <div>\n            <Tabs defaultValue=\"tab1\">\n                <TabList>\n                    <TabNav value=\"tab1\" icon={<HiOutlineHome />}>\n                        Home\n                    </TabNav>\n                    <TabNav value=\"tab2\" icon={<TbUser />}>\n                        Profile\n                    </TabNav>\n                    <TabNav value=\"tab3\" icon={<HiOutlinePhone />}>\n                        Contact\n                    </TabNav>\n                </TabList>\n                <div className=\"p-4\">\n                    <TabContent value=\"tab1\">\n                        <p>\n                            If builders built buildings the way programmers\n                            wrote programs, then the first woodpecker that came\n                            along would destroy civilization. (Gerald Weinberg)\n                        </p>\n                    </TabContent>\n                    <TabContent value=\"tab2\">\n                        <p>\n                            A computer lets you make more mistakes faster than\n                            any invention in human historywith the possible\n                            exceptions of handguns and tequila. (Mitch\n                            Radcliffe).\n                        </p>\n                    </TabContent>\n                    <TabContent value=\"tab3\">\n                        <p>\n                            In C++ its harder to shoot yourself in the foot, but\n                            when you do, you blow off your whole leg. (Bjarne\n                            Stroustrup)\n                        </p>\n                    </TabContent>\n                </div>\n            </Tabs>\n        </div>\n    )\n}\n\nexport default Icons"
+    },
+    "Pill": {
+      "title": "Pill",
+      "code": "import Tabs from '@/components/ui/Tabs'\n\nconst { TabNav, TabList, TabContent } = Tabs\n\nconst Pill = () => {\n    return (\n        <div>\n            <Tabs defaultValue=\"tab1\" variant=\"pill\">\n                <TabList>\n                    <TabNav value=\"tab1\">Home</TabNav>\n                    <TabNav value=\"tab2\">Profile</TabNav>\n                    <TabNav value=\"tab3\">Contact</TabNav>\n                </TabList>\n                <div className=\"p-4\">\n                    <TabContent value=\"tab1\">\n                        <p>\n                            If builders built buildings the way programmers\n                            wrote programs, then the first woodpecker that came\n                            along would destroy civilization. (Gerald Weinberg)\n                        </p>\n                    </TabContent>\n                    <TabContent value=\"tab2\">\n                        <p>\n                            A computer lets you make more mistakes faster than\n                            any invention in human history with the possible\n                            exceptions of handguns and tequila. (Mitch\n                            Radcliffe).\n                        </p>\n                    </TabContent>\n                    <TabContent value=\"tab3\">\n                        <p>\n                            In C++ its harder to shoot yourself in the foot, but\n                            when you do, you blow off your whole leg. (Bjarne\n                            Stroustrup)\n                        </p>\n                    </TabContent>\n                </div>\n            </Tabs>\n        </div>\n    )\n}\n\nexport default Pill"
+    }
+  },
+  "compound_components": {
+    "Tabs": {
+      "description": "Root component that provides tab context.",
+      "props": {
+        "value": {
+          "type": "string",
+          "required": false,
+          "description": "Controlled active tab value."
+        },
+        "defaultValue": {
+          "type": "string",
+          "required": false,
+          "description": "Default active tab for uncontrolled mode."
+        },
+        "variant": {
+          "type": "'underline' | 'pill'",
+          "required": false,
+          "default": "'underline'",
+          "description": "Tab styling variant."
+        },
+        "onChange": {
+          "type": "(tabValue: string) => void",
+          "required": false,
+          "description": "Callback when active tab changes."
+        }
+      }
+    },
+    "Tabs.TabList": {
+      "description": "Container for tab navigation buttons.",
+      "props": {
+        "className": {
+          "type": "string",
+          "required": false,
+          "description": "Additional CSS classes."
+        }
+      }
+    },
+    "Tabs.TabNav": {
+      "description": "Individual tab navigation button.",
+      "props": {
+        "value": {
+          "type": "string",
+          "required": true,
+          "description": "Tab identifier value."
+        },
+        "disabled": {
+          "type": "boolean",
+          "required": false,
+          "description": "Disable this tab."
+        },
+        "icon": {
+          "type": "ReactNode",
+          "required": false,
+          "description": "Icon to display in the tab."
+        }
+      }
+    },
+    "Tabs.TabContent": {
+      "description": "Content panel displayed when its tab is active.",
+      "props": {
+        "value": {
+          "type": "string",
+          "required": true,
+          "description": "Tab value this content belongs to."
+        }
+      }
+    }
+  }
+}

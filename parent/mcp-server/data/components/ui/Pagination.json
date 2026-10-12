@@ -1,0 +1,88 @@
+{
+  "component_id": "pagination-001",
+  "name": "Pagination",
+  "display_name": "Pagination Navigation Component",
+  "category": "Navigation / Data Display",
+  "import_path": "@/components/ui/Pagination",
+  "description": "A pagination component for navigating through large datasets with page numbers, previous/next buttons, and optional total count display.",
+  "usage_guidelines": [
+    "Use for navigating through paginated data (tables, lists, grids).",
+    "Set total to the total number of items in dataset.",
+    "Set pageSize to control items per page.",
+    "Use currentPage for controlled pagination state.",
+    "Handle onChange to update data display when page changes.",
+    "Enable displayTotal to show total item count."
+  ],
+  "props": {
+    "currentPage": {
+      "type": "number",
+      "required": false,
+      "default": "1",
+      "description": "Current active page number."
+    },
+    "displayTotal": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Shows total item count."
+    },
+    "onChange": {
+      "type": "(pageNumber: number) => void",
+      "required": false,
+      "description": "Callback fired when page changes."
+    },
+    "pageSize": {
+      "type": "number",
+      "required": false,
+      "default": "1",
+      "description": "Number of items per page."
+    },
+    "total": {
+      "type": "number",
+      "required": false,
+      "default": "5",
+      "description": "Total number of items in dataset."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A horizontal row of page numbers with previous/next buttons. Active page is highlighted with primary color. Disabled buttons have reduced opacity. Includes hover effects on interactive elements."
+  },
+  "best_practices": {
+    "Do": [
+      "Calculate total pages correctly from total items and pageSize",
+      "Handle onChange to fetch/display appropriate data",
+      "Show displayTotal for user context",
+      "Disable prev/next buttons at boundaries",
+      "Use reasonable pageSize for performance"
+    ],
+    "Dont": [
+      "Don't forget to update currentPage in onChange",
+      "Don't use for very small datasets (< 20 items)",
+      "Don't set pageSize too large (impacts performance)",
+      "Don't forget to handle edge cases (empty data)"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import Pagination from '@/components/ui/Pagination'\n\nconst Basic = () => {\n    const onPaginationChange = (page: number) => {\n        console.log('onPaginationChange', page)\n    }\n\n    return (\n        <div>\n            <Pagination onChange={onPaginationChange} />\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Controlled": {
+      "title": "Controlled",
+      "code": "import { useState } from 'react'\nimport Pagination from '@/components/ui/Pagination'\n\nconst Controlled = () => {\n    const [page, setPage] = useState(60)\n\n    const onPaginationChange = (val: number) => {\n        setPage(val)\n    }\n\n    return (\n        <div>\n            <Pagination\n                total={100}\n                currentPage={page}\n                onChange={onPaginationChange}\n            />\n        </div>\n    )\n}\n\nexport default Controlled"
+    },
+    "More": {
+      "title": "More",
+      "code": "import Pagination from '@/components/ui/Pagination'\n\nconst More = () => {\n    return (\n        <div>\n            <div className=\"mb-4\">\n                <Pagination total={50} />\n            </div>\n            <div className=\"mb-4\">\n                <Pagination total={100} />\n            </div>\n        </div>\n    )\n}\n\nexport default More"
+    },
+    "PageSize": {
+      "title": "Page Size",
+      "code": "import { useState } from 'react'\nimport Pagination from '@/components/ui/Pagination'\nimport Select from '@/components/ui/Select'\n\ntype Option = {\n    value: number\n    label: string\n}\n\nconst options: Option[] = [\n    { value: 5, label: '5 / page' },\n    { value: 10, label: '10 / page' },\n    { value: 20, label: '20 / page' },\n    { value: 50, label: '50 / page' },\n]\n\nconst PageSize = () => {\n    const [pageSize, setPageSize] = useState(options[0].value)\n\n    const onPageSelect = ({ value }: Option) => {\n        setPageSize(value)\n    }\n\n    return (\n        <div className=\"flex items-center\">\n            <Pagination displayTotal pageSize={pageSize} total={100} />\n            <div style={{ minWidth: 120 }}>\n                <Select\n                    size=\"sm\"\n                    isSearchable={false}\n                    defaultValue={options[0]}\n                    options={options}\n                    onChange={selected => onPageSelect(selected as Option)}\n                />\n            </div>\n        </div>\n    )\n}\n\nexport default PageSize"
+    },
+    "Total": {
+      "title": "Total",
+      "code": "import Pagination from '@/components/ui/Pagination'\n\nconst Total = () => {\n    return (\n        <div>\n            <Pagination displayTotal total={50} />\n        </div>\n    )\n}\n\nexport default Total"
+    }
+  }
+}

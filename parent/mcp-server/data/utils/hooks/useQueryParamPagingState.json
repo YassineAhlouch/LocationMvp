@@ -1,0 +1,57 @@
+{
+  "component_id": "hook-queryparampagingstate-001",
+  "name": "useQueryParamTableState",
+  "display_name": "Query Parameter Table State Hook",
+  "category": "Hooks / Data Tables",
+  "import_path": "@/utils/hooks/useQueryParamPagingState",
+  "description": "A hook that syncs data table state (pagination, sorting, filters) with URL query parameters for shareable and bookmarkable table states.",
+  "usage_guidelines": [
+    "Use for tables where state should persist in URL.",
+    "Enables shareable links with specific table state.",
+    "Automatically parses query params into table state.",
+    "Separates paging state from custom filter state.",
+    "Provides setQueryParams for updating URL."
+  ],
+  "params": [
+    {
+      "name": "initialTableData",
+      "type": "Partial<TableQueries>",
+      "required": false,
+      "default": "{pageIndex: 1, pageSize: 10, query: '', sortOrder: '', sortKey: ''}",
+      "description": "Default table state when no query params present."
+    }
+  ],
+  "return_value": {
+    "type": "{pagingState: TableQueries, filterState: Record<string, string>, setQueryParams: Function}",
+    "description": "Object containing parsed table state and setter function.",
+    "structure": {
+      "pagingState": {
+        "type": "TableQueries",
+        "description": "Parsed pagination and sorting state from URL."
+      },
+      "filterState": {
+        "type": "Record<string, string>",
+        "description": "Custom filter parameters from URL."
+      },
+      "setQueryParams": {
+        "type": "(params: Record<string, unknown>, override?: boolean) => void",
+        "description": "Function to update query parameters. Override replaces all params."
+      }
+    }
+  },
+  "best_practices": {
+    "Do": [
+      "Use for shareable table states",
+      "Provide sensible initial values",
+      "Use setQueryParams for updates",
+      "Handle missing query params gracefully",
+      "Validate parsed values"
+    ],
+    "Dont": [
+      "Don't store sensitive data in URL",
+      "Don't forget to handle invalid params",
+      "Don't use for temporary filters",
+      "Don't exceed URL length limits"
+    ]
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "component_id": "card-001",
+  "name": "Card",
+  "display_name": "Content Card Container",
+  "category": "Layout / Containers",
+  "import_path": "@/components/ui/Card",
+  "description": "A flexible card container component for grouping related content with optional header, footer, and interactive capabilities.",
+  "usage_guidelines": [
+    "Use to group related information and actions in a visually distinct container.",
+    "Add header for card titles and extra actions.",
+    "Use footer for actions or additional information.",
+    "Set clickable for interactive cards that navigate or trigger actions.",
+    "Use bordered or shadow variants based on your design system."
+  ],
+  "props": {
+    "clickable": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Makes the entire card clickable with cursor and selection styling."
+    },
+    "header": {
+      "type": "{content?: string | ReactNode, className?: string, bordered?: boolean, extra?: string | ReactNode}",
+      "required": false,
+      "description": "Card header configuration with content, styling, border, and extra actions."
+    },
+    "bodyClass": {
+      "type": "string",
+      "required": false,
+      "description": "Additional CSS classes for the card body."
+    },
+    "footer": {
+      "type": "{content?: string | ReactNode, className?: string, bordered?: boolean}",
+      "required": false,
+      "description": "Card footer configuration with content, styling, and border."
+    },
+    "bordered": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Applies border styling. When false, uses shadow styling instead."
+    },
+    "onClick": {
+      "type": "(e: MouseEvent<HTMLDivElement>) => void",
+      "required": false,
+      "description": "Click handler for clickable cards."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "A rectangular container with rounded corners, either bordered or with shadow elevation. Header and footer sections are visually separated from the body. Clickable cards show hover effects and cursor changes."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for grouping related content logically",
+      "Provide clear header titles when using headers",
+      "Use clickable only when the entire card is interactive",
+      "Keep card content focused and concise",
+      "Use consistent card styling across your application"
+    ],
+    "Dont": [
+      "Don't nest cards too deeply",
+      "Don't make cards clickable if only specific elements should be interactive",
+      "Don't overload cards with too much content",
+      "Don't forget to provide onClick when clickable is true",
+      "Don't define space css to the card, as its already come with 16px spacing for the body"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import Card from '@/components/ui/Card'\n\nconst Basic = () => {\n    return (\n        <div>\n            <Card>\n                <h5>Card title</h5>\n                <p>\n                    Some quick example text to build on the card title and make\n                    up the bulk of the card&apos;s content.\n                </p>\n            </Card>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "BorderLess": {
+      "title": "Border Less",
+      "code": "import Card from '@/components/ui/Card'\n\nconst BorderLess = () => {\n    return (\n        <div>\n            <Card bordered={false}>\n                <h5>Card title</h5>\n                <p>\n                    Some quick example text to build on the card title and make\n                    up the bulk of the card&apos;s content.\n                </p>\n            </Card>\n        </div>\n    )\n}\n\nexport default BorderLess"
+    },
+    "Clickable": {
+      "title": "Clickable",
+      "code": "import Card from '@/components/ui/Card'\n\nconst Clickable = () => {\n    return (\n        <div className=\"max-w-xs\">\n            <Card\n                clickable\n                className=\"hover:shadow-lg transition duration-150 ease-in-out\"\n                onClick={(e) => console.log('Card Clickable', e)}\n            >\n                <h5>Card title</h5>\n                <p className=\"mt-2\">\n                    Some quick example text to build on the card title and make\n                    up the bulk of the card&apos;s content.\n                </p>\n            </Card>\n        </div>\n    )\n}\n\nexport default Clickable"
+    },
+    "ExtraClass": {
+      "title": "Extra Class",
+      "code": "import Card from '@/components/ui/Card'\nimport Button from '@/components/ui/Button'\n\nconst ExtraClass = () => {\n    const cardFooter = (\n        <div className=\"flex\">\n            <Button size=\"sm\" className=\"ltr:mr-2 rtl:ml-2\">\n                Save\n            </Button>\n            <Button size=\"sm\" variant=\"solid\">\n                New Post\n            </Button>\n        </div>\n    )\n\n    return (\n        <div>\n            <Card\n                header={{\n                    content: <span>Card Header</span>,\n                    className: 'font-semibold text-lg text-indigo-600',\n                }}\n                footer={{\n                    content: cardFooter,\n                    className: 'flex justify-end',\n                }}\n                bodyClass=\"text-center\"\n            >\n                <p>\n                    Lorem Ipsum is simply dummy text of the printing and\n                    typesetting industry. Lorem Ipsum has been the industry\n                    standard dummy text ever since the 1500s, when an unknown\n                    printer took a galley of type and scrambled it to make a\n                    type specimen book. It has survived not only five centuries,\n                    but also the leap into electronic typesetting, remaining\n                    essentially unchanged. It was popularised in the 1960s with\n                    the release of Letraset sheets containing Lorem Ipsum\n                    passages, and more recently with desktop publishing software\n                    like Aldus PageMaker including versions of Lorem Ipsum\n                </p>\n            </Card>\n        </div>\n    )\n}\n\nexport default ExtraClass"
+    },
+    "HeaderFooter": {
+      "title": "Header Footer",
+      "code": "import Card from '@/components/ui/Card'\nimport Button from '@/components/ui/Button'\nimport { HiCheckCircle } from 'react-icons/hi'\n\nconst HeaderFooter = () => {\n    const headerExtraContent = (\n        <span className=\"flex items-center\">\n            <span className=\"mr-1 font-semibold\">Status:</span>\n            <span className=\"text-emerald-500 text-xl\">\n                <HiCheckCircle />\n            </span>\n        </span>\n    )\n\n    const cardFooter = (\n        <div className=\"flex justify-end\">\n            <Button size=\"sm\" className=\"ltr:mr-2 rtl:ml-2\">\n                Save\n            </Button>\n            <Button size=\"sm\" variant=\"solid\">\n                New Post\n            </Button>\n        </div>\n    )\n\n    return (\n        <div>\n            <Card\n                header={{\n                    content: 'Card Header',\n                    extra: headerExtraContent,\n                }}\n                footer={{\n                    content: cardFooter,\n                }}\n            >\n                <p>\n                    Lorem Ipsum is simply dummy text of the printing and\n                    typesetting industry. Lorem Ipsum has been the\n                    industry&apos;s standard dummy text ever since the 1500s,\n                    when an unknown printer took a galley of type and scrambled\n                    it to make a type specimen book. It has survived not only\n                    five centuries, but also the leap into electronic\n                    typesetting, remaining essentially unchanged. It was\n                    popularised in the 1960s with the release of Letraset sheets\n                    containing Lorem Ipsum passages, and more recently with\n                    desktop publishing software like Aldus PageMaker including\n                    versions of Lorem Ipsum\n                </p>\n            </Card>\n        </div>\n    )\n}\n\nexport default HeaderFooter"
+    },
+    "HeaderFooterBorder": {
+      "title": "Header Footer Border",
+      "code": "import Card from '@/components/ui/Card'\nimport Button from '@/components/ui/Button'\n\nconst HeaderFooterBorder = () => {\n    const cardFooter = (\n        <div className=\"flex\">\n            <Button size=\"sm\" className=\"ltr:mr-2 rtl:ml-2\">\n                Save\n            </Button>\n            <Button size=\"sm\" variant=\"solid\">\n                New Post\n            </Button>\n        </div>\n    )\n\n    return (\n        <div>\n            <Card\n                header={{\n                    content: 'Card Header',\n                    bordered: false,\n                }}\n                footer={{\n                    content: cardFooter,\n                    bordered: false,\n                }}\n            >\n                <p>\n                    Lorem Ipsum is simply dummy text of the printing and\n                    typesetting industry. Lorem Ipsum has been the\n                    industry&apos;s standard dummy text ever since the 1500s,\n                    when an unknown printer took a galley of type and scrambled\n                    it to make a type specimen book. It has survived not only\n                    five centuries, but also the leap into electronic\n                    typesetting, remaining essentially unchanged. It was\n                    popularised in the 1960s with the release of Letraset sheets\n                    containing Lorem Ipsum passages, and more recently with\n                    desktop publishing software like Aldus PageMaker including\n                    versions of Lorem Ipsum\n                </p>\n            </Card>\n        </div>\n    )\n}\n\nexport default HeaderFooterBorder"
+    },
+    "Media": {
+      "title": "Media",
+      "code": "import Card from '@/components/ui/Card'\nimport Avatar from '@/components/ui/Avatar'\n\nconst Media = () => {\n    const cardFooter = (\n        <div className=\"flex items-center\">\n            <Avatar\n                size={30}\n                className=\"mr-2\"\n                shape=\"circle\"\n                src=\"/img/avatars/thumb-1.jpg\"\n            />\n            <span>\n                <h6 className=\"text-sm\">Kristen Fisher</h6>\n                <span className=\"text-xs\">Sep 23, 2021</span>\n            </span>\n        </div>\n    )\n\n    const cardHeader = (\n        <div className=\"rounded-tl-lg rounded-tr-lg overflow-hidden\">\n            <img src=\"/img/others/img-1.jpg\" alt=\"card header\" />\n        </div>\n    )\n\n    return (\n        <div className=\"max-w-xs\">\n            <Card\n                clickable\n                className=\"hover:shadow-lg transition duration-150 ease-in-out dark:border dark:border-gray-600 dark:border-solid\"\n                header={{\n                    content: cardHeader,\n                    bordered: false,\n                    className: 'p-0',\n                }}\n                footer={{\n                    content: cardFooter,\n                    bordered: false,\n                }}\n            >\n                <h4 className=\"font-bold mb-3\">AI Powered Automation</h4>\n                <p>\n                    Lorem Ipsum is simply dummy text of the printing and\n                    typesetting industry. Lorem Ipsum has been the industry.\n                </p>\n            </Card>\n        </div>\n    )\n}\n\nexport default Media"
+    }
+  }
+}

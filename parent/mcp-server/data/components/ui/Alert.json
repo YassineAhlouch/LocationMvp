@@ -1,0 +1,111 @@
+{
+  "component_id": "alert-001",
+  "name": "Alert",
+  "display_name": "Alert Notification Component",
+  "category": "Feedback / Notifications",
+  "import_path": "@/components/ui/Alert",
+  "description": "A versatile alert component for displaying contextual feedback messages with multiple severity types, optional icons, and auto-dismiss functionality.",
+  "usage_guidelines": [
+    "Use to display important messages, warnings, errors, or success notifications to users.",
+    "Choose the appropriate type (success, info, warning, danger) based on message severity.",
+    "Enable closable for dismissible alerts that users can manually close.",
+    "Set duration for auto-dismissing alerts (0 or undefined for persistent alerts).",
+    "Use showIcon to enhance visual communication of alert type."
+  ],
+  "props": {
+    "closable": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Enables a close button for manual dismissal."
+    },
+    "customClose": {
+      "type": "ReactNode | string",
+      "required": false,
+      "description": "Custom close button element to replace the default close button."
+    },
+    "customIcon": {
+      "type": "ReactNode | string",
+      "required": false,
+      "description": "Custom icon to display instead of the default status icon."
+    },
+    "duration": {
+      "type": "number",
+      "required": false,
+      "default": "3000",
+      "description": "Auto-dismiss duration in milliseconds. Set to 0 for persistent alerts."
+    },
+    "title": {
+      "type": "ReactNode | string",
+      "required": false,
+      "default": "null",
+      "description": "Alert title text or element."
+    },
+    "onClose": {
+      "type": "(e?: MouseEvent<HTMLDivElement>) => void",
+      "required": false,
+      "description": "Callback function triggered when alert is closed."
+    },
+    "showIcon": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Shows a status icon based on the alert type."
+    },
+    "triggerByToast": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Internal flag for toast-triggered alerts."
+    },
+    "type": {
+      "type": "'success' | 'info' | 'warning' | 'danger'",
+      "required": false,
+      "default": "'warning'",
+      "description": "Visual style variant indicating message severity."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with Framer Motion",
+    "visual_description": "A rectangular container with rounded corners, colored background based on type (success-green, info-blue, warning-yellow, danger-red), with subtle border and appropriate text colors. Includes smooth fade-out animation when dismissed."
+  },
+  "best_practices": {
+    "Do": [
+      "Use appropriate type for message severity",
+      "Keep alert messages concise and actionable",
+      "Use showIcon for better visual communication",
+      "Set reasonable duration for auto-dismiss alerts"
+    ],
+    "Dont": [
+      "Don't use for critical errors that require user action (use Dialog instead)",
+      "Don't stack too many alerts simultaneously",
+      "Don't use very short durations that users can't read"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import Alert from '@/components/ui/Alert'\n\nconst Basic = () => {\n    return (\n        <div>\n            <Alert>\n                Additional description and information about copywriting.\n            </Alert>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Closable": {
+      "title": "Closable",
+      "code": "import Alert from '@/components/ui/Alert'\n\nconst Closable = () => {\n    const onCloseClick = () => {\n        console.log('Alert closed!')\n    }\n\n    return (\n        <div>\n            <Alert closable type=\"success\" onClose={onCloseClick}>\n                Thanks for submitting your application. Our team will get back\n                to you soon.\n            </Alert>\n        </div>\n    )\n}\n\nexport default Closable"
+    },
+    "CustomIcon": {
+      "title": "Custom Icon",
+      "code": "import Alert from '@/components/ui/Alert'\nimport { HiFire } from 'react-icons/hi'\n\nconst Icon = () => {\n    return (\n        <div>\n            <Alert showIcon type=\"success\" customIcon={<HiFire />}>\n                Additional description and information about copywriting.\n            </Alert>\n        </div>\n    )\n}\n\nexport default Icon"
+    },
+    "Icon": {
+      "title": "Icon",
+      "code": "import Alert from '@/components/ui/Alert'\n\nconst Icon = () => {\n    return (\n        <div>\n            <Alert showIcon>\n                Additional description and information about copywriting.\n            </Alert>\n        </div>\n    )\n}\n\nexport default Icon"
+    },
+    "Title": {
+      "title": "Title",
+      "code": "import Alert from '@/components/ui/Alert'\n\nconst Title = () => {\n    return (\n        <div>\n            <Alert showIcon type=\"danger\" title=\"Error!\">\n                Additional description and information about copywriting.\n            </Alert>\n        </div>\n    )\n}\n\nexport default Title"
+    },
+    "Type": {
+      "title": "Type",
+      "code": "import Alert from '@/components/ui/Alert'\n\nconst Type = () => {\n    return (\n        <div>\n            <Alert showIcon className=\"mb-4\" type=\"info\">\n                Additional description and information about copywriting.\n            </Alert>\n            <Alert showIcon className=\"mb-4\">\n                Additional description and information about copywriting.\n            </Alert>\n            <Alert showIcon className=\"mb-4\" type=\"success\">\n                Additional description and information about copywriting.\n            </Alert>\n            <Alert showIcon className=\"mb-4\" type=\"danger\">\n                Additional description and information about copywriting.\n            </Alert>\n        </div>\n    )\n}\n\nexport default Type"
+    }
+  }
+}

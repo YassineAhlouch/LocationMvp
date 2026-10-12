@@ -1,0 +1,184 @@
+{
+  "component_id": "datepicker-001",
+  "name": "DatePicker",
+  "display_name": "Date Selection Component",
+  "category": "Form Elements / Date & Time",
+  "import_path": "@/components/ui/DatePicker",
+  "description": "A comprehensive date picker component with calendar dropdown, keyboard navigation, manual input support, and extensive customization options.",
+  "usage_guidelines": [
+    "Use for selecting single dates in forms and filters.",
+    "Enable inputtable to allow manual date entry via keyboard.",
+    "Set minDate and maxDate to restrict selectable date ranges.",
+    "Use disableDate function for complex date restrictions (e.g., weekends, holidays).",
+    "Customize inputFormat to match your locale and requirements."
+  ],
+  "props": {
+    "closePickerOnChange": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Automatically closes picker after date selection."
+    },
+    "defaultOpen": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Initial open state of the picker dropdown."
+    },
+    "defaultValue": {
+      "type": "Date | null",
+      "required": false,
+      "description": "Default selected date for uncontrolled component."
+    },
+    "value": {
+      "type": "Date | null",
+      "required": false,
+      "description": "Controlled selected date value."
+    },
+    "inputFormat": {
+      "type": "string",
+      "required": false,
+      "default": "'YYYY-MM-DD'",
+      "description": "Date format string for input display (dayjs format)."
+    },
+    "inputtable": {
+      "type": "boolean",
+      "required": false,
+      "description": "Enables manual date input via keyboard."
+    },
+    "inputtableBlurClose": {
+      "type": "boolean",
+      "required": false,
+      "description": "Closes picker on input blur when inputtable is enabled."
+    },
+    "openPickerOnClear": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Opens picker when clear button is clicked."
+    },
+    "onChange": {
+      "type": "(value: Date | null) => void",
+      "required": false,
+      "description": "Callback fired when date value changes."
+    },
+    "clearable": {
+      "type": "boolean",
+      "required": false,
+      "default": "true",
+      "description": "Shows clear button to reset selection."
+    },
+    "disabled": {
+      "type": "boolean",
+      "required": false,
+      "default": "false",
+      "description": "Disables the date picker."
+    },
+    "minDate": {
+      "type": "Date",
+      "required": false,
+      "description": "Minimum selectable date."
+    },
+    "maxDate": {
+      "type": "Date",
+      "required": false,
+      "description": "Maximum selectable date."
+    },
+    "disableDate": {
+      "type": "(date: Date) => boolean",
+      "required": false,
+      "description": "Function to disable specific dates."
+    },
+    "firstDayOfWeek": {
+      "type": "'monday' | 'sunday'",
+      "required": false,
+      "default": "'monday'",
+      "description": "First day of the week in calendar."
+    },
+    "locale": {
+      "type": "string",
+      "required": false,
+      "description": "Locale for date formatting and calendar labels."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with Floating UI",
+    "visual_description": "An input field with calendar icon that opens a dropdown calendar. The calendar shows month/year navigation, day grid, and supports keyboard navigation. Selected dates are highlighted with primary color."
+  },
+  "best_practices": {
+    "Do": [
+      "Set appropriate minDate and maxDate for valid date ranges",
+      "Use inputFormat matching your locale",
+      "Enable inputtable for power users who prefer keyboard input",
+      "Provide clear labels and placeholders",
+      "Handle onChange to update your form state"
+    ],
+    "Dont": [
+      "Don't forget to validate date ranges",
+      "Don't use for date ranges (use RangeDatePicker instead)",
+      "Don't disable without providing feedback why"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import DatePicker from '@/components/ui/DatePicker'\n\nconst Basic = () => {\n    return <DatePicker placeholder=\"Pick a date\" />\n}\n\nexport default Basic"
+    },
+    "ClearButton": {
+      "title": "Clear Button",
+      "code": "import DatePicker from '@/components/ui/DatePicker'\nimport Button from '@/components/ui/Button'\n\nconst ClearButton = () => {\n    return (\n        <div className=\"flex flex-col gap-5\">\n            <div>\n                <div className=\"mb-1 font-semibold text-sm\">\n                    No clear button:\n                </div>\n                <DatePicker defaultValue={new Date()} clearable={false} />\n            </div>\n            <div>\n                <div className=\"mb-1 font-semibold text-sm\">\n                    Custom clear button:\n                </div>\n                <DatePicker\n                    defaultValue={new Date()}\n                    clearButton={<Button size=\"sm\">Clear</Button>}\n                />\n            </div>\n        </div>\n    )\n}\n\nexport default ClearButton"
+    },
+    "Controlled": {
+      "title": "Controlled",
+      "code": "import { useState } from 'react'\nimport DatePicker from '@/components/ui/DatePicker'\n\nconst Controlled = () => {\n    const [date, setDate] = (useState < Date) | (null > new Date())\n    const [dateRange, setDateRange] =\n        useState <\n        [Date | null, Date | null] >\n        [new Date(2022, 11, 1), new Date(2022, 11, 5)]\n    const [dateTime, setDateTime] = (useState < Date) | (null > new Date())\n\n    const handleDatePickerChange = (date: Date | null) => {\n        console.log('Selected date', date)\n        setDate(date)\n    }\n\n    const handleRangePickerChange = (date: [Date | null, Date | null]) => {\n        console.log('Selected range date', date)\n        setDateRange(date)\n    }\n\n    const handleDateTimeChange = (val: Date | null) => {\n        console.log('Selected date time: ', val)\n        setDateTime(val)\n    }\n\n    return (\n        <div className=\"flex flex-col gap-5\">\n            <DatePicker\n                placeholder=\"Pick a date\"\n                value={date}\n                onChange={handleDatePickerChange}\n            />\n            <DatePicker.DatePickerRange\n                placeholder=\"Select dates range\"\n                value={dateRange}\n                onChange={handleRangePickerChange}\n            />\n            <DatePicker.DateTimepicker\n                placeholder=\"Pick date & time\"\n                value={dateTime}\n                onChange={handleDateTimeChange}\n            />\n        </div>\n    )\n}\n\nexport default Controlled"
+    },
+    "CustomRender": {
+      "title": "Custom Render",
+      "code": "import DatePicker from '@/components/ui/DatePicker'\nimport Badge from '@/components/ui/Badge'\n\nconst CustomRender = () => {\n    return (\n        <DatePicker\n            placeholder=\"Pick date\"\n            dayClassName={(date, { selected }) => {\n                if (date.getDate() === 12 && !selected) {\n                    return 'text-red-600'\n                }\n\n                if (selected) {\n                    return 'text-white'\n                }\n\n                return 'text-gray-700 dark:text-gray-200'\n            }}\n            dayStyle={(date, { selected, outOfMonth }) => {\n                if (date.getDate() === 18 && !selected) {\n                    return { color: '#15c39a' }\n                }\n\n                if (outOfMonth) {\n                    return {\n                        opacity: 0,\n                        pointerEvents: 'none',\n                        cursor: 'default',\n                    }\n                }\n\n                return {}\n            }}\n            renderDay={(date) => {\n                const day = date.getDate()\n\n                if (day !== 12) {\n                    return <span>{day}</span>\n                }\n\n                return (\n                    <span className=\"relative flex justify-center items-center w-full h-full\">\n                        {day}\n                        <Badge\n                            className=\"absolute bottom-1\"\n                            innerClass=\"h-1 w-1\"\n                        />\n                    </span>\n                )\n            }}\n        />\n    )\n}\n\nexport default CustomRender"
+    },
+    "DateTimePicker": {
+      "title": "Date Time Picker",
+      "code": "import DatePicker from '@/components/ui/DatePicker'\n\nconst { DateTimepicker } = DatePicker\n\nconst DateTimePicker = () => {\n    return <DateTimepicker placeholder=\"Pick date & time\" />\n}\n\nexport default DateTimePicker"
+    },
+    "DateViewCount": {
+      "title": "Date View Count",
+      "code": "import DatePicker from '@/components/ui/DatePicker'\n\nconst { DatePickerRange } = DatePicker\n\nconst DateViewCount = () => {\n    return (\n        <DatePickerRange dateViewCount={2} placeholder=\"Multiple date view\" />\n    )\n}\n\nexport default DateViewCount"
+    },
+    "DisabledCertainDate": {
+      "title": "Disabled Certain Date",
+      "code": "import { useState } from 'react'\nimport DatePicker from '@/components/ui/DatePicker'\n\nconst DisabledCertainDate = () => {\n    const [dateValue, setDateValue] = useState<Date>(new Date())\n\n    const onCertainPeriodChange = (date: Date) => {\n        setDateValue(date)\n    }\n\n    const disableCertainDate = (date: Date) => {\n        const banDate = [7, 15, 21]\n        return banDate.includes(date.getDate())\n    }\n\n    return (\n        <DatePicker\n            value={dateValue}\n            placeholder=\"Pick your date\"\n            disableDate={disableCertainDate}\n            onChange={(date) => onCertainPeriodChange(date as Date)}\n        />\n    )\n}\n\nexport default DisabledCertainDate"
+    },
+    "DisabledInput": {
+      "title": "Disabled Input",
+      "code": "import { useState } from 'react'\nimport DatePicker from '@/components/ui/DatePicker'\n\nconst DisabledInput = () => {\n    const [date] = useState(new Date())\n\n    return (\n        <div>\n            <DatePicker disabled className=\"mb-4\" placeholder=\"Select a date\" />\n            <DatePicker disabled className=\"mb-4\" value={date} />\n        </div>\n    )\n}\n\nexport default DisabledInput"
+    },
+    "DisableOutOfPeriodDate": {
+      "title": "Disable Out Of Period Date",
+      "code": "import DatePicker from '@/components/ui/DatePicker'\nimport dayjs from 'dayjs'\n\nconst DisableOutOfRangeDate = () => {\n    const dateGap = 7\n\n    // Only able to select previos & future 7 days start from today\n    const minDate = dayjs(new Date())\n        .subtract(dateGap, 'day')\n        .startOf('day')\n        .toDate()\n    const maxDate = dayjs(new Date()).add(dateGap, 'day').toDate()\n\n    return (\n        <DatePicker\n            placeholder=\"Pick a date\"\n            minDate={minDate}\n            maxDate={maxDate}\n        />\n    )\n}\n\nexport default DisableOutOfRangeDate"
+    },
+    "Format": {
+      "title": "Format",
+      "code": "import DatePicker from '@/components/ui/DatePicker'\n\nconst Format = () => {\n    const date = new Date()\n\n    return (\n        <div className=\"flex flex-col gap-4\">\n            <div>\n                <div className=\"mb-1 font-semibold text-sm\">Input format:</div>\n                <DatePicker inputFormat=\"MMM, DD YYYY\" defaultValue={date} />\n            </div>\n            <div>\n                <div className=\"mb-1 font-semibold text-sm\">\n                    Inner label format:\n                </div>\n                <DatePicker\n                    labelFormat={{\n                        month: 'MMMM',\n                        year: 'YY',\n                    }}\n                    defaultValue={date}\n                />\n            </div>\n        </div>\n    )\n}\n\nexport default Format"
+    },
+    "InputAffix": {
+      "title": "Input Affix",
+      "code": "import DatePicker from '@/components/ui/DatePicker'\nimport { HiOutlineCalendar } from 'react-icons/hi'\nimport { TbCalendarStats } from 'react-icons/tb'\n\nconst InputAffix = () => {\n    return (\n        <div className=\"flex flex-col gap-5\">\n            <div>\n                <div className=\"mb-1 font-semibold text-sm\">Prefix:</div>\n                <DatePicker\n                    inputPrefix={<HiOutlineCalendar className=\"text-lg\" />}\n                    inputSuffix={null}\n                />\n            </div>\n            <div>\n                <div className=\"mb-1 font-semibold text-sm\">Suffix:</div>\n                <DatePicker\n                    inputSuffix={<TbCalendarStats className=\"text-xl\" />}\n                />\n            </div>\n        </div>\n    )\n}\n\nexport default InputAffix"
+    },
+    "InputSize": {
+      "title": "Input Size",
+      "code": "import DatePicker from '@/components/ui/DatePicker'\n\nconst InputSize = () => {\n    const date = new Date()\n\n    return (\n        <div>\n            <DatePicker\n                className=\"mb-4\"\n                placeholder=\"Select a date\"\n                defaultValue={date}\n                size=\"sm\"\n            />\n            <DatePicker\n                className=\"mb-4\"\n                placeholder=\"Select a date\"\n                defaultValue={date}\n            />\n            <DatePicker\n                className=\"mb-4\"\n                placeholder=\"Select a date\"\n                defaultValue={date}\n                size=\"lg\"\n            />\n        </div>\n    )\n}\n\nexport default InputSize"
+    },
+    "Inputtable": {
+      "title": "Inputtable",
+      "code": "import DatePicker from '@/components/ui/DatePicker'\n\nconst Inputtable = () => {\n    return (\n        <DatePicker\n            inputtable\n            inputtableBlurClose={false}\n            placeholder=\"Pick date\"\n        />\n    )\n}\n\nexport default Inputtable"
+    },
+    "Localization": {
+      "title": "Localization",
+      "code": "import DatePicker from '@/components/ui/DatePicker'\nimport 'dayjs/locale/ko'\n\nconst Localization = () => {\n    return <DatePicker locale=\"ko\" defaultValue={new Date()} inputFormat=\"LL\" />\n}\n\nexport default Localization"
+    },
+    "RangePicker": {
+      "title": "Range Picker",
+      "code": "import DatePicker from '@/components/ui/DatePicker'\n\nconst { DatePickerRange } = DatePicker\n\nconst RangePicker = () => {\n    return <DatePickerRange placeholder=\"Select dates range\" />\n}\n\nexport default RangePicker"
+    }
+  }
+}

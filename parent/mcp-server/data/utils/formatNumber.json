@@ -1,0 +1,46 @@
+{
+  "component_id": "util-formatnumber-001",
+  "name": "formatNumber",
+  "display_name": "Number Abbreviation Utility",
+  "category": "Utils / Number Formatting",
+  "import_path": "@/utils/formatNumber",
+  "description": "Formats large numbers with K, M, B, T suffixes for compact display while maintaining readability.",
+  "usage_guidelines": [
+    "Use for displaying large numbers in dashboards and charts.",
+    "Set decimals parameter to control precision.",
+    "Returns '0' for zero values.",
+    "Handles negative numbers correctly."
+  ],
+  "params": [
+    {
+      "name": "value",
+      "type": "number",
+      "required": true,
+      "description": "The number to format."
+    },
+    {
+      "name": "decimals",
+      "type": "number",
+      "required": false,
+      "default": "2",
+      "description": "Number of decimal places to display."
+    }
+  ],
+  "return_value": {
+    "type": "string",
+    "description": "Formatted number string with suffix (e.g., '1.5K', '2.3M')."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for large numbers in UI",
+      "Set appropriate decimal places",
+      "Use consistently across application",
+      "Provide tooltips with full numbers"
+    ],
+    "Dont": [
+      "Don't use for precise financial data",
+      "Don't use for small numbers (< 1000)",
+      "Don't forget to handle edge cases"
+    ]
+  }
+}

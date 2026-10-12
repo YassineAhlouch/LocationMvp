@@ -1,0 +1,49 @@
+{
+  "component_id": "affix-001",
+  "name": "Affix",
+  "display_name": "Affix Sticky Component",
+  "category": "Layout / Positioning",
+  "import_path": "@/components/shared/Affix",
+  "description": "A component that makes its children stick to the viewport when scrolling past a certain point.",
+  "usage_guidelines": [
+    "Use for sticky headers, sidebars, or navigation elements.",
+    "Set offset to control when element becomes fixed.",
+    "Useful for keeping important UI elements visible during scroll.",
+    "Consider mobile viewport when setting offset."
+  ],
+  "props": {
+    "offset": {
+      "type": "number",
+      "required": false,
+      "default": "0",
+      "description": "Distance from top of viewport (in pixels) where element becomes fixed."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS with JavaScript",
+    "visual_description": "Wraps children in a container that transitions to fixed positioning when scrolling past the offset point. Maintains original width and position."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for navigation or important controls",
+      "Set appropriate offset for layout",
+      "Consider z-index stacking",
+      "Test on different screen sizes"
+    ],
+    "Dont": [
+      "Don't affix too many elements",
+      "Don't forget mobile considerations",
+      "Don't block important content"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import Affix from '@/components/shared/Affix'\nimport Button from '@/components/ui/Button'\n\nconst Basic = () => {\n    return (\n        <div className=\"flex flex-col justify-between\">\n            <Affix className=\"z-50\">\n                <Button variant=\"solid\">This will stick to top</Button>\n            </Affix>\n            <div className=\"text-xl\">\n                <br />\n                Scroll down\n                <br />\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                <br />\n            </div>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "Offset": {
+      "title": "Offset",
+      "code": "import Affix from '@/components/shared/Affix'\nimport Button from '@/components/ui/Button'\n\nconst Offset = () => {\n    return (\n        <div className=\"flex flex-col justify-between\">\n            <Affix offset={80} className=\"z-50\">\n                <Button variant=\"solid\">\n                    This will stick to top with 80px offset\n                </Button>\n            </Affix>\n            <div className=\"text-xl\">\n                <br />\n                Scroll down\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                👇\n                <br />\n                <br />\n            </div>\n        </div>\n    )\n}\n\nexport default Offset"
+    }
+  }
+}

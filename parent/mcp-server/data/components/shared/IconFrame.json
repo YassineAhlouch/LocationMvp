@@ -1,0 +1,72 @@
+{
+  "component_id": "iconframe-001",
+  "name": "IconFrame",
+  "display_name": "Icon Frame Component",
+  "category": "Data Display / Icons",
+  "import_path": "@/components/shared/IconFrame",
+  "description": "A container component for displaying icons with consistent styling. Supports multiple visual variants including default bordered, thick ring, layered, and layered with background styles. Useful for creating consistent icon presentations in cards, lists, and dashboards.",
+  "usage_guidelines": [
+    "Use for wrapping icons with consistent border styling.",
+    "Choose variant based on visual hierarchy needs.",
+    "Use 'thick' variant for emphasized icons.",
+    "Use 'layered' variants for nested/elevated appearance.",
+    "Adjust size prop to match icon dimensions."
+  ],
+  "props": {
+    "variant": {
+      "type": "'default' | 'thick' | 'layered'",
+      "required": false,
+      "default": "'default'",
+      "description": "Visual style variant. 'default' shows simple border, 'thick' adds ring effect, 'layered' creates nested borders"
+    },
+    "size": {
+      "type": "number",
+      "required": false,
+      "default": "40",
+      "description": "Width and height of the icon frame in pixels."
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Icon or content to display inside the frame."
+    },
+    "className": {
+      "type": "string",
+      "required": false,
+      "description": "Additional CSS classes to apply to the outer container."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Default: Simple gray border with rounded corners. Thick: Gray border with additional ring effect. Layered: Double nested borders creating depth. All variants support dark mode."
+  },
+  "best_practices": {
+    "Do": [
+      "Use consistent sizes across related icons",
+      "Match icon size to frame size proportionally",
+      "Use layered variants for visual hierarchy",
+      "Apply heading-text class to icons for proper color",
+      "Group related icons with same variant"
+    ],
+    "Dont": [
+      "Don't use oversized icons in small frames",
+      "Don't mix variants inconsistently in same context",
+      "Don't forget to adjust icon text size with frame size",
+      "Don't use for non-icon content"
+    ]
+  },
+  "code_examples": {
+    "Basic": {
+      "title": "Basic",
+      "code": "import IconFrame from '@/components/shared/IconFrame'\nimport { LiDollarCircle, LiUser, LiSetting } from '@/icons'\n\nconst Basic = () => {\n    return (\n        <div className=\"flex items-center gap-4\">\n            <IconFrame>\n                <LiDollarCircle className=\"text-xl heading-text\" />\n            </IconFrame>\n            <IconFrame>\n                <LiUser className=\"text-xl heading-text\" />\n            </IconFrame>\n            <IconFrame>\n                <LiSetting className=\"text-xl heading-text\" />\n            </IconFrame>\n        </div>\n    )\n}\n\nexport default Basic"
+    },
+    "CustomSize": {
+      "title": "Custom Size",
+      "code": "import IconFrame from '@/components/shared/IconFrame'\nimport { LiDollarCircle } from '@/icons'\n\nconst CustomSize = () => {\n    return (\n        <div className=\"flex items-end gap-4\">\n            <div className=\"flex flex-col items-center gap-2\">\n                <IconFrame size={32}>\n                    <LiDollarCircle className=\"text-base heading-text\" />\n                </IconFrame>\n            </div>\n            <div className=\"flex flex-col items-center gap-2\">\n                <IconFrame size={40}>\n                    <LiDollarCircle className=\"text-xl heading-text\" />\n                </IconFrame>\n            </div>\n            <div className=\"flex flex-col items-center gap-2\">\n                <IconFrame size={56}>\n                    <LiDollarCircle className=\"text-2xl heading-text\" />\n                </IconFrame>\n            </div>\n            <div className=\"flex flex-col items-center gap-2\">\n                <IconFrame size={72}>\n                    <LiDollarCircle className=\"text-3xl heading-text\" />\n                </IconFrame>\n            </div>\n        </div>\n    )\n}\n\nexport default CustomSize"
+    },
+    "Variants": {
+      "title": "Variants",
+      "code": "import IconFrame from '@/components/shared/IconFrame'\nimport { LiDollarCircle } from '@/icons'\n\nconst Variants = () => {\n    return (\n        <div className=\"flex flex-wrap items-center gap-6\">\n            <div className=\"flex flex-col items-center gap-2\">\n                <IconFrame>\n                    <LiDollarCircle className=\"text-xl heading-text\" />\n                </IconFrame>\n            </div>\n            <div className=\"flex flex-col items-center gap-2\">\n                <IconFrame variant=\"thick\">\n                    <LiDollarCircle className=\"text-xl heading-text\" />\n                </IconFrame>\n            </div>\n            <div className=\"flex flex-col items-center gap-2\">\n                <IconFrame variant=\"layered\">\n                    <LiDollarCircle className=\"text-xl heading-text\" />\n                </IconFrame>\n            </div>\n        </div>\n    )\n}\n\nexport default Variants"
+    }
+  }
+}

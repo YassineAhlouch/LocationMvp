@@ -1,0 +1,50 @@
+{
+  "component_id": "selectoptionwithprefix-001",
+  "name": "SelectOptionWithPrefix",
+  "display_name": "Select Option Display with Prefix",
+  "category": "Form Elements / Select",
+  "import_path": "@/components/shared/SelectOptionWithPrefix",
+  "description": "A display component for select dropdown options with prefix icon and selection indicator.",
+  "usage_guidelines": [
+    "Use with Select component's customOption prop.",
+    "Shows prefix icon alongside option label.",
+    "Displays check icon for selected option."
+  ],
+  "props": {
+    "prefix": {
+      "type": "string | ReactNode",
+      "required": false,
+      "description": "Prefix icon or element for option."
+    },
+    "label": {
+      "type": "string | ReactNode",
+      "required": true,
+      "description": "Option label text."
+    },
+    "selected": {
+      "type": "boolean",
+      "required": false,
+      "description": "Whether option is currently selected."
+    },
+    "checkIcon": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Custom check icon for selected state."
+    }
+  },
+  "styling_info": {
+    "method": "Tailwind CSS",
+    "visual_description": "Horizontal layout with prefix, label, and optional check icon. Selected options show check icon on right."
+  },
+  "best_practices": {
+    "Do": [
+      "Use with Select customOption",
+      "Provide consistent prefix styling",
+      "Use icons for categorization"
+    ],
+    "Dont": [
+      "Don't use outside Select component",
+      "Don't make prefix too large"
+    ]
+  }
+}

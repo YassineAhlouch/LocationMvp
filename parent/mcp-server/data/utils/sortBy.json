@@ -1,0 +1,50 @@
+{
+  "component_id": "util-sortby-001",
+  "name": "sortBy",
+  "display_name": "Array Sorting Utility",
+  "category": "Utils / Data Manipulation",
+  "import_path": "@/utils/sortBy",
+  "description": "Creates a comparison function for sorting arrays of objects by a specific field with optional value transformation.",
+  "usage_guidelines": [
+    "Use with Array.sort() for sorting object arrays.",
+    "Set reverse to true for descending order.",
+    "Use primer function to transform values before comparison.",
+    "Handles strings with locale-aware comparison."
+  ],
+  "params": [
+    {
+      "name": "field",
+      "type": "keyof T",
+      "required": true,
+      "description": "Object property to sort by."
+    },
+    {
+      "name": "reverse",
+      "type": "boolean",
+      "required": true,
+      "description": "Sort in descending order if true."
+    },
+    {
+      "name": "primer",
+      "type": "(value: Primitive) => Primitive",
+      "required": false,
+      "description": "Function to transform values before comparison."
+    }
+  ],
+  "return_value": {
+    "type": "(a: T, b: T) => number",
+    "description": "Comparison function for Array.sort()."
+  },
+  "best_practices": {
+    "Do": [
+      "Use for table sorting",
+      "Use primer for case-insensitive string sorting",
+      "Handle null/undefined values",
+      "Use with Array.sort()"
+    ],
+    "Dont": [
+      "Don't mutate original array without copying",
+      "Don't forget locale-aware string comparison"
+    ]
+  }
+}
