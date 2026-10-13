@@ -1215,7 +1215,7 @@ const Reservations = () => {
                 },
             },
         ],
-        [handleConfirm, navigate],
+        [handleConfirm, navigate, t],
     )
 
     const statCards = useMemo(
