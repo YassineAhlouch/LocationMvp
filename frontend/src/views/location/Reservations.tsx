@@ -44,6 +44,7 @@ import type {
     ReservationStatus,
     Client,
 } from '@/@types/location'
+import useTranslation from '@/utils/hooks/useTranslation'
 import ReservationForm from './forms/ReservationForm'
 import ClientForm from './forms/ClientForm'
 import CarInspection from './CarInspection'
@@ -86,10 +87,10 @@ import {
 
 const { TabNav, TabList } = Tabs
 
-const rangeOptions = [
-    { value: '30', label: 'Last 30 days' },
-    { value: '60', label: 'Last 60 days' },
-    { value: '90', label: 'Last 90 days' },
+const rangeOptions = (t: any) => [
+    { value: '30', label: t('reservations.last30Days', 'Last 30 days') },
+    { value: '60', label: t('reservations.last60Days', 'Last 60 days') },
+    { value: '90', label: t('reservations.last90Days', 'Last 90 days') },
 ]
 
 const pageSizeOption = [
@@ -861,6 +862,7 @@ const ExpandableReservationDetails = ({
 }
 
 const Reservations = () => {
+    const { t } = useTranslation()
     const navigate = useNavigate()
 
     const [reservations, setReservations] = useState<Reservation[]>([])
@@ -1286,7 +1288,7 @@ const Reservations = () => {
                             renderTitle={
                                 <Button>
                                     {larger.sm
-                                        ? rangeOptions.find(
+                                        ? rangeOptions(t).find(
                                               (option) =>
                                                   option.value === range,
                                           )?.label
@@ -1294,7 +1296,7 @@ const Reservations = () => {
                                 </Button>
                             }
                         >
-                            {rangeOptions.map((option) => (
+                            {rangeOptions(t).map((option) => (
                                 <Dropdown.Item
                                     key={option.value}
                                     onClick={() => {
@@ -1318,7 +1320,7 @@ const Reservations = () => {
                             headers={csvHeaders}
                         >
                             <Button icon={<LiDownload />}>
-                                {larger.sm && 'Export'}
+                                {larger.sm && t('reservations.export', 'Export')}
                             </Button>
                         </CSVLink>
                         <Button
@@ -1329,7 +1331,7 @@ const Reservations = () => {
                                 setDialogOpen(true)
                             }}
                         >
-                            {larger.sm && 'New reservation'}
+                            {larger.sm && t('reservations.newReservation', 'New reservation')}
                         </Button>
                     </div>
                 </div>
@@ -1360,7 +1362,7 @@ const Reservations = () => {
                     <div className="flex-1 sm:flex-none sm:min-w-[250px]">
                         <DebouceInput
                             prefix={<LiSearch className="heading-text" />}
-                            placeholder="Search reservations..."
+                            placeholder={t('reservations.searchPlaceholder', 'Search reservations…')}
                             onChange={(e) => {
                                 setQ(e.target.value)
                                 setPageIndex(1)
