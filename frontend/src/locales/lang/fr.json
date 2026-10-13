@@ -379,7 +379,9 @@
         "fleetByStatus": "Flotte par statut",
         "totalCars": "Total véhicules",
         "rentedNow": "Loués actuellement",
-        "monthlyRevenue": "Revenu mensuel"
+        "monthlyRevenue": "Revenu mensuel",
+        "occupancy": "Taux d'occupation",
+        "noReservationsInPeriod": "Aucune réservation pour cette période"
     },
     "common": {
         "hi": "Bonjour",

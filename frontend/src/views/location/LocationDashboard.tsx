@@ -439,7 +439,7 @@ const ReservationsByStatus = ({ byStatus }: ReservationsByStatusProps) => {
                     </Table>
                 ) : (
                     <div className="flex items-center justify-center h-full text-sm text-gray-400">
-                        No reservations in this period
+                        {t('dashboard.noReservationsInPeriod', 'No reservations in this period')}
                     </div>
                 )}
             </div>
@@ -1056,6 +1056,7 @@ const DashboardHeaderSkeleton = () => {
 const LocationDashboard = () => {
     const { user } = useSessionUser()
     const { windowWidth } = useResponsive()
+    const { t } = useTranslation()
 
     const [timeRange, setTimeRange] = useState<TimeRange>('thisMonth')
     const [comparisonEnabled, setComparisonEnabled] = useState(true)
@@ -1196,27 +1197,27 @@ const LocationDashboard = () => {
                 <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <MetricCard
-                            title="Net Revenue"
+                            title={t('dashboard.netRevenue', 'Net Revenue')}
                             value={summary?.net ?? 0}
                             change={netRevenueChange}
                             icon={<LiWalletMoney />}
                             formatter={MAD}
                         />
                         <MetricCard
-                            title="Expenses"
+                            title={t('dashboard.expenses', 'Expenses')}
                             value={summary?.expenses.total ?? 0}
                             change={expensesChange}
                             icon={<LiReceipt />}
                             formatter={MAD}
                         />
                         <MetricCard
-                            title="Reservations"
+                            title={t('dashboard.reservations', 'Reservations')}
                             value={summary?.reservations.total ?? 0}
                             change={reservationsChange}
                             icon={<LiCalendar />}
                         />
                         <MetricCard
-                            title="Occupancy"
+                            title={t('dashboard.occupancy', 'Occupancy')}
                             value={`${Math.round((summary?.occupancy.rate ?? 0) * 100)}%`}
                             change={occupancyChange}
                             icon={<LiBarChartUp />}

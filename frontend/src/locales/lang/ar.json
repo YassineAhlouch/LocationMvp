@@ -379,7 +379,9 @@
         "fleetByStatus": "الأسطول حسب الحالة",
         "totalCars": "إجمالي المركبات",
         "rentedNow": "مؤجرة حالياً",
-        "monthlyRevenue": "الإيرادات الشهرية"
+        "monthlyRevenue": "الإيرادات الشهرية",
+        "occupancy": "معدل الإشغال",
+        "noReservationsInPeriod": "لا توجد حجوزات في هذه الفترة"
     },
     "common": {
         "hi": "مرحبا",

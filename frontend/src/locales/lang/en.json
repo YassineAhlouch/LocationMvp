@@ -379,7 +379,9 @@
         "fleetByStatus": "Fleet by Status",
         "totalCars": "Total Cars",
         "rentedNow": "Rented now",
-        "monthlyRevenue": "Monthly revenue"
+        "monthlyRevenue": "Monthly revenue",
+        "occupancy": "Occupancy",
+        "noReservationsInPeriod": "No reservations in this period"
     },
     "common": {
         "hi": "Hi",
