@@ -398,37 +398,42 @@
     },
     "common": {
         "hi": "Hi",
-        "comparison": "Comparison"
+        "comparison": "Comparison",
+        "cancel": "Cancel",
+        "save": "Save"
     },
     "reservations": {
         "reservations": "Reservations",
         "newReservation": "New reservation",
         "reservationsList": "Reservations list",
-        "calendar": "Calendar",
+        "calendar": {
+            "title": "Reservation Calendar",
+            "today": "Today",
+            "unableLoad": "Unable to load calendar",
+            "unableOpen": "Unable to open booking",
+            "rescheduled": "Booking rescheduled",
+            "unableReschedule": "Unable to reschedule"
+        },
         "export": "Export",
-        "last30Days": "Last 30 days",
-        "searchPlaceholder": "Search reservations…",
-        "paymentAll": "Payment: All",
-        "sort": "Sort",
         "all": "All",
-        "pending": "Pending",
-        "confirmed": "Confirmed",
-        "reserved": "Reserved",
-        "active": "Active",
-        "completed": "Completed",
-        "cancelled": "Cancelled",
-        "noShow": "No Show",
-        "paid": "Paid",
-        "partial": "Partial",
-        "unpaid": "Unpaid",
-        "reservation": "Reservation",
-        "car": "Car",
-        "client": "Client",
-        "period": "Period",
-        "created": "Created",
+        "last30Days": "Last 30 days",
+        "last60Days": "Last 60 days",
+        "last90Days": "Last 90 days",
+        "searchPlaceholder": "Search reservations…",
+        "sort": "Sort",
+        "sortBy": "Sort by",
+        "resetSort": "Reset Sort",
         "total": "Total",
-        "payment": "Payment",
-        "status": "Status",
+        "paymentFilter": "Payment",
+        "noReservationsFound": "No reservations found",
+        "hideDetails": "Hide Details",
+        "showDetails": "Show Details",
+        "carTrip": "Car & Trip",
+        "clients": "Clients",
+        "pricingSummary": "Pricing Summary",
+        "subtotal": "Subtotal",
+        "tax": "Tax",
+        "deposit": "Deposit",
         "reservationCancelled": "Reservation cancelled",
         "reservationMarkedNoShow": "Reservation marked as no show",
         "reservationActivated": "Reservation activated",
@@ -437,180 +442,87 @@
         "couldNotMarkNoShow": "Could not mark reservation as no show",
         "couldNotActivate": "Could not activate reservation",
         "couldNotComplete": "Could not complete reservation",
-        "table.reservation": "Reservation",
-        "table.car": "Car",
-        "table.client": "Client",
-        "table.period": "Period",
-        "table.created": "Created",
-        "table.total": "Total",
-        "table.payment": "Payment",
-        "table.status": "Status",
-        "status.pending": "Pending",
-        "status.confirmed": "Confirmed",
-        "status.reserved": "Reserved",
-        "status.active": "Active",
-        "status.completed": "Completed",
-        "status.cancelled": "Cancelled",
-        "status.no_show": "No Show",
-        "payment.paid": "Paid",
-        "payment.partial": "Partial",
-        "payment.unpaid": "Unpaid",
-        "sortBy": "Sort by",
-        "resetSort": "Reset Sort",
-        "paymentFilter": "Payment",
-        "actions.confirm": {
-            "en": "Confirm",
-            "fr": "Confirmer",
-            "ar": "تأكيد"
+        "couldNotConfirm": "Could not confirm reservation",
+        "table": {
+            "reservation": "Reservation",
+            "car": "Car",
+            "client": "Client",
+            "period": "Period",
+            "created": "Created",
+            "total": "Total",
+            "payment": "Payment",
+            "status": "Status"
         },
-        "actions.activate": {
-            "en": "Activate",
-            "fr": "Activer",
-            "ar": "تفعيل"
+        "status": {
+            "pending": "Pending",
+            "confirmed": "Confirmed",
+            "reserved": "Reserved",
+            "active": "Active",
+            "completed": "Completed",
+            "cancelled": "Cancelled",
+            "no_show": "No Show"
         },
-        "actions.complete": {
-            "en": "Complete",
-            "fr": "Terminer",
-            "ar": "إكمال"
+        "payment": {
+            "paid": "Paid",
+            "partial": "Partial",
+            "unpaid": "Unpaid"
         },
-        "actions.noShow": {
-            "en": "No show",
-            "fr": "Marquer absent",
-            "ar": "تسجيل عدم حضور"
+        "actions": {
+            "confirm": "Confirm",
+            "activate": "Activate",
+            "complete": "Complete",
+            "noShow": "No show",
+            "cancel": "Cancel",
+            "invoice": "Invoice",
+            "edit": "Edit"
         },
-        "actions.cancel": {
-            "en": "Cancel",
-            "fr": "Annuler",
-            "ar": "إلغاء"
+        "form": {
+            "title": "New reservation",
+            "subtitle": "Book a car for a client — details live in the tabs below.",
+            "tabs": {
+                "trip": "Trip",
+                "basic": "Basic info",
+                "pricing": "Pricing",
+                "payment": "Payment"
+            },
+            "carClients": "Car & clients",
+            "carClientsDesc": "Which car is booked and who is renting it.",
+            "car": "Car",
+            "selectCar": "Select car",
+            "primaryClient": "Primary client",
+            "selectClient": "Select client",
+            "secondaryClient": "Secondary client",
+            "selectOptionalClient": "Select optional client",
+            "status": "Status",
+            "cancellationReason": "Cancellation reason",
+            "cancellationPlaceholder": "Why is this reservation being cancelled?",
+            "tripSchedule": "Trip schedule",
+            "tripDesc": "Pickup and return times and locations.",
+            "pickupDatetime": "Pickup datetime",
+            "returnDatetime": "Expected return datetime",
+            "pickupLocation": "Pickup location",
+            "returnLocation": "Return location",
+            "remarks": "Remarks",
+            "anyRemarks": "Any remarks",
+            "airportPlaceholder": "e.g. Marrakech Menara Airport",
+            "locationPlaceholder": "e.g. 12 Rue Gueliz, Marrakech",
+            "leaveEmptyCarPrice": "Leave empty to use car price",
+            "optional": "Optional",
+            "requiredFields": "Please fill in all the required fields",
+            "next": "Next",
+            "prev": "Previous",
+            "discard": "Discard",
+            "create": "Create reservation",
+            "save": "Save"
         },
-        "actions.invoice": {
-            "en": "Invoice",
-            "fr": "Facture",
-            "ar": "فاتورة"
+        "sortAsc": "Asc",
+        "sortDesc": "Desc",
+        "sortFields": {
+            "pickupDate": "Pickup date",
+            "returnDate": "Return date",
+            "createdDate": "Created date",
+            "totalAmount": "Total amount"
         },
-        "actions.edit": {
-            "en": "Edit",
-            "fr": "Modifier",
-            "ar": "تعديل"
-        },
-        "hideDetails": {
-            "en": "Hide Details",
-            "fr": "Masquer les détails",
-            "ar": "إخفاء التفاصيل"
-        },
-        "showDetails": {
-            "en": "Show Details",
-            "fr": "Afficher les détails",
-            "ar": "عرض التفاصيل"
-        },
-        "carTrip": {
-            "en": "Car & Trip",
-            "fr": "Véhicule & Trajet",
-            "ar": "المركبة والرحلة"
-        },
-        "clients": {
-            "en": "Clients",
-            "fr": "Clients",
-            "ar": "العملاء"
-        },
-        "pricingSummary": {
-            "en": "Pricing Summary",
-            "fr": "Récapitulatif tarifaire",
-            "ar": "ملخص التسعير"
-        },
-        "subtotal": {
-            "en": "Subtotal",
-            "fr": "Sous-total",
-            "ar": "المجموع الفرعي"
-        },
-        "tax": {
-            "en": "Tax",
-            "fr": "Taxe",
-            "ar": "الضريبة"
-        },
-        "deposit": {
-            "en": "Deposit",
-            "fr": "Acompte",
-            "ar": "التأمين المسبق"
-        },
-        "noReservationsFound": "No reservations found",
-        "form.title": "New reservation",
-        "form.subtitle": "Book a car for a client — details live in the tabs below.",
-        "form.tabs.trip": "Trip",
-        "form.tabs.basic": "Basic info",
-        "form.tabs.pricing": "Pricing",
-        "form.tabs.payment": "Payment",
-        "form.carClients": "Car & clients",
-        "form.carClientsDesc": "Which car is booked and who is renting it.",
-        "form.car": "Car",
-        "form.selectCar": {
-            "en": "Select car",
-            "fr": "Sélectionner un véhicule",
-            "ar": "اختر مركبة"
-        },
-        "form.primaryClient": "Primary client",
-        "form.selectClient": {
-            "en": "Select client",
-            "fr": "Sélectionner un client",
-            "ar": "اختر العميل"
-        },
-        "form.secondaryClient": "Secondary client",
-        "form.selectOptionalClient": {
-            "en": "Select optional client",
-            "fr": "Sélectionner un client (facultatif)",
-            "ar": "اختر عميل (اختياري)"
-        },
-        "form.status": "Status",
-        "form.cancellationReason": "Cancellation reason",
-        "form.tripSchedule": "Trip schedule",
-        "form.tripDesc": "Pickup and return times and locations.",
-        "form.pickupDatetime": "Pickup datetime",
-        "form.returnDatetime": "Expected return datetime",
-        "form.pickupLocation": "Pickup location",
-        "form.returnLocation": "Return location",
-        "form.remarks": "Remarks",
-        "form.anyRemarks": {
-            "en": "Any remarks",
-            "fr": "Remarques éventuelles",
-            "ar": "أي ملاحظات"
-        },
-        "form.pickupPlaceholder": "e.g. Marrakech Menara Airport",
-        "form.locationPlaceholder": {
-            "en": "e.g. 12 Rue Gueliz, Marrakech",
-            "fr": "ex. 12 Rue Gueliz, Marrakech",
-            "ar": "مثال: 12 شارع غليس، مراكش"
-        },
-        "form.requiredFields": "Please fill in all the required fields",
-        "form.next": "Next",
-        "form.prev": "Previous",
-        "form.discard": "Discard",
-        "form.create": "Create reservation",
-        "form.save": "Save",
-        "form.cancellationPlaceholder": {
-            "en": "Why is this reservation being cancelled?",
-            "fr": "Pourquoi annuler cette réservation ?",
-            "ar": "ما سبب إلغاء هذا الحجز؟"
-        },
-        "form.airportPlaceholder": {
-            "en": "e.g. Marrakech Menara Airport",
-            "fr": "ex. Aéroport Marrakech Menara",
-            "ar": "مثال: مطار مراكش المنارة"
-        },
-        "form.leaveEmptyCarPrice": {
-            "en": "Leave empty to use car price",
-            "fr": "Laisser vide pour utiliser le prix du véhicule",
-            "ar": "اتركه فارغًا لاستخدام سعر المركبة"
-        },
-        "form.optional": {
-            "en": "Optional",
-            "fr": "Facultatif",
-            "ar": "اختياري"
-        },
-        "calendar.title": "Reservation Calendar",
-        "calendar.today": "Today",
-        "calendar.unableLoad": "Unable to load calendar",
-        "calendar.unableOpen": "Unable to open booking",
-        "calendar.rescheduled": "Booking rescheduled",
-        "calendar.unableReschedule": "Unable to reschedule"
+        "perPage": "/ page"
     }
 }

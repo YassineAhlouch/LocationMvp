@@ -215,7 +215,7 @@ const ReservationCalendar = () => {
                                             'h-2 w-2 rounded-full',
                                         )}
                                     />
-                                    {option.label}
+                                    {t(`reservations.status.${option.value}`, option.label)}
                                 </span>
                             ))}
                         </div>

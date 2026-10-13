@@ -1702,7 +1702,7 @@ const ReservationForm = ({
                             </Tag>
                         </div>
                         <FormItem
-                            label={t('reservations.status', 'Status')}
+                            label={t('reservations.form.status', 'Status')}
                             invalid={Boolean(errors.status)}
                             errorMessage={errors.status?.message}
                         >
@@ -1760,7 +1760,7 @@ const ReservationForm = ({
                     </div>
                 ) : (
                     <FormItem
-                        label={t('reservations.status', 'Status')}
+                        label={t('reservations.form.status', 'Status')}
                         invalid={Boolean(errors.status)}
                         errorMessage={errors.status?.message}
                     >

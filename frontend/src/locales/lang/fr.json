@@ -398,218 +398,131 @@
     },
     "common": {
         "hi": "Bonjour",
-        "comparison": "Comparaison"
+        "comparison": "Comparaison",
+        "cancel": "Annuler",
+        "save": "Enregistrer"
     },
     "reservations": {
         "reservations": "Réservations",
         "newReservation": "Nouvelle réservation",
         "reservationsList": "Liste des réservations",
-        "calendar": "Calendrier",
+        "calendar": {
+            "title": "Calendrier des réservations",
+            "today": "Aujourd'hui",
+            "unableLoad": "Impossible de charger le calendrier",
+            "unableOpen": "Impossible d'ouvrir la réservation",
+            "rescheduled": "Réservation replanifiée",
+            "unableReschedule": "Impossible de replanifier"
+        },
         "export": "Exporter",
-        "last30Days": "30 derniers jours",
-        "searchPlaceholder": "Rechercher des réservations…",
-        "paymentAll": "Paiement : Tous",
-        "sort": "Trier",
         "all": "Tous",
-        "pending": "En attente",
-        "confirmed": "Confirmée",
-        "reserved": "Réservée",
-        "active": "Actif",
-        "completed": "Terminé",
-        "cancelled": "Annulé",
-        "noShow": "Non présenté",
-        "paid": "Payé",
-        "partial": "Partiel",
-        "unpaid": "Impayé",
-        "reservation": "Réservation",
-        "car": "Véhicule",
-        "client": "Client",
-        "period": "Période",
-        "created": "Créé le",
+        "last30Days": "30 derniers jours",
+        "last60Days": "60 derniers jours",
+        "last90Days": "90 derniers jours",
+        "searchPlaceholder": "Rechercher des réservations…",
+        "sort": "Trier",
+        "sortBy": "Trier par",
+        "resetSort": "Réinitialiser le tri",
         "total": "Total",
-        "payment": "Paiement",
-        "status": "Statut",
+        "paymentFilter": "Paiement",
+        "noReservationsFound": "Aucune réservation trouvée",
+        "hideDetails": "Masquer les détails",
+        "showDetails": "Afficher les détails",
+        "carTrip": "Véhicule & trajet",
+        "clients": "Clients",
+        "pricingSummary": "Récapitulatif tarifaire",
+        "subtotal": "Sous-total",
+        "tax": "Taxe",
+        "deposit": "Acompte",
         "reservationCancelled": "Réservation annulée",
-        "reservationMarkedNoShow": "Réservation marquée comme non présent",
+        "reservationMarkedNoShow": "Réservation marquée comme non présentée",
         "reservationActivated": "Réservation activée",
         "reservationCompleted": "Réservation terminée",
         "couldNotCancel": "Impossible d'annuler la réservation",
-        "couldNotMarkNoShow": "Impossible de marquer comme non présenté",
+        "couldNotMarkNoShow": "Impossible de marquer comme non présentée",
         "couldNotActivate": "Impossible d'activer la réservation",
         "couldNotComplete": "Impossible de terminer la réservation",
-        "table.reservation": "Réservation",
-        "table.car": "Véhicule",
-        "table.client": "Client",
-        "table.period": "Période",
-        "table.created": "Créé le",
-        "table.total": "Total",
-        "table.payment": "Paiement",
-        "table.status": "Statut",
-        "status.pending": "En attente",
-        "status.confirmed": "Confirmé",
-        "status.reserved": "Réservé",
-        "status.active": "Actif",
-        "status.completed": "Terminé",
-        "status.cancelled": "Annulé",
-        "status.no_show": "Non présenté",
-        "payment.paid": "Payé",
-        "payment.partial": "Partiel",
-        "payment.unpaid": "Impayé",
-        "sortBy": "Trier par",
-        "resetSort": "Réinitialiser le tri",
-        "paymentFilter": "Paiement",
-        "actions.confirm": {
-            "en": "Confirm",
-            "fr": "Confirmer",
-            "ar": "تأكيد"
+        "couldNotConfirm": "Impossible de confirmer la réservation",
+        "table": {
+            "reservation": "Réservation",
+            "car": "Véhicule",
+            "client": "Client",
+            "period": "Période",
+            "created": "Créé le",
+            "total": "Total",
+            "payment": "Paiement",
+            "status": "Statut"
         },
-        "actions.activate": {
-            "en": "Activate",
-            "fr": "Activer",
-            "ar": "تفعيل"
+        "status": {
+            "pending": "En attente",
+            "confirmed": "Confirmée",
+            "reserved": "Réservée",
+            "active": "En cours",
+            "completed": "Terminée",
+            "cancelled": "Annulée",
+            "no_show": "Non présenté"
         },
-        "actions.complete": {
-            "en": "Complete",
-            "fr": "Terminer",
-            "ar": "إكمال"
+        "payment": {
+            "paid": "Payé",
+            "partial": "Partiel",
+            "unpaid": "Impayé"
         },
-        "actions.noShow": {
-            "en": "No show",
-            "fr": "Marquer absent",
-            "ar": "تسجيل عدم حضور"
+        "actions": {
+            "confirm": "Confirmer",
+            "activate": "Activer",
+            "complete": "Terminer",
+            "noShow": "Marquer absent",
+            "cancel": "Annuler",
+            "invoice": "Facture",
+            "edit": "Modifier"
         },
-        "actions.cancel": {
-            "en": "Cancel",
-            "fr": "Annuler",
-            "ar": "إلغاء"
+        "form": {
+            "title": "Nouvelle réservation",
+            "subtitle": "Réservez un véhicule pour un client — détails dans les onglets ci-dessous.",
+            "tabs": {
+                "trip": "Trajet",
+                "basic": "Infos de base",
+                "pricing": "Tarification",
+                "payment": "Paiement"
+            },
+            "carClients": "Véhicule & clients",
+            "carClientsDesc": "Quel véhicule est réservé et qui le loue.",
+            "car": "Véhicule",
+            "selectCar": "Sélectionner un véhicule",
+            "primaryClient": "Client principal",
+            "selectClient": "Sélectionner un client",
+            "secondaryClient": "Client secondaire",
+            "selectOptionalClient": "Sélectionner un client (facultatif)",
+            "status": "Statut",
+            "cancellationReason": "Motif d'annulation",
+            "cancellationPlaceholder": "Pourquoi annuler cette réservation ?",
+            "tripSchedule": "Calendrier du trajet",
+            "tripDesc": "Dates et lieux de prise en charge et de retour.",
+            "pickupDatetime": "Date/heure de prise en charge",
+            "returnDatetime": "Date/heure de retour prévue",
+            "pickupLocation": "Lieu de prise en charge",
+            "returnLocation": "Lieu de retour",
+            "remarks": "Remarques",
+            "anyRemarks": "Remarques éventuelles",
+            "airportPlaceholder": "ex. Aéroport Marrakech Menara",
+            "locationPlaceholder": "ex. 12 Rue Gueliz, Marrakech",
+            "leaveEmptyCarPrice": "Laisser vide pour utiliser le tarif du véhicule",
+            "optional": "Facultatif",
+            "requiredFields": "Veuillez remplir tous les champs obligatoires",
+            "next": "Suivant",
+            "prev": "Précédent",
+            "discard": "Abandonner",
+            "create": "Créer la réservation",
+            "save": "Enregistrer"
         },
-        "actions.invoice": {
-            "en": "Invoice",
-            "fr": "Facture",
-            "ar": "فاتورة"
+        "sortAsc": "Croissant",
+        "sortDesc": "Décroissant",
+        "sortFields": {
+            "pickupDate": "Date de prise en charge",
+            "returnDate": "Date de retour",
+            "createdDate": "Date de création",
+            "totalAmount": "Montant total"
         },
-        "actions.edit": {
-            "en": "Edit",
-            "fr": "Modifier",
-            "ar": "تعديل"
-        },
-        "hideDetails": {
-            "en": "Hide Details",
-            "fr": "Masquer les détails",
-            "ar": "إخفاء التفاصيل"
-        },
-        "showDetails": {
-            "en": "Show Details",
-            "fr": "Afficher les détails",
-            "ar": "عرض التفاصيل"
-        },
-        "carTrip": {
-            "en": "Car & Trip",
-            "fr": "Véhicule & Trajet",
-            "ar": "المركبة والرحلة"
-        },
-        "clients": {
-            "en": "Clients",
-            "fr": "Clients",
-            "ar": "العملاء"
-        },
-        "pricingSummary": {
-            "en": "Pricing Summary",
-            "fr": "Récapitulatif tarifaire",
-            "ar": "ملخص التسعير"
-        },
-        "subtotal": {
-            "en": "Subtotal",
-            "fr": "Sous-total",
-            "ar": "المجموع الفرعي"
-        },
-        "tax": {
-            "en": "Tax",
-            "fr": "Taxe",
-            "ar": "الضريبة"
-        },
-        "deposit": {
-            "en": "Deposit",
-            "fr": "Acompte",
-            "ar": "التأمين المسبق"
-        },
-        "noReservationsFound": "Aucune réservation trouvée",
-        "form.title": "Nouvelle réservation",
-        "form.subtitle": "Réserver un véhicule pour un client.",
-        "form.tabs.trip": "Trajet",
-        "form.tabs.basic": "Infos de base",
-        "form.tabs.pricing": "Tarif",
-        "form.tabs.payment": "Paiement",
-        "form.carClients": "Véhicule & clients",
-        "form.carClientsDesc": "Quel véhicule est réservé et qui le loue.",
-        "form.car": "Véhicule",
-        "form.selectCar": {
-            "en": "Select car",
-            "fr": "Sélectionner un véhicule",
-            "ar": "اختر مركبة"
-        },
-        "form.primaryClient": "Client principal",
-        "form.selectClient": {
-            "en": "Select client",
-            "fr": "Sélectionner un client",
-            "ar": "اختر العميل"
-        },
-        "form.secondaryClient": "Client secondaire",
-        "form.selectOptionalClient": {
-            "en": "Select optional client",
-            "fr": "Sélectionner un client (facultatif)",
-            "ar": "اختر عميل (اختياري)"
-        },
-        "form.status": "Statut",
-        "form.cancellationReason": "Raison d'annulation",
-        "form.tripSchedule": "Calendrier du trajet",
-        "form.tripDesc": "Dates/lieux de prise en charge et de retour.",
-        "form.pickupDatetime": "Date/heure de prise en charge",
-        "form.returnDatetime": "Date/heure de retour prévue",
-        "form.pickupLocation": "Lieu de prise en charge",
-        "form.returnLocation": "Lieu de retour",
-        "form.remarks": "Remarques",
-        "form.anyRemarks": {
-            "en": "Any remarks",
-            "fr": "Remarques éventuelles",
-            "ar": "أي ملاحظات"
-        },
-        "form.requiredFields": "Veuillez remplir tous les champs obligatoires",
-        "form.next": "Suivant",
-        "form.prev": "Précédent",
-        "form.discard": "Abandonner",
-        "form.create": "Créer la réservation",
-        "form.save": "Enregistrer",
-        "form.cancellationPlaceholder": {
-            "en": "Why is this reservation being cancelled?",
-            "fr": "Pourquoi annuler cette réservation ?",
-            "ar": "ما سبب إلغاء هذا الحجز؟"
-        },
-        "form.locationPlaceholder": {
-            "en": "e.g. 12 Rue Gueliz, Marrakech",
-            "fr": "ex. 12 Rue Gueliz, Marrakech",
-            "ar": "مثال: 12 شارع غليس، مراكش"
-        },
-        "form.airportPlaceholder": {
-            "en": "e.g. Marrakech Menara Airport",
-            "fr": "ex. Aéroport Marrakech Menara",
-            "ar": "مثال: مطار مراكش المنارة"
-        },
-        "form.leaveEmptyCarPrice": {
-            "en": "Leave empty to use car price",
-            "fr": "Laisser vide pour utiliser le prix du véhicule",
-            "ar": "اتركه فارغًا لاستخدام سعر المركبة"
-        },
-        "form.optional": {
-            "en": "Optional",
-            "fr": "Facultatif",
-            "ar": "اختياري"
-        },
-        "calendar.title": "Calendrier des réservations",
-        "calendar.today": "Aujourd'hui",
-        "calendar.unableLoad": "Impossible de charger le calendrier",
-        "calendar.unableOpen": "Impossible d'ouvrir la réservation",
-        "calendar.rescheduled": "Réservation reprogrammée",
-        "calendar.unableReschedule": "Impossible de reprogrammer la réservation"
+        "perPage": "/ page"
     }
 }

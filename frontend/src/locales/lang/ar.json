@@ -398,37 +398,42 @@
     },
     "common": {
         "hi": "مرحبا",
-        "comparison": "مقارنة"
+        "comparison": "مقارنة",
+        "cancel": "إلغاء",
+        "save": "حفظ"
     },
     "reservations": {
         "reservations": "الحجوزات",
         "newReservation": "حجز جديد",
         "reservationsList": "قائمة الحجوزات",
-        "calendar": "التقويم",
+        "calendar": {
+            "title": "تقويم الحجوزات",
+            "today": "اليوم",
+            "unableLoad": "تعذّر تحميل التقويم",
+            "unableOpen": "تعذّر فتح الحجز",
+            "rescheduled": "تمت إعادة جدولة الحجز",
+            "unableReschedule": "تعذّر إعادة الجدولة"
+        },
         "export": "تصدير",
-        "last30Days": "آخر 30 يومًا",
-        "searchPlaceholder": "البحث في الحجوزات…",
-        "paymentAll": "الدفع: الكل",
-        "sort": "ترتيب",
         "all": "الكل",
-        "pending": "قيد الانتظار",
-        "confirmed": "مؤكد",
-        "reserved": "محجوز",
-        "active": "نشط",
-        "completed": "مكتمل",
-        "cancelled": "ملغى",
-        "noShow": "لم يحضر",
-        "paid": "مدفوع",
-        "partial": "جزئي",
-        "unpaid": "غير مدفوع",
-        "reservation": "الحجز",
-        "car": "المركبة",
-        "client": "العميل",
-        "period": "الفترة",
-        "created": "تاريخ الإنشاء",
+        "last30Days": "آخر 30 يومًا",
+        "last60Days": "آخر 60 يومًا",
+        "last90Days": "آخر 90 يومًا",
+        "searchPlaceholder": "البحث في الحجوزات…",
+        "sort": "ترتيب",
+        "sortBy": "ترتيب حسب",
+        "resetSort": "إعادة ضبط الترتيب",
         "total": "الإجمالي",
-        "payment": "الدفع",
-        "status": "الحالة",
+        "paymentFilter": "الدفع",
+        "noReservationsFound": "لم يتم العثور على حجوزات",
+        "hideDetails": "إخفاء التفاصيل",
+        "showDetails": "عرض التفاصيل",
+        "carTrip": "المركبة والرحلة",
+        "clients": "العملاء",
+        "pricingSummary": "ملخص التسعير",
+        "subtotal": "المجموع الفرعي",
+        "tax": "الضريبة",
+        "deposit": "العربون",
         "reservationCancelled": "تم إلغاء الحجز",
         "reservationMarkedNoShow": "تم تسجيل الحجز كعدم حضور",
         "reservationActivated": "تم تفعيل الحجز",
@@ -437,179 +442,87 @@
         "couldNotMarkNoShow": "تعذّر تسجيل عدم الحضور",
         "couldNotActivate": "تعذّر تفعيل الحجز",
         "couldNotComplete": "تعذّر إكمال الحجز",
-        "table.reservation": "الحجز",
-        "table.car": "المركبة",
-        "table.client": "العميل",
-        "table.period": "الفترة",
-        "table.created": "تاريخ الإنشاء",
-        "table.total": "الإجمالي",
-        "table.payment": "الدفع",
-        "table.status": "الحالة",
-        "status.pending": "قيد الانتظار",
-        "status.confirmed": "مؤكد",
-        "status.reserved": "محجوز",
-        "status.active": "نشط",
-        "status.completed": "مكتمل",
-        "status.cancelled": "ملغى",
-        "status.no_show": "لم يحضر",
-        "payment.paid": "مدفوع",
-        "payment.partial": "جزئي",
-        "payment.unpaid": "غير مدفوع",
-        "sortBy": "ترتيب حسب",
-        "resetSort": "إعادة الترتيب",
-        "paymentFilter": "الدفع",
-        "actions.confirm": {
-            "en": "Confirm",
-            "fr": "Confirmer",
-            "ar": "تأكيد"
+        "couldNotConfirm": "تعذّر تأكيد الحجز",
+        "table": {
+            "reservation": "الحجز",
+            "car": "المركبة",
+            "client": "العميل",
+            "period": "الفترة",
+            "created": "تاريخ الإنشاء",
+            "total": "الإجمالي",
+            "payment": "الدفع",
+            "status": "الحالة"
         },
-        "actions.activate": {
-            "en": "Activate",
-            "fr": "Activer",
-            "ar": "تفعيل"
+        "status": {
+            "pending": "قيد الانتظار",
+            "confirmed": "مؤكد",
+            "reserved": "محجوز",
+            "active": "نشط",
+            "completed": "مكتمل",
+            "cancelled": "ملغى",
+            "no_show": "لم يحضر"
         },
-        "actions.complete": {
-            "en": "Complete",
-            "fr": "Terminer",
-            "ar": "إكمال"
+        "payment": {
+            "paid": "مدفوع",
+            "partial": "جزئي",
+            "unpaid": "غير مدفوع"
         },
-        "actions.noShow": {
-            "en": "No show",
-            "fr": "Marquer absent",
-            "ar": "تسجيل عدم حضور"
+        "actions": {
+            "confirm": "تأكيد",
+            "activate": "تفعيل",
+            "complete": "إكمال",
+            "noShow": "تسجيل عدم الحضور",
+            "cancel": "إلغاء",
+            "invoice": "فاتورة",
+            "edit": "تعديل"
         },
-        "actions.cancel": {
-            "en": "Cancel",
-            "fr": "Annuler",
-            "ar": "إلغاء"
+        "form": {
+            "title": "حجز جديد",
+            "subtitle": "احجز مركبة لعميل — التفاصيل في التبويبات أدناه.",
+            "tabs": {
+                "trip": "الرحلة",
+                "basic": "المعلومات الأساسية",
+                "pricing": "التسعير",
+                "payment": "الدفع"
+            },
+            "carClients": "المركبة والعملاء",
+            "carClientsDesc": "أي مركبة محجوزة ومن سيقودها.",
+            "car": "المركبة",
+            "selectCar": "اختر مركبة",
+            "primaryClient": "العميل الرئيسي",
+            "selectClient": "اختر العميل",
+            "secondaryClient": "العميل الثانوي",
+            "selectOptionalClient": "اختر عميلًا (اختياري)",
+            "status": "الحالة",
+            "cancellationReason": "سبب الإلغاء",
+            "cancellationPlaceholder": "ما سبب إلغاء هذا الحجز؟",
+            "tripSchedule": "جدول الرحلة",
+            "tripDesc": "مواعيد وأماكن الاستلام والإرجاع.",
+            "pickupDatetime": "تاريخ ووقت الاستلام",
+            "returnDatetime": "تاريخ ووقت الإرجاع المتوقع",
+            "pickupLocation": "مكان الاستلام",
+            "returnLocation": "مكان الإرجاع",
+            "remarks": "ملاحظات",
+            "anyRemarks": "أي ملاحظات",
+            "airportPlaceholder": "مثال: مطار مراكش المنارة",
+            "locationPlaceholder": "مثال: 12 شارع غليز، مراكش",
+            "leaveEmptyCarPrice": "اتركه فارغًا لاستخدام سعر المركبة",
+            "optional": "اختياري",
+            "requiredFields": "يرجى تعبئة جميع الحقول المطلوبة",
+            "next": "التالي",
+            "prev": "السابق",
+            "discard": "تجاهل",
+            "create": "إنشاء الحجز",
+            "save": "حفظ"
         },
-        "actions.invoice": {
-            "en": "Invoice",
-            "fr": "Facture",
-            "ar": "فاتورة"
+        "sortAsc": "تصاعدي",
+        "sortDesc": "تنازلي",
+        "sortFields": {
+            "pickupDate": "تاريخ الاستلام",
+            "returnDate": "تاريخ الإرجاع",
+            "createdDate": "تاريخ الإنشاء",
+            "totalAmount": "المبلغ الإجمالي"
         },
-        "actions.edit": {
-            "en": "Edit",
-            "fr": "Modifier",
-            "ar": "تعديل"
-        },
-        "hideDetails": {
-            "en": "Hide Details",
-            "fr": "Masquer les détails",
-            "ar": "إخفاء التفاصيل"
-        },
-        "showDetails": {
-            "en": "Show Details",
-            "fr": "Afficher les détails",
-            "ar": "عرض التفاصيل"
-        },
-        "carTrip": {
-            "en": "Car & Trip",
-            "fr": "Véhicule & Trajet",
-            "ar": "المركبة والرحلة"
-        },
-        "clients": {
-            "en": "Clients",
-            "fr": "Clients",
-            "ar": "العملاء"
-        },
-        "pricingSummary": {
-            "en": "Pricing Summary",
-            "fr": "Récapitulatif tarifaire",
-            "ar": "ملخص التسعير"
-        },
-        "subtotal": {
-            "en": "Subtotal",
-            "fr": "Sous-total",
-            "ar": "المجموع الفرعي"
-        },
-        "tax": {
-            "en": "Tax",
-            "fr": "Taxe",
-            "ar": "الضريبة"
-        },
-        "deposit": {
-            "en": "Deposit",
-            "fr": "Acompte",
-            "ar": "التأمين المسبق"
-        },
-        "noReservationsFound": "لم يتم العثور على حجوزات",
-        "form.title": "حجز جديد",
-        "form.subtitle": "حجز مركبة للعميل",
-        "form.tabs.trip": "الرحلة",
-        "form.tabs.basic": "المعلومات الأساسية",
-        "form.tabs.pricing": "التسعير",
-        "form.tabs.payment": "الدفع",
-        "form.carClients": "المركبة والعملاء",
-        "form.carClientsDesc": "أي مركبة محجوزة ومن يقودها",
-        "form.car": "المركبة",
-        "form.selectCar": {
-            "en": "Select car",
-            "fr": "Sélectionner un véhicule",
-            "ar": "اختر مركبة"
-        },
-        "form.primaryClient": "العميل الرئيسي",
-        "form.selectClient": {
-            "en": "Select client",
-            "fr": "Sélectionner un client",
-            "ar": "اختر العميل"
-        },
-        "form.secondaryClient": "العميل الثانوي",
-        "form.selectOptionalClient": {
-            "en": "Select optional client",
-            "fr": "Sélectionner un client (facultatif)",
-            "ar": "اختر عميل (اختياري)"
-        },
-        "form.status": "الحالة",
-        "form.cancellationReason": "سبب الإلغاء",
-        "form.tripSchedule": "جدول الرحلة",
-        "form.tripDesc": "مواعيد وأماكن الاستلام والإرجاع",
-        "form.pickupDatetime": "تاريخ ووقت الاستلام",
-        "form.returnDatetime": "تاريخ ووقت الإرجاع المتوقع",
-        "form.pickupLocation": "مكان الاستلام",
-        "form.returnLocation": "مكان الإرجاع",
-        "form.remarks": "ملاحظات",
-        "form.anyRemarks": {
-            "en": "Any remarks",
-            "fr": "Remarques éventuelles",
-            "ar": "أي ملاحظات"
-        },
-        "form.requiredFields": "يرجى تعبئة جميع الحقول المطلوبة",
-        "form.next": "التالي",
-        "form.prev": "السابق",
-        "form.discard": "تجاهل",
-        "form.create": "إنشاء حجز",
-        "form.save": "حفظ",
-        "form.cancellationPlaceholder": {
-            "en": "Why is this reservation being cancelled?",
-            "fr": "Pourquoi annuler cette réservation ?",
-            "ar": "ما سبب إلغاء هذا الحجز؟"
-        },
-        "form.locationPlaceholder": {
-            "en": "e.g. 12 Rue Gueliz, Marrakech",
-            "fr": "ex. 12 Rue Gueliz, Marrakech",
-            "ar": "مثال: 12 شارع غليس، مراكش"
-        },
-        "form.airportPlaceholder": {
-            "en": "e.g. Marrakech Menara Airport",
-            "fr": "ex. Aéroport Marrakech Menara",
-            "ar": "مثال: مطار مراكش المنارة"
-        },
-        "form.leaveEmptyCarPrice": {
-            "en": "Leave empty to use car price",
-            "fr": "Laisser vide pour utiliser le prix du véhicule",
-            "ar": "اتركه فارغًا لاستخدام سعر المركبة"
-        },
-        "form.optional": {
-            "en": "Optional",
-            "fr": "Facultatif",
-            "ar": "اختياري"
-        },
-        "calendar.title": "تقويم الحجوزات",
-        "calendar.today": "اليوم",
-        "calendar.unableLoad": "تعذّر تحميل التقويم",
-        "calendar.unableOpen": "تعذّر فتح الحجز",
-        "calendar.rescheduled": "تم إعادة جدولة الحجز",
-        "calendar.unableReschedule": "تعذّر إعادة جدولة الحجز"
+        "perPage": "/ صفحة"
     }
 }

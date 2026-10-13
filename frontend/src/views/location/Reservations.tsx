@@ -93,19 +93,19 @@ const rangeOptions = (t: any) => [
     { value: '90', label: t('reservations.last90Days', 'Last 90 days') },
 ]
 
-const pageSizeOption = [
-    { value: 10, label: '10 / page' },
-    { value: 25, label: '25 / page' },
-    { value: 50, label: '50 / page' },
-    { value: 100, label: '100 / page' },
+const pageSizeOption = (t: any) => [
+    { value: 10, label: `10 ${t('reservations.perPage', '/ page')}` },
+    { value: 25, label: `25 ${t('reservations.perPage', '/ page')}` },
+    { value: 50, label: `50 ${t('reservations.perPage', '/ page')}` },
+    { value: 100, label: `100 ${t('reservations.perPage', '/ page')}` },
 ]
 
-const sortableFields = [
-    { key: 'pickup_datetime', label: 'Pickup date' },
-    { key: 'expected_return_datetime', label: 'Return date' },
-    { key: 'created_at', label: 'Created date' },
-    { key: 'total_amount', label: 'Total amount' },
-    { key: 'status', label: 'Status' },
+const sortableFields = (t: any) => [
+    { key: 'pickup_datetime', label: t('reservations.sortFields.pickupDate', 'Pickup date') },
+    { key: 'expected_return_datetime', label: t('reservations.sortFields.returnDate', 'Return date') },
+    { key: 'created_at', label: t('reservations.sortFields.createdDate', 'Created date') },
+    { key: 'total_amount', label: t('reservations.sortFields.totalAmount', 'Total amount') },
+    { key: 'status', label: t('reservations.table.status', 'Status') },
 ]
 
 const paymentStatusFilterOptions = (t: any) => [
@@ -1267,7 +1267,7 @@ const Reservations = () => {
     )
 
     const getSortButtonLabel = () => {
-        const field = sortableFields.find((item) => item.key === sortBy)
+        const field = sortableFields(t).find((item) => item.key === sortBy)
         return field ? `${t('reservations.sortBy', 'Sort by')}: ${field.label}` : t('reservations.sort', 'Sort')
     }
 
@@ -1280,7 +1280,7 @@ const Reservations = () => {
         <Container className="">
             <div className="space-y-4">
                 <div className="flex items-center justify-between gap-4">
-                    <h4>Reservations</h4>
+                    <h4>{t('reservations.reservations', 'Reservations')}</h4>
                     <div className="flex items-center gap-2">
                         <Dropdown
                             placement="bottom-end"
@@ -1402,7 +1402,7 @@ const Reservations = () => {
                                             }
                                         </span>
                                     ) : (
-                                        'Payment'
+                                        t('reservations.paymentFilter', 'Payment')
                                     )}
                                 </Button>
                             }
@@ -1459,18 +1459,18 @@ const Reservations = () => {
                                     <Segment.Item value="asc">
                                         <span className="flex items-center gap-1">
                                             <LiArrowUp />
-                                            <span>Asc</span>
+                                            <span>{t('reservations.sortAsc', 'Asc')}</span>
                                         </span>
                                     </Segment.Item>
                                     <Segment.Item value="desc">
                                         <span className="flex items-center gap-1">
                                             <LiArrowDown />
-                                            <span>Desc</span>
+                                            <span>{t('reservations.sortDesc', 'Desc')}</span>
                                         </span>
                                     </Segment.Item>
                                 </Segment>
                             </div>
-                            {sortableFields.map((field) => (
+                            {sortableFields(t).map((field) => (
                                 <Dropdown.Item
                                     key={field.key}
                                     onClick={() => {
@@ -1695,9 +1695,10 @@ const Reservations = () => {
                                                             ],
                                                         )}
                                                     >
-                                                        {
-                                                            reservation.payment_status
-                                                        }
+                                                        {t(
+                                                            `reservations.payment.${reservation.payment_status}`,
+                                                            reservation.payment_status,
+                                                        )}
                                                     </Tag>
                                                 </div>
                                             </div>
@@ -1719,11 +1720,11 @@ const Reservations = () => {
                                 placement="top"
                                 isSearchable={false}
                                 value={
-                                    pageSizeOption.find(
+                                    pageSizeOption(t).find(
                                         (option) => option.value === pageSize,
                                     ) ?? null
                                 }
-                                options={pageSizeOption}
+                                options={pageSizeOption(t)}
                                 onChange={(option) => {
                                     if (option?.value) {
                                         setPageSize(option.value)
