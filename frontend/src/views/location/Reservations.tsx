@@ -981,7 +981,7 @@ const Reservations = () => {
     const columns = useMemo<ColumnDef<Reservation>[]>(
         () => [
             {
-                header: 'Reservation',
+                header: t('reservations.table.reservation', 'Reservation'),
                 accessorKey: 'reservation_number',
                 cell: (props) => (
                     <span className="font-semibold heading-text text-nowrap">
@@ -990,7 +990,7 @@ const Reservations = () => {
                 ),
             },
             {
-                header: 'Car',
+                header: t('reservations.table.car', 'Car'),
                 accessorKey: 'car.registration_number',
                 cell: (props) => {
                     const car = props.row.original.car
@@ -1004,7 +1004,7 @@ const Reservations = () => {
                 },
             },
             {
-                header: 'Client',
+                header: t('reservations.table.client', 'Client'),
                 accessorKey: 'primary_client.full_name',
                 cell: (props) => {
                     const client = props.row.original.primary_client
@@ -1028,7 +1028,7 @@ const Reservations = () => {
                 },
             },
             {
-                header: 'Period',
+                header: t('reservations.table.period', 'Period'),
                 accessorKey: 'pickup_datetime',
                 cell: (props) => {
                     const reservation = props.row.original
@@ -1048,7 +1048,7 @@ const Reservations = () => {
                 },
             },
             {
-                header: 'Created',
+                header: t('reservations.table.created', 'Created'),
                 accessorKey: 'created_at',
                 cell: (props) => (
                     <span className="text-nowrap text-gray-500 dark:text-gray-400">
@@ -1057,7 +1057,7 @@ const Reservations = () => {
                 ),
             },
             {
-                header: 'Total',
+                header: t('reservations.table.total', 'Total'),
                 accessorKey: 'total_amount',
                 cell: (props) => (
                     <span className="font-semibold heading-text text-nowrap">
@@ -1066,7 +1066,7 @@ const Reservations = () => {
                 ),
             },
             {
-                header: 'Payment',
+                header: t('reservations.table.payment', 'Payment'),
                 accessorKey: 'payment_status',
                 cell: (props) => {
                     const status = props.row.original.payment_status
@@ -1083,7 +1083,7 @@ const Reservations = () => {
                 },
             },
             {
-                header: 'Status',
+                header: t('reservations.table.status', 'Status'),
                 accessorKey: 'status',
                 cell: (props) => {
                     const status = props.row.original.status
