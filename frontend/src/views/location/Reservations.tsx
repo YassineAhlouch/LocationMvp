@@ -1108,7 +1108,7 @@ const Reservations = () => {
                     return (
                         <div className="flex items-center justify-end gap-1">
                             {['pending', 'reserved'].includes(status) && (
-                                <Tooltip title="Confirm" placement="top">
+                                <Tooltip title={t('reservations.actions.confirm', 'Confirm')} placement="top">
                                     <Button
                                         size="sm"
                                         variant="subtle"
@@ -1121,7 +1121,7 @@ const Reservations = () => {
                                 </Tooltip>
                             )}
                             {['confirmed', 'reserved'].includes(status) && (
-                                <Tooltip title="Activate" placement="top">
+                                <Tooltip title={t('reservations.actions.activate', 'Activate')} placement="top">
                                     <Button
                                         size="sm"
                                         variant="ghost"
@@ -1135,7 +1135,7 @@ const Reservations = () => {
                                 </Tooltip>
                             )}
                             {status === 'active' && (
-                                <Tooltip title="Complete" placement="top">
+                                <Tooltip title={t('reservations.actions.complete', 'Complete')} placement="top">
                                     <Button
                                         size="sm"
                                         variant="ghost"
@@ -1151,7 +1151,7 @@ const Reservations = () => {
                             {['pending', 'confirmed', 'reserved'].includes(
                                 status,
                             ) && (
-                                <Tooltip title="No show" placement="top">
+                                <Tooltip title={t('reservations.actions.noShow', 'No show')} placement="top">
                                     <Button
                                         size="sm"
                                         variant="ghost"
@@ -1170,7 +1170,7 @@ const Reservations = () => {
                                 'reserved',
                                 'active',
                             ].includes(status) && (
-                                <Tooltip title="Cancel" placement="top">
+                                <Tooltip title={t('reservations.actions.cancel', 'Cancel')} placement="top">
                                     <Button
                                         size="sm"
                                         variant="ghost"
@@ -1183,7 +1183,7 @@ const Reservations = () => {
                                     />
                                 </Tooltip>
                             )}
-                            <Tooltip title="Invoice" placement="top">
+                            <Tooltip title={t('reservations.actions.invoice', 'Invoice')} placement="top">
                                 <Button
                                     size="sm"
                                     variant="ghost"
@@ -1197,7 +1197,7 @@ const Reservations = () => {
                                     }}
                                 />
                             </Tooltip>
-                            <Tooltip title="Edit" placement="top">
+                            <Tooltip title={t('reservations.actions.edit', 'Edit')} placement="top">
                                 <Button
                                     size="sm"
                                     variant="ghost"

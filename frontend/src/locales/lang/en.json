@@ -457,6 +457,41 @@
         "payment.unpaid": "Unpaid",
         "sortBy": "Sort by",
         "resetSort": "Reset Sort",
-        "paymentFilter": "Payment"
+        "paymentFilter": "Payment",
+        "actions.confirm": {
+            "en": "Confirm",
+            "fr": "Confirmer",
+            "ar": "تأكيد"
+        },
+        "actions.activate": {
+            "en": "Activate",
+            "fr": "Activer",
+            "ar": "تفعيل"
+        },
+        "actions.complete": {
+            "en": "Complete",
+            "fr": "Terminer",
+            "ar": "إكمال"
+        },
+        "actions.noShow": {
+            "en": "No show",
+            "fr": "Marquer absent",
+            "ar": "تسجيل عدم حضور"
+        },
+        "actions.cancel": {
+            "en": "Cancel",
+            "fr": "Annuler",
+            "ar": "إلغاء"
+        },
+        "actions.invoice": {
+            "en": "Invoice",
+            "fr": "Facture",
+            "ar": "فاتورة"
+        },
+        "actions.edit": {
+            "en": "Edit",
+            "fr": "Modifier",
+            "ar": "تعديل"
+        }
     }
 }
