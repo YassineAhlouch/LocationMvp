@@ -533,6 +533,30 @@
             "fr": "Acompte",
             "ar": "التأمين المسبق"
         },
-        "noReservationsFound": "لم يتم العثور على حجوزات"
+        "noReservationsFound": "لم يتم العثور على حجوزات",
+        "form.title": "حجز جديد",
+        "form.subtitle": "حجز مركبة للعميل",
+        "form.tabs.trip": "الرحلة",
+        "form.tabs.basic": "المعلومات الأساسية",
+        "form.tabs.pricing": "التسعير",
+        "form.tabs.payment": "الدفع",
+        "form.carClients": "المركبة والعملاء",
+        "form.carClientsDesc": "أي مركبة محجوزة ومن يقودها",
+        "form.car": "المركبة",
+        "form.selectCar": "اختر مركبة",
+        "form.primaryClient": "العميل الرئيسي",
+        "form.selectClient": "اختر العميل",
+        "form.secondaryClient": "العميل الثانوي",
+        "form.selectOptionalClient": "اختر عميل (اختياري)",
+        "form.status": "الحالة",
+        "form.cancellationReason": "سبب الإلغاء",
+        "form.tripSchedule": "جدول الرحلة",
+        "form.tripDesc": "مواعيد وأماكن الاستلام والإرجاع",
+        "form.pickupDatetime": "تاريخ ووقت الاستلام",
+        "form.returnDatetime": "تاريخ ووقت الإرجاع المتوقع",
+        "form.pickupLocation": "مكان الاستلام",
+        "form.returnLocation": "مكان الإرجاع",
+        "form.remarks": "ملاحظات",
+        "form.anyRemarks": "أي ملاحظات"
     }
 }

@@ -533,6 +533,30 @@
             "fr": "Acompte",
             "ar": "التأمين المسبق"
         },
-        "noReservationsFound": "Aucune réservation trouvée"
+        "noReservationsFound": "Aucune réservation trouvée",
+        "form.title": "Nouvelle réservation",
+        "form.subtitle": "Réserver un véhicule pour un client.",
+        "form.tabs.trip": "Trajet",
+        "form.tabs.basic": "Infos de base",
+        "form.tabs.pricing": "Tarif",
+        "form.tabs.payment": "Paiement",
+        "form.carClients": "Véhicule & clients",
+        "form.carClientsDesc": "Quel véhicule est réservé et qui le loue.",
+        "form.car": "Véhicule",
+        "form.selectCar": "Sélectionner un véhicule",
+        "form.primaryClient": "Client principal",
+        "form.selectClient": "Sélectionner un client",
+        "form.secondaryClient": "Client secondaire",
+        "form.selectOptionalClient": "Sélectionner un client (facultatif)",
+        "form.status": "Statut",
+        "form.cancellationReason": "Raison d'annulation",
+        "form.tripSchedule": "Calendrier du trajet",
+        "form.tripDesc": "Dates/lieux de prise en charge et de retour.",
+        "form.pickupDatetime": "Date/heure de prise en charge",
+        "form.returnDatetime": "Date/heure de retour prévue",
+        "form.pickupLocation": "Lieu de prise en charge",
+        "form.returnLocation": "Lieu de retour",
+        "form.remarks": "Remarques",
+        "form.anyRemarks": "Remarques éventuelles"
     }
 }

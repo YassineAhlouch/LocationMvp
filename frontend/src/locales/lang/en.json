@@ -533,6 +533,32 @@
             "fr": "Acompte",
             "ar": "التأمين المسبق"
         },
-        "noReservationsFound": "No reservations found"
+        "noReservationsFound": "No reservations found",
+        "form.title": "New reservation",
+        "form.subtitle": "Book a car for a client — details live in the tabs below.",
+        "form.tabs.trip": "Trip",
+        "form.tabs.basic": "Basic info",
+        "form.tabs.pricing": "Pricing",
+        "form.tabs.payment": "Payment",
+        "form.carClients": "Car & clients",
+        "form.carClientsDesc": "Which car is booked and who is renting it.",
+        "form.car": "Car",
+        "form.selectCar": "Select car",
+        "form.primaryClient": "Primary client",
+        "form.selectClient": "Select client",
+        "form.secondaryClient": "Secondary client",
+        "form.selectOptionalClient": "Select optional client",
+        "form.status": "Status",
+        "form.cancellationReason": "Cancellation reason",
+        "form.tripSchedule": "Trip schedule",
+        "form.tripDesc": "Pickup and return times and locations.",
+        "form.pickupDatetime": "Pickup datetime",
+        "form.returnDatetime": "Expected return datetime",
+        "form.pickupLocation": "Pickup location",
+        "form.returnLocation": "Return location",
+        "form.remarks": "Remarks",
+        "form.anyRemarks": "Any remarks",
+        "form.pickupPlaceholder": "e.g. Marrakech Menara Airport",
+        "form.locationPlaceholder": "e.g. 12 Rue Gueliz, Marrakech"
     }
 }
