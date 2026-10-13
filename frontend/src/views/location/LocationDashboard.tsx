@@ -614,12 +614,13 @@ type OccupancyProps = {
 }
 
 const Occupancy = ({ bookedDays, availableDays, rate }: OccupancyProps) => {
+    const { t } = useTranslation()
     const chartData = useMemo(
         () => [
-            { label: 'Booked', value: bookedDays },
-            { label: 'Available', value: availableDays },
+            { label: t('dashboard.booked'), value: bookedDays },
+            { label: t('dashboard.available'), value: availableDays },
         ],
-        [bookedDays, availableDays],
+        [bookedDays, availableDays, t],
     )
 
     return (
@@ -636,7 +637,7 @@ const Occupancy = ({ bookedDays, availableDays, rate }: OccupancyProps) => {
                 </div>
                 <Divider orientation="vertical" className="h-12" />
                 <div>
-                    <p className="mb-1">Booked Days</p>
+                    <p className="mb-1">{t('dashboard.bookedDays')}</p>
                     <div className="flex items-center gap-2">
                         <h4>{formatNumber(bookedDays)}</h4>
                     </div>
@@ -677,14 +678,14 @@ const Occupancy = ({ bookedDays, availableDays, rate }: OccupancyProps) => {
                         className="w-3 h-3 rounded-full"
                         style={{ backgroundColor: colors.emerald.chart }}
                     />
-                    <span className="text-sm">Booked</span>
+                    <span className="text-sm">{t('dashboard.booked')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <div
                         className="w-3 h-3 rounded-full"
                         style={{ backgroundColor: colors.gray.chart }}
                     />
-                    <span className="text-sm">Available</span>
+                    <span className="text-sm">{t('dashboard.available')}</span>
                 </div>
             </div>
         </Card>
@@ -709,8 +710,8 @@ const TopVehicles = ({ vehicles }: TopVehiclesProps) => {
                             <Th>{t('dashboard.vehicle')}</Th>
                             <Th>{t('dashboard.revenue')}</Th>
                             <Th>{t('dashboard.expenses')}</Th>
-                            <Th>Margin</Th>
-                            <Th>Booked Days</Th>
+                            <Th>{t('dashboard.margin')}</Th>
+                            <Th>{t('dashboard.bookedDays')}</Th>
                         </Tr>
                     </THead>
                     <TBody>
