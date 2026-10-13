@@ -11,6 +11,7 @@ import FullCalendar from '@/components/shared/FullCalendar'
 import Loading from '@/components/shared/Loading'
 import { getColorClasses } from '@/components/shared/FullCalendar/utils'
 import useDirection from '@/utils/hooks/useDirection'
+import useTranslation from '@/utils/hooks/useTranslation'
 import { LiChevronLeft, LiChevronRight } from '@/icons'
 import ReservationForm from './forms/ReservationForm'
 import {
@@ -54,6 +55,7 @@ const CustomEvent = ({ event, item }: CustomEventProps) => (
 )
 
 const ReservationCalendar = () => {
+    const { t } = useTranslation()
     const [items, setItems] = useState<ReservationCalendarItem[]>([])
     const [loading, setLoading] = useState(true)
     const [dialogOpen, setDialogOpen] = useState(false)
@@ -70,7 +72,7 @@ const ReservationCalendar = () => {
             .then(setItems)
             .catch((error) =>
                 toast.push(
-                    <Notification type="danger" title="Unable to load calendar">
+                    <Notification type="danger" title={t('reservations.calendar.unableLoad', 'Unable to load calendar')}>
                         {apiErrorMessage(error, 'Please try again.')}
                     </Notification>,
                 ),
@@ -124,7 +126,7 @@ const ReservationCalendar = () => {
             })
             .catch((error) =>
                 toast.push(
-                    <Notification type="danger" title="Unable to open booking">
+                    <Notification type="danger" title={t('reservations.calendar.unableOpen', 'Unable to open booking')}>
                         {apiErrorMessage(error, 'Please try again.')}
                     </Notification>,
                 ),
@@ -167,12 +169,12 @@ const ReservationCalendar = () => {
         })
             .then(() =>
                 toast.push(
-                    <Notification type="success" title="Booking rescheduled" />,
+                    <Notification type="success" title={t('reservations.calendar.rescheduled', 'Booking rescheduled')} />,
                 ),
             )
             .catch((error) =>
                 toast.push(
-                    <Notification type="danger" title="Unable to reschedule">
+                    <Notification type="danger" title={t('reservations.calendar.unableReschedule', 'Unable to reschedule')}>
                         {apiErrorMessage(error, 'Please try again.')}
                     </Notification>,
                 ),
@@ -193,7 +195,7 @@ const ReservationCalendar = () => {
             <div className="flex h-full flex-col">
                 <div className="flex flex-col gap-4 pb-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h4>Reservation Calendar</h4>
+                        <h4>{t('reservations.calendar.title', 'Reservation Calendar')}</h4>
                         {/* <p className="mt-1">
                             Manage vehicle reservations on a calendar
                         </p> */}
@@ -222,7 +224,7 @@ const ReservationCalendar = () => {
                         variant="solid"
                         onClick={() => openCreate(new Date())}
                     >
-                        New reservation
+                        {t('reservations.newReservation', 'New reservation')}
                     </Button>
                 </div>
 
@@ -268,7 +270,7 @@ const ReservationCalendar = () => {
                                                 )
                                             }
                                         >
-                                            Today
+                                            {t('reservations.calendar.today', 'Today')}
                                         </Button>
                                         {direction === 'ltr'
                                             ? renderNextButton(handleNext)

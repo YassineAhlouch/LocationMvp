@@ -604,6 +604,12 @@
             "en": "Optional",
             "fr": "Facultatif",
             "ar": "اختياري"
-        }
+        },
+        "calendar.title": "Calendrier des réservations",
+        "calendar.today": "Aujourd'hui",
+        "calendar.unableLoad": "Impossible de charger le calendrier",
+        "calendar.unableOpen": "Impossible d'ouvrir la réservation",
+        "calendar.rescheduled": "Réservation reprogrammée",
+        "calendar.unableReschedule": "Impossible de reprogrammer la réservation"
     }
 }

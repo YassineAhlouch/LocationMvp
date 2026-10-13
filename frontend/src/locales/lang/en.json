@@ -605,6 +605,12 @@
             "en": "Optional",
             "fr": "Facultatif",
             "ar": "اختياري"
-        }
+        },
+        "calendar.title": "Reservation Calendar",
+        "calendar.today": "Today",
+        "calendar.unableLoad": "Unable to load calendar",
+        "calendar.unableOpen": "Unable to open booking",
+        "calendar.rescheduled": "Booking rescheduled",
+        "calendar.unableReschedule": "Unable to reschedule"
     }
 }

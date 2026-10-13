@@ -604,6 +604,12 @@
             "en": "Optional",
             "fr": "Facultatif",
             "ar": "اختياري"
-        }
+        },
+        "calendar.title": "تقويم الحجوزات",
+        "calendar.today": "اليوم",
+        "calendar.unableLoad": "تعذّر تحميل التقويم",
+        "calendar.unableOpen": "تعذّر فتح الحجز",
+        "calendar.rescheduled": "تم إعادة جدولة الحجز",
+        "calendar.unableReschedule": "تعذّر إعادة جدولة الحجز"
     }
 }
