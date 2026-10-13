@@ -1333,7 +1333,7 @@ const ReservationForm = ({
         toast.push(
             <Notification
                 type="danger"
-                title="Please fill in all the required fields"
+                title={t('reservations.form.requiredFields', 'Please fill in all the required fields')}
             />,
         )
     }
@@ -1568,8 +1568,8 @@ const ReservationForm = ({
                 <Form id="reservation-form" onSubmit={onSubmit}>
                     <SectionContainer show={selectedSection === 'basicInfo'}>
                         <FormSectionCard
-                            title="Car & clients"
-                            description="Which car is booked and who is renting it."
+                            title={t('reservations.form.carClients', 'Car & clients')}
+                            description={t('reservations.form.carClientsDesc', 'Which car is booked and who is renting it.')}
                         >
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <FormItem
@@ -1793,8 +1793,8 @@ const ReservationForm = ({
 
                 <SectionContainer show={selectedSection === 'trip'}>
                     <FormSectionCard
-                        title="Trip schedule"
-                        description="Pickup and return times and locations."
+                        title={t('reservations.form.tripSchedule', 'Trip schedule')}
+                        description={t('reservations.form.tripDesc', 'Pickup and return times and locations.')}
                     >
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <FormItem
@@ -2652,7 +2652,7 @@ const ReservationForm = ({
                             className="text-error hover:bg-error-subtle"
                             onClick={onCancel}
                         >
-                            {isEditing ? 'Cancel' : 'Discard'}
+                            {isEditing ? t('common.cancel', 'Cancel') : t('reservations.form.discard', 'Discard')}
                         </Button>
                         <div className="flex items-center gap-2">
                             {hasNextSection && (
@@ -2660,7 +2660,7 @@ const ReservationForm = ({
                                     type="button"
                                     onClick={() => handleNextSection()}
                                 >
-                                    Next
+                                    {t('reservations.form.next', 'Next')}
                                 </Button>
                             )}
                             <Button
@@ -2670,7 +2670,7 @@ const ReservationForm = ({
                             >
                                 {isEditing
                                     ? 'Save changes'
-                                    : 'Create reservation'}
+                                    : t('reservations.form.create', 'Create reservation')}
                             </Button>
                         </div>
                     </div>

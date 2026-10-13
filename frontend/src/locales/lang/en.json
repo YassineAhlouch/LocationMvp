@@ -559,6 +559,12 @@
         "form.remarks": "Remarks",
         "form.anyRemarks": "Any remarks",
         "form.pickupPlaceholder": "e.g. Marrakech Menara Airport",
-        "form.locationPlaceholder": "e.g. 12 Rue Gueliz, Marrakech"
+        "form.locationPlaceholder": "e.g. 12 Rue Gueliz, Marrakech",
+        "form.requiredFields": "Please fill in all the required fields",
+        "form.next": "Next",
+        "form.prev": "Previous",
+        "form.discard": "Discard",
+        "form.create": "Create reservation",
+        "form.save": "Save"
     }
 }

@@ -557,6 +557,12 @@
         "form.pickupLocation": "Lieu de prise en charge",
         "form.returnLocation": "Lieu de retour",
         "form.remarks": "Remarques",
-        "form.anyRemarks": "Remarques éventuelles"
+        "form.anyRemarks": "Remarques éventuelles",
+        "form.requiredFields": "Veuillez remplir tous les champs obligatoires",
+        "form.next": "Suivant",
+        "form.prev": "Précédent",
+        "form.discard": "Abandonner",
+        "form.create": "Créer la réservation",
+        "form.save": "Enregistrer"
     }
 }

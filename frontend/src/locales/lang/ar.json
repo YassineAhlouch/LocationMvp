@@ -557,6 +557,12 @@
         "form.pickupLocation": "مكان الاستلام",
         "form.returnLocation": "مكان الإرجاع",
         "form.remarks": "ملاحظات",
-        "form.anyRemarks": "أي ملاحظات"
+        "form.anyRemarks": "أي ملاحظات",
+        "form.requiredFields": "يرجى تعبئة جميع الحقول المطلوبة",
+        "form.next": "التالي",
+        "form.prev": "السابق",
+        "form.discard": "تجاهل",
+        "form.create": "إنشاء حجز",
+        "form.save": "حفظ"
     }
 }
