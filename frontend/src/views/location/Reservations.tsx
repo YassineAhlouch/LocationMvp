@@ -1222,30 +1222,30 @@ const Reservations = () => {
         () => [
             {
                 id: 'total',
-                label: 'Total',
+                label: t('reservations.total', 'Total'),
                 value: summary?.reservations.total ?? 0,
                 icon: <LiBox />,
             },
             {
                 id: 'pending',
-                label: 'Pending',
+                label: t('reservations.status.pending', 'Pending'),
                 value: summary?.reservations.by_status.pending ?? 0,
                 icon: <LiBoxTime />,
             },
             {
                 id: 'active',
-                label: 'Active',
+                label: t('reservations.status.active', 'Active'),
                 value: summary?.reservations.by_status.active ?? 0,
                 icon: <LiCar />,
             },
             {
                 id: 'completed',
-                label: 'Completed',
+                label: t('reservations.status.completed', 'Completed'),
                 value: summary?.reservations.by_status.completed ?? 0,
                 icon: <LiBoxTick />,
             },
         ],
-        [summary],
+        [summary, t],
     )
 
     const csvData = useMemo(
