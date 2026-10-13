@@ -26,6 +26,7 @@ import {
     apiGetCarReports,
 } from '@/services/LocationService'
 import { MAD } from './shared'
+import useTranslation from '@/utils/hooks/useTranslation'
 import type { CarReport, DashboardSummary, DashboardTimeline } from '@/@types/location'
 import type { ReactNode } from 'react'
 import {
@@ -48,11 +49,11 @@ type ComparisonPeriod =
     | 'lastQuarter'
     | 'lastYear'
 
-const timeRangeOptions: { key: TimeRange; label: string }[] = [
-    { key: 'thisWeek', label: 'This Week' },
-    { key: 'thisMonth', label: 'This Month' },
-    { key: 'thisQuarter', label: 'This Quarter' },
-    { key: 'thisYear', label: 'This Year' },
+const timeRangeOptions = (t: any): { key: TimeRange; label: string }[] => [
+    { key: 'thisWeek', label: t('dashboard.thisWeek') },
+    { key: 'thisMonth', label: t('dashboard.thisMonth') },
+    { key: 'thisQuarter', label: t('dashboard.thisQuarter') },
+    { key: 'thisYear', label: t('dashboard.thisYear') },
 ]
 
 const getComparisonPeriodForTimeRange = (
@@ -253,6 +254,7 @@ const RevenueExpenses = ({
     timeline,
 }: RevenueExpensesProps) => {
     const [direction] = useDirection()
+    const { t } = useTranslation()
 
     const chartData = useMemo(() => {
         if (!timeline) return []
@@ -267,10 +269,10 @@ const RevenueExpenses = ({
         <Card>
             <div className="flex items-center justify-between">
                 <div>
-                    <h5>Revenue & Expenses</h5>
+                    <h5>{t('dashboard.revenueExpenses')}</h5>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 mt-4">
                         <div className="">
-                            <span>Total Revenue</span>
+                            <span>{t('dashboard.totalRevenue')}</span>
                             <div className="flex items-center gap-2">
                                 <h4>{MAD(totalRevenue)}</h4>
                                 {comparisonEnabled && (
@@ -287,7 +289,7 @@ const RevenueExpenses = ({
                             className="hidden sm:block h-12"
                         />
                         <div>
-                            <span>Total Reservations</span>
+                            <span>{t('dashboard.totalReservations')}</span>
                             <div className="flex items-center gap-2">
                                 <h4>{formatNumber(reservations)}</h4>
                                 {comparisonEnabled && (
@@ -349,23 +351,24 @@ type ReservationsByStatusProps = {
 }
 
 const ReservationsByStatus = ({ byStatus }: ReservationsByStatusProps) => {
+    const { t } = useTranslation()
     const data = useMemo(() => {
         if (!byStatus) return []
         return Object.entries(byStatus)
             .filter(([, count]) => count > 0)
             .map(([status, count]) => ({
-                name: status,
+                name: t(`dashboard.${status}`) || status,
                 value: count,
                 color: statusChartColor(status),
             }))
-    }, [byStatus])
+    }, [byStatus, t])
 
     const total = data.reduce((sum, item) => sum + item.value, 0)
 
     return (
         <Card className="h-full" bodyClass="flex flex-col h-full">
             <div className="mb-4">
-                <h5>Reservations by Status</h5>
+                <h5>{t('dashboard.reservationsByStatus')}</h5>
             </div>
 
             <div className="flex justify-center mb-4">
@@ -518,30 +521,31 @@ type FleetByStatusProps = {
 }
 
 const FleetByStatus = ({ byStatus, totalCars, rented }: FleetByStatusProps) => {
+    const { t } = useTranslation()
     const chartData = useMemo(() => {
         if (!byStatus) return []
         return Object.entries(byStatus).map(([status, value]) => ({
-            label: status,
+            label: t(`dashboard.${status}`) || status,
             value,
             color: statusChartColor(status),
         }))
-    }, [byStatus])
+    }, [byStatus, t])
 
     return (
         <Card>
             <div className="flex items-center gap-2 mb-4">
-                <h5>Fleet by Status</h5>
+                <h5>{t('dashboard.fleetByStatus', 'Fleet by Status')}</h5>
             </div>
             <div className="flex items-center gap-2 sm:gap-8 mb-4">
                 <div>
-                    <p className="mb-1">Total Cars</p>
+                    <p className="mb-1">{t('dashboard.totalCars', 'Total Cars')}</p>
                     <div className="flex items-center gap-2">
                         <h4>{formatNumber(totalCars)}</h4>
                     </div>
                 </div>
                 <Divider orientation="vertical" className="h-12" />
                 <div>
-                    <p className="mb-1">Rented now</p>
+                    <p className="mb-1">{t('dashboard.rentedNow', 'Rented now')}</p>
                     <div className="flex items-center gap-2">
                         <h4>{formatNumber(rented)}</h4>
                     </div>
@@ -692,18 +696,19 @@ type TopVehiclesProps = {
 }
 
 const TopVehicles = ({ vehicles }: TopVehiclesProps) => {
+    const { t } = useTranslation()
     return (
         <Card bodyClass="p-0">
             <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-                <h5>Top Performing Vehicles</h5>
+                <h5>{t('dashboard.topPerformingVehicles')}</h5>
             </div>
             {vehicles.length > 0 ? (
                 <Table>
                     <THead>
                         <Tr>
-                            <Th>Vehicle</Th>
-                            <Th>Revenue</Th>
-                            <Th>Expenses</Th>
+                            <Th>{t('dashboard.vehicle')}</Th>
+                            <Th>{t('dashboard.revenue')}</Th>
+                            <Th>{t('dashboard.expenses')}</Th>
                             <Th>Margin</Th>
                             <Th>Booked Days</Th>
                         </Tr>
@@ -793,9 +798,11 @@ const DashboardHeader = ({
 
     const displayName = userName || 'User'
 
+    const { t } = useTranslation()
+
     const currentTimeRangeLabel =
-        timeRangeOptions.find((opt) => opt.key === timeRange)?.label ||
-        'This Month'
+        timeRangeOptions(t).find((opt) => opt.key === timeRange)?.label ||
+        t('dashboard.thisMonth')
 
     const handleTimeRangeSelect = (eventKey: string) => {
         onTimeRangeChange(eventKey as TimeRange)
@@ -804,12 +811,12 @@ const DashboardHeader = ({
     return (
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4 space-y-4 lg:space-y-0 py-2.5">
             <div>
-                <h4>Hey, {displayName}</h4>
+                <h4>{t('common.hi')}, {displayName}</h4>
                 <p className="mt-1">{formattedDate}</p>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                 <div className="flex items-center gap-2">
-                    <span className="heading-text">Comparison:</span>
+                    <span className="heading-text">{t('common.comparison')}:</span>
                     <Switcher
                         checked={comparisonEnabled}
                         onChange={(checked) => onComparisonChange(checked)}
@@ -829,7 +836,7 @@ const DashboardHeader = ({
                         }
                         placement="bottom-end"
                     >
-                        {timeRangeOptions.map((option) => (
+                        {timeRangeOptions(t).map((option) => (
                             <Dropdown.Item
                                 key={option.key}
                                 eventKey={option.key}
