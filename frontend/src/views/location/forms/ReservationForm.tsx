@@ -1583,7 +1583,7 @@ const ReservationForm = ({
                         render={({ field }) => (
                             <Select<CarOption>
                                 isSearchable
-                                placeholder="Select car"
+                                placeholder={t('reservations.form.selectCar', 'Select car')}
                                 options={carOptions}
                                 value={carOptionFor(field.value)}
                                 onChange={(option) =>
@@ -1619,7 +1619,7 @@ const ReservationForm = ({
                                 <Select
                                     isSearchable
                                     isLoading={clientsLoading}
-                                    placeholder="Select client"
+                                    placeholder={t('reservations.form.selectClient', 'Select client')}
                                     searchInputProps={{
                                         placeholder: 'Search clients…',
                                     }}
@@ -1655,7 +1655,7 @@ const ReservationForm = ({
                                 <Select
                                     isSearchable
                                     isLoading={clientsLoading}
-                                    placeholder="Select optional client"
+                                    placeholder={t('reservations.form.selectOptionalClient', 'Select optional client')}
                                     searchInputProps={{
                                         placeholder: 'Search clients…',
                                     }}
@@ -1746,7 +1746,7 @@ const ReservationForm = ({
                                         control={control}
                                         render={({ field }) => (
                                             <Input
-                                                placeholder="Why is this reservation being cancelled?"
+                                                placeholder={t('reservations.form.cancellationPlaceholder', 'Why is this reservation being cancelled?')}
                                                 {...field}
                                             />
                                         )}
@@ -1829,7 +1829,7 @@ const ReservationForm = ({
                         control={control}
                         render={({ field }) => (
                             <Input
-                                placeholder="e.g. Marrakech Menara Airport"
+                                placeholder={t('reservations.form.airportPlaceholder', 'e.g. Marrakech Menara Airport')}
                                 {...field}
                             />
                         )}
@@ -1841,7 +1841,7 @@ const ReservationForm = ({
                         control={control}
                         render={({ field }) => (
                             <Input
-                                placeholder="e.g. 12 Rue Gueliz, Marrakech"
+                                placeholder={t('reservations.form.locationPlaceholder', 'e.g. 12 Rue Gueliz, Marrakech')}
                                 {...field}
                             />
                         )}
@@ -1886,7 +1886,7 @@ const ReservationForm = ({
                             render={({ field }) => (
                                 <Input
                                     textArea
-                                    placeholder="Any remarks"
+                                    placeholder={t('reservations.form.anyRemarks', 'Any remarks')}
                                     {...field}
                                 />
                             )}
@@ -1909,7 +1909,7 @@ const ReservationForm = ({
                             <Input
                                 type="number"
                                 step="0.01"
-                                placeholder="Leave empty to use car price"
+                                placeholder={t('reservations.form.leaveEmptyCarPrice', 'Leave empty to use car price')}
                                 {...field}
                             />
                         )}
@@ -2010,7 +2010,7 @@ const ReservationForm = ({
                                                     field: descriptionField,
                                                 }) => (
                                                     <Input
-                                                        placeholder="Optional"
+                                                        placeholder={t('reservations.form.optional', 'Optional')}
                                                         {...descriptionField}
                                                     />
                                                 )}
@@ -2606,7 +2606,7 @@ const ReservationForm = ({
                                         control={addPaymentControl}
                                         render={({ field }) => (
                                             <Input
-                                                placeholder="Optional"
+                                                placeholder={t('reservations.form.optional', 'Optional')}
                                                 {...field}
                                             />
                                         )}

@@ -543,11 +543,23 @@
         "form.carClients": "Car & clients",
         "form.carClientsDesc": "Which car is booked and who is renting it.",
         "form.car": "Car",
-        "form.selectCar": "Select car",
+        "form.selectCar": {
+            "en": "Select car",
+            "fr": "Sélectionner un véhicule",
+            "ar": "اختر مركبة"
+        },
         "form.primaryClient": "Primary client",
-        "form.selectClient": "Select client",
+        "form.selectClient": {
+            "en": "Select client",
+            "fr": "Sélectionner un client",
+            "ar": "اختر العميل"
+        },
         "form.secondaryClient": "Secondary client",
-        "form.selectOptionalClient": "Select optional client",
+        "form.selectOptionalClient": {
+            "en": "Select optional client",
+            "fr": "Sélectionner un client (facultatif)",
+            "ar": "اختر عميل (اختياري)"
+        },
         "form.status": "Status",
         "form.cancellationReason": "Cancellation reason",
         "form.tripSchedule": "Trip schedule",
@@ -557,14 +569,42 @@
         "form.pickupLocation": "Pickup location",
         "form.returnLocation": "Return location",
         "form.remarks": "Remarks",
-        "form.anyRemarks": "Any remarks",
+        "form.anyRemarks": {
+            "en": "Any remarks",
+            "fr": "Remarques éventuelles",
+            "ar": "أي ملاحظات"
+        },
         "form.pickupPlaceholder": "e.g. Marrakech Menara Airport",
-        "form.locationPlaceholder": "e.g. 12 Rue Gueliz, Marrakech",
+        "form.locationPlaceholder": {
+            "en": "e.g. 12 Rue Gueliz, Marrakech",
+            "fr": "ex. 12 Rue Gueliz, Marrakech",
+            "ar": "مثال: 12 شارع غليس، مراكش"
+        },
         "form.requiredFields": "Please fill in all the required fields",
         "form.next": "Next",
         "form.prev": "Previous",
         "form.discard": "Discard",
         "form.create": "Create reservation",
-        "form.save": "Save"
+        "form.save": "Save",
+        "form.cancellationPlaceholder": {
+            "en": "Why is this reservation being cancelled?",
+            "fr": "Pourquoi annuler cette réservation ?",
+            "ar": "ما سبب إلغاء هذا الحجز؟"
+        },
+        "form.airportPlaceholder": {
+            "en": "e.g. Marrakech Menara Airport",
+            "fr": "ex. Aéroport Marrakech Menara",
+            "ar": "مثال: مطار مراكش المنارة"
+        },
+        "form.leaveEmptyCarPrice": {
+            "en": "Leave empty to use car price",
+            "fr": "Laisser vide pour utiliser le prix du véhicule",
+            "ar": "اتركه فارغًا لاستخدام سعر المركبة"
+        },
+        "form.optional": {
+            "en": "Optional",
+            "fr": "Facultatif",
+            "ar": "اختياري"
+        }
     }
 }
