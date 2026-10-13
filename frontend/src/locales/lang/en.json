@@ -428,6 +428,14 @@
         "created": "Created",
         "total": "Total",
         "payment": "Payment",
-        "status": "Status"
+        "status": "Status",
+        "reservationCancelled": "Reservation cancelled",
+        "reservationMarkedNoShow": "Reservation marked as no show",
+        "reservationActivated": "Reservation activated",
+        "reservationCompleted": "Reservation completed",
+        "couldNotCancel": "Could not cancel reservation",
+        "couldNotMarkNoShow": "Could not mark reservation as no show",
+        "couldNotActivate": "Could not activate reservation",
+        "couldNotComplete": "Could not complete reservation"
     }
 }

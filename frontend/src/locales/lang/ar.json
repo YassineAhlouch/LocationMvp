@@ -428,6 +428,14 @@
         "created": "تاريخ الإنشاء",
         "total": "الإجمالي",
         "payment": "الدفع",
-        "status": "الحالة"
+        "status": "الحالة",
+        "reservationCancelled": "تم إلغاء الحجز",
+        "reservationMarkedNoShow": "تم تسجيل الحجز كعدم حضور",
+        "reservationActivated": "تم تفعيل الحجز",
+        "reservationCompleted": "تم إكمال الحجز",
+        "couldNotCancel": "تعذّر إلغاء الحجز",
+        "couldNotMarkNoShow": "تعذّر تسجيل عدم الحضور",
+        "couldNotActivate": "تعذّر تفعيل الحجز",
+        "couldNotComplete": "تعذّر إكمال الحجز"
     }
 }

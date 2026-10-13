@@ -428,6 +428,14 @@
         "created": "Créé le",
         "total": "Total",
         "payment": "Paiement",
-        "status": "Statut"
+        "status": "Statut",
+        "reservationCancelled": "Réservation annulée",
+        "reservationMarkedNoShow": "Réservation marquée comme non présent",
+        "reservationActivated": "Réservation activée",
+        "reservationCompleted": "Réservation terminée",
+        "couldNotCancel": "Impossible d'annuler la réservation",
+        "couldNotMarkNoShow": "Impossible de marquer comme non présenté",
+        "couldNotActivate": "Impossible d'activer la réservation",
+        "couldNotComplete": "Impossible de terminer la réservation"
     }
 }

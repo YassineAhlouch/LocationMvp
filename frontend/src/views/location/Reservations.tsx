@@ -228,7 +228,7 @@ const CancelDialog = ({
                 reason: reason.trim(),
             })
             toast.push(
-                <Notification type="success" title="Reservation cancelled" />,
+                <Notification type="success" title={t('reservations.reservationCancelled', 'Reservation cancelled')} />,
             )
             onCancelled()
             onClose()
@@ -307,7 +307,7 @@ const NoShowDialog = ({
             toast.push(
                 <Notification
                     type="success"
-                    title="Reservation marked as no show"
+                    title={t('reservations.reservationMarkedNoShow', 'Reservation marked as no show')}
                 />,
             )
             onNoShow()
@@ -401,7 +401,7 @@ const ActivateDialog = ({
             inspectionRef.current?.appendTo(formData)
             await apiActivateReservation(reservation.id, formData)
             toast.push(
-                <Notification type="success" title="Reservation activated" />,
+                <Notification type="success" title={t('reservations.reservationActivated', 'Reservation activated')} />,
             )
             onActivated()
             onClose()
@@ -516,7 +516,7 @@ const CompleteDialog = ({
             inspectionRef.current?.appendTo(formData)
             await apiCompleteReservation(reservation.id, formData)
             toast.push(
-                <Notification type="success" title="Reservation completed" />,
+                <Notification type="success" title={t('reservations.reservationCompleted', 'Reservation completed')} />,
             )
             onCompleted()
             onClose()
