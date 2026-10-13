@@ -1573,7 +1573,7 @@ const ReservationForm = ({
                         >
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <FormItem
-                    label="Car"
+                    label={t('reservations.form.car', 'Car')}
                     invalid={Boolean(errors.car_id)}
                     errorMessage={errors.car_id?.message}
                 >
@@ -1607,7 +1607,7 @@ const ReservationForm = ({
                     )}
                 </FormItem>
                 <FormItem
-                    label="Primary client"
+                    label={t('reservations.form.primaryClient', 'Primary client')}
                     invalid={Boolean(errors.primary_client_id)}
                     errorMessage={errors.primary_client_id?.message}
                 >
@@ -1646,7 +1646,7 @@ const ReservationForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="Secondary client">
+                <FormItem label={t('reservations.form.secondaryClient', 'Secondary client')}>
                     <Controller
                         name="secondary_client_id"
                         control={control}
@@ -1702,7 +1702,7 @@ const ReservationForm = ({
                             </Tag>
                         </div>
                         <FormItem
-                            label="Status"
+                            label={t('reservations.status', 'Status')}
                             invalid={Boolean(errors.status)}
                             errorMessage={errors.status?.message}
                         >
@@ -1735,7 +1735,7 @@ const ReservationForm = ({
                         {tripValues.status === 'cancelled' &&
                             tripValues.status !== reservation.status && (
                                 <FormItem
-                                    label="Cancellation reason"
+                                    label={t('reservations.form.cancellationReason', 'Cancellation reason')}
                                     invalid={Boolean(errors.status_reason)}
                                     errorMessage={
                                         errors.status_reason?.message
@@ -1760,7 +1760,7 @@ const ReservationForm = ({
                     </div>
                 ) : (
                     <FormItem
-                        label="Status"
+                        label={t('reservations.status', 'Status')}
                         invalid={Boolean(errors.status)}
                         errorMessage={errors.status?.message}
                     >
@@ -1798,7 +1798,7 @@ const ReservationForm = ({
                     >
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <FormItem
-                    label="Pickup datetime"
+                    label={t('reservations.form.pickupDatetime', 'Pickup datetime')}
                     invalid={Boolean(errors.pickup_datetime)}
                     errorMessage={errors.pickup_datetime?.message}
                 >
@@ -1811,7 +1811,7 @@ const ReservationForm = ({
                     />
                 </FormItem>
                 <FormItem
-                    label="Expected return datetime"
+                    label={t('reservations.form.returnDatetime', 'Expected return datetime')}
                     invalid={Boolean(errors.expected_return_datetime)}
                     errorMessage={errors.expected_return_datetime?.message}
                 >
@@ -1823,7 +1823,7 @@ const ReservationForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="Pickup location">
+                <FormItem label={t('reservations.form.pickupLocation', 'Pickup location')}>
                     <Controller
                         name="pickup_location"
                         control={control}
@@ -1835,7 +1835,7 @@ const ReservationForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="Return location">
+                <FormItem label={t('reservations.form.returnLocation', 'Return location')}>
                     <Controller
                         name="return_location"
                         control={control}
