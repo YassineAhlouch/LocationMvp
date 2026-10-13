@@ -378,7 +378,8 @@
         "bookedDays": "Booked Days",
         "fleetByStatus": "Fleet by Status",
         "totalCars": "Total Cars",
-        "rentedNow": "Rented now"
+        "rentedNow": "Rented now",
+        "monthlyRevenue": "الإيرادات الشهرية"
     },
     "common": {
         "hi": "Hi",

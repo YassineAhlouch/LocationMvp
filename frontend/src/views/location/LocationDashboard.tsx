@@ -462,6 +462,7 @@ const AvgRevenuePerRental = ({
     comparisonEnabled,
     timeline,
 }: AvgRevenuePerRentalProps) => {
+    const { t } = useTranslation()
     const chartData = useMemo(() => {
         if (!timeline) return []
         return timeline.months.map((month, index) => ({
@@ -506,7 +507,7 @@ const AvgRevenuePerRental = ({
                     }}
                     tooltipContentConfig={{
                         valueFormatter: (value: number) => MAD(value),
-                        nameFormatter: () => 'Monthly revenue',
+                        nameFormatter: () => t('dashboard.monthlyRevenue'),
                     }}
                 />
             </div>
