@@ -45,6 +45,7 @@ import type {
     ReservationStatus,
 } from '@/@types/location'
 import ClientForm from './ClientForm'
+import useTranslation from '@/utils/hooks/useTranslation'
 import {
     MAD,
     formatDateTime,
@@ -748,6 +749,7 @@ const ReservationForm = ({
     onSaved,
     sidebar,
 }: ReservationFormProps) => {
+    const { t } = useTranslation()
     const isEditing = reservation !== null
     const navigate = useNavigate()
     const [selectedSection, setSelectedSection] = useState(
