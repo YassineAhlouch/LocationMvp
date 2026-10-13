@@ -278,7 +278,8 @@ const Payments = () => {
                         options={agencyFilterOptions}
                         value={
                             agencyFilterOptions.find(
-                                (option) => option.value === agencyId,
+                                (option) =>
+                                    String(option.value) === String(agencyId),
                             ) ?? agencyFilterOptions[0]
                         }
                         onChange={(option) => {
@@ -293,7 +294,8 @@ const Payments = () => {
                         options={paymentStatusOptions}
                         value={
                             paymentStatusOptions.find(
-                                (option) => option.value === status,
+                                (option) =>
+                                    String(option.value) === String(status),
                             ) ?? paymentStatusOptions[0]
                         }
                         onChange={(option) => {

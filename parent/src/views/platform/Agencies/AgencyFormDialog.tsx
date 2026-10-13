@@ -140,8 +140,14 @@ const AgencyFormDialog = ({
     useEffect(() => {
         if (isOpen) {
             apiGetCurrencies({ per_page: 100, is_active: true })
-                .then((response) => setCurrencies(response.data))
-                .catch(() => setCurrencies([]))
+                .then((response) => {
+                    console.debug('Currencies response:', response)
+                    setCurrencies(response.data || [])
+                })
+                .catch((err) => {
+                    console.error('Failed to load currencies:', err)
+                    setCurrencies([])
+                })
         }
     }, [isOpen])
 
@@ -395,8 +401,8 @@ const AgencyFormDialog = ({
                                         value={
                                             currencyOptions.find(
                                                 (option) =>
-                                                    option.value ===
-                                                    field.value,
+                                                    String(option.value) ===
+                                                    String(field.value),
                                             ) ?? null
                                         }
                                         onChange={(option) =>

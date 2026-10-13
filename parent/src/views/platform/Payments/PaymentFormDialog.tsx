@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
     Button,
+    DatePicker,
     Dialog,
     Form,
     FormItem,
@@ -12,6 +13,7 @@ import {
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import dayjs from 'dayjs'
 import {
     apiCreateAgencyPayment,
     apiGetAgencies,
@@ -118,8 +120,14 @@ const PaymentFormDialog = ({
     useEffect(() => {
         if (isOpen) {
             apiGetCurrencies({ per_page: 100, is_active: true })
-                .then((response) => setCurrencies(response.data))
-                .catch(() => setCurrencies([]))
+                .then((response) => {
+                    console.debug('Currencies response:', response)
+                    setCurrencies(response.data || [])
+                })
+                .catch((err) => {
+                    console.error('Failed to load currencies:', err)
+                    setCurrencies([])
+                })
         }
     }, [isOpen])
 
@@ -208,7 +216,8 @@ const PaymentFormDialog = ({
                                 value={
                                     agencyOptions.find(
                                         (option) =>
-                                            option.value === field.value,
+                                            String(option.value) ===
+                                            String(field.value),
                                     ) ?? null
                                 }
                                 onChange={(option) => {
@@ -264,11 +273,16 @@ const PaymentFormDialog = ({
                                     value={
                                         currencyOptions.find(
                                             (option) =>
-                                                option.value === field.value,
+                                                String(option.value) ===
+                                                String(field.value),
                                         ) ?? null
                                     }
                                     onChange={(option) =>
-                                        field.onChange(option?.value ?? null)
+                                        field.onChange(
+                                            option?.value === undefined
+                                                ? null
+                                                : option.value,
+                                        )
                                     }
                                 />
                             )}
@@ -283,10 +297,31 @@ const PaymentFormDialog = ({
                             name="period"
                             control={control}
                             render={({ field }) => (
-                                <Input
-                                    {...field}
-                                    type="month"
+                                <DatePicker
                                     disabled={isSubmitting}
+                                    defaultView="month"
+                                    lockView
+                                    clearable
+                                    placeholder="Select month"
+                                    inputFormat="YYYY-MM"
+                                    value={
+                                        field.value
+                                            ? dayjs(
+                                                  field.value,
+                                                  'YYYY-MM',
+                                              ).toDate()
+                                            : null
+                                    }
+                                    onChange={(date) => {
+                                        if (!date) {
+                                            field.onChange('')
+                                            return
+                                        }
+                                        field.onChange(
+                                            dayjs(date).format('YYYY-MM'),
+                                        )
+                                    }}
+                                    onBlur={field.onBlur}
                                 />
                             )}
                         />

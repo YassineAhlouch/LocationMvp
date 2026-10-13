@@ -12,6 +12,15 @@ class IndexCurrencyRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('is_active')) {
+            $this->merge([
+                'is_active' => filter_var($this->input('is_active'), FILTER_VALIDATE_BOOLEAN),
+            ]);
+        }
+    }
+
     /**
      * @return array<string, array<int, string>>
      */
