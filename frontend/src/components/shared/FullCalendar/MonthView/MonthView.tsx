@@ -20,7 +20,8 @@ import type { ViewProps } from '../types'
 
 type MonthViewProps = ViewProps & BaseDayCellProps
 
-const WEEK_DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const getWeekDays = () =>
+    Array.from({ length: 7 }, (_, index) => dayjs().day(index).format('ddd'))
 
 const MonthView = ({
     singleDayEvents,
@@ -139,7 +140,7 @@ const MonthView = ({
     return (
         <div>
             <div className="grid grid-cols-7">
-                {WEEK_DAYS.map((day) => (
+                {getWeekDays().map((day) => (
                     <div
                         key={day}
                         className="flex items-center justify-center py-2"

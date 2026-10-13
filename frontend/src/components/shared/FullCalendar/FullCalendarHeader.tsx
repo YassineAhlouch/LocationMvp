@@ -5,6 +5,7 @@ import useFullCalendar from './hooks/useFullCalendar'
 import { navigateDate } from './utils'
 import { LiArrowLeft, LiArrowRight } from '@/icons'
 import dayjs from 'dayjs'
+import useTranslation from '@/utils/hooks/useTranslation'
 import type { CalendarView } from './types'
 import type { ReactNode } from 'react'
 
@@ -23,25 +24,30 @@ export type BaseFullCalendarHeaderProps = {
 
 export type FullCalendarHeaderProps = BaseFullCalendarHeaderProps
 
-const tabs: { label: string; value: string }[] = [
+const tabs: { label: string; labelKey: string; value: string }[] = [
     {
         label: 'Agenda',
+        labelKey: 'calendar.agenda',
         value: 'agenda',
     },
     {
         label: 'Day',
+        labelKey: 'calendar.day',
         value: 'day',
     },
     {
         label: 'Week',
+        labelKey: 'calendar.week',
         value: 'week',
     },
     {
         label: 'Month',
+        labelKey: 'calendar.month',
         value: 'month',
     },
     {
         label: 'Year',
+        labelKey: 'calendar.year',
         value: 'year',
     },
 ]
@@ -50,7 +56,13 @@ const FullCalendarHeader = ({
     renderHeaderStart,
     renderHeaderEnd,
 }: FullCalendarHeaderProps) => {
+    const { t } = useTranslation()
     const { view, setView, selectedDate, setSelectedDate } = useFullCalendar()
+
+    const viewOptions = tabs.map((item) => ({
+        label: t(item.labelKey, item.label),
+        value: item.value,
+    }))
 
     const handlePrevious = () =>
         setSelectedDate(navigateDate(selectedDate, view, 'previous'))
@@ -87,14 +99,14 @@ const FullCalendarHeader = ({
                             onClick={handlePrevious}
                         />
                         <Button onClick={() => setSelectedDate(new Date())}>
-                            Today
+                            {t('calendar.today', 'Today')}
                         </Button>
                         <Button icon={<LiArrowRight />} onClick={handleNext} />
                     </InputGroup>
                     <Select
                         className="w-[100px]"
-                        options={tabs}
-                        value={tabs.find((item) => item.value === view)}
+                        options={viewOptions}
+                        value={viewOptions.find((item) => item.value === view)}
                         onChange={(selected) => setView(selected.value)}
                     />
                 </div>

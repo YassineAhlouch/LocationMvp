@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import EventBullet from '../EventBullet'
 import DroppableArea from '../DropableArea'
 import { isToday, isSunday, isSameDay } from '../utils'
+import useTranslation from '@/utils/hooks/useTranslation'
 import {
     DAY_NUMBER_HEIGHT,
     DAY_NUMBER_HEIGHT_GAP,
@@ -39,6 +40,7 @@ const DayCell = ({
     onEventClick,
     onMoreClick,
 }: DayCellProps) => {
+    const { t } = useTranslation()
     const { day, currentMonth, date } = cell
 
     const cellEvents = useMemo(() => {
@@ -131,7 +133,9 @@ const DayCell = ({
                         disabled={!onMoreClick}
                     >
                         <div className="text-xs text-center bg-gray-100 dark:bg-gray-800 dark:text-gray-300 rounded px-1 py-0.5 border">
-                            +{overflowCount} more
+                            {t('calendar.more', '+{{count}} more', {
+                                count: overflowCount,
+                            })}
                         </div>
                     </button>
                 )}

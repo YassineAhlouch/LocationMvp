@@ -27,8 +27,8 @@ import {
 import type { Reservation, ReservationCalendarItem } from '@/@types/location'
 import type { FullCalendarEvent } from '@/components/shared/FullCalendar/types'
 
-const reservationTitle = (item: ReservationCalendarItem) =>
-    `${item.reservation_number} · ${item.primary_client?.full_name ?? 'Unassigned'}`
+const reservationTitle = (item: ReservationCalendarItem, unassigned: string) =>
+    `${item.reservation_number} · ${item.primary_client?.full_name ?? unassigned}`
 
 type CustomEventProps = {
     event: FullCalendarEvent
@@ -36,23 +36,31 @@ type CustomEventProps = {
 }
 
 /** A status dot plus the booking label, mirroring the HRM leaves calendar. */
-const CustomEvent = ({ event, item }: CustomEventProps) => (
-    <div className="flex min-w-0 items-center gap-1.5">
-        <span
-            className={classNames(
-                getColorClasses(
-                    item
-                        ? reservationCalendarColor[item.status]
-                        : reservationCalendarColor.pending,
-                ).bullet,
-                'h-2.5 w-2.5 shrink-0 rounded-full',
-            )}
-        />
-        <span className="truncate font-medium heading-text">
-            {item ? reservationTitle(item) : event.title}
-        </span>
-    </div>
-)
+const CustomEvent = ({ event, item }: CustomEventProps) => {
+    const { t } = useTranslation()
+    return (
+        <div className="flex min-w-0 items-center gap-1.5">
+            <span
+                className={classNames(
+                    getColorClasses(
+                        item
+                            ? reservationCalendarColor[item.status]
+                            : reservationCalendarColor.pending,
+                    ).bullet,
+                    'h-2.5 w-2.5 shrink-0 rounded-full',
+                )}
+            />
+            <span className="truncate font-medium heading-text">
+                {item
+                    ? reservationTitle(
+                          item,
+                          t('reservations.calendar.unassigned', 'Unassigned'),
+                      )
+                    : event.title}
+            </span>
+        </div>
+    )
+}
 
 const ReservationCalendar = () => {
     const { t } = useTranslation()
@@ -73,7 +81,7 @@ const ReservationCalendar = () => {
             .catch((error) =>
                 toast.push(
                     <Notification type="danger" title={t('reservations.calendar.unableLoad', 'Unable to load calendar')}>
-                        {apiErrorMessage(error, 'Please try again.')}
+                        {apiErrorMessage(error, t('reservations.calendar.tryAgain', 'Please try again.'))}
                     </Notification>,
                 ),
             )
@@ -82,7 +90,7 @@ const ReservationCalendar = () => {
                     setLoading(false)
                 }
             })
-    }, [])
+    }, [t])
 
     useEffect(() => {
         fetchItems()
@@ -127,7 +135,7 @@ const ReservationCalendar = () => {
             .catch((error) =>
                 toast.push(
                     <Notification type="danger" title={t('reservations.calendar.unableOpen', 'Unable to open booking')}>
-                        {apiErrorMessage(error, 'Please try again.')}
+                        {apiErrorMessage(error, t('reservations.calendar.tryAgain', 'Please try again.'))}
                     </Notification>,
                 ),
             )
@@ -175,7 +183,7 @@ const ReservationCalendar = () => {
             .catch((error) =>
                 toast.push(
                     <Notification type="danger" title={t('reservations.calendar.unableReschedule', 'Unable to reschedule')}>
-                        {apiErrorMessage(error, 'Please try again.')}
+                        {apiErrorMessage(error, t('reservations.calendar.tryAgain', 'Please try again.'))}
                     </Notification>,
                 ),
             )

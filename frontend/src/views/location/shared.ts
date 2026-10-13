@@ -24,6 +24,16 @@ export const formatDateTime = (value?: string | null) =>
 
 type ApiError = { response?: { data?: { message?: string } } }
 
+/**
+ * Minimal translator contract for module-level label/option factories that
+ * must recompute when the active language changes.
+ */
+export type Translator = (
+    key: string,
+    defaultValue?: string,
+    options?: Record<string, unknown>,
+) => string
+
 /** Surface the backend's validation/domain message, else a fallback. */
 export const apiErrorMessage = (error: unknown, fallback: string) =>
     (error as ApiError)?.response?.data?.message ?? fallback

@@ -54,7 +54,7 @@ import {
     paymentStatusTone,
     tagToneClass,
 } from '../shared'
-import type { TagTone } from '../shared'
+import type { TagTone, Translator } from '../shared'
 
 type ExtraRow = {
     name: string
@@ -110,32 +110,52 @@ type ReservationFormValues = {
  */
 type StatusFlowOption = { hint?: string }
 
-const startupStatusOptions: SingleOption<StatusFlowOption>[] = [
-    { value: 'pending', label: 'Pending', hint: 'Created' },
-    { value: 'confirmed', label: 'Confirmed', hint: 'Talked to client' },
-    { value: 'reserved', label: 'Reserved', hint: 'Phone hold' },
+const startupStatusOptions = (
+    t: Translator,
+): SingleOption<StatusFlowOption>[] => [
+    {
+        value: 'pending',
+        label: t('reservations.status.pending', 'Pending'),
+        hint: t('reservations.statusHint.created', 'Created'),
+    },
+    {
+        value: 'confirmed',
+        label: t('reservations.status.confirmed', 'Confirmed'),
+        hint: t('reservations.statusHint.talkedToClient', 'Talked to client'),
+    },
+    {
+        value: 'reserved',
+        label: t('reservations.status.reserved', 'Reserved'),
+        hint: t('reservations.statusHint.phoneHold', 'Phone hold'),
+    },
     {
         value: 'active',
-        label: 'Active',
-        hint: 'Client signed the contract',
+        label: t('reservations.status.active', 'Active'),
+        hint: t(
+            'reservations.statusHint.clientSignedContract',
+            'Client signed the contract',
+        ),
         disabled: true,
     },
     {
         value: 'completed',
-        label: 'Completed',
-        hint: 'Car returned',
+        label: t('reservations.status.completed', 'Completed'),
+        hint: t('reservations.statusHint.carReturned', 'Car returned'),
         disabled: true,
     },
     {
         value: 'cancelled',
-        label: 'Cancelled',
-        hint: 'Trip cancelled',
+        label: t('reservations.status.cancelled', 'Cancelled'),
+        hint: t('reservations.statusHint.tripCancelled', 'Trip cancelled'),
         disabled: true,
     },
     {
         value: 'extended',
-        label: 'Extended',
-        hint: 'More days added — status stays',
+        label: t('reservations.form.extendedStatus', 'Extended'),
+        hint: t(
+            'reservations.statusHint.moreDaysAdded',
+            'More days added — status stays',
+        ),
         disabled: true,
     },
 ]
@@ -155,28 +175,19 @@ const editStatusTargets: Record<ReservationStatus, ReservationStatus[]> = {
     no_show: [],
 }
 
-const editStatusLabels: Record<ReservationStatus, string> = {
-    pending: 'Pending',
-    confirmed: 'Confirmed',
-    reserved: 'Reserved',
-    active: 'Active',
-    completed: 'Completed',
-    cancelled: 'Cancelled',
-    no_show: 'No show',
-}
-
-const editStatusHints: Record<ReservationStatus, string> = {
-    pending: 'Created',
-    confirmed: 'Talked to client',
-    reserved: 'Phone hold',
-    active: 'Contract signed',
-    completed: 'Car returned',
-    cancelled: 'Trip cancelled',
-    no_show: 'Client never showed',
+const editStatusHintKeys: Record<ReservationStatus, string> = {
+    pending: 'created',
+    confirmed: 'talkedToClient',
+    reserved: 'phoneHold',
+    active: 'contractSigned',
+    completed: 'carReturned',
+    cancelled: 'tripCancelled',
+    no_show: 'clientNeverShowed',
 }
 
 const editStatusFlowOptions = (
     current: ReservationStatus,
+    t: Translator,
 ): SingleOption<StatusFlowOption>[] => {
     const targets = editStatusTargets[current] ?? []
     const order: ReservationStatus[] = [
@@ -190,8 +201,14 @@ const editStatusFlowOptions = (
 
     return order.map((value) => ({
         value,
-        label: editStatusLabels[value],
-        hint: value === current ? 'Current status' : editStatusHints[value],
+        label: t(`reservations.status.${value}`, value),
+        hint:
+            value === current
+                ? t('reservations.statusHint.currentStatus', 'Current status')
+                : t(
+                      `reservations.statusHint.${editStatusHintKeys[value]}`,
+                      value,
+                  ),
         disabled: value !== current && !targets.includes(value),
     }))
 }
@@ -203,17 +220,17 @@ const editStatusFlowOptions = (
  * availability for the chosen window.
  */
 const reservationFormSectionList: {
-    label: string
+    labelKey: string
     value: string
     fields: (keyof ReservationFormValues)[]
 }[] = [
     {
-        label: 'Trip',
+        labelKey: 'reservations.form.tabs.trip',
         value: 'trip',
         fields: ['pickup_datetime', 'expected_return_datetime'],
     },
     {
-        label: 'Basic info',
+        labelKey: 'reservations.form.tabs.basic',
         value: 'basicInfo',
         fields: [
             'car_id',
@@ -223,7 +240,7 @@ const reservationFormSectionList: {
         ],
     },
     {
-        label: 'Pricing',
+        labelKey: 'reservations.form.tabs.pricing',
         value: 'pricing',
         fields: [
             'daily_rate',
@@ -232,7 +249,7 @@ const reservationFormSectionList: {
             'extras',
         ],
     },
-    { label: 'Payment', value: 'payment', fields: ['payments'] },
+    { labelKey: 'reservations.form.tabs.payment', value: 'payment', fields: ['payments'] },
 ]
 
 const SectionContainer = ({
@@ -273,33 +290,34 @@ const FormSectionCard = ({
     )
 }
 
-const paymentMethodOptions = [
-    { value: 'cash', label: 'Cash' },
-    { value: 'card', label: 'Card' },
-    { value: 'transfer', label: 'Transfer' },
+const paymentMethodOptions = (t: Translator) => [
+    { value: 'cash', label: t('reservations.form.methodCash', 'Cash') },
+    { value: 'card', label: t('reservations.form.methodCard', 'Card') },
+    { value: 'transfer', label: t('reservations.form.methodTransfer', 'Transfer') },
+]
+
+const paymentRecordStatusOptions = (t: Translator) => [
+    { value: 'paid', label: t('reservations.payment.paid', 'Paid') },
+    { value: 'pending', label: t('reservations.status.pending', 'Pending') },
+]
+
+const extrasPricingTypeOptions = (t: Translator) => [
+    { value: 'fixed', label: t('reservations.form.pricingFixed', 'Fixed') },
+    { value: 'daily', label: t('reservations.form.pricingDaily', 'Daily') },
 ] as const
 
-const paymentRecordStatusOptions = [
-    { value: 'paid', label: 'Paid' },
-    { value: 'pending', label: 'Pending' },
-] as const
-
-const extrasPricingTypeOptions = [
-    { value: 'fixed', label: 'Fixed' },
-    { value: 'daily', label: 'Daily' },
-] as const
-
-const reservationSchema = z
-    .object({
-        car_id: z.number({ message: 'Car is required' }),
+const reservationSchema = (t: Translator) =>
+    z
+        .object({
+        car_id: z.number({ message: t('reservations.form.validation.carRequired', 'Car is required') }),
         primary_client_id: z.number({
-            message: 'Primary client is required',
+            message: t('reservations.form.validation.primaryClientRequired', 'Primary client is required'),
         }),
         secondary_client_id: z.number().optional(),
-        pickup_datetime: z.string().min(1, 'Pickup datetime is required'),
+        pickup_datetime: z.string().min(1, t('reservations.form.validation.pickupRequired', 'Pickup datetime is required')),
         expected_return_datetime: z
             .string()
-            .min(1, 'Expected return datetime is required'),
+            .min(1, t('reservations.form.validation.returnRequired', 'Expected return datetime is required')),
         pickup_location: z.string().optional(),
         return_location: z.string().optional(),
         daily_rate: z.string().optional(),
@@ -309,17 +327,17 @@ const reservationSchema = z
         extras: z
             .array(
                 z.object({
-                    name: z.string().min(1, 'Name is required'),
+                    name: z.string().min(1, t('reservations.form.validation.nameRequired', 'Name is required')),
                     description: z.string().optional(),
                     pricing_type: z.enum(['fixed', 'daily']),
                     quantity: z
                         .string()
-                        .regex(/^\d+$/, 'Quantity is required')
-                        .refine((value) => Number(value) >= 1, 'At least 1'),
+                        .regex(/^\d+$/, t('reservations.form.validation.quantityRequired', 'Quantity is required'))
+                        .refine((value) => Number(value) >= 1, t('reservations.form.validation.atLeastOne', 'At least 1')),
                     unit_price: z
                         .string()
-                        .regex(/^\d+(\.\d+)?$/, 'Unit price is required')
-                        .refine((value) => Number(value) >= 0, 'Not negative'),
+                        .regex(/^\d+(\.\d+)?$/, t('reservations.form.validation.unitPriceRequired', 'Unit price is required'))
+                        .refine((value) => Number(value) >= 0, t('reservations.form.validation.notNegative', 'Not negative')),
                 }),
             )
             .optional(),
@@ -329,10 +347,10 @@ const reservationSchema = z
                     payment_date: z.string().optional(),
                     amount: z
                         .string()
-                        .regex(/^\d+(\.\d+)?$/, 'Amount is required')
+                        .regex(/^\d+(\.\d+)?$/, t('reservations.form.validation.amountRequired', 'Amount is required'))
                         .refine(
                             (value) => Number(value) > 0,
-                            'Amount must be greater than 0',
+                            t('reservations.form.validation.amountPositive', 'Amount must be greater than 0'),
                         ),
                     method: z.enum(['cash', 'card', 'transfer']),
                     status: z.enum(['paid', 'pending']),
@@ -348,7 +366,8 @@ const reservationSchema = z
  * MACHINE permits (the backend still rejects illegal moves) and a reason can
  * ride along with a cancellation.
  */
-const editReservationSchema = reservationSchema.extend({
+const editReservationSchema = (t: Translator) =>
+    reservationSchema(t).extend({
     status: z
         .enum([
             'pending',
@@ -363,12 +382,13 @@ const editReservationSchema = reservationSchema.extend({
     status_reason: z.string().max(500).optional(),
 })
 
-const addPaymentSchema = z.object({
+const addPaymentSchema = (t: Translator) =>
+    z.object({
     payment_date: z.string().optional(),
     amount: z
         .string()
-        .regex(/^\d+(\.\d+)?$/, 'Amount is required')
-        .refine((value) => Number(value) > 0, 'Amount must be greater than 0'),
+        .regex(/^\d+(\.\d+)?$/, t('reservations.form.validation.amountRequired', 'Amount is required'))
+        .refine((value) => Number(value) > 0, t('reservations.form.validation.amountPositive', 'Amount must be greater than 0')),
     method: z.enum(['cash', 'card', 'transfer']),
     status: z.enum(['paid', 'pending']),
     reference: z.string().optional(),
@@ -500,6 +520,8 @@ const isCarAvailable = (option: SingleOption<CarOption>): boolean =>
     !isCarOffRoad(option) && (option.conflicts?.length ?? 0) === 0
 
 const CarOptionBadge = ({ option }: { option: SingleOption<CarOption> }) => {
+    const { t } = useTranslation()
+
     if (!option.status) {
         return null
     }
@@ -516,12 +538,20 @@ const CarOptionBadge = ({ option }: { option: SingleOption<CarOption> }) => {
 
     const reason = offRoad
         ? option.status === 'maintenance'
-            ? 'In maintenance — not bookable'
-            : 'Not active in the fleet — not bookable'
+            ? t(
+                  'reservations.form.inMaintenance',
+                  'In maintenance — not bookable',
+              )
+            : t(
+                  'reservations.form.notActiveFleet',
+                  'Not active in the fleet — not bookable',
+              )
         : conflicts.length > 0
-          ? `Booked in this period: ${conflicts
-                .map((conflict) => conflict.reservation_number)
-                .join(', ')}`
+          ? t('reservations.form.bookedInPeriod', 'Booked in this period: {{numbers}}', {
+                numbers: conflicts
+                    .map((conflict) => conflict.reservation_number)
+                    .join(', '),
+            })
           : undefined
 
     // A period clash on the car the user is picking is an error worth flagging
@@ -537,7 +567,9 @@ const CarOptionBadge = ({ option }: { option: SingleOption<CarOption> }) => {
             className={`inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-[11px] font-semibold ${statusChipClass[tone]}`}
             title={reason}
         >
-            {available ? 'Available' : 'Unavailable'}
+            {available
+                ? t('reservations.form.carAvailable', 'Available')
+                : t('reservations.form.carUnavailable', 'Unavailable')}
         </span>
     )
 }
@@ -804,9 +836,9 @@ const ReservationForm = ({
     const reservationResolver = useMemo(
         () =>
             zodResolver(
-                isEditing ? editReservationSchema : reservationSchema,
+                isEditing ? editReservationSchema(t) : reservationSchema(t),
             ) as unknown as Resolver<ReservationFormValues>,
-        [isEditing],
+        [isEditing, t],
     )
 
     const formMethods = useForm<ReservationFormValues>({
@@ -831,7 +863,7 @@ const ReservationForm = ({
         formState: { errors: addPaymentErrors },
     } = useForm<AddPaymentValues>({
         resolver: zodResolver(
-            addPaymentSchema,
+            addPaymentSchema(t),
         ) as unknown as Resolver<AddPaymentValues>,
         defaultValues: addPaymentDefaults(),
     })
@@ -1237,7 +1269,7 @@ const ReservationForm = ({
             toast.push(
                 <Notification
                     type="success"
-                    title="Payment recorded successfully!"
+                    title={t('reservations.form.paymentRecorded', 'Payment recorded successfully!')}
                 />,
             )
             resetAddPayment(addPaymentDefaults())
@@ -1252,10 +1284,10 @@ const ReservationForm = ({
                     type="danger"
                     title={
                         status === 403
-                            ? "You don't have permission to record payments"
+                            ? t('reservations.form.noPaymentPermission', "You don't have permission to record payments")
                             : apiErrorMessage(
                                   error,
-                                  'Payment could not be recorded',
+                                  t('reservations.form.paymentNotRecorded', 'Payment could not be recorded'),
                               )
                     }
                 />,
@@ -1291,7 +1323,7 @@ const ReservationForm = ({
                 toast.push(
                     <Notification
                         type="success"
-                        title="Reservation updated successfully!"
+                        title={t('reservations.form.updatedSuccess', 'Reservation updated successfully!')}
                     />,
                 )
             } else {
@@ -1299,7 +1331,7 @@ const ReservationForm = ({
                 toast.push(
                     <Notification
                         type="success"
-                        title="Reservation created successfully!"
+                        title={t('reservations.form.createdSuccess', 'Reservation created successfully!')}
                     />,
                 )
             }
@@ -1309,7 +1341,7 @@ const ReservationForm = ({
             toast.push(
                 <Notification
                     type="danger"
-                    title={apiErrorMessage(error, 'Something went wrong')}
+                    title={apiErrorMessage(error, t('reservations.form.somethingWentWrong', 'Something went wrong'))}
                 />,
             )
         } finally {
@@ -1474,13 +1506,20 @@ const ReservationForm = ({
                             <div>
                                 <h5 className="font-semibold dark:text-gray-100">
                                     {isEditing
-                                        ? 'Edit reservation'
-                                        : 'New reservation'}
+                                        ? t('reservations.form.editTitle', 'Edit reservation')
+                                        : t('reservations.form.title', 'New reservation')}
                                 </h5>
                                 <span className="text-sm text-gray-500 dark:text-gray-400">
                                     {isEditing && reservation
-                                        ? `${reservation.reservation_number} — trip, pricing and payments below.`
-                                        : 'Book a car for a client — details live in the tabs below.'}
+                                        ? t(
+                                              'reservations.form.tripSummary',
+                                              '{{number}} — trip, pricing and payments below.',
+                                              { number: reservation.reservation_number },
+                                          )
+                                        : t(
+                                              'reservations.form.subtitle',
+                                              'Book a car for a client — details live in the tabs below.',
+                                          )}
                                 </span>
                             </div>
                         </div>
@@ -1491,7 +1530,10 @@ const ReservationForm = ({
                                         reservationStatusTone[reservation.status]
                                     ]}`}
                                 >
-                                    {reservation.status}
+                                    {t(
+                                        `reservations.status.${reservation.status}`,
+                                        reservation.status,
+                                    )}
                                 </Tag>
                                 <Tag
                                     className={`capitalize ${tagToneClass[
@@ -1524,23 +1566,24 @@ const ReservationForm = ({
                             className="flex items-center justify-between"
                             tabListClass="border-0"
                             tabNavClass="min-w-[100px] text-center"
-                            tabList={reservationFormSectionList.map((item) =>
-                                item.fields.some((field) =>
+                            tabList={reservationFormSectionList.map((item) => {
+                                const label = t(item.labelKey, item.labelKey)
+                                return item.fields.some((field) =>
                                     invalidFields.includes(field),
                                 )
                                     ? {
                                           ...item,
                                           label: (
                                               <span>
-                                                  {item.label}{' '}
+                                                  {label}{' '}
                                                   <span className="text-red-500">
                                                       *
                                                   </span>
                                               </span>
                                           ),
                                       }
-                                    : item,
-                            )}
+                                    : { ...item, label }
+                            })}
                         />
                     </div>
                 </Container>
@@ -1698,7 +1741,10 @@ const ReservationForm = ({
                                     ]
                                 ]}`}
                             >
-                                {reservation.payment_status}
+                                {t(
+                                    `reservations.payment.${reservation.payment_status}`,
+                                    reservation.payment_status,
+                                )}
                             </Tag>
                         </div>
                         <FormItem
@@ -1713,9 +1759,11 @@ const ReservationForm = ({
                                     <Select
                                         options={editStatusFlowOptions(
                                             reservation.status,
+                                            t,
                                         )}
                                         value={editStatusFlowOptions(
                                             reservation.status,
+                                            t,
                                         ).find(
                                             (o) => o.value === field.value,
                                         )}
@@ -1754,8 +1802,10 @@ const ReservationForm = ({
                                 </FormItem>
                             )}
                         <p className="text-xs text-gray-400 dark:text-gray-500">
-                            Only legal moves are enabled. Moving the status
-                            updates the car (reserved, rented, released).
+                            {t(
+                                'reservations.form.legalMovesHint',
+                                'Only legal moves are enabled. Moving the status updates the car (reserved, rented, released).',
+                            )}
                         </p>
                     </div>
                 ) : (
@@ -1769,8 +1819,8 @@ const ReservationForm = ({
                             control={control}
                             render={({ field }) => (
                                 <Select
-                                    options={startupStatusOptions}
-                                    value={startupStatusOptions.find(
+                                    options={startupStatusOptions(t)}
+                                    value={startupStatusOptions(t).find(
                                         (o) => o.value === field.value,
                                     )}
                                     onChange={(option) =>
@@ -1873,13 +1923,16 @@ const ReservationForm = ({
                     <div className="mt-4 flex items-center gap-2 rounded-lg bg-gray-100 px-3 py-2 text-sm dark:bg-gray-800">
                         <LiCalendar className="text-base text-gray-400" />
                         <span className="text-gray-500 dark:text-gray-400">
-                            Total duration
+                            {t('reservations.form.totalDuration', 'Total duration')}
                         </span>
                         <span className="font-semibold text-gray-700 dark:text-gray-200">
-                            {rentalDays} {rentalDays === 1 ? 'day' : 'days'}
+                            {rentalDays}{' '}
+                            {rentalDays === 1
+                                ? t('reservations.form.day', 'day')
+                                : t('reservations.form.days', 'days')}
                         </span>
                     </div>
-                    <FormItem label="Remarks">
+                    <FormItem label={t('reservations.form.remarks', 'Remarks')}>
                         <Controller
                             name="remarks"
                             control={control}
@@ -1897,11 +1950,14 @@ const ReservationForm = ({
 
                 <SectionContainer show={selectedSection === 'pricing'}>
                     <FormSectionCard
-                        title="Rates"
-                        description="Daily rate, discount and deposit."
+                        title={t('reservations.form.ratesTitle', 'Rates')}
+                        description={t(
+                            'reservations.form.ratesDesc',
+                            'Daily rate, discount and deposit.',
+                        )}
                     >
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <FormItem label="Daily rate (MAD)">
+                <FormItem label={t('reservations.form.dailyRateMad', 'Daily rate (MAD)')}>
                     <Controller
                         name="daily_rate"
                         control={control}
@@ -1915,7 +1971,7 @@ const ReservationForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="Discount (MAD)">
+                <FormItem label={t('reservations.form.discountMad', 'Discount (MAD)')}>
                     <Controller
                         name="discount_amount"
                         control={control}
@@ -1929,7 +1985,7 @@ const ReservationForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="Deposit (MAD)">
+                <FormItem label={t('reservations.form.depositMad', 'Deposit (MAD)')}>
                     <Controller
                         name="deposit_amount"
                         control={control}
@@ -1946,18 +2002,22 @@ const ReservationForm = ({
                     </div>
                 </FormSectionCard>
                 <FormSectionCard
-                    title="Extras"
-                    description="Optional equipment or services added to the rental."
+                    title={t('reservations.form.extrasTitle', 'Extras')}
+                    description={t(
+                        'reservations.form.extrasDesc',
+                        'Optional equipment or services added to the rental.',
+                    )}
                 >
             <div>
                     <p className="mb-3 text-xs text-gray-400 dark:text-gray-500">
-                        Extras: a name, unit price and either a fixed or daily
-                        pricing type (daily extras multiply by the rental
-                        days).
+                        {t(
+                            'reservations.form.extrasHint',
+                            'Extras: a name, unit price and either a fixed or daily pricing type (daily extras multiply by the rental days).',
+                        )}
                     </p>
                     {fields.length === 0 ? (
                         <p className="text-sm text-gray-400 dark:text-gray-500">
-                            No extras selected.
+                            {t('reservations.form.noExtras', 'No extras selected.')}
                         </p>
                     ) : (
                         <div className="space-y-3">
@@ -1968,7 +2028,7 @@ const ReservationForm = ({
                                 >
                                     <div className="mb-3 flex items-center justify-between">
                                         <h6 className="text-sm font-semibold text-gray-600 dark:text-gray-300">
-                                            Extra {index + 1}
+                                            {t('reservations.form.extraNumber', 'Extra {{number}}', { number: index + 1 })}
                                         </h6>
                                         <Button
                                             type="button"
@@ -1977,12 +2037,12 @@ const ReservationForm = ({
                                             className="text-error hover:bg-error-subtle"
                                             onClick={() => remove(index)}
                                         >
-                                            Remove
+                                            {t('reservations.form.remove', 'Remove')}
                                         </Button>
                                     </div>
                                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                         <FormItem
-                                            label="Name"
+                                            label={t('reservations.form.extraName', 'Name')}
                                             invalid={Boolean(
                                                 errors.extras?.[index]?.name,
                                             )}
@@ -1996,13 +2056,13 @@ const ReservationForm = ({
                                                 control={control}
                                                 render={({ field: nameField }) => (
                                                     <Input
-                                                        placeholder="e.g. GPS, baby seat…"
+                                                        placeholder={t('reservations.form.extraNamePlaceholder', 'e.g. GPS, baby seat…')}
                                                         {...nameField}
                                                     />
                                                 )}
                                             />
                                         </FormItem>
-                                        <FormItem label="Description">
+                                        <FormItem label={t('reservations.form.description', 'Description')}>
                                             <Controller
                                                 name={`extras.${index}.description`}
                                                 control={control}
@@ -2016,7 +2076,7 @@ const ReservationForm = ({
                                                 )}
                                             />
                                         </FormItem>
-                                        <FormItem label="Pricing type">
+                                        <FormItem label={t('reservations.form.pricingType', 'Pricing type')}>
                                             <Controller
                                                 name={`extras.${index}.pricing_type`}
                                                 control={control}
@@ -2025,9 +2085,9 @@ const ReservationForm = ({
                                                 }) => (
                                                     <Select
                                                         options={[
-                                                            ...extrasPricingTypeOptions,
+                                                            ...extrasPricingTypeOptions(t),
                                                         ]}
-                                                        value={extrasPricingTypeOptions.find(
+                                                        value={extrasPricingTypeOptions(t).find(
                                                             (o) =>
                                                                 o.value ===
                                                                 pricingField.value,
@@ -2042,7 +2102,7 @@ const ReservationForm = ({
                                             />
                                         </FormItem>
                                         <FormItem
-                                            label="Quantity"
+                                            label={t('reservations.form.quantity', 'Quantity')}
                                             invalid={Boolean(
                                                 errors.extras?.[index]?.quantity,
                                             )}
@@ -2067,7 +2127,7 @@ const ReservationForm = ({
                                             />
                                         </FormItem>
                                         <FormItem
-                                            label="Unit price (MAD)"
+                                            label={t('reservations.form.unitPriceMad', 'Unit price (MAD)')}
                                             invalid={Boolean(
                                                 errors.extras?.[index]
                                                     ?.unit_price,
@@ -2093,7 +2153,7 @@ const ReservationForm = ({
                                                 )}
                                             />
                                         </FormItem>
-                                        <FormItem label="Total price">
+                                        <FormItem label={t('reservations.form.totalPrice', 'Total price')}>
                                             {(() => {
                                                 const row =
                                                     tripValues.extras?.[index]
@@ -2114,12 +2174,20 @@ const ReservationForm = ({
                                                             'daily' && (
                                                             <span className="ml-1 text-xs text-gray-400 dark:text-gray-500">
                                                                 {rentalDays > 0
-                                                                    ? `= ${MAD(
-                                                                          Number(
-                                                                              row.unit_price,
-                                                                          ),
-                                                                      )} × ${row.quantity} × ${rentalDays} days`
-                                                                    : '/day'}
+                                                                    ? t(
+                                                                          'reservations.form.extraDailyCalc',
+                                                                          '= {{unit}} × {{qty}} × {{days}} days',
+                                                                          {
+                                                                              unit: MAD(
+                                                                                  Number(
+                                                                                      row.unit_price,
+                                                                                  ),
+                                                                              ),
+                                                                              qty: row.quantity,
+                                                                              days: rentalDays,
+                                                                          },
+                                                                      )
+                                                                    : t('reservations.form.perDay', '/day')}
                                                             </span>
                                                         )}
                                                     </div>
@@ -2152,22 +2220,27 @@ const ReservationForm = ({
                 </div>
                 </FormSectionCard>
                 <FormSectionCard
-                    title="Summary"
-                    description="Live totals — what the client pays for this rental."
+                    title={t('reservations.form.summaryTitle', 'Summary')}
+                    description={t(
+                        'reservations.form.summaryDesc',
+                        'Live totals — what the client pays for this rental.',
+                    )}
                 >
                     <dl className="space-y-2.5 text-sm">
                         <div className="flex items-center justify-between">
                             <dt className="text-gray-500 dark:text-gray-400">
-                                Total days
+                                {t('reservations.form.totalDays', 'Total days')}
                             </dt>
                             <dd className="font-semibold text-gray-700 dark:text-gray-200">
                                 {rentalDays}{' '}
-                                {rentalDays === 1 ? 'day' : 'days'}
+                                {rentalDays === 1
+                                    ? t('reservations.form.day', 'day')
+                                    : t('reservations.form.days', 'days')}
                             </dd>
                         </div>
                         <div className="flex items-center justify-between">
                             <dt className="text-gray-500 dark:text-gray-400">
-                                Daily rate
+                                {t('reservations.form.dailyRate', 'Daily rate')}
                             </dt>
                             <dd className="text-gray-700 dark:text-gray-200">
                                 {MAD(effectiveDailyRate())} × {rentalDays}
@@ -2175,7 +2248,7 @@ const ReservationForm = ({
                         </div>
                         <div className="flex items-center justify-between">
                             <dt className="text-gray-500 dark:text-gray-400">
-                                Extras
+                                {t('reservations.form.extrasLabel', 'Extras')}
                             </dt>
                             <dd className="text-gray-700 dark:text-gray-200">
                                 {MAD(extrasTotal)}
@@ -2183,7 +2256,7 @@ const ReservationForm = ({
                         </div>
                         <div className="flex items-center justify-between">
                             <dt className="text-gray-500 dark:text-gray-400">
-                                Duration discount
+                                {t('reservations.form.durationDiscount', 'Duration discount')}
                             </dt>
                             <dd className="text-gray-700 dark:text-gray-200">
                                 −
@@ -2196,7 +2269,7 @@ const ReservationForm = ({
                         </div>
                         <div className="flex items-center justify-between">
                             <dt className="text-gray-500 dark:text-gray-400">
-                                Discount
+                                {t('reservations.form.discount', 'Discount')}
                             </dt>
                             <dd className="text-gray-700 dark:text-gray-200">
                                 −{MAD(Number(tripValues.discount_amount) || 0)}
@@ -2204,8 +2277,11 @@ const ReservationForm = ({
                         </div>
                         <div className="flex items-center justify-between">
                             <dt className="text-gray-500 dark:text-gray-400">
-                                Tax (
-                                {Math.round((quote?.tax_rate ?? 0.2) * 100)}%)
+                                {t('reservations.form.taxWithRate', 'Tax ({{rate}}%)', {
+                                    rate: Math.round(
+                                        (quote?.tax_rate ?? 0.2) * 100,
+                                    ),
+                                })}
                             </dt>
                             <dd className="text-gray-700 dark:text-gray-200">
                                 {MAD(effectiveTax)}
@@ -2213,13 +2289,13 @@ const ReservationForm = ({
                         </div>
                         <div className="flex items-center justify-between border-t border-gray-200 pt-2.5 dark:border-gray-700">
                             <dt className="font-semibold text-gray-700 dark:text-gray-200">
-                                Total to pay
+                                {t('reservations.form.totalToPay', 'Total to pay')}
                             </dt>
                             <dd className="text-base font-semibold text-gray-800 dark:text-gray-100">
                                 {MAD(effectiveTotal)}
                                 {quoteFetching && (
                                     <span className="ml-2 text-xs font-normal text-gray-400">
-                                        updating…
+                                        {t('reservations.form.updating', 'updating…')}
                                     </span>
                                 )}
                             </dd>
@@ -2232,12 +2308,15 @@ const ReservationForm = ({
                     {!isEditing && (
                         <>
                             <FormSectionCard
-                                title="Payment"
-                                description="Record what the client pays at booking — you can split the bill across several instalments."
+                                title={t('reservations.form.paymentTitle', 'Payment')}
+                                description={t(
+                                    'reservations.form.paymentDesc',
+                                    'Record what the client pays at booking — you can split the bill across several instalments.',
+                                )}
                             >
                             {paymentFields.length === 0 ? (
                         <p className="text-sm text-gray-400 dark:text-gray-500">
-                            No payment recorded yet.
+                            {t('reservations.form.noPayment', 'No payment recorded yet.')}
                         </p>
                     ) : (
                         <div className="space-y-3">
@@ -2248,7 +2327,7 @@ const ReservationForm = ({
                                 >
                                     <div className="mb-3 flex items-center justify-between">
                                         <h6 className="text-sm font-semibold text-gray-600 dark:text-gray-300">
-                                            Payment {index + 1}
+                                            {t('reservations.form.paymentNumber', 'Payment {{number}}', { number: index + 1 })}
                                         </h6>
                                         <Button
                                             type="button"
@@ -2257,11 +2336,11 @@ const ReservationForm = ({
                                             className="text-error hover:bg-error-subtle"
                                             onClick={() => removePayment(index)}
                                         >
-                                            Remove
+                                            {t('reservations.form.remove', 'Remove')}
                                         </Button>
                                     </div>
                                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                        <FormItem label="Payment date">
+                                        <FormItem label={t('reservations.form.paymentDate', 'Payment date')}>
                                             <Controller
                                                 name={`payments.${index}.payment_date`}
                                                 control={control}
@@ -2274,7 +2353,7 @@ const ReservationForm = ({
                                             />
                                         </FormItem>
                                         <FormItem
-                                            label="Amount paid (MAD)"
+                                            label={t('reservations.form.amountPaidMad', 'Amount paid (MAD)')}
                                             invalid={Boolean(
                                                 errors.payments?.[index]
                                                     ?.amount,
@@ -2298,17 +2377,17 @@ const ReservationForm = ({
                                                 )}
                                             />
                                         </FormItem>
-                                        <FormItem label="Payment method">
+                                        <FormItem label={t('reservations.form.paymentMethod', 'Payment method')}>
                                             <Controller
                                                 name={`payments.${index}.method`}
                                                 control={control}
                                                 render={({ field: methodField }) => (
                                                     <Select
-                                                        placeholder="Select method"
+                                                        placeholder={t('reservations.form.selectMethod', 'Select method')}
                                                         options={[
-                                                            ...paymentMethodOptions,
+                                                            ...paymentMethodOptions(t),
                                                         ]}
-                                                        value={paymentMethodOptions.find(
+                                                        value={paymentMethodOptions(t).find(
                                                             (o) =>
                                                                 o.value ===
                                                                 methodField.value,
@@ -2322,16 +2401,16 @@ const ReservationForm = ({
                                                 )}
                                             />
                                         </FormItem>
-                                        <FormItem label="Payment status">
+                                        <FormItem label={t('reservations.form.paymentStatus', 'Payment status')}>
                                             <Controller
                                                 name={`payments.${index}.status`}
                                                 control={control}
                                                 render={({ field: statusField }) => (
                                                     <Select
                                                         options={[
-                                                            ...paymentRecordStatusOptions,
+                                                            ...paymentRecordStatusOptions(t),
                                                         ]}
-                                                        value={paymentRecordStatusOptions.find(
+                                                        value={paymentRecordStatusOptions(t).find(
                                                             (o) =>
                                                                 o.value ===
                                                                 statusField.value,
@@ -2351,7 +2430,7 @@ const ReservationForm = ({
                                                 )}
                                             />
                                         </FormItem>
-                                        <FormItem label="Reference">
+                                        <FormItem label={t('reservations.form.reference', 'Reference')}>
                                             <Controller
                                                 name={`payments.${index}.reference`}
                                                 control={control}
@@ -2359,7 +2438,7 @@ const ReservationForm = ({
                                                     field: referenceField,
                                                 }) => (
                                                     <Input
-                                                        placeholder="e.g. transfer ref. or receipt no."
+                                                        placeholder={t('reservations.form.referencePlaceholder', 'e.g. transfer ref. or receipt no.')}
                                                         {...referenceField}
                                                     />
                                                 )}
@@ -2388,13 +2467,13 @@ const ReservationForm = ({
                             })
                         }
                     >
-                        Ajouter un montant
+                        {t('reservations.form.addAmount', 'Add amount')}
                     </Button>
 
                     <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-gray-200 px-4 py-3 dark:border-gray-700">
                         <div>
                             <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                                Generated payment status
+                                {t('reservations.form.generatedStatus', 'Generated payment status')}
                             </p>
                             <p className="mt-0.5 text-sm text-gray-400 dark:text-gray-500">
                                 {MAD(createPaidSum)} paid of{' '}
@@ -2412,11 +2491,17 @@ const ReservationForm = ({
                                     ]
                                 ]}`}
                             >
-                                {derivedPaymentStatus}
+                                {t(
+                                    `reservations.payment.${derivedPaymentStatus}`,
+                                    derivedPaymentStatus,
+                                )}
                             </Tag>
                         ) : (
                             <span className="text-xs text-gray-400 dark:text-gray-500">
-                                Select a car and dates to compute the total
+                                {t(
+                                    'reservations.form.selectCarDates',
+                                    'Select a car and dates to compute the total',
+                                )}
                             </span>
                         )}
                     </div>
@@ -2427,16 +2512,19 @@ const ReservationForm = ({
             {isEditing && (
                 <>
                     <FormSectionCard
-                        title="Payments"
-                        description="Paid amounts recorded on this reservation."
+                        title={t('reservations.form.paymentsTitle', 'Payments')}
+                        description={t(
+                            'reservations.form.paymentsDesc',
+                            'Paid amounts recorded on this reservation.',
+                        )}
                     >
                     {paymentsLoading ? (
                         <p className="text-sm text-gray-400 dark:text-gray-500">
-                            Loading payments…
+                            {t('reservations.form.loadingPayments', 'Loading payments…')}
                         </p>
                     ) : payments.length === 0 ? (
                         <p className="text-sm text-gray-400 dark:text-gray-500">
-                            No payments recorded yet.
+                            {t('reservations.form.noPayments', 'No payments recorded yet.')}
                         </p>
                     ) : (
                         <>
@@ -2494,15 +2582,15 @@ const ReservationForm = ({
                                 setShowAddPayment(true)
                             }}
                         >
-                            Ajouter un montant
+                            {t('reservations.form.addAmount', 'Add amount')}
                         </Button>
                     ) : (
                         <div className="mt-3 rounded-xl border border-gray-200 p-4 dark:border-gray-700">
                             <h6 className="mb-3 text-sm font-semibold text-gray-600 dark:text-gray-300">
-                                New payment
+                                {t('reservations.form.newPayment', 'New payment')}
                             </h6>
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                <FormItem label="Payment date">
+                                <FormItem label={t('reservations.form.paymentDate', 'Payment date')}>
                                     <Controller
                                         name="payment_date"
                                         control={addPaymentControl}
@@ -2515,7 +2603,7 @@ const ReservationForm = ({
                                     />
                                 </FormItem>
                                 <FormItem
-                                    label="Amount (MAD)"
+                                    label={t('reservations.form.amountMad', 'Amount (MAD)')}
                                     invalid={Boolean(
                                         addPaymentErrors.amount,
                                     )}
@@ -2537,17 +2625,17 @@ const ReservationForm = ({
                                         )}
                                     />
                                 </FormItem>
-                                <FormItem label="Payment method">
+                                <FormItem label={t('reservations.form.paymentMethod', 'Payment method')}>
                                     <Controller
                                         name="method"
                                         control={addPaymentControl}
                                         render={({ field }) => (
                                             <Select
-                                                placeholder="Select method"
+                                                placeholder={t('reservations.form.selectMethod', 'Select method')}
                                                 options={[
-                                                    ...paymentMethodOptions,
+                                                    ...paymentMethodOptions(t),
                                                 ]}
-                                                value={paymentMethodOptions.find(
+                                                value={paymentMethodOptions(t).find(
                                                     (o) =>
                                                         o.value === field.value,
                                                 )}
@@ -2560,16 +2648,16 @@ const ReservationForm = ({
                                         )}
                                     />
                                 </FormItem>
-                                <FormItem label="Payment status">
+                                <FormItem label={t('reservations.form.paymentStatus', 'Payment status')}>
                                     <Controller
                                         name="status"
                                         control={addPaymentControl}
                                         render={({ field }) => (
                                             <Select
                                                 options={[
-                                                    ...paymentRecordStatusOptions,
+                                                    ...paymentRecordStatusOptions(t),
                                                 ]}
-                                                value={paymentRecordStatusOptions.find(
+                                                value={paymentRecordStatusOptions(t).find(
                                                     (o) =>
                                                         o.value === field.value,
                                                 )}
@@ -2588,19 +2676,19 @@ const ReservationForm = ({
                                         )}
                                     />
                                 </FormItem>
-                                <FormItem label="Reference">
+                                <FormItem label={t('reservations.form.reference', 'Reference')}>
                                     <Controller
                                         name="reference"
                                         control={addPaymentControl}
                                         render={({ field }) => (
                                             <Input
-                                                placeholder="e.g. transfer ref. or receipt no."
+                                                placeholder={t('reservations.form.referencePlaceholder', 'e.g. transfer ref. or receipt no.')}
                                                 {...field}
                                             />
                                         )}
                                     />
                                 </FormItem>
-                                <FormItem label="Notes">
+                                <FormItem label={t('reservations.form.notes', 'Notes')}>
                                     <Controller
                                         name="notes"
                                         control={addPaymentControl}
@@ -2620,7 +2708,7 @@ const ReservationForm = ({
                                     size="sm"
                                     onClick={() => setShowAddPayment(false)}
                                 >
-                                    Cancel
+                                    {t('common.cancel', 'Cancel')}
                                 </Button>
                                 <Button
                                     type="button"
@@ -2629,7 +2717,7 @@ const ReservationForm = ({
                                     loading={paymentSubmitting}
                                     onClick={() => submitAddPayment()}
                                 >
-                                    Record payment
+                                    {t('reservations.form.recordPayment', 'Record payment')}
                                 </Button>
                             </div>
                         </div>
@@ -2669,7 +2757,7 @@ const ReservationForm = ({
                                 loading={submitting}
                             >
                                 {isEditing
-                                    ? 'Save changes'
+                                    ? t('reservations.form.saveChanges', 'Save changes')
                                     : t('reservations.form.create', 'Create reservation')}
                             </Button>
                         </div>
@@ -2684,7 +2772,7 @@ const ReservationForm = ({
                 className="max-h-[90vh] overflow-y-auto"
             >
                 <h5 className="mb-6 text-base font-bold dark:text-gray-100">
-                    Add new client
+                    {t('reservations.clients.addClient', 'Add new client')}
                 </h5>
                 <ClientForm
                     client={null}

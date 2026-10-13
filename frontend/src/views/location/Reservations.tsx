@@ -56,6 +56,7 @@ import {
     paymentStatusTone,
     tagToneClass,
 } from './shared'
+import type { Translator } from './shared'
 import StatCards from './StatCards'
 import {
     LiSearch,
@@ -87,20 +88,20 @@ import {
 
 const { TabNav, TabList } = Tabs
 
-const rangeOptions = (t: any) => [
+const rangeOptions = (t: Translator) => [
     { value: '30', label: t('reservations.last30Days', 'Last 30 days') },
     { value: '60', label: t('reservations.last60Days', 'Last 60 days') },
     { value: '90', label: t('reservations.last90Days', 'Last 90 days') },
 ]
 
-const pageSizeOption = (t: any) => [
+const pageSizeOption = (t: Translator) => [
     { value: 10, label: `10 ${t('reservations.perPage', '/ page')}` },
     { value: 25, label: `25 ${t('reservations.perPage', '/ page')}` },
     { value: 50, label: `50 ${t('reservations.perPage', '/ page')}` },
     { value: 100, label: `100 ${t('reservations.perPage', '/ page')}` },
 ]
 
-const sortableFields = (t: any) => [
+const sortableFields = (t: Translator) => [
     { key: 'pickup_datetime', label: t('reservations.sortFields.pickupDate', 'Pickup date') },
     { key: 'expected_return_datetime', label: t('reservations.sortFields.returnDate', 'Return date') },
     { key: 'created_at', label: t('reservations.sortFields.createdDate', 'Created date') },
@@ -108,28 +109,28 @@ const sortableFields = (t: any) => [
     { key: 'status', label: t('reservations.table.status', 'Status') },
 ]
 
-const paymentStatusFilterOptions = (t: any) => [
+const paymentStatusFilterOptions = (t: Translator) => [
     { value: '', label: t('reservations.all', 'All') },
     { value: 'paid', label: t('reservations.payment.paid', 'Paid') },
     { value: 'partial', label: t('reservations.payment.partial', 'Partial') },
     { value: 'unpaid', label: t('reservations.payment.unpaid', 'Unpaid') },
 ]
 
-const csvHeaders = [
-    { label: 'Reservation', key: 'reservation_number' },
-    { label: 'Status', key: 'status' },
-    { label: 'Payment', key: 'payment_status' },
-    { label: 'Car', key: 'car' },
-    { label: 'Client', key: 'client' },
-    { label: 'Pickup', key: 'pickup_datetime' },
-    { label: 'Return', key: 'expected_return_datetime' },
-    { label: 'Created', key: 'created_at' },
-    { label: 'Total (MAD)', key: 'total_amount' },
+const csvHeaders = (t: Translator) => [
+    { label: t('reservations.table.reservation', 'Reservation'), key: 'reservation_number' },
+    { label: t('reservations.table.status', 'Status'), key: 'status' },
+    { label: t('reservations.table.payment', 'Payment'), key: 'payment_status' },
+    { label: t('reservations.table.car', 'Car'), key: 'car' },
+    { label: t('reservations.table.client', 'Client'), key: 'client' },
+    { label: t('reservations.csv.pickup', 'Pickup'), key: 'pickup_datetime' },
+    { label: t('reservations.csv.return', 'Return'), key: 'expected_return_datetime' },
+    { label: t('reservations.table.created', 'Created'), key: 'created_at' },
+    { label: t('reservations.csv.totalMad', 'Total (MAD)'), key: 'total_amount' },
 ]
 
 type ReservationCardStyle = { bg: string; icon: ReactNode; label: string }
 
-const getReservationCardMap = (t: any): Record<ReservationStatus, ReservationCardStyle> => ({
+const getReservationCardMap = (t: Translator): Record<ReservationStatus, ReservationCardStyle> => ({
     pending: { bg: 'bg-warning', icon: <LiClock />, label: t('reservations.status.pending', 'Pending') },
     confirmed: { bg: 'bg-primary', icon: <LiTickCircle />, label: t('reservations.status.confirmed', 'Confirmed') },
     reserved: { bg: 'bg-purple-600', icon: <LiPhone />, label: t('reservations.status.reserved', 'Reserved') },
@@ -185,24 +186,29 @@ const ClientFormDialog = ({
     client,
     onClose,
     onSaved,
-}: ClientFormDialogProps) => (
-    <Dialog
-        isOpen={open}
-        onClose={onClose}
-        width={760}
-        className="max-h-[90vh] overflow-y-auto"
-    >
-        <h5 className="mb-6 text-base font-bold dark:text-gray-100">
-            {client ? 'Edit client' : 'Add client'}
-        </h5>
-        <ClientForm
-            client={client}
+}: ClientFormDialogProps) => {
+    const { t } = useTranslation()
+    return (
+        <Dialog
             isOpen={open}
-            onCancel={onClose}
-            onSaved={onSaved}
-        />
-    </Dialog>
-)
+            onClose={onClose}
+            width={760}
+            className="max-h-[90vh] overflow-y-auto"
+        >
+            <h5 className="mb-6 text-base font-bold dark:text-gray-100">
+                {client
+                    ? t('reservations.clients.editClient', 'Edit client')
+                    : t('reservations.clients.addClient', 'Add client')}
+            </h5>
+            <ClientForm
+                client={client}
+                isOpen={open}
+                onCancel={onClose}
+                onSaved={onSaved}
+            />
+        </Dialog>
+    )
+}
 
 type CancelDialogProps = {
     reservation: Reservation | null
@@ -215,6 +221,7 @@ const CancelDialog = ({
     onClose,
     onCancelled,
 }: CancelDialogProps) => {
+    const { t } = useTranslation()
     const [reason, setReason] = useState('')
     const [submitting, setSubmitting] = useState(false)
 
@@ -236,7 +243,7 @@ const CancelDialog = ({
             toast.push(
                 <Notification
                     type="danger"
-                    title="Could not cancel reservation"
+                    title={t('reservations.couldNotCancel', 'Could not cancel reservation')}
                 />,
             )
         } finally {
@@ -247,7 +254,7 @@ const CancelDialog = ({
     return (
         <Dialog isOpen={Boolean(reservation)} onClose={onClose} width={480}>
             <h5 className="mb-4 text-base font-bold dark:text-gray-100">
-                Cancel reservation {reservation?.reservation_number}
+                {t('reservations.dialogs.cancelTitle', 'Cancel reservation {{number}}', { number: reservation?.reservation_number })}
             </h5>
             <Form
                 onSubmit={(e) => {
@@ -255,17 +262,17 @@ const CancelDialog = ({
                     handleCancel()
                 }}
             >
-                <FormItem label="Reason (required)">
+                <FormItem label={t('reservations.dialogs.reasonRequired', 'Reason (required)')}>
                     <Input
                         textArea
-                        placeholder="e.g. Client changed plans"
+                        placeholder={t('reservations.dialogs.cancelReasonPlaceholder', 'e.g. Client changed plans')}
                         value={reason}
                         onChange={(e) => setReason(e.target.value)}
                     />
                 </FormItem>
                 <div className="mt-6 flex justify-end gap-2">
                     <Button variant="ghost" onClick={onClose}>
-                        Back
+                        {t('reservations.form.back', 'Back')}
                     </Button>
                     <Button
                         variant="solid"
@@ -273,7 +280,7 @@ const CancelDialog = ({
                         disabled={!reason.trim()}
                         onClick={handleCancel}
                     >
-                        Cancel reservation
+                        {t('reservations.actions.cancel', 'Cancel reservation')}
                     </Button>
                 </div>
             </Form>
@@ -292,6 +299,7 @@ const NoShowDialog = ({
     onClose,
     onNoShow,
 }: NoShowDialogProps) => {
+    const { t } = useTranslation()
     const [reason, setReason] = useState('')
     const [submitting, setSubmitting] = useState(false)
 
@@ -316,7 +324,7 @@ const NoShowDialog = ({
             toast.push(
                 <Notification
                     type="danger"
-                    title="Could not mark reservation as no show"
+                    title={t('reservations.couldNotMarkNoShow', 'Could not mark reservation as no show')}
                 />,
             )
         } finally {
@@ -327,7 +335,7 @@ const NoShowDialog = ({
     return (
         <Dialog isOpen={Boolean(reservation)} onClose={onClose} width={480}>
             <h5 className="mb-4 text-base font-bold dark:text-gray-100">
-                Mark {reservation?.reservation_number} as no show
+                {t('reservations.dialogs.noShowTitle', 'Mark as no show')} {reservation?.reservation_number}
             </h5>
             <Form
                 onSubmit={(e) => {
@@ -335,17 +343,17 @@ const NoShowDialog = ({
                     handleNoShow()
                 }}
             >
-                <FormItem label="Reason (required)">
+                <FormItem label={t('reservations.dialogs.reasonRequired', 'Reason (required)')}>
                     <Input
                         textArea
-                        placeholder="e.g. Client never arrived at pickup"
+                        placeholder={t('reservations.dialogs.noShowReasonPlaceholder', 'e.g. Client never arrived at pickup')}
                         value={reason}
                         onChange={(e) => setReason(e.target.value)}
                     />
                 </FormItem>
                 <div className="mt-6 flex justify-end gap-2">
                     <Button variant="ghost" onClick={onClose}>
-                        Back
+                        {t('reservations.form.back', 'Back')}
                     </Button>
                     <Button
                         variant="solid"
@@ -372,6 +380,7 @@ const ActivateDialog = ({
     onClose,
     onActivated,
 }: ActivateDialogProps) => {
+    const { t } = useTranslation()
     const [mileage, setMileage] = useState('')
     const [fuel, setFuel] = useState('')
     const [submitting, setSubmitting] = useState(false)
@@ -409,7 +418,7 @@ const ActivateDialog = ({
             toast.push(
                 <Notification
                     type="danger"
-                    title="Could not activate reservation"
+                    title={t('reservations.couldNotActivate', 'Could not activate reservation')}
                 />,
             )
         } finally {
@@ -420,10 +429,10 @@ const ActivateDialog = ({
     return (
         <Dialog isOpen={Boolean(reservation)} onClose={onClose} width={720}>
             <h5 className="mb-1 text-base font-bold dark:text-gray-100">
-                Activate {reservation?.reservation_number}
+                {t('reservations.actions.activate', 'Activate')} {reservation?.reservation_number}
             </h5>
             <p className="mb-4 text-sm text-gray-400">
-                Client signed the contract — the car goes on rent.
+                {t('reservations.dialogs.activateDesc', 'Client signed the contract — the car goes on rent.')}
             </p>
             <Form
                 onSubmit={(e) => {
@@ -432,18 +441,18 @@ const ActivateDialog = ({
                 }}
             >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <FormItem label="Pickup mileage (km)">
+                    <FormItem label={t('reservations.dialogs.pickupMileage', 'Pickup mileage (km)')}>
                         <Input
                             type="number"
-                            placeholder="Optional"
+                            placeholder={t('reservations.form.optional', 'Optional')}
                             value={mileage}
                             onChange={(e) => setMileage(e.target.value)}
                         />
                     </FormItem>
-                    <FormItem label="Pickup fuel level (%)">
+                    <FormItem label={t('reservations.dialogs.pickupFuel', 'Pickup fuel level (%)')}>
                         <Input
                             type="number"
-                            placeholder="Optional"
+                            placeholder={t('reservations.form.optional', 'Optional')}
                             value={fuel}
                             onChange={(e) => setFuel(e.target.value)}
                         />
@@ -456,7 +465,7 @@ const ActivateDialog = ({
 
                 <div className="mt-6 flex justify-end gap-2">
                     <Button variant="ghost" onClick={onClose}>
-                        Back
+                        {t('reservations.form.back', 'Back')}
                     </Button>
                     <Button
                         variant="solid"
@@ -482,6 +491,7 @@ const CompleteDialog = ({
     onClose,
     onCompleted,
 }: CompleteDialogProps) => {
+    const { t } = useTranslation()
     const [mileage, setMileage] = useState('')
     const [fuel, setFuel] = useState('')
     const [issues, setIssues] = useState('')
@@ -524,7 +534,7 @@ const CompleteDialog = ({
             toast.push(
                 <Notification
                     type="danger"
-                    title="Could not complete reservation"
+                    title={t('reservations.couldNotComplete', 'Could not complete reservation')}
                 />,
             )
         } finally {
@@ -535,10 +545,10 @@ const CompleteDialog = ({
     return (
         <Dialog isOpen={Boolean(reservation)} onClose={onClose} width={720}>
             <h5 className="mb-1 text-base font-bold dark:text-gray-100">
-                Complete {reservation?.reservation_number}
+                {t('reservations.actions.complete', 'Complete')} {reservation?.reservation_number}
             </h5>
             <p className="mb-4 text-sm text-gray-400">
-                Car returned — the reservation is finished.
+                {t('reservations.dialogs.completeDesc', 'Car returned — the reservation is finished.')}
             </p>
             <Form
                 onSubmit={(e) => {
@@ -547,27 +557,27 @@ const CompleteDialog = ({
                 }}
             >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <FormItem label="Return mileage (km)">
+                    <FormItem label={t('reservations.dialogs.returnMileage', 'Return mileage (km)')}>
                         <Input
                             type="number"
-                            placeholder="Optional"
+                            placeholder={t('reservations.form.optional', 'Optional')}
                             value={mileage}
                             onChange={(e) => setMileage(e.target.value)}
                         />
                     </FormItem>
-                    <FormItem label="Return fuel level (%)">
+                    <FormItem label={t('reservations.dialogs.returnFuel', 'Return fuel level (%)')}>
                         <Input
                             type="number"
-                            placeholder="Optional"
+                            placeholder={t('reservations.form.optional', 'Optional')}
                             value={fuel}
                             onChange={(e) => setFuel(e.target.value)}
                         />
                     </FormItem>
                 </div>
-                <FormItem label="Reported issues">
+                <FormItem label={t('reservations.dialogs.reportedIssues', 'Reported issues')}>
                     <Input
                         textArea
-                        placeholder="Any damage or issues found on return (optional)"
+                        placeholder={t('reservations.dialogs.reportedIssuesPlaceholder', 'Any damage or issues found on return (optional)')}
                         value={issues}
                         onChange={(e) => setIssues(e.target.value)}
                     />
@@ -579,7 +589,7 @@ const CompleteDialog = ({
 
                 <div className="mt-6 flex justify-end gap-2">
                     <Button variant="ghost" onClick={onClose}>
-                        Back
+                        {t('reservations.form.back', 'Back')}
                     </Button>
                     <Button
                         variant="solid"
@@ -684,7 +694,7 @@ const ExpandableReservationDetails = ({
                         <div className="space-y-3">
                             <div className="font-semibold heading-text uppercase tracking-wide flex items-center gap-2">
                                 <LiUser className="text-base" />
-                                <span>{t('reservations.clients', 'Clients')}</span>
+                                <span>{t('reservations.clients.manage', 'Clients')}</span>
                             </div>
                             <div className="flex flex-wrap items-center gap-2">
                                 <LiUser className="text-base" />
@@ -958,7 +968,7 @@ const Reservations = () => {
                 toast.push(
                     <Notification
                         type="success"
-                        title={`${reservation.reservation_number} confirmed`}
+                        title={t('reservations.confirmedToast', { number: reservation.reservation_number, defaultValue: '{{number}} confirmed' })}
                     />,
                 )
                 fetchReservations()
@@ -966,12 +976,12 @@ const Reservations = () => {
                 toast.push(
                     <Notification
                         type="danger"
-                        title="Could not confirm reservation"
+                        title={t('reservations.couldNotConfirm', 'Could not confirm reservation')}
                     />,
                 )
             }
         },
-        [fetchReservations],
+        [fetchReservations, t],
     )
 
     const handleExpand = (id: number) => {
@@ -1113,7 +1123,7 @@ const Reservations = () => {
                                         size="sm"
                                         variant="subtle"
                                         icon={<LiTickCircle />}
-                                        aria-label="Confirm reservation"
+                                        aria-label={t('reservations.actions.confirm', 'Confirm')}
                                         onClick={() =>
                                             handleConfirm(reservation)
                                         }
@@ -1127,7 +1137,7 @@ const Reservations = () => {
                                         variant="ghost"
                                         className="text-success hover:bg-success-subtle"
                                         icon={<LiPlay />}
-                                        aria-label="Activate reservation"
+                                        aria-label={t('reservations.actions.activate', 'Activate')}
                                         onClick={() =>
                                             setActivating(reservation)
                                         }
@@ -1141,7 +1151,7 @@ const Reservations = () => {
                                         variant="ghost"
                                         className="text-primary hover:bg-primary-subtle"
                                         icon={<LiBoxTick />}
-                                        aria-label="Complete reservation"
+                                        aria-label={t('reservations.actions.complete', 'Complete')}
                                         onClick={() =>
                                             setCompleting(reservation)
                                         }
@@ -1157,7 +1167,7 @@ const Reservations = () => {
                                         variant="ghost"
                                         className="text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700"
                                         icon={<LiUserCross />}
-                                        aria-label="Mark reservation as no show"
+                                        aria-label={t('reservations.actions.noShow', 'No show')}
                                         onClick={() =>
                                             setNoShowing(reservation)
                                         }
@@ -1176,7 +1186,7 @@ const Reservations = () => {
                                         variant="ghost"
                                         className="text-error hover:bg-error-subtle"
                                         icon={<LiCross />}
-                                        aria-label="Cancel reservation"
+                                        aria-label={t('reservations.actions.cancel', 'Cancel')}
                                         onClick={() =>
                                             setCancelling(reservation)
                                         }
@@ -1189,7 +1199,7 @@ const Reservations = () => {
                                     variant="ghost"
                                     className="text-primary hover:bg-primary-subtle"
                                     icon={<LiReceipt />}
-                                    aria-label="View invoice"
+                                    aria-label={t('reservations.actions.invoice', 'Invoice')}
                                     onClick={() => {
                                         navigate(
                                             `${APPS_PREFIX_PATH}/reservations/${reservation.id}/facture`,
@@ -1202,7 +1212,7 @@ const Reservations = () => {
                                     size="sm"
                                     variant="ghost"
                                     icon={<LiEdit />}
-                                    aria-label="Edit reservation"
+                                    aria-label={t('reservations.actions.edit', 'Edit')}
                                     onClick={() => {
                                         navigate(
                                             `${APPS_PREFIX_PATH}/reservations/${reservation.id}/modifier`,
@@ -1317,7 +1327,7 @@ const Reservations = () => {
                         <CSVLink
                             filename="reservations.csv"
                             data={csvData}
-                            headers={csvHeaders}
+                            headers={csvHeaders(t)}
                         >
                             <Button icon={<LiDownload />}>
                                 {larger.sm && t('reservations.export', 'Export')}

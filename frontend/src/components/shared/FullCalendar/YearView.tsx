@@ -2,26 +2,16 @@ import EventBullet from './EventBullet'
 import useFullCalendar from './hooks/useFullCalendar'
 import classNames from '@/utils/classNames'
 import { getYear, getCalendarCells, isSameDay, isSameMonth } from './utils'
+import dayjs from 'dayjs'
 import type { ViewProps } from './types'
 
 type YearViewProps = ViewProps
 
-const MONTHS = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-]
+const getMonths = () =>
+    Array.from({ length: 12 }, (_, index) => dayjs().month(index).format('MMMM'))
 
-const WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+const getWeekdays = () =>
+    Array.from({ length: 7 }, (_, index) => dayjs().day(index).format('dd'))
 
 const YearView = ({
     singleDayEvents,
@@ -35,7 +25,7 @@ const YearView = ({
     return (
         <div className="flex flex-col h-full  overflow-y-auto p-4  sm:p-6">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-fr">
-                {MONTHS.map((month, monthIndex) => {
+                {getMonths().map((month, monthIndex) => {
                     const monthDate = new Date(currentYear, monthIndex, 1)
                     const cells = getCalendarCells(monthDate)
 
@@ -72,7 +62,7 @@ const YearView = ({
                             </button>
 
                             <div className="grid grid-cols-7 text-center text-xs py-2">
-                                {WEEKDAYS.map((day) => (
+                                {getWeekdays().map((day) => (
                                     <div key={day} className="p-1 font-medium">
                                         {day}
                                     </div>
