@@ -399,5 +399,35 @@
     "common": {
         "hi": "مرحبا",
         "comparison": "مقارنة"
+    },
+    "reservations": {
+        "reservations": "الحجوزات",
+        "newReservation": "حجز جديد",
+        "reservationsList": "قائمة الحجوزات",
+        "calendar": "التقويم",
+        "export": "تصدير",
+        "last30Days": "آخر 30 يومًا",
+        "searchPlaceholder": "البحث في الحجوزات…",
+        "paymentAll": "الدفع: الكل",
+        "sort": "ترتيب",
+        "all": "الكل",
+        "pending": "قيد الانتظار",
+        "confirmed": "مؤكد",
+        "reserved": "محجوز",
+        "active": "نشط",
+        "completed": "مكتمل",
+        "cancelled": "ملغى",
+        "noShow": "لم يحضر",
+        "paid": "مدفوع",
+        "partial": "جزئي",
+        "unpaid": "غير مدفوع",
+        "reservation": "الحجز",
+        "car": "المركبة",
+        "client": "العميل",
+        "period": "الفترة",
+        "created": "تاريخ الإنشاء",
+        "total": "الإجمالي",
+        "payment": "الدفع",
+        "status": "الحالة"
     }
 }

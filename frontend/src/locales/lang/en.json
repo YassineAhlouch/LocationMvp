@@ -399,5 +399,35 @@
     "common": {
         "hi": "Hi",
         "comparison": "Comparison"
+    },
+    "reservations": {
+        "reservations": "Reservations",
+        "newReservation": "New reservation",
+        "reservationsList": "Reservations list",
+        "calendar": "Calendar",
+        "export": "Export",
+        "last30Days": "Last 30 days",
+        "searchPlaceholder": "Search reservations…",
+        "paymentAll": "Payment: All",
+        "sort": "Sort",
+        "all": "All",
+        "pending": "Pending",
+        "confirmed": "Confirmed",
+        "reserved": "Reserved",
+        "active": "Active",
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "noShow": "No Show",
+        "paid": "Paid",
+        "partial": "Partial",
+        "unpaid": "Unpaid",
+        "reservation": "Reservation",
+        "car": "Car",
+        "client": "Client",
+        "period": "Period",
+        "created": "Created",
+        "total": "Total",
+        "payment": "Payment",
+        "status": "Status"
     }
 }
