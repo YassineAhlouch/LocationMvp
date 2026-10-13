@@ -399,9 +399,9 @@ const ReservationsByStatus = ({ byStatus }: ReservationsByStatusProps) => {
                     <Table compact overflow={false} hoverable={false}>
                         <THead>
                             <Tr className="bg-transparent">
-                                <Th>Status</Th>
-                                <Th className="text-right">Count</Th>
-                                <Th className="text-right">Share</Th>
+                                <Th>{t('dashboard.status', 'Status')}</Th>
+                                <Th className="text-right">{t('dashboard.count', 'Count')}</Th>
+                                <Th className="text-right">{t('dashboard.share', 'Share')}</Th>
                             </Tr>
                         </THead>
                         <TBody>
@@ -474,7 +474,7 @@ const AvgRevenuePerRental = ({
     return (
         <Card className="h-full" bodyClass="flex flex-col h-full">
             <div className="mb-4">
-                <h5>Average Revenue / Rental</h5>
+                <h5>{t('dashboard.avgRevenueRental')}</h5>
             </div>
             <div className="flex items-center gap-2">
                 <h4>{MAD(avgRevenue)}</h4>
@@ -825,7 +825,7 @@ const DashboardHeader = ({
                     />
                 </div>
                 <div className="flex items-center gap-2">
-                    <span className="heading-text">Time Range:</span>
+                    <span className="heading-text">{t('dashboard.timeRange', 'Time Range')}:</span>
                     <Dropdown
                         activeKey={timeRange}
                         renderTitle={

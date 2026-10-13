@@ -381,7 +381,11 @@
         "rentedNow": "Loués actuellement",
         "monthlyRevenue": "Revenu mensuel",
         "occupancy": "Taux d'occupation",
-        "noReservationsInPeriod": "Aucune réservation pour cette période"
+        "noReservationsInPeriod": "Aucune réservation pour cette période",
+        "timeRange": "Période",
+        "status": "Statut",
+        "count": "Nombre",
+        "share": "Part"
     },
     "common": {
         "hi": "Bonjour",

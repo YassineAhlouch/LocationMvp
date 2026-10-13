@@ -381,7 +381,11 @@
         "rentedNow": "مؤجرة حالياً",
         "monthlyRevenue": "الإيرادات الشهرية",
         "occupancy": "معدل الإشغال",
-        "noReservationsInPeriod": "لا توجد حجوزات في هذه الفترة"
+        "noReservationsInPeriod": "لا توجد حجوزات في هذه الفترة",
+        "timeRange": "الفترة",
+        "status": "الحالة",
+        "count": "العدد",
+        "share": "النسبة"
     },
     "common": {
         "hi": "مرحبا",

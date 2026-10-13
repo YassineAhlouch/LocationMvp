@@ -381,7 +381,11 @@
         "rentedNow": "Rented now",
         "monthlyRevenue": "Monthly revenue",
         "occupancy": "Occupancy",
-        "noReservationsInPeriod": "No reservations in this period"
+        "noReservationsInPeriod": "No reservations in this period",
+        "timeRange": "Time Range",
+        "status": "Status",
+        "count": "Count",
+        "share": "Share"
     },
     "common": {
         "hi": "Hi",
