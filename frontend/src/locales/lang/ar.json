@@ -532,6 +532,7 @@
             "en": "Deposit",
             "fr": "Acompte",
             "ar": "التأمين المسبق"
-        }
+        },
+        "noReservationsFound": "لم يتم العثور على حجوزات"
     }
 }

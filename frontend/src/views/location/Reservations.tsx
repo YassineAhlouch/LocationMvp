@@ -1554,7 +1554,7 @@ const Reservations = () => {
                 ) : reservations.length === 0 ? (
                     <div className="text-center py-16">
                         <h6 className="font-semibold mb-1">
-                            No reservations found
+                            {t('reservations.noReservationsFound', 'No reservations found')}
                         </h6>
                         <p className="text-sm text-gray-400">
                             Try widening the filters or create a new
