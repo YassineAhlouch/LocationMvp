@@ -1077,7 +1077,7 @@ const Reservations = () => {
                                 tagToneClass[paymentStatusTone[status]],
                             )}
                         >
-                            {status}
+                            {t(`reservations.payment.${status}`, status)}
                         </Tag>
                     )
                 },
@@ -1094,7 +1094,7 @@ const Reservations = () => {
                                 tagToneClass[reservationStatusTone[status]],
                             )}
                         >
-                            {status}
+                            {t(`reservations.status.${status}`, status)}
                         </Tag>
                     )
                 },
