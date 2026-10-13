@@ -1268,7 +1268,7 @@ const Reservations = () => {
 
     const getSortButtonLabel = () => {
         const field = sortableFields.find((item) => item.key === sortBy)
-        return field ? `Sort by: ${field.label}` : 'Sort'
+        return field ? `${t('reservations.sortBy', 'Sort by')}: ${field.label}` : t('reservations.sort', 'Sort')
     }
 
     const handleResetSort = () => {
@@ -1492,7 +1492,7 @@ const Reservations = () => {
                                     <Dropdown.Item variant="divider" />
                                     <Dropdown.Item onClick={handleResetSort}>
                                         <span className="text-error">
-                                            Reset Sort
+                                            {t('reservations.resetSort', 'Reset Sort')}
                                         </span>
                                     </Dropdown.Item>
                                 </>

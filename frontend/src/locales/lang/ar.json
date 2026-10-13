@@ -454,6 +454,8 @@
         "status.no_show": "لم يحضر",
         "payment.paid": "مدفوع",
         "payment.partial": "جزئي",
-        "payment.unpaid": "غير مدفوع"
+        "payment.unpaid": "غير مدفوع",
+        "sortBy": "ترتيب حسب",
+        "resetSort": "إعادة الترتيب"
     }
 }

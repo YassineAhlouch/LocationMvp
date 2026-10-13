@@ -454,6 +454,8 @@
         "status.no_show": "Non présenté",
         "payment.paid": "Payé",
         "payment.partial": "Partiel",
-        "payment.unpaid": "Impayé"
+        "payment.unpaid": "Impayé",
+        "sortBy": "Trier par",
+        "resetSort": "Réinitialiser le tri"
     }
 }

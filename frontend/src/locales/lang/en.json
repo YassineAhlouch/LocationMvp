@@ -454,6 +454,8 @@
         "status.no_show": "No Show",
         "payment.paid": "Paid",
         "payment.partial": "Partial",
-        "payment.unpaid": "Unpaid"
+        "payment.unpaid": "Unpaid",
+        "sortBy": "Sort by",
+        "resetSort": "Reset Sort"
     }
 }
