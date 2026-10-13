@@ -385,7 +385,16 @@
         "timeRange": "Time Range",
         "status": "Status",
         "count": "Count",
-        "share": "Share"
+        "share": "Share",
+        "vsLastPeriod": "vs last period",
+        "occupancyRate": "Occupancy Rate",
+        "reservationsInPeriod": "{{count}} reservations in period",
+        "active": "Active",
+        "reserved": "Reserved",
+        "no_show": "No Show",
+        "rented": "Rented",
+        "maintenance": "Maintenance",
+        "inactive": "Inactive"
     },
     "common": {
         "hi": "Hi",

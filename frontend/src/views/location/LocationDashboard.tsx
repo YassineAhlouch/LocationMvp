@@ -200,6 +200,7 @@ const MetricCard = ({
     formatter,
     comparisonEnabled = true,
 }: MetricCardProps) => {
+    const { t } = useTranslation()
     const formatValue = (val: number | string): string => {
         if (typeof val === 'string') return val
         if (formatter) return formatter(val)
@@ -218,7 +219,7 @@ const MetricCard = ({
                             showIcon={true}
                             className="bg-transparent px-0 font-semibold"
                         />
-                        <span>vs last period</span>
+                        <span>{t('dashboard.vsLastPeriod', 'vs last period')}</span>
                     </div>
                 )
             }
@@ -335,9 +336,9 @@ const RevenueExpenses = ({
                         valueFormatter: (value: number) => MAD(value),
                         nameFormatter: (name: string) => {
                             if (name === 'revenue') {
-                                return 'Revenue'
+                                return t('dashboard.revenue', 'Revenue')
                             }
-                            return 'Expenses'
+                            return t('dashboard.expenses', 'Expenses')
                         },
                     }}
                 />
@@ -483,7 +484,7 @@ const AvgRevenuePerRental = ({
                 )}
             </div>
             <div className="mt-1">
-                {formatNumber(reservations)} reservations in period
+                {formatNumber(reservations)} {t('dashboard.reservationsInPeriod', { count: reservations })}
             </div>
             <div className="mt-4 lg:mt-14 xl:mt-4 flex-1">
                 <BarChart
@@ -627,11 +628,11 @@ const Occupancy = ({ bookedDays, availableDays, rate }: OccupancyProps) => {
     return (
         <Card>
             <div className="mb-4">
-                <h5>Occupancy</h5>
+                <h5>{t('dashboard.occupancy', 'Occupancy')}</h5>
             </div>
             <div className="flex items-center gap-2 sm:gap-8 mb-4">
                 <div>
-                    <p className="mb-1">Occupancy Rate</p>
+                    <p className="mb-1">{t('dashboard.occupancyRate', 'Occupancy Rate')}</p>
                     <div className="flex items-center gap-2">
                         <h4>{Math.round(rate * 100)}%</h4>
                     </div>
