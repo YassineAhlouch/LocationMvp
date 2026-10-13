@@ -129,15 +129,15 @@ const csvHeaders = [
 
 type ReservationCardStyle = { bg: string; icon: ReactNode; label: string }
 
-const reservationCardMap: Record<ReservationStatus, ReservationCardStyle> = {
-    pending: { bg: 'bg-warning', icon: <LiClock />, label: 'Pending' },
-    confirmed: { bg: 'bg-primary', icon: <LiTickCircle />, label: 'Confirmed' },
-    reserved: { bg: 'bg-purple-600', icon: <LiPhone />, label: 'Reserved' },
-    active: { bg: 'bg-success', icon: <LiCar />, label: 'Active' },
-    completed: { bg: 'bg-info', icon: <LiBoxTick />, label: 'Completed' },
-    cancelled: { bg: 'bg-error', icon: <LiCross />, label: 'Cancelled' },
-    no_show: { bg: 'bg-gray-500', icon: <LiBoxTime />, label: 'No Show' },
-}
+const getReservationCardMap = (t: any): Record<ReservationStatus, ReservationCardStyle> => ({
+    pending: { bg: 'bg-warning', icon: <LiClock />, label: t('reservations.status.pending', 'Pending') },
+    confirmed: { bg: 'bg-primary', icon: <LiTickCircle />, label: t('reservations.status.confirmed', 'Confirmed') },
+    reserved: { bg: 'bg-purple-600', icon: <LiPhone />, label: t('reservations.status.reserved', 'Reserved') },
+    active: { bg: 'bg-success', icon: <LiCar />, label: t('reservations.status.active', 'Active') },
+    completed: { bg: 'bg-info', icon: <LiBoxTick />, label: t('reservations.status.completed', 'Completed') },
+    cancelled: { bg: 'bg-error', icon: <LiCross />, label: t('reservations.status.cancelled', 'Cancelled') },
+    no_show: { bg: 'bg-gray-500', icon: <LiBoxTime />, label: t('reservations.status.no_show', 'No Show') },
+})
 
 const paymentTextColor: Record<PaymentStatus, string> = {
     paid: 'text-success',
@@ -1610,7 +1610,7 @@ const Reservations = () => {
                                                         size={20}
                                                         className={classNames(
                                                             'border-0',
-                                                            reservationCardMap[
+                                                            getReservationCardMap(t)[
                                                                 reservation
                                                                     .status
                                                             ]?.bg,
@@ -1619,7 +1619,7 @@ const Reservations = () => {
                                                         icon={
                                                             <span className="text-base">
                                                                 {
-                                                                    reservationCardMap[
+                                                                    getReservationCardMap(t)[
                                                                         reservation
                                                                             .status
                                                                     ]?.icon
@@ -1638,7 +1638,7 @@ const Reservations = () => {
                                             <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-2 mt-2">
                                                 <span className="font-medium">
                                                     {
-                                                        reservationCardMap[
+                                                        getReservationCardMap(t)[
                                                             reservation.status
                                                         ]?.label
                                                     }
