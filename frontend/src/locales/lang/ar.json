@@ -436,6 +436,24 @@
         "couldNotCancel": "تعذّر إلغاء الحجز",
         "couldNotMarkNoShow": "تعذّر تسجيل عدم الحضور",
         "couldNotActivate": "تعذّر تفعيل الحجز",
-        "couldNotComplete": "تعذّر إكمال الحجز"
+        "couldNotComplete": "تعذّر إكمال الحجز",
+        "table.reservation": "الحجز",
+        "table.car": "المركبة",
+        "table.client": "العميل",
+        "table.period": "الفترة",
+        "table.created": "تاريخ الإنشاء",
+        "table.total": "الإجمالي",
+        "table.payment": "الدفع",
+        "table.status": "الحالة",
+        "status.pending": "قيد الانتظار",
+        "status.confirmed": "مؤكد",
+        "status.reserved": "محجوز",
+        "status.active": "نشط",
+        "status.completed": "مكتمل",
+        "status.cancelled": "ملغى",
+        "status.no_show": "لم يحضر",
+        "payment.paid": "مدفوع",
+        "payment.partial": "جزئي",
+        "payment.unpaid": "غير مدفوع"
     }
 }

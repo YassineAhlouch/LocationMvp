@@ -436,6 +436,24 @@
         "couldNotCancel": "Could not cancel reservation",
         "couldNotMarkNoShow": "Could not mark reservation as no show",
         "couldNotActivate": "Could not activate reservation",
-        "couldNotComplete": "Could not complete reservation"
+        "couldNotComplete": "Could not complete reservation",
+        "table.reservation": "Reservation",
+        "table.car": "Car",
+        "table.client": "Client",
+        "table.period": "Period",
+        "table.created": "Created",
+        "table.total": "Total",
+        "table.payment": "Payment",
+        "table.status": "Status",
+        "status.pending": "Pending",
+        "status.confirmed": "Confirmed",
+        "status.reserved": "Reserved",
+        "status.active": "Active",
+        "status.completed": "Completed",
+        "status.cancelled": "Cancelled",
+        "status.no_show": "No Show",
+        "payment.paid": "Paid",
+        "payment.partial": "Partial",
+        "payment.unpaid": "Unpaid"
     }
 }

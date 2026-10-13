@@ -436,6 +436,24 @@
         "couldNotCancel": "Impossible d'annuler la réservation",
         "couldNotMarkNoShow": "Impossible de marquer comme non présenté",
         "couldNotActivate": "Impossible d'activer la réservation",
-        "couldNotComplete": "Impossible de terminer la réservation"
+        "couldNotComplete": "Impossible de terminer la réservation",
+        "table.reservation": "Réservation",
+        "table.car": "Véhicule",
+        "table.client": "Client",
+        "table.period": "Période",
+        "table.created": "Créé le",
+        "table.total": "Total",
+        "table.payment": "Paiement",
+        "table.status": "Statut",
+        "status.pending": "En attente",
+        "status.confirmed": "Confirmé",
+        "status.reserved": "Réservé",
+        "status.active": "Actif",
+        "status.completed": "Terminé",
+        "status.cancelled": "Annulé",
+        "status.no_show": "Non présenté",
+        "payment.paid": "Payé",
+        "payment.partial": "Partiel",
+        "payment.unpaid": "Impayé"
     }
 }
