@@ -456,6 +456,7 @@
         "payment.partial": "Partial",
         "payment.unpaid": "Unpaid",
         "sortBy": "Sort by",
-        "resetSort": "Reset Sort"
+        "resetSort": "Reset Sort",
+        "paymentFilter": "Payment"
     }
 }

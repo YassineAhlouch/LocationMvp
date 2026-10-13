@@ -456,6 +456,7 @@
         "payment.partial": "Partiel",
         "payment.unpaid": "Impayé",
         "sortBy": "Trier par",
-        "resetSort": "Réinitialiser le tri"
+        "resetSort": "Réinitialiser le tri",
+        "paymentFilter": "Paiement"
     }
 }

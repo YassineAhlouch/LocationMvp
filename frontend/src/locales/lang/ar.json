@@ -456,6 +456,7 @@
         "payment.partial": "جزئي",
         "payment.unpaid": "غير مدفوع",
         "sortBy": "ترتيب حسب",
-        "resetSort": "إعادة الترتيب"
+        "resetSort": "إعادة الترتيب",
+        "paymentFilter": "الدفع"
     }
 }

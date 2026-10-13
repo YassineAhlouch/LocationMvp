@@ -108,11 +108,11 @@ const sortableFields = [
     { key: 'status', label: 'Status' },
 ]
 
-const paymentStatusFilterOptions = [
-    { value: '', label: 'All' },
-    { value: 'paid', label: 'Paid' },
-    { value: 'partial', label: 'Partial' },
-    { value: 'unpaid', label: 'Unpaid' },
+const paymentStatusFilterOptions = (t: any) => [
+    { value: '', label: t('reservations.all', 'All') },
+    { value: 'paid', label: t('reservations.payment.paid', 'Paid') },
+    { value: 'partial', label: t('reservations.payment.partial', 'Partial') },
+    { value: 'unpaid', label: t('reservations.payment.unpaid', 'Unpaid') },
 ]
 
 const csvHeaders = [
@@ -1347,14 +1347,14 @@ const Reservations = () => {
                     }}
                 >
                     <TabList>
-                        <TabNav value="">All</TabNav>
-                        <TabNav value="pending">Pending</TabNav>
-                        <TabNav value="confirmed">Confirmed</TabNav>
-                        <TabNav value="reserved">Reserved</TabNav>
-                        <TabNav value="active">Active</TabNav>
-                        <TabNav value="completed">Completed</TabNav>
-                        <TabNav value="cancelled">Cancelled</TabNav>
-                        <TabNav value="no_show">No Show</TabNav>
+                        <TabNav value="">{t('reservations.all', 'All')}</TabNav>
+                        <TabNav value="pending">{t('reservations.status.pending', 'Pending')}</TabNav>
+                        <TabNav value="confirmed">{t('reservations.status.confirmed', 'Confirmed')}</TabNav>
+                        <TabNav value="reserved">{t('reservations.status.reserved', 'Reserved')}</TabNav>
+                        <TabNav value="active">{t('reservations.status.active', 'Active')}</TabNav>
+                        <TabNav value="completed">{t('reservations.status.completed', 'Completed')}</TabNav>
+                        <TabNav value="cancelled">{t('reservations.status.cancelled', 'Cancelled')}</TabNav>
+                        <TabNav value="no_show">{t('reservations.status.no_show', 'No Show')}</TabNav>
                     </TabList>
                 </Tabs>
 
@@ -1392,9 +1392,9 @@ const Reservations = () => {
                                 >
                                     {larger.sm ? (
                                         <span className="flex items-center gap-1">
-                                            Payment:{' '}
+                                            {t('reservations.paymentFilter', 'Payment')}{': '}
                                             {
-                                                paymentStatusFilterOptions.find(
+                                                paymentStatusFilterOptions(t).find(
                                                     (option) =>
                                                         option.value ===
                                                         paymentStatusFilter,
@@ -1407,7 +1407,7 @@ const Reservations = () => {
                                 </Button>
                             }
                         >
-                            {paymentStatusFilterOptions.map((option) => (
+                            {paymentStatusFilterOptions(t).map((option) => (
                                 <Dropdown.Item
                                     key={option.value}
                                     onClick={() => {
