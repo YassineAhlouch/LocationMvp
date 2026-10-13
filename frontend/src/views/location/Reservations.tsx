@@ -633,7 +633,7 @@ const ExpandableReservationDetails = ({
                 onClick={onExpand}
             >
                 <span className="heading-text font-medium group-hover:text-primary">
-                    {expand ? 'Hide Details' : 'Show Details'}
+                    {expand ? t('reservations.hideDetails', 'Hide Details') : t('reservations.showDetails', 'Show Details')}
                 </span>
                 <LiChevronLeft
                     className={`text-lg transition-transform group-hover:text-primary ${
@@ -647,7 +647,7 @@ const ExpandableReservationDetails = ({
                         <div className="space-y-3">
                             <div className="font-semibold heading-text uppercase tracking-wide flex items-center gap-2">
                                 <LiCar className="text-base" />
-                                <span>Car &amp; Trip</span>
+                                <span>{t('reservations.carTrip', 'Car & Trip')}</span>
                             </div>
                             <div className="flex flex-wrap items-center gap-2">
                                 <span className="flex items-center gap-1 heading-text font-medium">
@@ -684,7 +684,7 @@ const ExpandableReservationDetails = ({
                         <div className="space-y-3">
                             <div className="font-semibold heading-text uppercase tracking-wide flex items-center gap-2">
                                 <LiUser className="text-base" />
-                                <span>Clients</span>
+                                <span>{t('reservations.clients', 'Clients')}</span>
                             </div>
                             <div className="flex flex-wrap items-center gap-2">
                                 <LiUser className="text-base" />
@@ -724,11 +724,11 @@ const ExpandableReservationDetails = ({
                     <div className="space-y-4">
                         <div className="font-semibold heading-text uppercase tracking-wide flex items-center gap-2">
                             <LiMoney className="text-base" />
-                            <span>Pricing Summary</span>
+                            <span>{t('reservations.pricingSummary', 'Pricing Summary')}</span>
                         </div>
                         <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-3">
                             <div className="flex justify-between items-center">
-                                <span className="font-medium">Subtotal</span>
+                                <span className="font-medium">{t('reservations.subtotal', 'Subtotal')}</span>
                                 <span className="font-medium heading-text">
                                     {MAD(reservation.subtotal)}
                                 </span>
@@ -754,13 +754,13 @@ const ExpandableReservationDetails = ({
                                 </div>
                             )}
                             <div className="flex justify-between items-center">
-                                <span className="font-medium">Tax</span>
+                                <span className="font-medium">{t('reservations.tax', 'Tax')}</span>
                                 <span className="font-medium heading-text">
                                     {MAD(reservation.tax_amount)}
                                 </span>
                             </div>
                             <div className="flex justify-between items-center">
-                                <span className="font-medium">Deposit</span>
+                                <span className="font-medium">{t('reservations.deposit', 'Deposit')}</span>
                                 <span className="font-medium heading-text">
                                     {MAD(reservation.deposit_amount)}
                                 </span>

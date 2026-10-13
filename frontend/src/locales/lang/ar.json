@@ -492,6 +492,46 @@
             "en": "Edit",
             "fr": "Modifier",
             "ar": "تعديل"
+        },
+        "hideDetails": {
+            "en": "Hide Details",
+            "fr": "Masquer les détails",
+            "ar": "إخفاء التفاصيل"
+        },
+        "showDetails": {
+            "en": "Show Details",
+            "fr": "Afficher les détails",
+            "ar": "عرض التفاصيل"
+        },
+        "carTrip": {
+            "en": "Car & Trip",
+            "fr": "Véhicule & Trajet",
+            "ar": "المركبة والرحلة"
+        },
+        "clients": {
+            "en": "Clients",
+            "fr": "Clients",
+            "ar": "العملاء"
+        },
+        "pricingSummary": {
+            "en": "Pricing Summary",
+            "fr": "Récapitulatif tarifaire",
+            "ar": "ملخص التسعير"
+        },
+        "subtotal": {
+            "en": "Subtotal",
+            "fr": "Sous-total",
+            "ar": "المجموع الفرعي"
+        },
+        "tax": {
+            "en": "Tax",
+            "fr": "Taxe",
+            "ar": "الضريبة"
+        },
+        "deposit": {
+            "en": "Deposit",
+            "fr": "Acompte",
+            "ar": "التأمين المسبق"
         }
     }
 }
