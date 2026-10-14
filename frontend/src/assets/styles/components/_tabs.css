@@ -28,7 +28,7 @@
   }
 
   .tab-indicator {
-    @apply absolute bottom-0 ltr:left-0 rtl:right-0 bg-primary dark:bg-primary;
+    @apply absolute bottom-0 left-0 bg-primary dark:bg-primary;
 
     &.underline {
       @apply h-0.5;

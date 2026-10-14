@@ -17,6 +17,19 @@ type ThemeAction = {
 
 const inititialThemeState = themeConfig
 
+/**
+ * Apply the direction to `<html>` synchronously. `useDirection` also does this
+ * in an effect, but that runs after child effects, so layout-dependent
+ * components (tabs indicator, etc.) would measure stale geometry on a language
+ * switch. Applying it here, at the moment the state changes, keeps the DOM and
+ * the React state in step.
+ */
+const applyDirection = (direction: Direction) => {
+    if (typeof document !== 'undefined') {
+        document.documentElement.setAttribute('dir', direction)
+    }
+}
+
 export const useThemeStore = create<ThemeState & ThemeAction>()(
     persist(
         (set) => ({
@@ -27,7 +40,10 @@ export const useThemeStore = create<ThemeState & ThemeAction>()(
                 set((state) => ({
                     layout: { ...state.layout, sideNavCollapse: payload },
                 })),
-            setDirection: (payload) => set(() => ({ direction: payload })),
+            setDirection: (payload) => {
+                applyDirection(payload)
+                set(() => ({ direction: payload }))
+            },
             setPanelExpand: (payload) => set(() => ({ panelExpand: payload })),
             setLayout: (payload) =>
                 set((state) => ({
@@ -43,3 +59,5 @@ export const useThemeStore = create<ThemeState & ThemeAction>()(
         },
     ),
 )
+
+applyDirection(useThemeStore.getState().direction)

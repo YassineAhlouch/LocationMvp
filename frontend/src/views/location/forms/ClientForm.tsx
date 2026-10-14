@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Button from '@/components/ui/Button'
 import Select from '@/components/ui/Select'
 import Switcher from '@/components/ui/Switcher'
@@ -14,6 +14,7 @@ import type { Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { apiCreateClient, apiUpdateClient } from '@/services/LocationService'
+import useTranslation from '@/utils/hooks/useTranslation'
 import type {
     Client,
     ClientPayload,
@@ -21,6 +22,7 @@ import type {
     ClientSource,
 } from '@/@types/location'
 import { clientStatusOptions, clientSourceOptions } from '../shared'
+import type { Translator } from '../shared'
 
 /**
  * Country picker options: the country name is the stored value (the `country`
@@ -61,40 +63,75 @@ const hasIdentityDocument = (values: {
 }) =>
     Boolean(values.cin?.trim()) || Boolean(values.passport_number?.trim())
 
-const identityDocumentMessage = 'Enter either a CIN or a passport number'
+const identityDocumentMessage = (t: Translator) =>
+    t(
+        'reservations.clients.validation.identityDocument',
+        'Provide a CIN or a passport number',
+    )
 
-const clientSchema = z
-    .object({
-        first_name: z.string().min(1, 'First name is required'),
-        last_name: z.string().min(1, 'Last name is required'),
-        phone: z.string().min(1, 'Phone is required'),
-        driving_license_number: z
-            .string()
-            .min(1, 'Driving license number is required'),
-        is_active: z.boolean(),
-        secondary_phone: z.string().optional(),
-        email: z.string().optional(),
-        cin: z.string().optional(),
-        passport_number: z.string().optional(),
-        driving_license_expiry: z.string().optional(),
-        birth_date: z.string().optional(),
-        birth_place: z.string().optional(),
-        nationality: z.string().optional(),
-        address: z.string().optional(),
-        city: z.string().optional(),
-        country: z.string().optional(),
-        notes: z.string().optional(),
-        source: z.string().optional(),
-        status: z.string().optional(),
-    })
-    .refine(hasIdentityDocument, {
-        message: identityDocumentMessage,
-        path: ['cin'],
-    })
-    .refine(hasIdentityDocument, {
-        message: identityDocumentMessage,
-        path: ['passport_number'],
-    })
+const clientSchema = (t: Translator) =>
+    z
+        .object({
+            first_name: z
+                .string()
+                .min(
+                    1,
+                    t(
+                        'reservations.clients.validation.firstNameRequired',
+                        'First name is required',
+                    ),
+                ),
+            last_name: z
+                .string()
+                .min(
+                    1,
+                    t(
+                        'reservations.clients.validation.lastNameRequired',
+                        'Last name is required',
+                    ),
+                ),
+            phone: z
+                .string()
+                .min(
+                    1,
+                    t(
+                        'reservations.clients.validation.phoneRequired',
+                        'Phone is required',
+                    ),
+                ),
+            driving_license_number: z
+                .string()
+                .min(
+                    1,
+                    t(
+                        'reservations.clients.validation.drivingLicenseRequired',
+                        'Driving license number is required',
+                    ),
+                ),
+            is_active: z.boolean(),
+            secondary_phone: z.string().optional(),
+            email: z.string().optional(),
+            cin: z.string().optional(),
+            passport_number: z.string().optional(),
+            driving_license_expiry: z.string().optional(),
+            birth_date: z.string().optional(),
+            birth_place: z.string().optional(),
+            nationality: z.string().optional(),
+            address: z.string().optional(),
+            city: z.string().optional(),
+            country: z.string().optional(),
+            notes: z.string().optional(),
+            source: z.string().optional(),
+            status: z.string().optional(),
+        })
+        .refine(hasIdentityDocument, {
+            message: identityDocumentMessage(t),
+            path: ['cin'],
+        })
+        .refine(hasIdentityDocument, {
+            message: identityDocumentMessage(t),
+            path: ['passport_number'],
+        })
 
 const toDateSlice = (value?: string | null) =>
     value ? value.slice(0, 10) : ''
@@ -160,7 +197,34 @@ const ClientForm = ({
     onSaved,
     onCreated,
 }: ClientFormProps) => {
+    const { t } = useTranslation()
     const [submitting, setSubmitting] = useState(false)
+
+    const schema = useMemo(() => clientSchema(t), [t])
+
+    const sourceOptions = useMemo(
+        () =>
+            clientSourceOptions.map((option) => ({
+                ...option,
+                label: t(
+                    `reservations.clients.sourceOption.${option.value}`,
+                    option.label,
+                ),
+            })),
+        [t],
+    )
+
+    const statusOptions = useMemo(
+        () =>
+            clientStatusOptions.map((option) => ({
+                ...option,
+                label: t(
+                    `reservations.clients.statusOption.${option.value}`,
+                    option.label,
+                ),
+            })),
+        [t],
+    )
 
     const {
         handleSubmit,
@@ -168,7 +232,7 @@ const ClientForm = ({
         reset,
         formState: { errors },
     } = useForm<ClientFormValues>({
-        resolver: zodResolver(clientSchema) as unknown as Resolver<ClientFormValues>,
+        resolver: zodResolver(schema) as unknown as Resolver<ClientFormValues>,
         defaultValues: defaultFormValues(client),
     })
 
@@ -185,7 +249,10 @@ const ClientForm = ({
                 toast.push(
                     <Notification
                         type="success"
-                        title="Client updated successfully!"
+                        title={t(
+                            'reservations.clients.updatedToast',
+                            'Client updated successfully!',
+                        )}
                     />,
                 )
             } else {
@@ -193,7 +260,10 @@ const ClientForm = ({
                 toast.push(
                     <Notification
                         type="success"
-                        title="Client added successfully!"
+                        title={t(
+                            'reservations.clients.createdToast',
+                            'Client added successfully!',
+                        )}
                     />,
                 )
                 onCreated?.(created)
@@ -202,7 +272,13 @@ const ClientForm = ({
             onCancel()
         } catch {
             toast.push(
-                <Notification type="danger" title="Something went wrong" />,
+                <Notification
+                    type="danger"
+                    title={t(
+                        'reservations.clients.saveFailedToast',
+                        'Something went wrong',
+                    )}
+                />,
             )
         } finally {
             setSubmitting(false)
@@ -213,7 +289,7 @@ const ClientForm = ({
         <Form onSubmit={onSubmit}>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <FormItem
-                    label="First name"
+                    label={t('reservations.clients.firstName', 'First name')}
                     asterisk
                     invalid={Boolean(errors.first_name)}
                     errorMessage={errors.first_name?.message}
@@ -222,12 +298,12 @@ const ClientForm = ({
                         name="first_name"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder="Youssef" {...field} />
+                            <Input placeholder={t('reservations.clients.placeholderFirstName', 'Youssef')} {...field} />
                         )}
                     />
                 </FormItem>
                 <FormItem
-                    label="Last name"
+                    label={t('reservations.clients.lastName', 'Last name')}
                     asterisk
                     invalid={Boolean(errors.last_name)}
                     errorMessage={errors.last_name?.message}
@@ -236,12 +312,12 @@ const ClientForm = ({
                         name="last_name"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder="El Amrani" {...field} />
+                            <Input placeholder={t('reservations.clients.placeholderLastName', 'El Amrani')} {...field} />
                         )}
                     />
                 </FormItem>
                 <FormItem
-                    label="Phone"
+                    label={t('reservations.clients.phone', 'Phone')}
                     asterisk
                     invalid={Boolean(errors.phone)}
                     errorMessage={errors.phone?.message}
@@ -257,7 +333,7 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="Secondary phone">
+                <FormItem label={t('reservations.clients.secondaryPhone', 'Secondary phone')}>
                     <Controller
                         name="secondary_phone"
                         control={control}
@@ -269,7 +345,7 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="Email">
+                <FormItem label={t('reservations.clients.email', 'Email')}>
                     <Controller
                         name="email"
                         control={control}
@@ -283,7 +359,7 @@ const ClientForm = ({
                     />
                 </FormItem>
                 <FormItem
-                    label="CIN"
+                    label={t('reservations.clients.cin', 'CIN')}
                     asterisk
                     invalid={Boolean(errors.cin)}
                     errorMessage={errors.cin?.message}
@@ -297,7 +373,7 @@ const ClientForm = ({
                     />
                 </FormItem>
                 <FormItem
-                    label="Passport number"
+                    label={t('reservations.clients.passportNumber', 'Passport number')}
                     asterisk
                     invalid={Boolean(errors.passport_number)}
                     errorMessage={errors.passport_number?.message}
@@ -306,12 +382,12 @@ const ClientForm = ({
                         name="passport_number"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder="Passport no." {...field} />
+                            <Input placeholder={t('reservations.clients.placeholderPassport', 'Passport no.')} {...field} />
                         )}
                     />
                 </FormItem>
                 <FormItem
-                    label="Driving license number"
+                    label={t('reservations.clients.drivingLicenseNumber', 'Driving license number')}
                     asterisk
                     invalid={Boolean(errors.driving_license_number)}
                     errorMessage={errors.driving_license_number?.message}
@@ -320,11 +396,11 @@ const ClientForm = ({
                         name="driving_license_number"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder="License no." {...field} />
+                            <Input placeholder={t('reservations.clients.placeholderLicense', 'License no.')} {...field} />
                         )}
                     />
                 </FormItem>
-                <FormItem label="Driving license expiry">
+                <FormItem label={t('reservations.clients.drivingLicenseExpiry', 'Driving license expiry')}>
                     <Controller
                         name="driving_license_expiry"
                         control={control}
@@ -333,7 +409,7 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="Birth date">
+                <FormItem label={t('reservations.clients.birthDate', 'Birth date')}>
                     <Controller
                         name="birth_date"
                         control={control}
@@ -342,41 +418,41 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="Birth place">
+                <FormItem label={t('reservations.clients.birthPlace', 'Birth place')}>
                     <Controller
                         name="birth_place"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder="Marrakech" {...field} />
+                            <Input placeholder={t('reservations.clients.placeholderMarrakech', 'Marrakech')} {...field} />
                         )}
                     />
                 </FormItem>
-                <FormItem label="Nationality">
+                <FormItem label={t('reservations.clients.nationality', 'Nationality')}>
                     <Controller
                         name="nationality"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder="Moroccan" {...field} />
+                            <Input placeholder={t('reservations.clients.placeholderNationality', 'Moroccan')} {...field} />
                         )}
                     />
                 </FormItem>
-                <FormItem label="City">
+                <FormItem label={t('reservations.clients.city', 'City')}>
                     <Controller
                         name="city"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder="Marrakech" {...field} />
+                            <Input placeholder={t('reservations.clients.placeholderMarrakech', 'Marrakech')} {...field} />
                         )}
                     />
                 </FormItem>
-                <FormItem label="Country">
+                <FormItem label={t('reservations.clients.country', 'Country')}>
                     <Controller
                         name="country"
                         control={control}
                         render={({ field }) => (
                             <Select
                                 isSearchable
-                                placeholder="Select country"
+                                placeholder={t('reservations.clients.selectCountry', 'Select country')}
                                 options={countryOptions}
                                 value={
                                     countryOptions.find(
@@ -424,15 +500,15 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="Source">
+                <FormItem label={t('reservations.clients.source', 'Source')}>
                     <Controller
                         name="source"
                         control={control}
                         render={({ field }) => (
                             <Select
-                                placeholder="Select source"
-                                options={clientSourceOptions}
-                                value={clientSourceOptions.find(
+                                placeholder={t('reservations.clients.selectSource', 'Select source')}
+                                options={sourceOptions}
+                                value={sourceOptions.find(
                                     (o) => o.value === field.value,
                                 )}
                                 onChange={(option) =>
@@ -442,14 +518,14 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="Status">
+                <FormItem label={t('reservations.clients.status', 'Status')}>
                     <Controller
                         name="status"
                         control={control}
                         render={({ field }) => (
                             <Select
-                                options={clientStatusOptions}
-                                value={clientStatusOptions.find(
+                                options={statusOptions}
+                                value={statusOptions.find(
                                     (o) => o.value === field.value,
                                 )}
                                 onChange={(option) =>
@@ -459,7 +535,7 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="Active">
+                <FormItem label={t('reservations.clients.active', 'Active')}>
                     <Controller
                         name="is_active"
                         control={control}
@@ -474,27 +550,27 @@ const ClientForm = ({
                     />
                 </FormItem>
             </div>
-            <FormItem label="Address" className="mt-4">
+            <FormItem label={t('reservations.clients.address', 'Address')} className="mt-4">
                 <Controller
                     name="address"
                     control={control}
                     render={({ field }) => (
                         <Input
                             textArea
-                            placeholder="Full address"
+                            placeholder={t('reservations.clients.placeholderAddress', 'Full address')}
                             {...field}
                         />
                     )}
                 />
             </FormItem>
-            <FormItem label="Notes" className="mt-2">
+            <FormItem label={t('reservations.clients.notes', 'Notes')} className="mt-2">
                 <Controller
                     name="notes"
                     control={control}
                     render={({ field }) => (
                         <Input
                             textArea
-                            placeholder="Additional notes"
+                            placeholder={t('reservations.clients.placeholderNotes', 'Additional notes')}
                             {...field}
                         />
                     )}
@@ -502,10 +578,12 @@ const ClientForm = ({
             </FormItem>
             <div className="mt-6 flex justify-end gap-2">
                 <Button type="button" variant="ghost" onClick={onCancel}>
-                    Cancel
+                    {t('common.cancel', 'Cancel')}
                 </Button>
                 <Button type="submit" variant="solid" loading={submitting}>
-                    {client ? 'Save changes' : 'Add client'}
+                    {client
+                        ? t('reservations.clients.saveChanges', 'Save changes')
+                        : t('reservations.clients.addClientButton', 'Add client')}
                 </Button>
             </div>
         </Form>

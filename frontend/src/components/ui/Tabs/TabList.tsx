@@ -26,20 +26,14 @@ const TabList = (props: TabListProps) => {
                 `[data-value="${value}"]`,
             )
             if (activeTab) {
+                // `offsetLeft`/`offsetWidth` are physical (measured from the
+                // container's left edge) regardless of writing direction, so
+                // the same math works for both LTR and RTL. `direction` is kept
+                // in the dependency list so the indicator is re-measured when
+                // the layout flips.
                 const { offsetLeft, offsetWidth } = activeTab as HTMLElement
 
-                const activeTabOffsetParent =
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    (activeTab as HTMLElement).offsetParent as any
-                const offsetParentWidth =
-                    activeTabOffsetParent?.offsetWidth || 0
-
-                const left =
-                    direction === 'rtl'
-                        ? (offsetParentWidth - (offsetLeft + offsetWidth)) * -1
-                        : offsetLeft
-
-                setIndicatorStyle({ left, width: offsetWidth })
+                setIndicatorStyle({ left: offsetLeft, width: offsetWidth })
                 if (!indicattorTransition.current) {
                     indicattorTransition.current = 'tab-indicator-transition'
                 }

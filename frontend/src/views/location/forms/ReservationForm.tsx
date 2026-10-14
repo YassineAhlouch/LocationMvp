@@ -1664,7 +1664,10 @@ const ReservationForm = ({
                                     isLoading={clientsLoading}
                                     placeholder={t('reservations.form.selectClient', 'Select client')}
                                     searchInputProps={{
-                                        placeholder: 'Search clients…',
+                                        placeholder: t(
+                                            'reservations.clients.searchClients',
+                                            'Search clients…',
+                                        ),
                                     }}
                                     options={clients}
                                     className="min-w-0 flex-1"
@@ -1683,7 +1686,7 @@ const ReservationForm = ({
                                         setClientDialogTarget('primary')
                                     }
                                 >
-                                    Add
+                                    {t('reservations.clients.add', 'Add')}
                                 </Button>
                             </div>
                         )}
@@ -1700,7 +1703,10 @@ const ReservationForm = ({
                                     isLoading={clientsLoading}
                                     placeholder={t('reservations.form.selectOptionalClient', 'Select optional client')}
                                     searchInputProps={{
-                                        placeholder: 'Search clients…',
+                                        placeholder: t(
+                                            'reservations.clients.searchClients',
+                                            'Search clients…',
+                                        ),
                                     }}
                                     options={clients}
                                     className="min-w-0 flex-1"
@@ -1719,7 +1725,7 @@ const ReservationForm = ({
                                         setClientDialogTarget('secondary')
                                     }
                                 >
-                                    Add
+                                    {t('reservations.clients.add', 'Add')}
                                 </Button>
                             </div>
                         )}
