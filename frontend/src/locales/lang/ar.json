@@ -720,5 +720,157 @@
         "month": "شهر",
         "year": "سنة",
         "more": "+{{count}} المزيد"
+    },
+    "cars": {
+        "title": "السيارات",
+        "addCar": "إضافة سيارة",
+        "search": "بحث",
+        "filter": "تصفية",
+        "reset": "إعادة تعيين",
+        "export": "تصدير",
+        "perPage": "{{n}} / صفحة",
+        "perDay": "/ يوم",
+        "km": "كم",
+        "initial": "الأولي:",
+        "selected": "محدد",
+        "columns": {
+            "vehicle": "السيارة",
+            "registration": "رقم التسجيل",
+            "color": "اللون",
+            "price": "السعر",
+            "category": "الفئة",
+            "mileage": "المسافة المقطوعة",
+            "fuel": "الوقود",
+            "status": "الحالة"
+        },
+        "status": {
+            "available": "متاحة",
+            "reserved": "محجوزة",
+            "rented": "مؤجرة",
+            "maintenance": "الصيانة",
+            "inactive": "غير نشطة"
+        },
+        "transmission": {
+            "manual": "يدوي",
+            "automatic": "أوتوماتيكي"
+        },
+        "fuel": {
+            "diesel": "ديزل",
+            "petrol": "بنزين",
+            "hybrid": "هجين",
+            "electric": "كهربائي"
+        },
+        "stats": {
+            "total": "الإجمالي"
+        },
+        "actions": {
+            "view": "عرض التفاصيل",
+            "edit": "تعديل",
+            "delete": "حذف"
+        },
+        "empty": {
+            "title": "لا توجد سيارات",
+            "description": "جرّب توسيع عوامل التصفية أو أضف سيارة جديدة."
+        },
+        "csv": {
+            "registration": "رقم التسجيل",
+            "brand": "الماركة",
+            "model": "الطراز",
+            "color": "اللون",
+            "category": "الفئة",
+            "dailyPrice": "السعر اليومي",
+            "initialMileage": "المسافة الأولية",
+            "currentMileage": "المسافة الحالية",
+            "fuelLevel": "مستوى الوقود",
+            "status": "الحالة"
+        },
+        "toast": {
+            "deleted": "تم حذف السيارة بنجاح!",
+            "deleteFailed": "تعذر حذف السيارة",
+            "bulkDeleted": "تم حذف {{n}} سيارة بنجاح!",
+            "bulkDeleteFailed": "فشل حذف {{n}} سيارة",
+            "bulkDeleteError": "تعذر حذف السيارات"
+        },
+        "deleteDialog": {
+            "title": "حذف السيارة",
+            "description": "حذف {{registration}}؟ سيؤدي هذا إلى إزالة السيارة من الأسطول."
+        },
+        "bulkDeleteDialog": {
+            "title": "حذف السيارات",
+            "description": "هل أنت متأكد من حذف {{n}} سيارة؟ لا يمكن التراجع عن هذا الإجراء."
+        },
+        "addPage": {
+            "title": "إضافة سيارة",
+            "subtitle": "أضف سيارة جديدة إلى الأسطول"
+        },
+        "editPage": {
+            "title": "تعديل سيارة",
+            "subtitle": "تحديث معلومات هذه السيارة"
+        },
+        "notFound": {
+            "title": "السيارة غير موجودة",
+            "description": "ربما تم حذفها أو ليس لديك صلاحية الوصول إليها."
+        },
+        "form": {
+            "editTitle": "تعديل السيارة",
+            "addTitle": "إضافة سيارة",
+            "brand": "الماركة",
+            "model": "الطراز",
+            "category": "الفئة",
+            "registrationNumber": "رقم التسجيل",
+            "vin": "رقم الهيكل (VIN)",
+            "year": "السنة",
+            "color": "اللون",
+            "dailyPrice": "السعر اليومي (درهم)",
+            "transmission": "ناقل الحركة",
+            "fuelType": "نوع الوقود",
+            "seats": "المقاعد",
+            "doors": "الأبواب",
+            "purchasePrice": "سعر الشراء (درهم)",
+            "initialMileage": "المسافة الأولية",
+            "currentMileage": "المسافة الحالية",
+            "fuelLevel": "مستوى الوقود (%)",
+            "insuranceCompany": "شركة التأمين",
+            "insuranceExpiry": "انتهاء التأمين",
+            "technicalInspectionExpiry": "انتهاء الفحص التقني",
+            "status": "الحالة",
+            "active": "نشط",
+            "images": "الصور",
+            "notes": "ملاحظات",
+            "placeholderBrand": "اختر الماركة",
+            "placeholderModel": "اختر الطراز",
+            "placeholderCategory": "اختر الفئة",
+            "placeholderColor": "أزرق",
+            "placeholderTransmission": "اختر ناقل الحركة",
+            "placeholderFuel": "اختر نوع الوقود",
+            "placeholderRegistration": "مثال: 45678-A-6",
+            "placeholderVin": "رقم الهيكل (اختياري)",
+            "placeholderInsurance": "وفا للتأمين",
+            "placeholderNotes": "ملاحظات إضافية",
+            "uploadHint": "انقر أو اسحب الصور هنا",
+            "uploadFormats": "JPG أو PNG أو WEBP — 5 ميجابايت كحد أقصى لكل صورة، حتى {{n}} صور",
+            "primary": "رئيسية",
+            "imageAlt": "صورة السيارة {{n}}",
+            "setPrimary": "تعيين كرئيسية",
+            "removeImage": "إزالة الصورة",
+            "saveChanges": "حفظ التعديلات",
+            "addCar": "إضافة السيارة",
+            "validation": {
+                "brandRequired": "الماركة مطلوبة",
+                "modelRequired": "الطراز مطلوب",
+                "categoryRequired": "الفئة مطلوبة",
+                "registrationRequired": "رقم التسجيل مطلوب",
+                "dailyPriceRequired": "السعر اليومي مطلوب",
+                "maxImages": "يمكن أن تحتوي السيارة على {{n}} صور كحد أقصى",
+                "imageOnly": "يُسمح بملفات الصور فقط",
+                "maxSize": "يجب أن تكون كل صورة 5 ميجابايت أو أقل"
+            },
+            "toast": {
+                "uploadFailed": "تعذر رفع هذه الصورة",
+                "updated": "تم تحديث السيارة بنجاح!",
+                "created": "تمت إضافة السيارة بنجاح!",
+                "error": "حدث خطأ ما"
+            }
+        }
     }
 }

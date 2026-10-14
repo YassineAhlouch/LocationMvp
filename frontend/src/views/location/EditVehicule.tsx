@@ -5,10 +5,12 @@ import Card from '@/components/ui/Card'
 import Spinner from '@/components/ui/Spinner'
 import CarForm from './forms/CarForm'
 import { apiGetCar } from '@/services/LocationService'
+import useTranslation from '@/utils/hooks/useTranslation'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 import type { Car } from '@/@types/location'
 
 const EditVehicule = () => {
+    const { t } = useTranslation()
     const { id } = useParams()
     const navigate = useNavigate()
     const goToDetails = () =>
@@ -61,10 +63,14 @@ const EditVehicule = () => {
     if (failed || !car) {
         return (
             <div className="flex min-h-[50vh] flex-col items-center justify-center gap-3 text-center">
-                <h5 className="dark:text-gray-100">Vehicle not found</h5>
+                <h5 className="dark:text-gray-100">
+                    {t('cars.notFound.title', 'Vehicle not found')}
+                </h5>
                 <p className="text-sm text-gray-400 dark:text-gray-500">
-                    It may have been deleted or you don&apos;t have access to
-                    it.
+                    {t(
+                        'cars.notFound.description',
+                        "It may have been deleted or you don't have access to it.",
+                    )}
                 </p>
             </div>
         )
@@ -76,10 +82,13 @@ const EditVehicule = () => {
                 <div className="p-4">
                     <div className="mb-6">
                         <h3 className="text-xl font-bold dark:text-gray-100">
-                            Modifier un véhicule
+                            {t('cars.editPage.title', 'Edit a vehicle')}
                         </h3>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                            Update this vehicle&apos;s information
+                            {t(
+                                'cars.editPage.subtitle',
+                                "Update this vehicle's information",
+                            )}
                         </p>
                     </div>
                     <CarForm

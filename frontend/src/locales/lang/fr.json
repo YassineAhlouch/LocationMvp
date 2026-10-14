@@ -720,5 +720,157 @@
         "month": "Mois",
         "year": "Année",
         "more": "+{{count}} autres"
+    },
+    "cars": {
+        "title": "Véhicules",
+        "addCar": "Ajouter un véhicule",
+        "search": "Rechercher",
+        "filter": "Filtrer",
+        "reset": "Réinitialiser",
+        "export": "Exporter",
+        "perPage": "{{n}} / page",
+        "perDay": "/ jour",
+        "km": "km",
+        "initial": "initial :",
+        "selected": "sélectionné(s)",
+        "columns": {
+            "vehicle": "Véhicule",
+            "registration": "Immatriculation",
+            "color": "Couleur",
+            "price": "Prix",
+            "category": "Catégorie",
+            "mileage": "Kilométrage",
+            "fuel": "Carburant",
+            "status": "Statut"
+        },
+        "status": {
+            "available": "Disponible",
+            "reserved": "Réservé",
+            "rented": "Loué",
+            "maintenance": "Maintenance",
+            "inactive": "Inactif"
+        },
+        "transmission": {
+            "manual": "Manuelle",
+            "automatic": "Automatique"
+        },
+        "fuel": {
+            "diesel": "Diesel",
+            "petrol": "Essence",
+            "hybrid": "Hybride",
+            "electric": "Électrique"
+        },
+        "stats": {
+            "total": "Total"
+        },
+        "actions": {
+            "view": "Voir les détails",
+            "edit": "Modifier",
+            "delete": "Supprimer"
+        },
+        "empty": {
+            "title": "Aucun véhicule trouvé",
+            "description": "Essayez d'élargir les filtres ou ajoutez un véhicule."
+        },
+        "csv": {
+            "registration": "Immatriculation",
+            "brand": "Marque",
+            "model": "Modèle",
+            "color": "Couleur",
+            "category": "Catégorie",
+            "dailyPrice": "Prix journalier",
+            "initialMileage": "Kilométrage initial",
+            "currentMileage": "Kilométrage actuel",
+            "fuelLevel": "Niveau de carburant",
+            "status": "Statut"
+        },
+        "toast": {
+            "deleted": "Véhicule supprimé avec succès !",
+            "deleteFailed": "Impossible de supprimer le véhicule",
+            "bulkDeleted": "{{n}} véhicule(s) supprimé(s) avec succès !",
+            "bulkDeleteFailed": "{{n}} suppression(s) échouée(s)",
+            "bulkDeleteError": "Impossible de supprimer les véhicules"
+        },
+        "deleteDialog": {
+            "title": "Supprimer le véhicule",
+            "description": "Supprimer {{registration}} ? Cela retire le véhicule de la flotte."
+        },
+        "bulkDeleteDialog": {
+            "title": "Supprimer les véhicules",
+            "description": "Voulez-vous vraiment supprimer {{n}} véhicule(s) ? Cette action est irréversible."
+        },
+        "addPage": {
+            "title": "Ajouter un véhicule",
+            "subtitle": "Ajouter un nouveau véhicule à la flotte"
+        },
+        "editPage": {
+            "title": "Modifier un véhicule",
+            "subtitle": "Mettre à jour les informations de ce véhicule"
+        },
+        "notFound": {
+            "title": "Véhicule introuvable",
+            "description": "Il a peut-être été supprimé ou vous n’y avez pas accès."
+        },
+        "form": {
+            "editTitle": "Modifier le véhicule",
+            "addTitle": "Ajouter un véhicule",
+            "brand": "Marque",
+            "model": "Modèle",
+            "category": "Catégorie",
+            "registrationNumber": "Immatriculation",
+            "vin": "VIN",
+            "year": "Année",
+            "color": "Couleur",
+            "dailyPrice": "Prix journalier (MAD)",
+            "transmission": "Transmission",
+            "fuelType": "Type de carburant",
+            "seats": "Places",
+            "doors": "Portes",
+            "purchasePrice": "Prix d'achat (MAD)",
+            "initialMileage": "Kilométrage initial",
+            "currentMileage": "Kilométrage actuel",
+            "fuelLevel": "Niveau de carburant (%)",
+            "insuranceCompany": "Compagnie d'assurance",
+            "insuranceExpiry": "Expiration de l'assurance",
+            "technicalInspectionExpiry": "Expiration du contrôle technique",
+            "status": "Statut",
+            "active": "Actif",
+            "images": "Images",
+            "notes": "Notes",
+            "placeholderBrand": "Sélectionner une marque",
+            "placeholderModel": "Sélectionner un modèle",
+            "placeholderCategory": "Sélectionner une catégorie",
+            "placeholderColor": "Bleu",
+            "placeholderTransmission": "Sélectionner la transmission",
+            "placeholderFuel": "Sélectionner le type de carburant",
+            "placeholderRegistration": "ex. 45678-A-6",
+            "placeholderVin": "VIN facultatif",
+            "placeholderInsurance": "Wafa Assurance",
+            "placeholderNotes": "Notes supplémentaires",
+            "uploadHint": "Cliquez ou déposez des images ici",
+            "uploadFormats": "JPG, PNG ou WEBP — 5 Mo max chacune, jusqu’à {{n}} images",
+            "primary": "Principale",
+            "imageAlt": "Image du véhicule {{n}}",
+            "setPrimary": "Définir comme principale",
+            "removeImage": "Supprimer l’image",
+            "saveChanges": "Enregistrer les modifications",
+            "addCar": "Ajouter le véhicule",
+            "validation": {
+                "brandRequired": "La marque est requise",
+                "modelRequired": "Le modèle est requis",
+                "categoryRequired": "La catégorie est requise",
+                "registrationRequired": "L’immatriculation est requise",
+                "dailyPriceRequired": "Le prix journalier est requis",
+                "maxImages": "Un véhicule peut avoir jusqu’à {{n}} images",
+                "imageOnly": "Seuls les fichiers image sont autorisés",
+                "maxSize": "Chaque image doit faire 5 Mo ou moins"
+            },
+            "toast": {
+                "uploadFailed": "Impossible de téléverser cette image",
+                "updated": "Véhicule mis à jour avec succès !",
+                "created": "Véhicule ajouté avec succès !",
+                "error": "Une erreur s’est produite"
+            }
+        }
     }
 }

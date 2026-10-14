@@ -2,9 +2,11 @@ import { useNavigate } from 'react-router'
 import Container from '@/components/shared/Container'
 import Card from '@/components/ui/Card'
 import CarForm from './forms/CarForm'
+import useTranslation from '@/utils/hooks/useTranslation'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 
 const AjouterVehicule = () => {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const goToListe = () => navigate(`${APPS_PREFIX_PATH}/vehicules/liste`)
 
@@ -14,10 +16,13 @@ const AjouterVehicule = () => {
                 <div className="p-4">
                     <div className="mb-6">
                         <h3 className="text-xl font-bold dark:text-gray-100">
-                            Ajouter un véhicule
+                            {t('cars.addPage.title', 'Add a vehicle')}
                         </h3>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                            Add a new vehicle to the fleet
+                            {t(
+                                'cars.addPage.subtitle',
+                                'Add a new vehicle to the fleet',
+                            )}
                         </p>
                     </div>
                     <CarForm

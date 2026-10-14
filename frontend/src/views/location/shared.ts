@@ -123,24 +123,26 @@ export const paymentRecordStatusTone: Record<PaymentRecordStatus, TagTone> = {
     refunded: 'neutral',
 }
 
-export const carStatusOptions: SelectOption<CarStatus>[] = [
-    { value: 'available', label: 'Available' },
-    { value: 'reserved', label: 'Reserved' },
-    { value: 'rented', label: 'Rented' },
-    { value: 'maintenance', label: 'Maintenance' },
-    { value: 'inactive', label: 'Inactive' },
+export const carStatusOptions = (t: Translator): SelectOption<CarStatus>[] => [
+    { value: 'available', label: t('cars.status.available', 'Available') },
+    { value: 'reserved', label: t('cars.status.reserved', 'Reserved') },
+    { value: 'rented', label: t('cars.status.rented', 'Rented') },
+    { value: 'maintenance', label: t('cars.status.maintenance', 'Maintenance') },
+    { value: 'inactive', label: t('cars.status.inactive', 'Inactive') },
 ]
 
-export const transmissionOptions: SelectOption<TransmissionType>[] = [
-    { value: 'manual', label: 'Manual' },
-    { value: 'automatic', label: 'Automatic' },
+export const transmissionOptions = (
+    t: Translator,
+): SelectOption<TransmissionType>[] => [
+    { value: 'manual', label: t('cars.transmission.manual', 'Manual') },
+    { value: 'automatic', label: t('cars.transmission.automatic', 'Automatic') },
 ]
 
-export const fuelOptions: SelectOption<FuelType>[] = [
-    { value: 'diesel', label: 'Diesel' },
-    { value: 'petrol', label: 'Petrol' },
-    { value: 'hybrid', label: 'Hybrid' },
-    { value: 'electric', label: 'Electric' },
+export const fuelOptions = (t: Translator): SelectOption<FuelType>[] => [
+    { value: 'diesel', label: t('cars.fuel.diesel', 'Diesel') },
+    { value: 'petrol', label: t('cars.fuel.petrol', 'Petrol') },
+    { value: 'hybrid', label: t('cars.fuel.hybrid', 'Hybrid') },
+    { value: 'electric', label: t('cars.fuel.electric', 'Electric') },
 ]
 
 export const clientStatusOptions: SelectOption<ClientStatus>[] = [

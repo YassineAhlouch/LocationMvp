@@ -720,5 +720,157 @@
         "month": "Month",
         "year": "Year",
         "more": "+{{count}} more"
+    },
+    "cars": {
+        "title": "Cars",
+        "addCar": "Add Car",
+        "search": "Search",
+        "filter": "Filter",
+        "reset": "Reset",
+        "export": "Export",
+        "perPage": "{{n}} / page",
+        "perDay": "/ day",
+        "km": "km",
+        "initial": "initial:",
+        "selected": "selected",
+        "columns": {
+            "vehicle": "Vehicle",
+            "registration": "Registration",
+            "color": "Color",
+            "price": "Price",
+            "category": "Category",
+            "mileage": "Mileage",
+            "fuel": "Fuel",
+            "status": "Status"
+        },
+        "status": {
+            "available": "Available",
+            "reserved": "Reserved",
+            "rented": "Rented",
+            "maintenance": "Maintenance",
+            "inactive": "Inactive"
+        },
+        "transmission": {
+            "manual": "Manual",
+            "automatic": "Automatic"
+        },
+        "fuel": {
+            "diesel": "Diesel",
+            "petrol": "Petrol",
+            "hybrid": "Hybrid",
+            "electric": "Electric"
+        },
+        "stats": {
+            "total": "Total"
+        },
+        "actions": {
+            "view": "View details",
+            "edit": "Edit",
+            "delete": "Delete"
+        },
+        "empty": {
+            "title": "No cars found",
+            "description": "Try widening the filters or add a new car."
+        },
+        "csv": {
+            "registration": "Registration",
+            "brand": "Brand",
+            "model": "Model",
+            "color": "Color",
+            "category": "Category",
+            "dailyPrice": "Daily price",
+            "initialMileage": "Initial mileage",
+            "currentMileage": "Current mileage",
+            "fuelLevel": "Fuel level",
+            "status": "Status"
+        },
+        "toast": {
+            "deleted": "Car deleted successfully!",
+            "deleteFailed": "Could not delete car",
+            "bulkDeleted": "{{n}} car(s) deleted successfully!",
+            "bulkDeleteFailed": "{{n}} deletion(s) failed",
+            "bulkDeleteError": "Could not delete cars"
+        },
+        "deleteDialog": {
+            "title": "Delete car",
+            "description": "Delete {{registration}}? This removes the vehicle from the fleet."
+        },
+        "bulkDeleteDialog": {
+            "title": "Delete cars",
+            "description": "Are you sure you want to remove {{n}} car(s)? This action cannot be undone."
+        },
+        "addPage": {
+            "title": "Add a vehicle",
+            "subtitle": "Add a new vehicle to the fleet"
+        },
+        "editPage": {
+            "title": "Edit a vehicle",
+            "subtitle": "Update this vehicle's information"
+        },
+        "notFound": {
+            "title": "Vehicle not found",
+            "description": "It may have been deleted or you don't have access to it."
+        },
+        "form": {
+            "editTitle": "Edit car",
+            "addTitle": "Add car",
+            "brand": "Brand",
+            "model": "Model",
+            "category": "Category",
+            "registrationNumber": "Registration number",
+            "vin": "VIN",
+            "year": "Year",
+            "color": "Color",
+            "dailyPrice": "Daily price (MAD)",
+            "transmission": "Transmission",
+            "fuelType": "Fuel type",
+            "seats": "Seats",
+            "doors": "Doors",
+            "purchasePrice": "Purchase price (MAD)",
+            "initialMileage": "Initial mileage",
+            "currentMileage": "Current mileage",
+            "fuelLevel": "Fuel level (%)",
+            "insuranceCompany": "Insurance company",
+            "insuranceExpiry": "Insurance expiry",
+            "technicalInspectionExpiry": "Technical inspection expiry",
+            "status": "Status",
+            "active": "Active",
+            "images": "Images",
+            "notes": "Notes",
+            "placeholderBrand": "Select brand",
+            "placeholderModel": "Select model",
+            "placeholderCategory": "Select category",
+            "placeholderColor": "Blue",
+            "placeholderTransmission": "Select transmission",
+            "placeholderFuel": "Select fuel type",
+            "placeholderRegistration": "e.g. 45678-A-6",
+            "placeholderVin": "Optional VIN",
+            "placeholderInsurance": "Wafa Assurance",
+            "placeholderNotes": "Any additional notes",
+            "uploadHint": "Click or drag images here",
+            "uploadFormats": "JPG, PNG or WEBP — 5MB max each, up to {{n}} images",
+            "primary": "Primary",
+            "imageAlt": "Car image {{n}}",
+            "setPrimary": "Set as primary",
+            "removeImage": "Remove image",
+            "saveChanges": "Save changes",
+            "addCar": "Add car",
+            "validation": {
+                "brandRequired": "Brand is required",
+                "modelRequired": "Model is required",
+                "categoryRequired": "Category is required",
+                "registrationRequired": "Registration number is required",
+                "dailyPriceRequired": "Daily price is required",
+                "maxImages": "A car can have up to {{n}} images",
+                "imageOnly": "Only image files are allowed",
+                "maxSize": "Each image must be 5MB or smaller"
+            },
+            "toast": {
+                "uploadFailed": "Could not upload that image",
+                "updated": "Car updated successfully!",
+                "created": "Car added successfully!",
+                "error": "Something went wrong"
+            }
+        }
     }
 }

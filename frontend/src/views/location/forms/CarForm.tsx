@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Button from '@/components/ui/Button'
 import Select from '@/components/ui/Select'
 import Switcher from '@/components/ui/Switcher'
@@ -14,6 +14,7 @@ import type { Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { LiCamera, LiStar, LiTrash } from '@/icons'
+import useTranslation from '@/utils/hooks/useTranslation'
 import {
     apiCreateCar,
     apiUpdateCar,
@@ -36,15 +37,18 @@ import {
     transmissionOptions,
     fuelOptions,
 } from '../shared'
+import type { Translator } from '../shared'
 
 /** Renders a car status as a coloured badge, used both in the select field
  * and in its option list. */
-const CarStatusBadge = ({ status }: { status: CarStatus }) => (
-    <Tag className={`capitalize ${tagToneClass[carStatusTone[status]]}`}>
-        {carStatusOptions.find((option) => option.value === status)?.label ??
-            status}
-    </Tag>
-)
+const CarStatusBadge = ({ status }: { status: CarStatus }) => {
+    const { t } = useTranslation()
+    return (
+        <Tag className={`capitalize ${tagToneClass[carStatusTone[status]]}`}>
+            {t(`cars.status.${status}`, status)}
+        </Tag>
+    )
+}
 
 type CarFormValues = {
     brand_id?: number
@@ -82,34 +86,60 @@ type CarImageDraft = {
     uploading?: boolean
 }
 
-const carSchema = z.object({
-    brand_id: z.number({ message: 'Brand is required' }),
-    model_id: z.number({ message: 'Model is required' }),
-    category_id: z.number({ message: 'Category is required' }),
-    registration_number: z.string().min(1, 'Registration number is required'),
-    daily_price: z.string().min(1, 'Daily price is required'),
-    is_active: z.boolean(),
-    // Optional fields are validated in the payload builder instead.
-    vin: z.string().optional(),
-    year: z.string().optional(),
-    color: z.string().optional(),
-    seats_count: z.string().optional(),
-    doors_count: z.string().optional(),
-    transmission_type: z.string().optional(),
-    fuel_type: z.string().optional(),
-    purchase_price: z.string().optional(),
-    initial_mileage: z.string().optional(),
-    current_mileage: z.string().optional(),
-    current_fuel_level: z.string().optional(),
-    insurance_company: z.string().optional(),
-    insurance_policy_number: z.string().optional(),
-    insurance_expiry_date: z.string().optional(),
-    technical_inspection_expiry: z.string().optional(),
-    next_service_mileage: z.string().optional(),
-    last_maintenance_at: z.string().optional(),
-    status: z.string().optional(),
-    notes: z.string().optional(),
-})
+const carSchema = (t: Translator) =>
+    z.object({
+        brand_id: z.number({
+            message: t('cars.form.validation.brandRequired', 'Brand is required'),
+        }),
+        model_id: z.number({
+            message: t('cars.form.validation.modelRequired', 'Model is required'),
+        }),
+        category_id: z.number({
+            message: t(
+                'cars.form.validation.categoryRequired',
+                'Category is required',
+            ),
+        }),
+        registration_number: z
+            .string()
+            .min(
+                1,
+                t(
+                    'cars.form.validation.registrationRequired',
+                    'Registration number is required',
+                ),
+            ),
+        daily_price: z
+            .string()
+            .min(
+                1,
+                t(
+                    'cars.form.validation.dailyPriceRequired',
+                    'Daily price is required',
+                ),
+            ),
+        is_active: z.boolean(),
+        // Optional fields are validated in the payload builder instead.
+        vin: z.string().optional(),
+        year: z.string().optional(),
+        color: z.string().optional(),
+        seats_count: z.string().optional(),
+        doors_count: z.string().optional(),
+        transmission_type: z.string().optional(),
+        fuel_type: z.string().optional(),
+        purchase_price: z.string().optional(),
+        initial_mileage: z.string().optional(),
+        current_mileage: z.string().optional(),
+        current_fuel_level: z.string().optional(),
+        insurance_company: z.string().optional(),
+        insurance_policy_number: z.string().optional(),
+        insurance_expiry_date: z.string().optional(),
+        technical_inspection_expiry: z.string().optional(),
+        next_service_mileage: z.string().optional(),
+        last_maintenance_at: z.string().optional(),
+        status: z.string().optional(),
+        notes: z.string().optional(),
+    })
 
 const toNumberOrNull = (value?: string) => {
     if (value === undefined || value === null || value === '') {
@@ -203,6 +233,7 @@ const MAX_IMAGES = 10
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024
 
 const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
+    const { t } = useTranslation()
     const [brands, setBrands] = useState<{ value: number; label: string }[]>([])
     const [models, setModels] = useState<{ value: number; label: string }[]>([])
     const [categories, setCategories] = useState<
@@ -214,6 +245,11 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
     // whole selection during beforeUpload and flush it in the handler.
     const pendingFiles = useRef<File[]>([])
 
+    const schema = useMemo(() => carSchema(t), [t])
+    const statusOptions = useMemo(() => carStatusOptions(t), [t])
+    const transmissionOpts = useMemo(() => transmissionOptions(t), [t])
+    const fuelOpts = useMemo(() => fuelOptions(t), [t])
+
     const {
         handleSubmit,
         control,
@@ -221,7 +257,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
         reset,
         formState: { errors },
     } = useForm<CarFormValues>({
-        resolver: zodResolver(carSchema) as unknown as Resolver<CarFormValues>,
+        resolver: zodResolver(schema) as unknown as Resolver<CarFormValues>,
         defaultValues: defaultFormValues(car),
     })
 
@@ -302,7 +338,10 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                 toast.push(
                     <Notification
                         type="danger"
-                        title="Could not upload that image"
+                        title={t(
+                            'cars.form.toast.uploadFailed',
+                            'Could not upload that image',
+                        )}
                     />,
                 )
             }
@@ -315,14 +354,24 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
         }
         const files = Array.from(newFiles)
         if (images.length + files.length > MAX_IMAGES) {
-            return `A car can have up to ${MAX_IMAGES} images`
+            return t(
+                'cars.form.validation.maxImages',
+                'A car can have up to {{n}} images',
+                { n: MAX_IMAGES },
+            )
         }
         for (const file of files) {
             if (!file.type.startsWith('image/')) {
-                return 'Only image files are allowed'
+                return t(
+                    'cars.form.validation.imageOnly',
+                    'Only image files are allowed',
+                )
             }
             if (file.size > MAX_IMAGE_BYTES) {
-                return 'Each image must be 5MB or smaller'
+                return t(
+                    'cars.form.validation.maxSize',
+                    'Each image must be 5MB or smaller',
+                )
             }
         }
         pendingFiles.current = files
@@ -362,7 +411,10 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                 toast.push(
                     <Notification
                         type="success"
-                        title="Car updated successfully!"
+                        title={t(
+                            'cars.form.toast.updated',
+                            'Car updated successfully!',
+                        )}
                     />,
                 )
             } else {
@@ -370,7 +422,10 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                 toast.push(
                     <Notification
                         type="success"
-                        title="Car added successfully!"
+                        title={t(
+                            'cars.form.toast.created',
+                            'Car added successfully!',
+                        )}
                     />,
                 )
             }
@@ -378,7 +433,10 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
             onCancel()
         } catch {
             toast.push(
-                <Notification type="danger" title="Something went wrong" />,
+                <Notification
+                    type="danger"
+                    title={t('cars.form.toast.error', 'Something went wrong')}
+                />,
             )
         } finally {
             setSubmitting(false)
@@ -389,7 +447,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
         <Form onSubmit={onSubmit}>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <FormItem
-                    label="Brand"
+                    label={t('cars.form.brand', 'Brand')}
                     invalid={Boolean(errors.brand_id)}
                     errorMessage={errors.brand_id?.message}
                 >
@@ -398,7 +456,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         control={control}
                         render={({ field }) => (
                             <Select
-                                placeholder="Select brand"
+                                placeholder={t('cars.form.placeholderBrand', 'Select brand')}
                                 options={brands}
                                 value={brands.find(
                                     (o) => o.value === field.value,
@@ -411,7 +469,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                     />
                 </FormItem>
                 <FormItem
-                    label="Model"
+                    label={t('cars.form.model', 'Model')}
                     invalid={Boolean(errors.model_id)}
                     errorMessage={errors.model_id?.message}
                 >
@@ -420,7 +478,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         control={control}
                         render={({ field }) => (
                             <Select
-                                placeholder="Select model"
+                                placeholder={t('cars.form.placeholderModel', 'Select model')}
                                 options={models}
                                 isDisabled={!brandId}
                                 value={models.find(
@@ -434,7 +492,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                     />
                 </FormItem>
                 <FormItem
-                    label="Category"
+                    label={t('cars.form.category', 'Category')}
                     invalid={Boolean(errors.category_id)}
                     errorMessage={errors.category_id?.message}
                 >
@@ -443,7 +501,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         control={control}
                         render={({ field }) => (
                             <Select
-                                placeholder="Select category"
+                                placeholder={t('cars.form.placeholderCategory', 'Select category')}
                                 options={categories}
                                 value={categories.find(
                                     (o) => o.value === field.value,
@@ -456,7 +514,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                     />
                 </FormItem>
                 <FormItem
-                    label="Registration number"
+                    label={t('cars.form.registrationNumber', 'Registration number')}
                     invalid={Boolean(errors.registration_number)}
                     errorMessage={errors.registration_number?.message}
                 >
@@ -464,20 +522,20 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         name="registration_number"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder="e.g. 45678-A-6" {...field} />
+                            <Input placeholder={t('cars.form.placeholderRegistration', 'e.g. 45678-A-6')} {...field} />
                         )}
                     />
                 </FormItem>
-                <FormItem label="VIN">
+                <FormItem label={t('cars.form.vin', 'VIN')}>
                     <Controller
                         name="vin"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder="Optional VIN" {...field} />
+                            <Input placeholder={t('cars.form.placeholderVin', 'Optional VIN')} {...field} />
                         )}
                     />
                 </FormItem>
-                <FormItem label="Year">
+                <FormItem label={t('cars.form.year', 'Year')}>
                     <Controller
                         name="year"
                         control={control}
@@ -490,16 +548,16 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         )}
                     />
                 </FormItem>
-                <FormItem label="Color">
+                <FormItem label={t('cars.form.color', 'Color')}>
                     <Controller
                         name="color"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder="Blue" {...field} />
+                            <Input placeholder={t('cars.form.placeholderColor', 'Blue')} {...field} />
                         )}
                     />
                 </FormItem>
-                <FormItem label="Daily price (MAD)">
+                <FormItem label={t('cars.form.dailyPrice', 'Daily price (MAD)')}>
                     <Controller
                         name="daily_price"
                         control={control}
@@ -513,15 +571,15 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         )}
                     />
                 </FormItem>
-                <FormItem label="Transmission">
+                <FormItem label={t('cars.form.transmission', 'Transmission')}>
                     <Controller
                         name="transmission_type"
                         control={control}
                         render={({ field }) => (
                             <Select
-                                placeholder="Manual"
-                                options={transmissionOptions}
-                                value={transmissionOptions.find(
+                                placeholder={t('cars.form.placeholderTransmission', 'Select transmission')}
+                                options={transmissionOpts}
+                                value={transmissionOpts.find(
                                     (o) => o.value === field.value,
                                 )}
                                 onChange={(option) =>
@@ -531,15 +589,15 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         )}
                     />
                 </FormItem>
-                <FormItem label="Fuel type">
+                <FormItem label={t('cars.form.fuelType', 'Fuel type')}>
                     <Controller
                         name="fuel_type"
                         control={control}
                         render={({ field }) => (
                             <Select
-                                placeholder="Diesel"
-                                options={fuelOptions}
-                                value={fuelOptions.find(
+                                placeholder={t('cars.form.placeholderFuel', 'Select fuel type')}
+                                options={fuelOpts}
+                                value={fuelOpts.find(
                                     (o) => o.value === field.value,
                                 )}
                                 onChange={(option) =>
@@ -549,7 +607,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         )}
                     />
                 </FormItem>
-                <FormItem label="Seats">
+                <FormItem label={t('cars.form.seats', 'Seats')}>
                     <Controller
                         name="seats_count"
                         control={control}
@@ -558,7 +616,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         )}
                     />
                 </FormItem>
-                <FormItem label="Doors">
+                <FormItem label={t('cars.form.doors', 'Doors')}>
                     <Controller
                         name="doors_count"
                         control={control}
@@ -567,7 +625,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         )}
                     />
                 </FormItem>
-                <FormItem label="Purchase price (MAD)">
+                <FormItem label={t('cars.form.purchasePrice', 'Purchase price (MAD)')}>
                     <Controller
                         name="purchase_price"
                         control={control}
@@ -581,7 +639,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         )}
                     />
                 </FormItem>
-                <FormItem label="Initial mileage">
+                <FormItem label={t('cars.form.initialMileage', 'Initial mileage')}>
                     <Controller
                         name="initial_mileage"
                         control={control}
@@ -594,7 +652,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         )}
                     />
                 </FormItem>
-                <FormItem label="Current mileage">
+                <FormItem label={t('cars.form.currentMileage', 'Current mileage')}>
                     <Controller
                         name="current_mileage"
                         control={control}
@@ -607,7 +665,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         )}
                     />
                 </FormItem>
-                <FormItem label="Fuel level (%)">
+                <FormItem label={t('cars.form.fuelLevel', 'Fuel level (%)')}>
                     <Controller
                         name="current_fuel_level"
                         control={control}
@@ -616,37 +674,37 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         )}
                     />
                 </FormItem>
-                <FormItem label="Insurance company">
+                <FormItem label={t('cars.form.insuranceCompany', 'Insurance company')}>
                     <Controller
                         name="insurance_company"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder="Wafa Assurance" {...field} />
+                            <Input placeholder={t('cars.form.placeholderInsurance', 'Wafa Assurance')} {...field} />
                         )}
                     />
                 </FormItem>
-                <FormItem label="Insurance expiry">
+                <FormItem label={t('cars.form.insuranceExpiry', 'Insurance expiry')}>
                     <Controller
                         name="insurance_expiry_date"
                         control={control}
                         render={({ field }) => <Input type="date" {...field} />}
                     />
                 </FormItem>
-                <FormItem label="Technical inspection expiry">
+                <FormItem label={t('cars.form.technicalInspectionExpiry', 'Technical inspection expiry')}>
                     <Controller
                         name="technical_inspection_expiry"
                         control={control}
                         render={({ field }) => <Input type="date" {...field} />}
                     />
                 </FormItem>
-                <FormItem label="Status">
+                <FormItem label={t('cars.form.status', 'Status')}>
                     <Controller
                         name="status"
                         control={control}
                         render={({ field }) => (
                             <Select
-                                options={carStatusOptions}
-                                value={carStatusOptions.find(
+                                options={statusOptions}
+                                value={statusOptions.find(
                                     (o) => o.value === field.value,
                                 )}
                                 onChange={(option) =>
@@ -675,7 +733,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         )}
                     />
                 </FormItem>
-                <FormItem label="Active">
+                <FormItem label={t('cars.form.active', 'Active')}>
                     <Controller
                         name="is_active"
                         control={control}
@@ -688,7 +746,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                     />
                 </FormItem>
             </div>
-            <FormItem label="Images" className="mt-4">
+            <FormItem label={t('cars.form.images', 'Images')} className="mt-4">
                 <Upload
                     draggable
                     multiple
@@ -700,11 +758,14 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                     <div className="flex flex-col items-center justify-center gap-2 py-8">
                         <LiCamera className="text-3xl text-gray-400" />
                         <span className="font-medium text-gray-600 dark:text-gray-300">
-                            Click or drag images here
+                            {t('cars.form.uploadHint', 'Click or drag images here')}
                         </span>
                         <span className="text-xs text-gray-400">
-                            JPG, PNG or WEBP — 5MB max each, up to {MAX_IMAGES}{' '}
-                            images
+                            {t(
+                                'cars.form.uploadFormats',
+                                'JPG, PNG or WEBP — 5MB max each, up to {{n}} images',
+                                { n: MAX_IMAGES },
+                            )}
                         </span>
                     </div>
                 </Upload>
@@ -722,19 +783,19 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                                 ) : (
                                     <img
                                         src={img.url}
-                                        alt={`Car image ${index + 1}`}
+                                        alt={t('cars.form.imageAlt', 'Car image {{n}}', { n: index + 1 })}
                                         className="h-full w-full object-cover"
                                     />
                                 )}
                                 {img.is_primary && (
                                     <span className="absolute left-1 top-1 rounded bg-primary px-1.5 py-0.5 text-[10px] font-semibold text-white">
-                                        Primary
+                                        {t('cars.form.primary', 'Primary')}
                                     </span>
                                 )}
                                 <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition group-hover:opacity-100">
                                     <button
                                         type="button"
-                                        title="Set as primary"
+                                        title={t('cars.form.setPrimary', 'Set as primary')}
                                         className="rounded-full bg-white p-1.5 text-gray-600 hover:bg-gray-100"
                                         onClick={() => setPrimary(index)}
                                     >
@@ -748,7 +809,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                                     </button>
                                     <button
                                         type="button"
-                                        title="Remove image"
+                                        title={t('cars.form.removeImage', 'Remove image')}
                                         className="rounded-full bg-white p-1.5 text-error hover:bg-red-50"
                                         onClick={() => removeImage(index)}
                                     >
@@ -760,14 +821,14 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                     </div>
                 )}
             </FormItem>
-            <FormItem label="Notes" className="mt-4">
+            <FormItem label={t('cars.form.notes', 'Notes')} className="mt-4">
                 <Controller
                     name="notes"
                     control={control}
                     render={({ field }) => (
                         <Input
                             textArea
-                            placeholder="Any additional notes"
+                            placeholder={t('cars.form.placeholderNotes', 'Any additional notes')}
                             {...field}
                         />
                     )}
@@ -775,10 +836,12 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
             </FormItem>
             <div className="mt-6 flex justify-end gap-2">
                 <Button type="button" variant="ghost" onClick={onCancel}>
-                    Cancel
+                    {t('common.cancel', 'Cancel')}
                 </Button>
                 <Button type="submit" variant="solid" loading={submitting}>
-                    {car ? 'Save changes' : 'Add car'}
+                    {car
+                        ? t('cars.form.saveChanges', 'Save changes')
+                        : t('cars.form.addCar', 'Add car')}
                 </Button>
             </div>
         </Form>
