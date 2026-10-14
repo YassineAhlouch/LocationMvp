@@ -652,7 +652,9 @@
             "moreDaysAdded": "Jours ajoutés — le statut reste inchangé",
             "currentStatus": "Statut actuel",
             "clientNeverShowed": "Le client ne s'est pas présenté"
-        }
+        },
+        "discount": "Remise",
+        "extrasCount": "Extras ({{count}})"
     },
     "calendar": {
         "today": "Aujourd'hui",

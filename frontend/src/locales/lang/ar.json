@@ -652,7 +652,9 @@
             "moreDaysAdded": "تمت إضافة أيام — الحالة ثابتة",
             "currentStatus": "الحالة الحالية",
             "clientNeverShowed": "العميل لم يحضر"
-        }
+        },
+        "discount": "الخصم",
+        "extrasCount": "الإضافات ({{count}})"
     },
     "calendar": {
         "today": "اليوم",

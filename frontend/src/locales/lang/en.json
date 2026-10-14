@@ -652,7 +652,9 @@
             "moreDaysAdded": "More days added — status stays",
             "currentStatus": "Current status",
             "clientNeverShowed": "Client never showed"
-        }
+        },
+        "discount": "Discount",
+        "extrasCount": "Extras ({{count}})"
     },
     "calendar": {
         "today": "Today",

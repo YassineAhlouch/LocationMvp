@@ -747,7 +747,11 @@ const ExpandableReservationDetails = ({
                             {extras.length > 0 && (
                                 <div className="flex justify-between items-center">
                                     <span className="font-medium">
-                                        Extras ({extras.length})
+                                        {t(
+                                            'reservations.extrasCount',
+                                            'Extras ({{count}})',
+                                            { count: extras.length },
+                                        )}
                                     </span>
                                     <span className="font-medium heading-text">
                                         {MAD(extrasTotal)}
@@ -757,7 +761,7 @@ const ExpandableReservationDetails = ({
                             {reservation.discount_amount > 0 && (
                                 <div className="flex justify-between items-center">
                                     <span className="font-medium">
-                                        Discount
+                                        {t('reservations.discount', 'Discount')}
                                     </span>
                                     <span className="font-medium heading-text">
                                         -{MAD(reservation.discount_amount)}
@@ -779,7 +783,7 @@ const ExpandableReservationDetails = ({
                             <div className="border-t border-gray-200 dark:border-gray-600 pt-3">
                                 <div className="flex justify-between items-center">
                                     <span className="text-base font-semibold heading-text">
-                                        Total
+                                        {t('reservations.total', 'Total')}
                                     </span>
                                     <span className="text-base font-bold heading-text">
                                         {MAD(reservation.total_amount)}
@@ -798,7 +802,7 @@ const ExpandableReservationDetails = ({
                                 variant="solid"
                                 onClick={() => onConfirm(reservation)}
                             >
-                                Confirm
+                                {t('reservations.actions.confirm', 'Confirm')}
                             </Button>
                         )}
                         {['confirmed', 'reserved'].includes(
@@ -810,7 +814,7 @@ const ExpandableReservationDetails = ({
                                 className="text-success hover:bg-success-subtle"
                                 onClick={() => onActivate(reservation)}
                             >
-                                Activate
+                                {t('reservations.actions.activate', 'Activate')}
                             </Button>
                         )}
                         {reservation.status === 'active' && (
@@ -820,7 +824,7 @@ const ExpandableReservationDetails = ({
                                 className="text-primary hover:bg-primary-subtle"
                                 onClick={() => onComplete(reservation)}
                             >
-                                Complete
+                                {t('reservations.actions.complete', 'Complete')}
                             </Button>
                         )}
                         {['pending', 'confirmed', 'reserved'].includes(
@@ -832,7 +836,7 @@ const ExpandableReservationDetails = ({
                                 className="text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700"
                                 onClick={() => onNoShow(reservation)}
                             >
-                                No show
+                                {t('reservations.actions.noShow', 'No show')}
                             </Button>
                         )}
                         {[
@@ -847,7 +851,7 @@ const ExpandableReservationDetails = ({
                                 className="text-error hover:bg-error-subtle"
                                 onClick={() => onCancel(reservation)}
                             >
-                                Cancel
+                                {t('reservations.actions.cancel', 'Cancel')}
                             </Button>
                         )}
                         <Button
@@ -856,14 +860,14 @@ const ExpandableReservationDetails = ({
                             className="text-primary hover:bg-primary-subtle"
                             onClick={() => onInvoice(reservation)}
                         >
-                            Invoice
+                            {t('reservations.actions.invoice', 'Invoice')}
                         </Button>
                         <Button
                             size="sm"
                             variant="subtle"
                             onClick={() => onEdit(reservation)}
                         >
-                            Edit
+                            {t('reservations.actions.edit', 'Edit')}
                         </Button>
                     </div>
                 </div>
