@@ -629,6 +629,7 @@ const ExpandableReservationDetails = ({
     onEdit,
     onInvoice,
 }: ExpandableReservationDetailsProps) => {
+    const { t } = useTranslation()
     const extras = reservation.extras ?? []
     const extrasTotal = extras.reduce(
         (sum, extra) => sum + extra.total_price,

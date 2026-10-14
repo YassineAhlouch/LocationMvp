@@ -108,12 +108,15 @@ const ReservationCalendar = () => {
                 id: item.id,
                 startDate: item.pickup_datetime,
                 endDate: item.expected_return_datetime,
-                title: reservationTitle(item),
+                title: reservationTitle(
+                    item,
+                    t('reservations.calendar.unassigned', 'Unassigned'),
+                ),
                 color: reservationCalendarColor[item.status],
                 description: `${item.rental_days} day(s)`,
                 type: item.status,
             })),
-        [items],
+        [items, t],
     )
 
     const openCreate = (date: Date) => {

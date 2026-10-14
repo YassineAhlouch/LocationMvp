@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import formatCurrency from '@/utils/formatCurrency'
+import type { useTranslation } from '@/utils/hooks/useTranslation'
 import type {
     CarStatus,
     ClientStatus,
@@ -25,14 +26,11 @@ export const formatDateTime = (value?: string | null) =>
 type ApiError = { response?: { data?: { message?: string } } }
 
 /**
- * Minimal translator contract for module-level label/option factories that
- * must recompute when the active language changes.
+ * The translator returned by the app's `useTranslation` hook. Derived from the
+ * hook rather than re-declared so module-level label/option factories stay in
+ * sync with i18next's own types.
  */
-export type Translator = (
-    key: string,
-    defaultValue?: string,
-    options?: Record<string, unknown>,
-) => string
+export type Translator = ReturnType<typeof useTranslation>['t']
 
 /** Surface the backend's validation/domain message, else a fallback. */
 export const apiErrorMessage = (error: unknown, fallback: string) =>
