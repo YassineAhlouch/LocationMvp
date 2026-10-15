@@ -904,5 +904,73 @@
             "drivingLicenseRequired": "رقم رخصة السياقة مطلوب",
             "identityDocument": "يرجى تقديم رقم البطاقة الوطنية أو جواز السفر"
         }
+    },
+    "expenses": {
+        "title": "المصروفات",
+        "count": "{{n}} مصروف",
+        "addExpense": "إضافة مصروف",
+        "search": "البحث في المصروفات…",
+        "allTypes": "كل الأنواع",
+        "actions": {
+            "edit": "تعديل"
+        },
+        "tabs": {
+            "all": "كل المصروفات"
+        },
+        "columns": {
+            "expense": "المصروف",
+            "car": "السيارة",
+            "type": "النوع",
+            "amount": "المبلغ",
+            "vendor": "المورد",
+            "due": "الاستحقاق",
+            "status": "الحالة"
+        },
+        "type": {
+            "insurance": "التأمين",
+            "maintenance": "الصيانة",
+            "repair": "الإصلاح",
+            "tax": "الضريبة",
+            "oil_change": "تغيير الزيت",
+            "tires": "الإطارات",
+            "inspection": "الفحص التقني"
+        },
+        "status": {
+            "pending": "قيد الانتظار",
+            "paid": "مدفوع",
+            "overdue": "متأخر"
+        },
+        "toast": {
+            "updated": "تم تحديث المصروف بنجاح!",
+            "created": "تمت إضافة المصروف بنجاح!",
+            "error": "حدث خطأ ما"
+        },
+        "form": {
+            "editTitle": "تعديل المصروف",
+            "addTitle": "إضافة مصروف",
+            "car": "السيارة",
+            "type": "النوع",
+            "title": "العنوان",
+            "amount": "المبلغ (درهم)",
+            "vendor": "المورد",
+            "status": "الحالة",
+            "startDate": "تاريخ البدء",
+            "dueDate": "تاريخ الاستحقاق",
+            "paidDate": "تاريخ الدفع",
+            "description": "الوصف",
+            "placeholderCar": "اختر سيارة",
+            "placeholderType": "اختر النوع",
+            "placeholderTitle": "مثال: تغيير الزيت",
+            "placeholderVendor": "اسم الورشة",
+            "placeholderDescription": "الوصف",
+            "saveChanges": "حفظ التعديلات",
+            "addExpense": "إضافة المصروف"
+        },
+        "validation": {
+            "carRequired": "السيارة مطلوبة",
+            "typeRequired": "النوع مطلوب",
+            "titleRequired": "العنوان مطلوب",
+            "amountRequired": "المبلغ مطلوب"
+        }
     }
 }

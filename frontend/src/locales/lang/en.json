@@ -904,5 +904,73 @@
             "drivingLicenseRequired": "Driving license number is required",
             "identityDocument": "Provide a CIN or a passport number"
         }
+    },
+    "expenses": {
+        "title": "Expenses",
+        "count": "{{n}} expenses",
+        "addExpense": "Add expense",
+        "search": "Search expenses…",
+        "allTypes": "All types",
+        "actions": {
+            "edit": "Edit"
+        },
+        "tabs": {
+            "all": "All Expenses"
+        },
+        "columns": {
+            "expense": "Expense",
+            "car": "Car",
+            "type": "Type",
+            "amount": "Amount",
+            "vendor": "Vendor",
+            "due": "Due",
+            "status": "Status"
+        },
+        "type": {
+            "insurance": "Insurance",
+            "maintenance": "Maintenance",
+            "repair": "Repair",
+            "tax": "Tax",
+            "oil_change": "Oil change",
+            "tires": "Tires",
+            "inspection": "Inspection"
+        },
+        "status": {
+            "pending": "Pending",
+            "paid": "Paid",
+            "overdue": "Overdue"
+        },
+        "toast": {
+            "updated": "Expense updated successfully!",
+            "created": "Expense added successfully!",
+            "error": "Something went wrong"
+        },
+        "form": {
+            "editTitle": "Edit expense",
+            "addTitle": "Add expense",
+            "car": "Car",
+            "type": "Type",
+            "title": "Title",
+            "amount": "Amount (MAD)",
+            "vendor": "Vendor",
+            "status": "Status",
+            "startDate": "Start date",
+            "dueDate": "Due date",
+            "paidDate": "Paid date",
+            "description": "Description",
+            "placeholderCar": "Select car",
+            "placeholderType": "Select type",
+            "placeholderTitle": "e.g. Oil change",
+            "placeholderVendor": "Garage name",
+            "placeholderDescription": "Description",
+            "saveChanges": "Save changes",
+            "addExpense": "Add expense"
+        },
+        "validation": {
+            "carRequired": "Car is required",
+            "typeRequired": "Type is required",
+            "titleRequired": "Title is required",
+            "amountRequired": "Amount is required"
+        }
     }
 }
