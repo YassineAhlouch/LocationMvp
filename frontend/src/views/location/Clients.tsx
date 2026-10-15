@@ -24,11 +24,13 @@ import {
     formatDate,
     tagToneClass,
 } from './shared'
+import type { Translator } from './shared'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 import { LiEdit, LiTrash } from '@/icons'
 import useRandomColor from '@/utils/hooks/useRandomColor'
 import classNames from '@/utils/classNames'
 import acronym from '@/utils/acronym'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type ClientFormDialogProps = {
     open: boolean
@@ -42,31 +44,36 @@ const ClientFormDialog = ({
     client,
     onClose,
     onSaved,
-}: ClientFormDialogProps) => (
-    <Dialog
-        isOpen={open}
-        onClose={onClose}
-        width={760}
-        className="max-h-[90vh] overflow-y-auto"
-    >
-        <h5 className="mb-6 text-base font-bold dark:text-gray-100">
-            {client ? 'Edit client' : 'Add client'}
-        </h5>
-        <ClientForm
-            client={client}
+}: ClientFormDialogProps) => {
+    const { t } = useTranslation()
+    return (
+        <Dialog
             isOpen={open}
-            onCancel={onClose}
-            onSaved={onSaved}
-        />
-    </Dialog>
-)
+            onClose={onClose}
+            width={760}
+            className="max-h-[90vh] overflow-y-auto"
+        >
+            <h5 className="mb-6 text-base font-bold dark:text-gray-100">
+                {client
+                    ? t('clients.editClient', 'Edit client')
+                    : t('clients.addClient', 'Add new client')}
+            </h5>
+            <ClientForm
+                client={client}
+                isOpen={open}
+                onCancel={onClose}
+                onSaved={onSaved}
+            />
+        </Dialog>
+    )
+}
 
-const statusTabList = [
+const statusTabList = (t: Translator) => [
     {
         label: (
             <span className="flex items-center gap-2">
                 <LuUsers className="text-lg" />
-                <span>All Clients</span>
+                <span>{t('clients.allClients', 'All Clients')}</span>
             </span>
         ),
         value: '',
@@ -75,7 +82,7 @@ const statusTabList = [
         label: (
             <span className="flex items-center gap-2">
                 <LuUserCheck className="text-lg" />
-                <span>Normal</span>
+                <span>{t('clients.statusOption.normal', 'Normal')}</span>
             </span>
         ),
         value: 'normal',
@@ -84,7 +91,7 @@ const statusTabList = [
         label: (
             <span className="flex items-center gap-2">
                 <LuStar className="text-lg" />
-                <span>VIP</span>
+                <span>{t('clients.statusOption.vip', 'VIP')}</span>
             </span>
         ),
         value: 'vip',
@@ -93,7 +100,7 @@ const statusTabList = [
         label: (
             <span className="flex items-center gap-2">
                 <LuUserX className="text-lg" />
-                <span>Blacklist</span>
+                <span>{t('clients.statusOption.blacklist', 'Blacklist')}</span>
             </span>
         ),
         value: 'blacklist',
@@ -123,6 +130,7 @@ const ClientName = ({ row }: { row: Client }) => {
 }
 
 const Clients = () => {
+    const { t } = useTranslation()
     const navigate = useNavigate()
 
     const [clients, setClients] = useState<Client[]>([])
@@ -203,14 +211,17 @@ const Clients = () => {
             toast.push(
                 <Notification
                     type="success"
-                    title="Client deleted successfully!"
+                    title={t('clients.toast.deleted', 'Client deleted successfully!')}
                 />,
             )
             setDeleting(null)
             fetchClients()
         } catch {
             toast.push(
-                <Notification type="danger" title="Could not delete client" />,
+                <Notification
+                    type="danger"
+                    title={t('clients.toast.deleteFailed', 'Could not delete client')}
+                />,
             )
         }
     }
@@ -227,14 +238,22 @@ const Clients = () => {
             toast.push(
                 <Notification
                     type="success"
-                    title={`${ids.length - failed} client(s) deleted successfully!`}
+                    title={t(
+                        'clients.toast.bulkDeleted',
+                        '{{n}} client(s) deleted successfully!',
+                        { n: ids.length - failed },
+                    )}
                 />,
             )
             if (failed > 0) {
                 toast.push(
                     <Notification
                         type="danger"
-                        title={`${failed} deletion(s) failed`}
+                        title={t(
+                            'clients.toast.bulkDeleteFailed',
+                            '{{n}} deletion(s) failed',
+                            { n: failed },
+                        )}
                     />,
                 )
             }
@@ -243,21 +262,43 @@ const Clients = () => {
             fetchClients()
         } catch {
             toast.push(
-                <Notification type="danger" title="Could not delete clients" />,
+                <Notification
+                    type="danger"
+                    title={t(
+                        'clients.toast.bulkDeleteError',
+                        'Could not delete clients',
+                    )}
+                />,
             )
             setBulkDeleteOpen(false)
         }
     }
 
+    const sourceFilterOptions = useMemo(
+        () => [
+            { value: '', label: t('clients.allSources', 'All sources') },
+            ...clientSourceOptions.map((option) => ({
+                value: option.value,
+                label: t(
+                    `clients.sourceOption.${option.value}`,
+                    option.label,
+                ),
+            })),
+        ],
+        [t],
+    )
+
+    const tabs = useMemo(() => statusTabList(t), [t])
+
     const columns = useMemo<ColumnDef<Client>[]>(
         () => [
             {
-                header: 'Client',
+                header: t('clients.columns.client', 'Client'),
                 accessorKey: 'full_name',
                 cell: (props) => <ClientName row={props.row.original} />,
             },
             {
-                header: 'Email',
+                header: t('clients.columns.email', 'Email'),
                 accessorKey: 'email',
                 cell: (props) => (
                     <span className="text-sm text-gray-600 dark:text-gray-300">
@@ -266,7 +307,7 @@ const Clients = () => {
                 ),
             },
             {
-                header: 'Phone',
+                header: t('clients.columns.phone', 'Phone'),
                 accessorKey: 'phone',
                 cell: (props) => (
                     <span className="text-nowrap text-gray-600 dark:text-gray-300">
@@ -275,13 +316,15 @@ const Clients = () => {
                 ),
             },
             {
-                header: 'Source',
+                header: t('clients.columns.source', 'Source'),
                 accessorKey: 'source',
                 cell: (props) => {
                     const source = props.row.original.source
                     return source ? (
                         <Tag className="bg-white font-medium shadow dark:bg-gray-800">
-                            <span className="capitalize">{source}</span>
+                            <span className="capitalize">
+                                {t(`clients.sourceOption.${source}`, source)}
+                            </span>
                         </Tag>
                     ) : (
                         <span className="text-sm text-gray-400">—</span>
@@ -289,7 +332,7 @@ const Clients = () => {
                 },
             },
             {
-                header: 'Status',
+                header: t('clients.columns.status', 'Status'),
                 accessorKey: 'status',
                 cell: (props) => {
                     const status = props.row.original.status
@@ -297,13 +340,13 @@ const Clients = () => {
                         <Tag
                             className={`capitalize ${tagToneClass[clientStatusTone[status]]}`}
                         >
-                            {status}
+                            {t(`clients.statusOption.${status}`, status)}
                         </Tag>
                     )
                 },
             },
             {
-                header: 'Last rental',
+                header: t('clients.columns.lastRental', 'Last rental'),
                 accessorKey: 'last_reservation_at',
                 cell: (props) => (
                     <span className="text-sm text-gray-500 dark:text-gray-400">
@@ -321,7 +364,7 @@ const Clients = () => {
                             variant="link"
                             className="px-2 hover:text-gray-900 dark:hover:text-gray-100"
                             role="button"
-                            title="Edit"
+                            title={t('clients.actions.edit', 'Edit')}
                             onClick={() => {
                                 setEditing(props.row.original)
                                 setDialogOpen(true)
@@ -334,7 +377,7 @@ const Clients = () => {
                             variant="link"
                             className="px-2 hover:text-error"
                             role="button"
-                            title="Delete"
+                            title={t('clients.actions.delete', 'Delete')}
                             onClick={() => setDeleting(props.row.original)}
                         >
                             <LiTrash className="text-base" />
@@ -343,7 +386,7 @@ const Clients = () => {
                 ),
             },
         ],
-        [],
+        [t],
     )
 
     return (
@@ -353,9 +396,11 @@ const Clients = () => {
                     <div>
                         <div className="flex items-center justify-between gap-4">
                             <div>
-                                <h4>Clients</h4>
+                                <h4>{t('clients.title', 'Clients')}</h4>
                                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                                    {total} clients
+                                    {t('clients.count', '{{n}} clients', {
+                                        n: total,
+                                    })}
                                 </p>
                             </div>
                             <Button
@@ -366,13 +411,13 @@ const Clients = () => {
                                     )
                                 }
                             >
-                                Add client
+                                {t('clients.addClientButton', 'Add client')}
                             </Button>
                         </div>
                     </div>
 
                     <OverflowTabs
-                        tabList={statusTabList}
+                        tabList={tabs}
                         value={statusFilter}
                         onChange={(value) => {
                             setSelectedRows([])
@@ -385,7 +430,10 @@ const Clients = () => {
                     <div className="flex flex-wrap items-center justify-between gap-2">
                         <div>
                             <DebouceInput
-                                placeholder="Search clients…"
+                                placeholder={t(
+                                    'clients.searchClients',
+                                    'Search clients…',
+                                )}
                                 prefix={<LuSearch className="text-lg" />}
                                 onChange={(e) => {
                                     setQ(e.target.value)
@@ -396,16 +444,11 @@ const Clients = () => {
                         </div>
                         <div className="w-48">
                             <Select
-                                options={[
-                                    { value: '', label: 'All sources' },
-                                    ...clientSourceOptions,
-                                ]}
+                                options={sourceFilterOptions}
                                 value={
-                                    [
-                                        { value: '', label: 'All sources' },
-                                        ...clientSourceOptions,
-                                    ].find((o) => o.value === sourceFilter) ??
-                                    null
+                                    sourceFilterOptions.find(
+                                        (o) => o.value === sourceFilter,
+                                    ) ?? null
                                 }
                                 onChange={(option) => {
                                     setSourceFilter(option?.value ?? '')
@@ -454,9 +497,9 @@ const Clients = () => {
                 <div className="flex items-center justify-between">
                     <span className="font-medium">
                         <span className="heading-text font-semibold">
-                            {selectedRows.length} Items
+                            {selectedRows.length}
                         </span>{' '}
-                        selected
+                        {t('clients.selected', 'selected')}
                     </span>
                     <div className="flex items-center gap-2">
                         <Button
@@ -466,7 +509,7 @@ const Clients = () => {
                             }
                             onClick={() => setBulkDeleteOpen(true)}
                         >
-                            Delete
+                            {t('clients.actions.delete', 'Delete')}
                         </Button>
                     </div>
                 </div>
@@ -482,30 +525,40 @@ const Clients = () => {
             <ConfirmDialog
                 isOpen={Boolean(deleting)}
                 type="danger"
-                title="Delete client"
+                title={t('clients.deleteDialog.title', 'Delete client')}
                 onClose={() => setDeleting(null)}
                 onCancel={() => setDeleting(null)}
                 onConfirm={handleDelete}
-                confirmButtonProps={{ children: 'Delete' }}
+                confirmButtonProps={{
+                    children: t('clients.actions.delete', 'Delete'),
+                }}
             >
                 <p>
-                    Delete {deleting?.full_name}? Their rental history will not
-                    be recoverable.
+                    {t(
+                        'clients.deleteDialog.description',
+                        'Delete {{name}}? Their rental history will not be recoverable.',
+                        { name: deleting?.full_name ?? '' },
+                    )}
                 </p>
             </ConfirmDialog>
 
             <ConfirmDialog
                 isOpen={bulkDeleteOpen}
                 type="danger"
-                title="Delete clients"
+                title={t('clients.bulkDeleteDialog.title', 'Delete clients')}
                 onClose={() => setBulkDeleteOpen(false)}
                 onCancel={() => setBulkDeleteOpen(false)}
                 onConfirm={handleBulkDelete}
-                confirmButtonProps={{ children: 'Delete' }}
+                confirmButtonProps={{
+                    children: t('clients.actions.delete', 'Delete'),
+                }}
             >
                 <p>
-                    Are you sure you want to remove {selectedRows.length}{' '}
-                    client(s)? This action can&apos;t be undone.
+                    {t(
+                        'clients.bulkDeleteDialog.description',
+                        'Are you sure you want to remove {{n}} client(s)? This action cannot be undone.',
+                        { n: selectedRows.length },
+                    )}
                 </p>
             </ConfirmDialog>
         </div>

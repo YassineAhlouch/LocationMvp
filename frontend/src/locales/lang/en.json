@@ -431,67 +431,6 @@
         "hideDetails": "Hide Details",
         "showDetails": "Show Details",
         "carTrip": "Car & Trip",
-        "clients": {
-            "manage": "Clients",
-            "editClient": "Edit client",
-            "addClient": "Add new client",
-            "firstName": "First name",
-            "lastName": "Last name",
-            "phone": "Phone",
-            "secondaryPhone": "Secondary phone",
-            "email": "Email",
-            "cin": "CIN",
-            "passportNumber": "Passport number",
-            "drivingLicenseNumber": "Driving license number",
-            "drivingLicenseExpiry": "Driving license expiry",
-            "birthDate": "Birth date",
-            "birthPlace": "Birth place",
-            "nationality": "Nationality",
-            "city": "City",
-            "country": "Country",
-            "source": "Source",
-            "status": "Status",
-            "active": "Active",
-            "address": "Address",
-            "notes": "Notes",
-            "placeholderFirstName": "Youssef",
-            "placeholderLastName": "El Amrani",
-            "placeholderPassport": "Passport no.",
-            "placeholderLicense": "License no.",
-            "placeholderMarrakech": "Marrakech",
-            "placeholderNationality": "Moroccan",
-            "placeholderAddress": "Full address",
-            "placeholderNotes": "Additional notes",
-            "selectCountry": "Select country",
-            "selectSource": "Select source",
-            "saveChanges": "Save changes",
-            "addClientButton": "Add client",
-            "add": "Add",
-            "searchClients": "Search clients…",
-            "updatedToast": "Client updated successfully!",
-            "createdToast": "Client added successfully!",
-            "saveFailedToast": "Something went wrong",
-            "sourceOption": {
-                "facebook": "Facebook",
-                "whatsapp": "WhatsApp",
-                "referral": "Referral",
-                "phone": "Phone",
-                "walk_in": "Walk-in",
-                "other": "Other"
-            },
-            "statusOption": {
-                "normal": "Normal",
-                "vip": "VIP",
-                "blacklist": "Blacklist"
-            },
-            "validation": {
-                "firstNameRequired": "First name is required",
-                "lastNameRequired": "Last name is required",
-                "phoneRequired": "Phone is required",
-                "drivingLicenseRequired": "Driving license number is required",
-                "identityDocument": "Provide a CIN or a passport number"
-            }
-        },
         "pricingSummary": "Pricing Summary",
         "subtotal": "Subtotal",
         "tax": "Tax",
@@ -871,6 +810,99 @@
                 "created": "Car added successfully!",
                 "error": "Something went wrong"
             }
+        }
+    },
+    "clients": {
+        "title": "Clients",
+        "count": "{{n}} clients",
+        "allClients": "All Clients",
+        "allSources": "All sources",
+        "selected": "selected",
+        "columns": {
+            "client": "Client",
+            "email": "Email",
+            "phone": "Phone",
+            "source": "Source",
+            "status": "Status",
+            "lastRental": "Last rental"
+        },
+        "actions": {
+            "edit": "Edit",
+            "delete": "Delete"
+        },
+        "deleteDialog": {
+            "title": "Delete client",
+            "description": "Delete {{name}}? Their rental history will not be recoverable."
+        },
+        "bulkDeleteDialog": {
+            "title": "Delete clients",
+            "description": "Are you sure you want to remove {{n}} client(s)? This action cannot be undone."
+        },
+        "toast": {
+            "deleted": "Client deleted successfully!",
+            "deleteFailed": "Could not delete client",
+            "bulkDeleted": "{{n}} client(s) deleted successfully!",
+            "bulkDeleteFailed": "{{n}} deletion(s) failed",
+            "bulkDeleteError": "Could not delete clients"
+        },
+        "manage": "Clients",
+        "editClient": "Edit client",
+        "addClient": "Add new client",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "phone": "Phone",
+        "secondaryPhone": "Secondary phone",
+        "email": "Email",
+        "cin": "CIN",
+        "passportNumber": "Passport number",
+        "drivingLicenseNumber": "Driving license number",
+        "drivingLicenseExpiry": "Driving license expiry",
+        "birthDate": "Birth date",
+        "birthPlace": "Birth place",
+        "nationality": "Nationality",
+        "city": "City",
+        "country": "Country",
+        "source": "Source",
+        "status": "Status",
+        "active": "Active",
+        "address": "Address",
+        "notes": "Notes",
+        "placeholderFirstName": "Youssef",
+        "placeholderLastName": "El Amrani",
+        "placeholderPassport": "Passport no.",
+        "placeholderLicense": "License no.",
+        "placeholderMarrakech": "Marrakech",
+        "placeholderNationality": "Moroccan",
+        "placeholderAddress": "Full address",
+        "placeholderNotes": "Additional notes",
+        "selectCountry": "Select country",
+        "selectSource": "Select source",
+        "saveChanges": "Save changes",
+        "addClientButton": "Add client",
+        "add": "Add",
+        "searchClients": "Search clients…",
+        "updatedToast": "Client updated successfully!",
+        "createdToast": "Client added successfully!",
+        "saveFailedToast": "Something went wrong",
+        "sourceOption": {
+            "facebook": "Facebook",
+            "whatsapp": "WhatsApp",
+            "referral": "Referral",
+            "phone": "Phone",
+            "walk_in": "Walk-in",
+            "other": "Other"
+        },
+        "statusOption": {
+            "normal": "Normal",
+            "vip": "VIP",
+            "blacklist": "Blacklist"
+        },
+        "validation": {
+            "firstNameRequired": "First name is required",
+            "lastNameRequired": "Last name is required",
+            "phoneRequired": "Phone is required",
+            "drivingLicenseRequired": "Driving license number is required",
+            "identityDocument": "Provide a CIN or a passport number"
         }
     }
 }

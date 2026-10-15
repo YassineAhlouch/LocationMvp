@@ -431,67 +431,6 @@
         "hideDetails": "إخفاء التفاصيل",
         "showDetails": "عرض التفاصيل",
         "carTrip": "المركبة والرحلة",
-        "clients": {
-            "manage": "العملاء",
-            "editClient": "تعديل العميل",
-            "addClient": "إضافة عميل جديد",
-            "firstName": "الاسم الأول",
-            "lastName": "اسم العائلة",
-            "phone": "الهاتف",
-            "secondaryPhone": "هاتف ثانوي",
-            "email": "البريد الإلكتروني",
-            "cin": "البطاقة الوطنية",
-            "passportNumber": "رقم جواز السفر",
-            "drivingLicenseNumber": "رقم رخصة السياقة",
-            "drivingLicenseExpiry": "انتهاء صلاحية رخصة السياقة",
-            "birthDate": "تاريخ الميلاد",
-            "birthPlace": "مكان الميلاد",
-            "nationality": "الجنسية",
-            "city": "المدينة",
-            "country": "الدولة",
-            "source": "المصدر",
-            "status": "الحالة",
-            "active": "نشط",
-            "address": "العنوان",
-            "notes": "ملاحظات",
-            "placeholderFirstName": "يوسف",
-            "placeholderLastName": "العمراني",
-            "placeholderPassport": "رقم جواز السفر",
-            "placeholderLicense": "رقم الرخصة",
-            "placeholderMarrakech": "مراكش",
-            "placeholderNationality": "مغربي",
-            "placeholderAddress": "العنوان الكامل",
-            "placeholderNotes": "ملاحظات إضافية",
-            "selectCountry": "اختر الدولة",
-            "selectSource": "اختر المصدر",
-            "saveChanges": "حفظ التعديلات",
-            "addClientButton": "إضافة العميل",
-            "add": "إضافة",
-            "searchClients": "ابحث عن العملاء…",
-            "updatedToast": "تم تحديث العميل بنجاح!",
-            "createdToast": "تمت إضافة العميل بنجاح!",
-            "saveFailedToast": "حدث خطأ ما",
-            "sourceOption": {
-                "facebook": "فيسبوك",
-                "whatsapp": "واتساب",
-                "referral": "إحالة",
-                "phone": "الهاتف",
-                "walk_in": "زيارة مباشرة",
-                "other": "أخرى"
-            },
-            "statusOption": {
-                "normal": "عادي",
-                "vip": "كبار الشخصيات",
-                "blacklist": "قائمة سوداء"
-            },
-            "validation": {
-                "firstNameRequired": "الاسم الأول مطلوب",
-                "lastNameRequired": "اسم العائلة مطلوب",
-                "phoneRequired": "رقم الهاتف مطلوب",
-                "drivingLicenseRequired": "رقم رخصة السياقة مطلوب",
-                "identityDocument": "يرجى تقديم رقم البطاقة الوطنية أو جواز السفر"
-            }
-        },
         "pricingSummary": "ملخص التسعير",
         "subtotal": "المجموع الفرعي",
         "tax": "الضريبة",
@@ -871,6 +810,99 @@
                 "created": "تمت إضافة السيارة بنجاح!",
                 "error": "حدث خطأ ما"
             }
+        }
+    },
+    "clients": {
+        "title": "العملاء",
+        "count": "{{n}} عميل",
+        "allClients": "كل العملاء",
+        "allSources": "كل المصادر",
+        "selected": "محدد",
+        "columns": {
+            "client": "العميل",
+            "email": "البريد الإلكتروني",
+            "phone": "الهاتف",
+            "source": "المصدر",
+            "status": "الحالة",
+            "lastRental": "آخر إيجار"
+        },
+        "actions": {
+            "edit": "تعديل",
+            "delete": "حذف"
+        },
+        "deleteDialog": {
+            "title": "حذف العميل",
+            "description": "حذف {{name}}؟ لن يكون سجل الإيجار الخاص به قابلاً للاسترداد."
+        },
+        "bulkDeleteDialog": {
+            "title": "حذف العملاء",
+            "description": "هل أنت متأكد من حذف {{n}} عميل؟ لا يمكن التراجع عن هذا الإجراء."
+        },
+        "toast": {
+            "deleted": "تم حذف العميل بنجاح!",
+            "deleteFailed": "تعذر حذف العميل",
+            "bulkDeleted": "تم حذف {{n}} عميل بنجاح!",
+            "bulkDeleteFailed": "فشل حذف {{n}} عميل",
+            "bulkDeleteError": "تعذر حذف العملاء"
+        },
+        "manage": "العملاء",
+        "editClient": "تعديل العميل",
+        "addClient": "إضافة عميل جديد",
+        "firstName": "الاسم الأول",
+        "lastName": "اسم العائلة",
+        "phone": "الهاتف",
+        "secondaryPhone": "هاتف ثانوي",
+        "email": "البريد الإلكتروني",
+        "cin": "البطاقة الوطنية",
+        "passportNumber": "رقم جواز السفر",
+        "drivingLicenseNumber": "رقم رخصة السياقة",
+        "drivingLicenseExpiry": "انتهاء صلاحية رخصة السياقة",
+        "birthDate": "تاريخ الميلاد",
+        "birthPlace": "مكان الميلاد",
+        "nationality": "الجنسية",
+        "city": "المدينة",
+        "country": "الدولة",
+        "source": "المصدر",
+        "status": "الحالة",
+        "active": "نشط",
+        "address": "العنوان",
+        "notes": "ملاحظات",
+        "placeholderFirstName": "يوسف",
+        "placeholderLastName": "العمراني",
+        "placeholderPassport": "رقم جواز السفر",
+        "placeholderLicense": "رقم الرخصة",
+        "placeholderMarrakech": "مراكش",
+        "placeholderNationality": "مغربي",
+        "placeholderAddress": "العنوان الكامل",
+        "placeholderNotes": "ملاحظات إضافية",
+        "selectCountry": "اختر الدولة",
+        "selectSource": "اختر المصدر",
+        "saveChanges": "حفظ التعديلات",
+        "addClientButton": "إضافة العميل",
+        "add": "إضافة",
+        "searchClients": "ابحث عن العملاء…",
+        "updatedToast": "تم تحديث العميل بنجاح!",
+        "createdToast": "تمت إضافة العميل بنجاح!",
+        "saveFailedToast": "حدث خطأ ما",
+        "sourceOption": {
+            "facebook": "فيسبوك",
+            "whatsapp": "واتساب",
+            "referral": "إحالة",
+            "phone": "الهاتف",
+            "walk_in": "زيارة مباشرة",
+            "other": "أخرى"
+        },
+        "statusOption": {
+            "normal": "عادي",
+            "vip": "كبار الشخصيات",
+            "blacklist": "قائمة سوداء"
+        },
+        "validation": {
+            "firstNameRequired": "الاسم الأول مطلوب",
+            "lastNameRequired": "اسم العائلة مطلوب",
+            "phoneRequired": "رقم الهاتف مطلوب",
+            "drivingLicenseRequired": "رقم رخصة السياقة مطلوب",
+            "identityDocument": "يرجى تقديم رقم البطاقة الوطنية أو جواز السفر"
         }
     }
 }

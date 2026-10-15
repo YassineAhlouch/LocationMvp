@@ -1665,7 +1665,7 @@ const ReservationForm = ({
                                     placeholder={t('reservations.form.selectClient', 'Select client')}
                                     searchInputProps={{
                                         placeholder: t(
-                                            'reservations.clients.searchClients',
+                                            'clients.searchClients',
                                             'Search clients…',
                                         ),
                                     }}
@@ -1686,7 +1686,7 @@ const ReservationForm = ({
                                         setClientDialogTarget('primary')
                                     }
                                 >
-                                    {t('reservations.clients.add', 'Add')}
+                                    {t('clients.add', 'Add')}
                                 </Button>
                             </div>
                         )}
@@ -1704,7 +1704,7 @@ const ReservationForm = ({
                                     placeholder={t('reservations.form.selectOptionalClient', 'Select optional client')}
                                     searchInputProps={{
                                         placeholder: t(
-                                            'reservations.clients.searchClients',
+                                            'clients.searchClients',
                                             'Search clients…',
                                         ),
                                     }}
@@ -1725,7 +1725,7 @@ const ReservationForm = ({
                                         setClientDialogTarget('secondary')
                                     }
                                 >
-                                    {t('reservations.clients.add', 'Add')}
+                                    {t('clients.add', 'Add')}
                                 </Button>
                             </div>
                         )}
@@ -2778,7 +2778,7 @@ const ReservationForm = ({
                 className="max-h-[90vh] overflow-y-auto"
             >
                 <h5 className="mb-6 text-base font-bold dark:text-gray-100">
-                    {t('reservations.clients.addClient', 'Add new client')}
+                    {t('clients.addClient', 'Add new client')}
                 </h5>
                 <ClientForm
                     client={null}

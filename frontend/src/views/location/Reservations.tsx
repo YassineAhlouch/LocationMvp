@@ -197,8 +197,8 @@ const ClientFormDialog = ({
         >
             <h5 className="mb-6 text-base font-bold dark:text-gray-100">
                 {client
-                    ? t('reservations.clients.editClient', 'Edit client')
-                    : t('reservations.clients.addClient', 'Add client')}
+                    ? t('clients.editClient', 'Edit client')
+                    : t('clients.addClient', 'Add client')}
             </h5>
             <ClientForm
                 client={client}
@@ -695,7 +695,7 @@ const ExpandableReservationDetails = ({
                         <div className="space-y-3">
                             <div className="font-semibold heading-text uppercase tracking-wide flex items-center gap-2">
                                 <LiUser className="text-base" />
-                                <span>{t('reservations.clients.manage', 'Clients')}</span>
+                                <span>{t('clients.manage', 'Clients')}</span>
                             </div>
                             <div className="flex flex-wrap items-center gap-2">
                                 <LiUser className="text-base" />

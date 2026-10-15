@@ -65,7 +65,7 @@ const hasIdentityDocument = (values: {
 
 const identityDocumentMessage = (t: Translator) =>
     t(
-        'reservations.clients.validation.identityDocument',
+        'clients.validation.identityDocument',
         'Provide a CIN or a passport number',
     )
 
@@ -77,7 +77,7 @@ const clientSchema = (t: Translator) =>
                 .min(
                     1,
                     t(
-                        'reservations.clients.validation.firstNameRequired',
+                        'clients.validation.firstNameRequired',
                         'First name is required',
                     ),
                 ),
@@ -86,7 +86,7 @@ const clientSchema = (t: Translator) =>
                 .min(
                     1,
                     t(
-                        'reservations.clients.validation.lastNameRequired',
+                        'clients.validation.lastNameRequired',
                         'Last name is required',
                     ),
                 ),
@@ -95,7 +95,7 @@ const clientSchema = (t: Translator) =>
                 .min(
                     1,
                     t(
-                        'reservations.clients.validation.phoneRequired',
+                        'clients.validation.phoneRequired',
                         'Phone is required',
                     ),
                 ),
@@ -104,7 +104,7 @@ const clientSchema = (t: Translator) =>
                 .min(
                     1,
                     t(
-                        'reservations.clients.validation.drivingLicenseRequired',
+                        'clients.validation.drivingLicenseRequired',
                         'Driving license number is required',
                     ),
                 ),
@@ -207,7 +207,7 @@ const ClientForm = ({
             clientSourceOptions.map((option) => ({
                 ...option,
                 label: t(
-                    `reservations.clients.sourceOption.${option.value}`,
+                    `clients.sourceOption.${option.value}`,
                     option.label,
                 ),
             })),
@@ -219,7 +219,7 @@ const ClientForm = ({
             clientStatusOptions.map((option) => ({
                 ...option,
                 label: t(
-                    `reservations.clients.statusOption.${option.value}`,
+                    `clients.statusOption.${option.value}`,
                     option.label,
                 ),
             })),
@@ -250,7 +250,7 @@ const ClientForm = ({
                     <Notification
                         type="success"
                         title={t(
-                            'reservations.clients.updatedToast',
+                            'clients.updatedToast',
                             'Client updated successfully!',
                         )}
                     />,
@@ -261,7 +261,7 @@ const ClientForm = ({
                     <Notification
                         type="success"
                         title={t(
-                            'reservations.clients.createdToast',
+                            'clients.createdToast',
                             'Client added successfully!',
                         )}
                     />,
@@ -275,7 +275,7 @@ const ClientForm = ({
                 <Notification
                     type="danger"
                     title={t(
-                        'reservations.clients.saveFailedToast',
+                        'clients.saveFailedToast',
                         'Something went wrong',
                     )}
                 />,
@@ -289,7 +289,7 @@ const ClientForm = ({
         <Form onSubmit={onSubmit}>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <FormItem
-                    label={t('reservations.clients.firstName', 'First name')}
+                    label={t('clients.firstName', 'First name')}
                     asterisk
                     invalid={Boolean(errors.first_name)}
                     errorMessage={errors.first_name?.message}
@@ -298,12 +298,12 @@ const ClientForm = ({
                         name="first_name"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder={t('reservations.clients.placeholderFirstName', 'Youssef')} {...field} />
+                            <Input placeholder={t('clients.placeholderFirstName', 'Youssef')} {...field} />
                         )}
                     />
                 </FormItem>
                 <FormItem
-                    label={t('reservations.clients.lastName', 'Last name')}
+                    label={t('clients.lastName', 'Last name')}
                     asterisk
                     invalid={Boolean(errors.last_name)}
                     errorMessage={errors.last_name?.message}
@@ -312,12 +312,12 @@ const ClientForm = ({
                         name="last_name"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder={t('reservations.clients.placeholderLastName', 'El Amrani')} {...field} />
+                            <Input placeholder={t('clients.placeholderLastName', 'El Amrani')} {...field} />
                         )}
                     />
                 </FormItem>
                 <FormItem
-                    label={t('reservations.clients.phone', 'Phone')}
+                    label={t('clients.phone', 'Phone')}
                     asterisk
                     invalid={Boolean(errors.phone)}
                     errorMessage={errors.phone?.message}
@@ -333,7 +333,7 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label={t('reservations.clients.secondaryPhone', 'Secondary phone')}>
+                <FormItem label={t('clients.secondaryPhone', 'Secondary phone')}>
                     <Controller
                         name="secondary_phone"
                         control={control}
@@ -345,7 +345,7 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label={t('reservations.clients.email', 'Email')}>
+                <FormItem label={t('clients.email', 'Email')}>
                     <Controller
                         name="email"
                         control={control}
@@ -359,7 +359,7 @@ const ClientForm = ({
                     />
                 </FormItem>
                 <FormItem
-                    label={t('reservations.clients.cin', 'CIN')}
+                    label={t('clients.cin', 'CIN')}
                     asterisk
                     invalid={Boolean(errors.cin)}
                     errorMessage={errors.cin?.message}
@@ -373,7 +373,7 @@ const ClientForm = ({
                     />
                 </FormItem>
                 <FormItem
-                    label={t('reservations.clients.passportNumber', 'Passport number')}
+                    label={t('clients.passportNumber', 'Passport number')}
                     asterisk
                     invalid={Boolean(errors.passport_number)}
                     errorMessage={errors.passport_number?.message}
@@ -382,12 +382,12 @@ const ClientForm = ({
                         name="passport_number"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder={t('reservations.clients.placeholderPassport', 'Passport no.')} {...field} />
+                            <Input placeholder={t('clients.placeholderPassport', 'Passport no.')} {...field} />
                         )}
                     />
                 </FormItem>
                 <FormItem
-                    label={t('reservations.clients.drivingLicenseNumber', 'Driving license number')}
+                    label={t('clients.drivingLicenseNumber', 'Driving license number')}
                     asterisk
                     invalid={Boolean(errors.driving_license_number)}
                     errorMessage={errors.driving_license_number?.message}
@@ -396,11 +396,11 @@ const ClientForm = ({
                         name="driving_license_number"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder={t('reservations.clients.placeholderLicense', 'License no.')} {...field} />
+                            <Input placeholder={t('clients.placeholderLicense', 'License no.')} {...field} />
                         )}
                     />
                 </FormItem>
-                <FormItem label={t('reservations.clients.drivingLicenseExpiry', 'Driving license expiry')}>
+                <FormItem label={t('clients.drivingLicenseExpiry', 'Driving license expiry')}>
                     <Controller
                         name="driving_license_expiry"
                         control={control}
@@ -409,7 +409,7 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label={t('reservations.clients.birthDate', 'Birth date')}>
+                <FormItem label={t('clients.birthDate', 'Birth date')}>
                     <Controller
                         name="birth_date"
                         control={control}
@@ -418,41 +418,41 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label={t('reservations.clients.birthPlace', 'Birth place')}>
+                <FormItem label={t('clients.birthPlace', 'Birth place')}>
                     <Controller
                         name="birth_place"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder={t('reservations.clients.placeholderMarrakech', 'Marrakech')} {...field} />
+                            <Input placeholder={t('clients.placeholderMarrakech', 'Marrakech')} {...field} />
                         )}
                     />
                 </FormItem>
-                <FormItem label={t('reservations.clients.nationality', 'Nationality')}>
+                <FormItem label={t('clients.nationality', 'Nationality')}>
                     <Controller
                         name="nationality"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder={t('reservations.clients.placeholderNationality', 'Moroccan')} {...field} />
+                            <Input placeholder={t('clients.placeholderNationality', 'Moroccan')} {...field} />
                         )}
                     />
                 </FormItem>
-                <FormItem label={t('reservations.clients.city', 'City')}>
+                <FormItem label={t('clients.city', 'City')}>
                     <Controller
                         name="city"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder={t('reservations.clients.placeholderMarrakech', 'Marrakech')} {...field} />
+                            <Input placeholder={t('clients.placeholderMarrakech', 'Marrakech')} {...field} />
                         )}
                     />
                 </FormItem>
-                <FormItem label={t('reservations.clients.country', 'Country')}>
+                <FormItem label={t('clients.country', 'Country')}>
                     <Controller
                         name="country"
                         control={control}
                         render={({ field }) => (
                             <Select
                                 isSearchable
-                                placeholder={t('reservations.clients.selectCountry', 'Select country')}
+                                placeholder={t('clients.selectCountry', 'Select country')}
                                 options={countryOptions}
                                 value={
                                     countryOptions.find(
@@ -500,13 +500,13 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label={t('reservations.clients.source', 'Source')}>
+                <FormItem label={t('clients.source', 'Source')}>
                     <Controller
                         name="source"
                         control={control}
                         render={({ field }) => (
                             <Select
-                                placeholder={t('reservations.clients.selectSource', 'Select source')}
+                                placeholder={t('clients.selectSource', 'Select source')}
                                 options={sourceOptions}
                                 value={sourceOptions.find(
                                     (o) => o.value === field.value,
@@ -518,7 +518,7 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label={t('reservations.clients.status', 'Status')}>
+                <FormItem label={t('clients.status', 'Status')}>
                     <Controller
                         name="status"
                         control={control}
@@ -535,7 +535,7 @@ const ClientForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label={t('reservations.clients.active', 'Active')}>
+                <FormItem label={t('clients.active', 'Active')}>
                     <Controller
                         name="is_active"
                         control={control}
@@ -550,27 +550,27 @@ const ClientForm = ({
                     />
                 </FormItem>
             </div>
-            <FormItem label={t('reservations.clients.address', 'Address')} className="mt-4">
+            <FormItem label={t('clients.address', 'Address')} className="mt-4">
                 <Controller
                     name="address"
                     control={control}
                     render={({ field }) => (
                         <Input
                             textArea
-                            placeholder={t('reservations.clients.placeholderAddress', 'Full address')}
+                            placeholder={t('clients.placeholderAddress', 'Full address')}
                             {...field}
                         />
                     )}
                 />
             </FormItem>
-            <FormItem label={t('reservations.clients.notes', 'Notes')} className="mt-2">
+            <FormItem label={t('clients.notes', 'Notes')} className="mt-2">
                 <Controller
                     name="notes"
                     control={control}
                     render={({ field }) => (
                         <Input
                             textArea
-                            placeholder={t('reservations.clients.placeholderNotes', 'Additional notes')}
+                            placeholder={t('clients.placeholderNotes', 'Additional notes')}
                             {...field}
                         />
                     )}
@@ -582,8 +582,8 @@ const ClientForm = ({
                 </Button>
                 <Button type="submit" variant="solid" loading={submitting}>
                     {client
-                        ? t('reservations.clients.saveChanges', 'Save changes')
-                        : t('reservations.clients.addClientButton', 'Add client')}
+                        ? t('clients.saveChanges', 'Save changes')
+                        : t('clients.addClientButton', 'Add client')}
                 </Button>
             </div>
         </Form>
