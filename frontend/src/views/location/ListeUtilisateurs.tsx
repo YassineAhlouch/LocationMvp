@@ -29,14 +29,16 @@ import { LiEdit, LiTrash, LiUser, LiShieldCircle } from '@/icons'
 import useRandomColor from '@/utils/hooks/useRandomColor'
 import classNames from '@/utils/classNames'
 import acronym from '@/utils/acronym'
+import useTranslation from '@/utils/hooks/useTranslation'
+import type { Translator } from './shared'
 
-const tabList = [
+const tabList = (t: Translator) => [
     {
         value: 'users',
         label: (
             <span className="flex items-center gap-2">
                 <LiUser className="text-lg" />
-                <span>Users</span>
+                <span>{t('users.tabs.users', 'Users')}</span>
             </span>
         ),
     },
@@ -45,7 +47,7 @@ const tabList = [
         label: (
             <span className="flex items-center gap-2">
                 <LiShieldCircle className="text-lg" />
-                <span>Role & Permissions</span>
+                <span>{t('users.tabs.roles', 'Role & Permissions')}</span>
             </span>
         ),
     },
@@ -73,23 +75,30 @@ const UserName = ({ row }: { row: StaffUser }) => {
     )
 }
 
-const UserStatus = ({ active }: { active: boolean }) => (
-    <div className="flex items-center">
-        <div className="flex items-center gap-1 font-medium">
-            <Badge
-                className={classNames(
-                    'h-2 w-2 rounded-full',
-                    active ? 'bg-success' : 'bg-warning',
-                )}
-            />
-            <span className="heading-text capitalize">
-                {active ? 'Active' : 'Inactive'}
-            </span>
+const UserStatus = ({ active }: { active: boolean }) => {
+    const { t } = useTranslation()
+
+    return (
+        <div className="flex items-center">
+            <div className="flex items-center gap-1 font-medium">
+                <Badge
+                    className={classNames(
+                        'h-2 w-2 rounded-full',
+                        active ? 'bg-success' : 'bg-warning',
+                    )}
+                />
+                <span className="heading-text capitalize">
+                    {active
+                        ? t('users.status.active', 'Active')
+                        : t('users.status.inactive', 'Inactive')}
+                </span>
+            </div>
         </div>
-    </div>
-)
+    )
+}
 
 const ListeUtilisateurs = () => {
+    const { t } = useTranslation()
     const navigate = useNavigate()
 
     const [currentTab, setCurrentTab] = useState('users')
@@ -103,6 +112,15 @@ const ListeUtilisateurs = () => {
     const [q, setQ] = useState('')
     const [roleFilter, setRoleFilter] = useState('')
     const [selectedRows, setSelectedRows] = useState<StaffUser[]>([])
+
+    const tabs = useMemo(() => tabList(t), [t])
+    const roleOptions = useMemo(
+        () => [
+            { value: '', label: t('users.allRoles', 'All roles') },
+            ...roles,
+        ],
+        [roles, t],
+    )
 
     const [editDrawerOpen, setEditDrawerOpen] = useState(false)
     const [editing, setEditing] = useState<StaffUser | null>(null)
@@ -187,7 +205,10 @@ const ListeUtilisateurs = () => {
             toast.push(
                 <Notification
                     type="success"
-                    title="User deactivated successfully!"
+                    title={t(
+                        'users.toast.deactivated',
+                        'User deactivated successfully!',
+                    )}
                 />,
             )
             setDeactivating(null)
@@ -196,7 +217,10 @@ const ListeUtilisateurs = () => {
             toast.push(
                 <Notification
                     type="danger"
-                    title="Could not deactivate user"
+                    title={t(
+                        'users.toast.deactivateError',
+                        'Could not deactivate user',
+                    )}
                 />,
             )
         }
@@ -214,14 +238,22 @@ const ListeUtilisateurs = () => {
             toast.push(
                 <Notification
                     type="success"
-                    title={`${ids.length - failed} user(s) deactivated!`}
+                    title={t(
+                        'users.toast.bulkDeactivated',
+                        '{{n}} user(s) deactivated!',
+                        { n: ids.length - failed },
+                    )}
                 />,
             )
             if (failed > 0) {
                 toast.push(
                     <Notification
                         type="danger"
-                        title={`${failed} update(s) failed`}
+                        title={t(
+                            'users.toast.bulkFailed',
+                            '{{n}} update(s) failed',
+                            { n: failed },
+                        )}
                     />,
                 )
             }
@@ -232,7 +264,10 @@ const ListeUtilisateurs = () => {
             toast.push(
                 <Notification
                     type="danger"
-                    title="Could not deactivate users"
+                    title={t(
+                        'users.toast.bulkDeactivateError',
+                        'Could not deactivate users',
+                    )}
                 />,
             )
             setBulkDeactivateOpen(false)
@@ -242,12 +277,12 @@ const ListeUtilisateurs = () => {
     const columns = useMemo<ColumnDef<StaffUser>[]>(
         () => [
             {
-                header: 'Name',
+                header: t('users.columns.name', 'Name'),
                 accessorKey: 'full_name',
                 cell: (props) => <UserName row={props.row.original} />,
             },
             {
-                header: 'Email',
+                header: t('users.columns.email', 'Email'),
                 accessorKey: 'email',
                 cell: (props) => (
                     <span className="heading-text">
@@ -256,7 +291,7 @@ const ListeUtilisateurs = () => {
                 ),
             },
             {
-                header: 'Phone',
+                header: t('users.columns.phone', 'Phone'),
                 accessorKey: 'phone',
                 cell: (props) => (
                     <span className="heading-text text-nowrap">
@@ -265,7 +300,7 @@ const ListeUtilisateurs = () => {
                 ),
             },
             {
-                header: 'Role',
+                header: t('users.columns.role', 'Role'),
                 accessorKey: 'role.name',
                 cell: (props) => (
                     <Tag className="capitalize">
@@ -274,14 +309,14 @@ const ListeUtilisateurs = () => {
                 ),
             },
             {
-                header: 'Status',
+                header: t('users.columns.status', 'Status'),
                 accessorKey: 'is_active',
                 cell: (props) => (
                     <UserStatus active={props.row.original.is_active} />
                 ),
             },
             {
-                header: 'Last login',
+                header: t('users.columns.lastLogin', 'Last login'),
                 accessorKey: 'last_login_at',
                 cell: (props) => (
                     <span className="heading-text text-nowrap">
@@ -304,7 +339,7 @@ const ListeUtilisateurs = () => {
                             variant="link"
                             className="px-2 hover:text-gray-900 dark:hover:text-gray-100"
                             role="button"
-                            title="Edit"
+                            title={t('users.actions.edit', 'Edit')}
                             onClick={() => handleEdit(props.row.original)}
                         >
                             <LiEdit className="text-base" />
@@ -314,7 +349,10 @@ const ListeUtilisateurs = () => {
                             variant="link"
                             className="px-2 hover:text-error"
                             role="button"
-                            title="Deactivate"
+                            title={t(
+                                'users.actions.deactivate',
+                                'Deactivate',
+                            )}
                             onClick={() => setDeactivating(props.row.original)}
                         >
                             <LiTrash className="text-base" />
@@ -323,7 +361,7 @@ const ListeUtilisateurs = () => {
                 ),
             },
         ],
-        [handleEdit],
+        [handleEdit, t],
     )
 
     return (
@@ -333,16 +371,18 @@ const ListeUtilisateurs = () => {
                     <div>
                         <div className="flex items-center justify-between gap-4">
                             <div>
-                                <h4>Users</h4>
+                                <h4>{t('users.title', 'Users')}</h4>
                                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                                    {total} staff members
+                                    {t('users.count', '{{n}} staff members', {
+                                        n: total,
+                                    })}
                                 </p>
                             </div>
                         </div>
                     </div>
 
                     <OverflowTabs
-                        tabList={tabList}
+                        tabList={tabs}
                         value={currentTab}
                         onChange={setCurrentTab}
                     />
@@ -352,7 +392,10 @@ const ListeUtilisateurs = () => {
                             <div className="flex flex-wrap items-center justify-between gap-2">
                                 <div>
                                     <DebouceInput
-                                        placeholder="Search users…"
+                                        placeholder={t(
+                                            'users.search',
+                                            'Search users…',
+                                        )}
                                         prefix={
                                             <LuSearch className="text-lg" />
                                         }
@@ -366,21 +409,9 @@ const ListeUtilisateurs = () => {
                                 <div className="flex items-center gap-2">
                                     <div className="w-48">
                                         <Select
-                                            options={[
-                                                {
-                                                    value: '',
-                                                    label: 'All roles',
-                                                },
-                                                ...roles,
-                                            ]}
+                                            options={roleOptions}
                                             value={
-                                                [
-                                                    {
-                                                        value: '',
-                                                        label: 'All roles',
-                                                    },
-                                                    ...roles,
-                                                ].find(
+                                                roleOptions.find(
                                                     (o) =>
                                                         o.value === roleFilter,
                                                 ) ?? null
@@ -402,7 +433,7 @@ const ListeUtilisateurs = () => {
                                             )
                                         }
                                     >
-                                        Add user
+                                        {t('users.addUser', 'Add user')}
                                     </Button>
                                 </div>
                             </div>
@@ -447,9 +478,12 @@ const ListeUtilisateurs = () => {
                                 <div className="flex items-center justify-between">
                                     <span className="font-medium">
                                         <span className="heading-text font-semibold">
-                                            {selectedRows.length} Items
-                                        </span>{' '}
-                                        selected
+                                            {t(
+                                                'users.selected',
+                                                '{{n}} selected',
+                                                { n: selectedRows.length },
+                                            )}
+                                        </span>
                                     </span>
                                     <div className="flex items-center gap-2">
                                         <Button
@@ -461,7 +495,10 @@ const ListeUtilisateurs = () => {
                                                 setBulkDeactivateOpen(true)
                                             }
                                         >
-                                            Deactivate
+                                            {t(
+                                                'users.actions.deactivate',
+                                                'Deactivate',
+                                            )}
                                         </Button>
                                     </div>
                                 </div>
@@ -486,35 +523,44 @@ const ListeUtilisateurs = () => {
             <ConfirmDialog
                 isOpen={Boolean(deactivating)}
                 type="danger"
-                title="Deactivate user"
+                title={t('users.deactivateDialog.title', 'Deactivate user')}
                 onClose={() => setDeactivating(null)}
                 onCancel={() => setDeactivating(null)}
                 onConfirm={handleDeactivate}
-                confirmText="Deactivate"
-                cancelText="Cancel"
-                confirmButtonProps={{ children: 'Deactivate' }}
+                confirmText={t('users.actions.deactivate', 'Deactivate')}
+                cancelText={t('common.cancel', 'Cancel')}
+                confirmButtonProps={{
+                    children: t('users.actions.deactivate', 'Deactivate'),
+                }}
             >
                 <p>
-                    Deactivate {deactivating?.full_name}? They will no longer be
-                    able to sign in to this agency.
+                    {t(
+                        'users.deactivateDialog.message',
+                        'Deactivate {{name}}? They will no longer be able to sign in to this agency.',
+                        { name: deactivating?.full_name },
+                    )}
                 </p>
             </ConfirmDialog>
 
             <ConfirmDialog
                 isOpen={bulkDeactivateOpen}
                 type="danger"
-                title="Deactivate users"
+                title={t('users.deactivateManyDialog.title', 'Deactivate users')}
                 onClose={() => setBulkDeactivateOpen(false)}
                 onCancel={() => setBulkDeactivateOpen(false)}
                 onConfirm={handleBulkDeactivate}
-                confirmText="Deactivate"
-                cancelText="Cancel"
-                confirmButtonProps={{ children: 'Deactivate' }}
+                confirmText={t('users.actions.deactivate', 'Deactivate')}
+                cancelText={t('common.cancel', 'Cancel')}
+                confirmButtonProps={{
+                    children: t('users.actions.deactivate', 'Deactivate'),
+                }}
             >
                 <p>
-                    Are you sure you want to deactivate {selectedRows.length}{' '}
-                    user(s)? They will no longer be able to sign in to this
-                    agency.
+                    {t(
+                        'users.deactivateManyDialog.message',
+                        'Are you sure you want to deactivate {{n}} user(s)? They will no longer be able to sign in to this agency.',
+                        { n: selectedRows.length },
+                    )}
                 </p>
             </ConfirmDialog>
         </div>

@@ -14,6 +14,7 @@ import {
 import type { PermissionModule, Role } from '@/@types/location'
 import PermissionChecklist, { hasStarPermission } from './PermissionChecklist'
 import { apiErrorMessage } from './shared'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type ManagePermissionsDialogProps = {
     isOpen: boolean
@@ -28,6 +29,7 @@ const ManagePermissionsDialog = ({
     onClose,
     onSaved,
 }: ManagePermissionsDialogProps) => {
+    const { t } = useTranslation()
     const [catalog, setCatalog] = useState<PermissionModule[]>([])
     const [permissions, setPermissions] = useState<string[]>([])
     const [search, setSearch] = useState('')
@@ -62,7 +64,13 @@ const ManagePermissionsDialog = ({
         try {
             await apiUpdateRole(role.id, { permissions })
             toast.push(
-                <Notification type="success" title="Permissions updated!" />,
+                <Notification
+                    type="success"
+                    title={t(
+                        'roles.permissions.updated',
+                        'Permissions updated!',
+                    )}
+                />,
             )
             onSaved()
             onClose()
@@ -72,7 +80,10 @@ const ManagePermissionsDialog = ({
                     type="danger"
                     title={apiErrorMessage(
                         error,
-                        'Could not update permissions',
+                        t(
+                            'roles.permissions.updateError',
+                            'Could not update permissions',
+                        ),
                     )}
                 />,
             )
@@ -88,11 +99,17 @@ const ManagePermissionsDialog = ({
                     <div className="flex items-center justify-between p-4">
                         <div className="min-w-0">
                             <h5 className="truncate">
-                                Manage Permissions for “{role.name}”
+                                {t(
+                                    'roles.permissions.title',
+                                    'Manage Permissions for “{{name}}”',
+                                    { name: role.name },
+                                )}
                             </h5>
                             <p className="line-clamp-2 text-sm text-gray-500 dark:text-gray-400">
-                                Grant or revoke actions per module. Changes are
-                                saved for the whole agency at once.
+                                {t(
+                                    'roles.permissions.subtitle',
+                                    'Grant or revoke actions per module. Changes are saved for the whole agency at once.',
+                                )}
                             </p>
                         </div>
                         <div className="flex flex-shrink-0 items-center gap-2">
@@ -102,7 +119,7 @@ const ManagePermissionsDialog = ({
                                 }
                                 disabled={!changed || saving}
                             >
-                                Cancel
+                                {t('common.cancel', 'Cancel')}
                             </Button>
                             <Button
                                 variant="solid"
@@ -110,7 +127,10 @@ const ManagePermissionsDialog = ({
                                 loading={saving}
                                 disabled={!changed || permissions.length === 0}
                             >
-                                Save Changes
+                                {t(
+                                    'roles.permissions.save',
+                                    'Save Changes',
+                                )}
                             </Button>
                             <Button
                                 variant="subtle"
@@ -123,17 +143,27 @@ const ManagePermissionsDialog = ({
                     <div className="border-b border-gray-200 pb-4 dark:border-gray-800">
                         <div className="px-4">
                             <DebouceInput
-                                placeholder="Search permissions…"
+                                placeholder={t(
+                                    'roles.permissions.search',
+                                    'Search permissions…',
+                                )}
                                 prefix={<LuSearch className="text-lg" />}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                             <div className="mt-2 flex items-center justify-between">
                                 <span className="text-xs text-gray-400 dark:text-gray-500">
-                                    {permissions.length} grant(s) selected
+                                    {t(
+                                        'roles.permissions.selectedCount',
+                                        '{{n}} grant(s) selected',
+                                        { n: permissions.length },
+                                    )}
                                 </span>
                                 {isMaster && (
                                     <span className="text-xs text-primary">
-                                        Full access (*)
+                                        {t(
+                                            'roles.permissions.fullAccess',
+                                            'Full access (*)',
+                                        )}
                                     </span>
                                 )}
                             </div>

@@ -1033,5 +1033,187 @@
             "deleteError": "Could not delete"
         },
         "selectDate": "Select date"
+    },
+    "users": {
+        "title": "Users",
+        "count": "{{n}} staff members",
+        "search": "Search users…",
+        "allRoles": "All roles",
+        "addUser": "Add user",
+        "selected": "{{n}} selected",
+        "tabs": {
+            "users": "Users",
+            "roles": "Role & Permissions"
+        },
+        "status": {
+            "active": "Active",
+            "inactive": "Inactive"
+        },
+        "columns": {
+            "name": "Name",
+            "email": "Email",
+            "phone": "Phone",
+            "role": "Role",
+            "status": "Status",
+            "lastLogin": "Last login"
+        },
+        "actions": {
+            "edit": "Edit",
+            "deactivate": "Deactivate"
+        },
+        "toast": {
+            "deactivated": "User deactivated successfully!",
+            "deactivateError": "Could not deactivate user",
+            "bulkDeactivated": "{{n}} user(s) deactivated!",
+            "bulkFailed": "{{n}} update(s) failed",
+            "bulkDeactivateError": "Could not deactivate users"
+        },
+        "deactivateDialog": {
+            "title": "Deactivate user",
+            "message": "Deactivate {{name}}? They will no longer be able to sign in to this agency."
+        },
+        "deactivateManyDialog": {
+            "title": "Deactivate users",
+            "message": "Are you sure you want to deactivate {{n}} user(s)? They will no longer be able to sign in to this agency."
+        },
+        "form": {
+            "addTitle": "Add user",
+            "addSubtitle": "Add a new staff member",
+            "editTitle": "Edit User: {{name}}",
+            "firstName": "First name",
+            "lastName": "Last name",
+            "email": "Email",
+            "phone": "Phone",
+            "role": "Role",
+            "active": "Active",
+            "password": "Password",
+            "passwordConfirmation": "Confirm password",
+            "newPassword": "New password",
+            "placeholderFirstName": "Yasmine",
+            "placeholderLastName": "Benali",
+            "placeholderEmail": "staff@location.ma",
+            "placeholderPhone": "+212 6 00 00 00 00",
+            "placeholderRole": "Select role",
+            "placeholderPasswordMin": "Min. 8 characters",
+            "placeholderPasswordRepeat": "Repeat password",
+            "placeholderNewPassword": "Leave blank to keep current",
+            "create": "Add user",
+            "update": "Update",
+            "validation": {
+                "firstNameRequired": "First name is required",
+                "lastNameRequired": "Last name is required",
+                "emailRequired": "Email is required",
+                "emailInvalid": "Invalid email",
+                "roleRequired": "Role is required",
+                "passwordMin": "Password must be at least 8 characters",
+                "passwordConfirmationRequired": "Please confirm the password",
+                "passwordsMismatch": "Passwords do not match"
+            },
+            "toast": {
+                "created": "User created successfully!",
+                "updated": "User updated successfully!",
+                "error": "Something went wrong"
+            }
+        }
+    },
+    "roles": {
+        "title": "Role Management",
+        "subtitle": "Create roles and control what each one can do across the agency.",
+        "addRole": "Add New Role",
+        "empty": "No roles yet — create the first one.",
+        "noDescription": "No description provided.",
+        "actions": {
+            "manage": "Manage",
+            "edit": "Edit",
+            "clone": "Clone",
+            "deactivate": "Deactivate",
+            "reactivate": "Reactivate"
+        },
+        "toast": {
+            "cloned": "Role cloned!",
+            "cloneError": "Could not clone role",
+            "deactivated": "Role deactivated!",
+            "reactivated": "Role reactivated!",
+            "updateError": "Could not update role",
+            "updated": "Role updated!",
+            "created": "Role created!",
+            "saveError": "Could not save role",
+            "selectPermission": "Select at least one permission"
+        },
+        "deactivateDialog": {
+            "title": "Deactivate role",
+            "message": "Deactivate {{name}}? It will no longer be assignable to users until reactivated."
+        },
+        "reactivateDialog": {
+            "title": "Reactivate role",
+            "message": "Reactivate {{name}}? It will become assignable to users again."
+        },
+        "form": {
+            "editTitle": "Edit Role: {{name}}",
+            "addTitle": "Add New Role",
+            "name": "Role Name",
+            "namePlaceholder": "e.g. Operations Manager",
+            "description": "Description",
+            "descriptionPlaceholder": "Describe the role's responsibilities and access level",
+            "icon": "Icon",
+            "color": "Color",
+            "status": "Status",
+            "permissions": "Permissions",
+            "masterNote": "This role holds the master “*” grant — every permission is implied and cannot be unset here.",
+            "permissionRequired": "Select at least one permission.",
+            "update": "Update",
+            "create": "Create",
+            "validation": {
+                "nameRequired": "Role name is required",
+                "nameMax": "Role name must be less than 100 characters",
+                "descriptionRequired": "Description is required",
+                "descriptionMax": "Description must be less than 200 characters",
+                "iconRequired": "Please select an icon",
+                "colorRequired": "Please select a color"
+            }
+        },
+        "permissions": {
+            "title": "Manage Permissions for “{{name}}”",
+            "subtitle": "Grant or revoke actions per module. Changes are saved for the whole agency at once.",
+            "search": "Search permissions…",
+            "updated": "Permissions updated!",
+            "updateError": "Could not update permissions",
+            "selectedCount": "{{n}} grant(s) selected",
+            "fullAccess": "Full access (*)",
+            "save": "Save Changes"
+        },
+        "checklist": {
+            "actionCount": "{{n}} action(s)",
+            "noMatch": "No permissions match “{{term}}”"
+        },
+        "module": {
+            "reservations": "Reservations",
+            "clients": "Clients",
+            "fleet": "Fleet",
+            "extras": "Extras",
+            "pricing": "Pricing",
+            "payments": "Payments",
+            "expenses": "Expenses",
+            "financing": "Financing",
+            "reports": "Reports",
+            "activity_logs": "Activity logs",
+            "users": "Users",
+            "roles": "Roles",
+            "settings": "Settings",
+            "notifications": "Notifications"
+        },
+        "verb": {
+            "view": "View",
+            "create": "Create",
+            "update": "Update",
+            "delete": "Delete",
+            "confirm": "Confirm",
+            "activate": "Activate",
+            "complete": "Complete",
+            "cancel": "Cancel",
+            "manage": "Manage",
+            "refund": "Refund",
+            "send": "Send"
+        }
     }
 }

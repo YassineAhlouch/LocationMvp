@@ -23,6 +23,7 @@ import RoleDialog from './RoleDialog'
 import ManagePermissionsDialog from './ManagePermissionsDialog'
 import { getRoleColor, getRoleIcon } from './roleMeta'
 import { apiErrorMessage, tagToneClass } from './shared'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 /** Member preview handed to UsersAvatarGroup (imgKey='avatar', nameKey='name'). */
 type RoleMember = { name: string; avatar: string }
@@ -44,6 +45,7 @@ const RoleCard = ({
     onToggleActive,
     onManage,
 }: RoleCardProps) => {
+    const { t } = useTranslation()
     const IconComponent = getRoleIcon(role.icon)
     const color = getRoleColor(role.color)
 
@@ -92,7 +94,7 @@ const RoleCard = ({
                         >
                             <div className="flex items-center gap-2">
                                 <LiEdit className="text-base" />
-                                Edit
+                                {t('roles.actions.edit', 'Edit')}
                             </div>
                         </Dropdown.Item>
                         <Dropdown.Item
@@ -101,7 +103,7 @@ const RoleCard = ({
                         >
                             <div className="flex items-center gap-2">
                                 <LiCopy className="text-base" />
-                                Clone
+                                {t('roles.actions.clone', 'Clone')}
                             </div>
                         </Dropdown.Item>
                         <Dropdown.Item
@@ -115,18 +117,27 @@ const RoleCard = ({
                                 )}
                             >
                                 <LiTrash className="text-base" />
-                                {role.is_active ? 'Deactivate' : 'Reactivate'}
+                                {role.is_active
+                                    ? t(
+                                          'roles.actions.deactivate',
+                                          'Deactivate',
+                                      )
+                                    : t(
+                                          'roles.actions.reactivate',
+                                          'Reactivate',
+                                      )}
                             </div>
                         </Dropdown.Item>
                     </Dropdown>
                 </div>
                 <p className="mb-3 line-clamp-2 text-sm text-gray-500 dark:text-gray-400">
-                    {role.description ?? 'No description provided.'}
+                    {role.description ??
+                        t('roles.noDescription', 'No description provided.')}
                 </p>
             </div>
             <div className="flex items-center justify-between">
                 <Button variant="subtle" onClick={() => onManage(role)}>
-                    Manage
+                    {t('roles.actions.manage', 'Manage')}
                 </Button>
                 {members.length > 0 && (
                     <UsersAvatarGroup
@@ -151,6 +162,7 @@ const RoleCard = ({
 }
 
 const RolesTab = () => {
+    const { t } = useTranslation()
     const [roles, setRoles] = useState<Role[]>([])
     const [loading, setLoading] = useState(true)
     const [membersByRole, setMembersByRole] = useState<
@@ -219,13 +231,21 @@ const RolesTab = () => {
                 permissions: role.permissions ?? [],
                 is_active: true,
             })
-            toast.push(<Notification type="success" title="Role cloned!" />)
+            toast.push(
+                <Notification
+                    type="success"
+                    title={t('roles.toast.cloned', 'Role cloned!')}
+                />,
+            )
             fetchRoles()
         } catch (error) {
             toast.push(
                 <Notification
                     type="danger"
-                    title={apiErrorMessage(error, 'Could not clone role')}
+                    title={apiErrorMessage(
+                        error,
+                        t('roles.toast.cloneError', 'Could not clone role'),
+                    )}
                 />,
             )
         }
@@ -244,8 +264,14 @@ const RolesTab = () => {
                     type="success"
                     title={
                         togglingRole.is_active
-                            ? 'Role deactivated!'
-                            : 'Role reactivated!'
+                            ? t(
+                                  'roles.toast.deactivated',
+                                  'Role deactivated!',
+                              )
+                            : t(
+                                  'roles.toast.reactivated',
+                                  'Role reactivated!',
+                              )
                     }
                 />,
             )
@@ -255,7 +281,10 @@ const RolesTab = () => {
             toast.push(
                 <Notification
                     type="danger"
-                    title={apiErrorMessage(error, 'Could not update role')}
+                    title={apiErrorMessage(
+                        error,
+                        t('roles.toast.updateError', 'Could not update role'),
+                    )}
                 />,
             )
         }
@@ -265,10 +294,12 @@ const RolesTab = () => {
         <div className="p-4">
             <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h5>Role Management</h5>
+                    <h5>{t('roles.title', 'Role Management')}</h5>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Create roles and control what each one can do across the
-                        agency.
+                        {t(
+                            'roles.subtitle',
+                            'Create roles and control what each one can do across the agency.',
+                        )}
                     </p>
                 </div>
                 <Button
@@ -276,7 +307,7 @@ const RolesTab = () => {
                     icon={<LiAdd className="text-lg" />}
                     onClick={handleCreate}
                 >
-                    Add New Role
+                    {t('roles.addRole', 'Add New Role')}
                 </Button>
             </div>
 
@@ -301,7 +332,7 @@ const RolesTab = () => {
                     ))}
                     {roles.length === 0 && (
                         <p className="col-span-full py-10 text-center text-gray-400 dark:text-gray-500">
-                            No roles yet — create the first one.
+                            {t('roles.empty', 'No roles yet — create the first one.')}
                         </p>
                     )}
                 </div>
@@ -329,26 +360,42 @@ const RolesTab = () => {
                 type={togglingRole?.is_active ? 'danger' : 'info'}
                 title={
                     togglingRole?.is_active
-                        ? 'Deactivate role'
-                        : 'Reactivate role'
+                        ? t(
+                              'roles.deactivateDialog.title',
+                              'Deactivate role',
+                          )
+                        : t(
+                              'roles.reactivateDialog.title',
+                              'Reactivate role',
+                          )
                 }
                 onClose={() => setTogglingRole(null)}
                 onCancel={() => setTogglingRole(null)}
                 onConfirm={handleToggleActive}
                 confirmText={
-                    togglingRole?.is_active ? 'Deactivate' : 'Reactivate'
+                    togglingRole?.is_active
+                        ? t('roles.actions.deactivate', 'Deactivate')
+                        : t('roles.actions.reactivate', 'Reactivate')
                 }
-                cancelText="Cancel"
+                cancelText={t('common.cancel', 'Cancel')}
                 confirmButtonProps={{
                     children: togglingRole?.is_active
-                        ? 'Deactivate'
-                        : 'Reactivate',
+                        ? t('roles.actions.deactivate', 'Deactivate')
+                        : t('roles.actions.reactivate', 'Reactivate'),
                 }}
             >
                 <p>
                     {togglingRole?.is_active
-                        ? `Deactivate ${togglingRole.name}? It will no longer be assignable to users until reactivated.`
-                        : `Reactivate ${togglingRole?.name}? It will become assignable to users again.`}
+                        ? t(
+                              'roles.deactivateDialog.message',
+                              'Deactivate {{name}}? It will no longer be assignable to users until reactivated.',
+                              { name: togglingRole.name },
+                          )
+                        : t(
+                              'roles.reactivateDialog.message',
+                              'Reactivate {{name}}? It will become assignable to users again.',
+                              { name: togglingRole?.name },
+                          )}
                 </p>
             </ConfirmDialog>
         </div>

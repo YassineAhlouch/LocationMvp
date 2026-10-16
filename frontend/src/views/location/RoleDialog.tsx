@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Dialog from '@/components/ui/Dialog'
 import { Form, FormItem } from '@/components/ui/Form'
 import Button from '@/components/ui/Button'
@@ -28,6 +28,8 @@ import {
 } from './roleMeta'
 import { apiErrorMessage } from './shared'
 import classNames from '@/utils/classNames'
+import useTranslation from '@/utils/hooks/useTranslation'
+import type { Translator } from './shared'
 
 type FormSchema = {
     name: string
@@ -36,18 +38,46 @@ type FormSchema = {
     color: string
 }
 
-const validationSchema = z.object({
-    name: z
-        .string()
-        .min(2, 'Role name is required')
-        .max(100, 'Role name must be less than 100 characters'),
-    description: z
-        .string()
-        .min(1, 'Description is required')
-        .max(200, 'Description must be less than 200 characters'),
-    icon: z.string().min(1, 'Please select an icon'),
-    color: z.string().min(1, 'Please select a color'),
-})
+const validationSchema = (t: Translator) =>
+    z.object({
+        name: z
+            .string()
+            .min(2, t('roles.form.validation.nameRequired', 'Role name is required'))
+            .max(
+                100,
+                t(
+                    'roles.form.validation.nameMax',
+                    'Role name must be less than 100 characters',
+                ),
+            ),
+        description: z
+            .string()
+            .min(
+                1,
+                t(
+                    'roles.form.validation.descriptionRequired',
+                    'Description is required',
+                ),
+            )
+            .max(
+                200,
+                t(
+                    'roles.form.validation.descriptionMax',
+                    'Description must be less than 200 characters',
+                ),
+            ),
+        icon: z.string().min(
+            1,
+            t('roles.form.validation.iconRequired', 'Please select an icon'),
+        ),
+        color: z.string().min(
+            1,
+            t(
+                'roles.form.validation.colorRequired',
+                'Please select a color',
+            ),
+        ),
+    })
 
 type RoleDialogProps = {
     isOpen: boolean
@@ -57,6 +87,7 @@ type RoleDialogProps = {
 }
 
 const RoleDialog = ({ isOpen, role, onClose, onSaved }: RoleDialogProps) => {
+    const { t } = useTranslation()
     const [catalog, setCatalog] = useState<PermissionModule[]>([])
     const [permissions, setPermissions] = useState<string[]>([])
     const [isActive, setIsActive] = useState(true)
@@ -64,6 +95,8 @@ const RoleDialog = ({ isOpen, role, onClose, onSaved }: RoleDialogProps) => {
 
     const isEdit = Boolean(role)
     const isMaster = hasStarPermission(role?.permissions ?? [])
+
+    const schema = useMemo(() => validationSchema(t), [t])
 
     const {
         handleSubmit,
@@ -73,9 +106,7 @@ const RoleDialog = ({ isOpen, role, onClose, onSaved }: RoleDialogProps) => {
         setValue,
         formState: { errors },
     } = useForm<FormSchema>({
-        resolver: zodResolver(
-            validationSchema,
-        ) as unknown as Resolver<FormSchema>,
+        resolver: zodResolver(schema) as unknown as Resolver<FormSchema>,
         defaultValues: {
             name: '',
             description: '',
@@ -112,7 +143,10 @@ const RoleDialog = ({ isOpen, role, onClose, onSaved }: RoleDialogProps) => {
             toast.push(
                 <Notification
                     type="warning"
-                    title="Select at least one permission"
+                    title={t(
+                        'roles.toast.selectPermission',
+                        'Select at least one permission',
+                    )}
                 />,
             )
             return
@@ -135,7 +169,11 @@ const RoleDialog = ({ isOpen, role, onClose, onSaved }: RoleDialogProps) => {
             toast.push(
                 <Notification
                     type="success"
-                    title={isEdit ? 'Role updated!' : 'Role created!'}
+                    title={
+                        isEdit
+                            ? t('roles.toast.updated', 'Role updated!')
+                            : t('roles.toast.created', 'Role created!')
+                    }
                 />,
             )
             onSaved()
@@ -144,7 +182,10 @@ const RoleDialog = ({ isOpen, role, onClose, onSaved }: RoleDialogProps) => {
             toast.push(
                 <Notification
                     type="danger"
-                    title={apiErrorMessage(error, 'Could not save role')}
+                    title={apiErrorMessage(
+                        error,
+                        t('roles.toast.saveError', 'Could not save role'),
+                    )}
                 />,
             )
         } finally {
@@ -160,35 +201,45 @@ const RoleDialog = ({ isOpen, role, onClose, onSaved }: RoleDialogProps) => {
             className="max-h-[90vh] overflow-y-auto"
         >
             <h5 className="mb-6 text-base font-bold dark:text-gray-100">
-                {isEdit ? `Edit Role: ${role?.name ?? ''}` : 'Add New Role'}
+                {isEdit
+                    ? t('roles.form.editTitle', 'Edit Role: {{name}}', {
+                          name: role?.name ?? '',
+                      })
+                    : t('roles.form.addTitle', 'Add New Role')}
             </h5>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormItem
-                    label="Role Name"
+                    label={t('roles.form.name', 'Role Name')}
                     invalid={Boolean(errors.name)}
                     errorMessage={errors.name?.message}
                 >
                     <Input
                         type="text"
                         autoComplete="off"
-                        placeholder="e.g. Operations Manager"
+                        placeholder={t(
+                            'roles.form.namePlaceholder',
+                            'e.g. Operations Manager',
+                        )}
                         {...register('name')}
                     />
                 </FormItem>
                 <FormItem
-                    label="Description"
+                    label={t('roles.form.description', 'Description')}
                     invalid={Boolean(errors.description)}
                     errorMessage={errors.description?.message}
                 >
                     <Input
                         textArea
                         rows={3}
-                        placeholder="Describe the role's responsibilities and access level"
+                        placeholder={t(
+                            'roles.form.descriptionPlaceholder',
+                            "Describe the role's responsibilities and access level",
+                        )}
                         {...register('description')}
                     />
                 </FormItem>
                 <FormItem
-                    label="Icon"
+                    label={t('roles.form.icon', 'Icon')}
                     invalid={Boolean(errors.icon)}
                     errorMessage={errors.icon?.message}
                 >
@@ -215,7 +266,7 @@ const RoleDialog = ({ isOpen, role, onClose, onSaved }: RoleDialogProps) => {
                     </div>
                 </FormItem>
                 <FormItem
-                    label="Color"
+                    label={t('roles.form.color', 'Color')}
                     invalid={Boolean(errors.color)}
                     errorMessage={errors.color?.message}
                 >
@@ -240,17 +291,19 @@ const RoleDialog = ({ isOpen, role, onClose, onSaved }: RoleDialogProps) => {
                         ))}
                     </div>
                 </FormItem>
-                <FormItem label="Status">
+                <FormItem label={t('roles.form.status', 'Status')}>
                     <Switcher
                         checked={isActive}
                         onChange={(checked) => setIsActive(checked)}
                     />
                 </FormItem>
-                <FormItem label="Permissions">
+                <FormItem label={t('roles.form.permissions', 'Permissions')}>
                     {isMaster && (
                         <p className="mb-3 text-sm text-primary">
-                            This role holds the master “*” grant — every
-                            permission is implied and cannot be unset here.
+                            {t(
+                                'roles.form.masterNote',
+                                'This role holds the master “*” grant — every permission is implied and cannot be unset here.',
+                            )}
                         </p>
                     )}
                     <div className="rounded-lg border border-gray-200 px-4 py-2 dark:border-gray-700">
@@ -265,14 +318,17 @@ const RoleDialog = ({ isOpen, role, onClose, onSaved }: RoleDialogProps) => {
                     </div>
                     {permissions.length === 0 && (
                         <p className="mt-1 text-xs text-error">
-                            Select at least one permission.
+                            {t(
+                                'roles.form.permissionRequired',
+                                'Select at least one permission.',
+                            )}
                         </p>
                     )}
                 </FormItem>
             </Form>
             <div className="mt-6 flex w-full items-center justify-end gap-2">
                 <Button onClick={handleDiscard} disabled={submitting}>
-                    Cancel
+                    {t('common.cancel', 'Cancel')}
                 </Button>
                 <Button
                     variant="solid"
@@ -280,7 +336,9 @@ const RoleDialog = ({ isOpen, role, onClose, onSaved }: RoleDialogProps) => {
                     loading={submitting}
                     onClick={handleSubmit(onSubmit)}
                 >
-                    {isEdit ? 'Update' : 'Create'}
+                    {isEdit
+                        ? t('roles.form.update', 'Update')
+                        : t('roles.form.create', 'Create')}
                 </Button>
             </div>
         </Dialog>

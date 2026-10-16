@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Drawer from '@/components/ui/Drawer'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
@@ -14,6 +14,8 @@ import { z } from 'zod'
 import { apiUpdateUser, apiGetRoles } from '@/services/LocationService'
 import type { Role, StaffUser, StaffUserPayload } from '@/@types/location'
 import useResponsive from '@/utils/hooks/useResponsive'
+import useTranslation from '@/utils/hooks/useTranslation'
+import type { Translator } from './shared'
 
 type UserEditValues = {
     first_name: string
@@ -25,21 +27,49 @@ type UserEditValues = {
     password: string
 }
 
-const userEditSchema = z.object({
-    first_name: z.string().min(1, 'First name is required'),
-    last_name: z.string().min(1, 'Last name is required'),
-    email: z.string().min(1, 'Email is required').email('Invalid email'),
-    phone: z.string().optional(),
-    role_id: z.number({ message: 'Role is required' }),
-    is_active: z.boolean(),
-    password: z
-        .string()
-        .optional()
-        .refine(
-            (value) => !value || value.length >= 8,
-            'Password must be at least 8 characters',
-        ),
-})
+const userEditSchema = (t: Translator) =>
+    z.object({
+        first_name: z
+            .string()
+            .min(
+                1,
+                t(
+                    'users.form.validation.firstNameRequired',
+                    'First name is required',
+                ),
+            ),
+        last_name: z
+            .string()
+            .min(
+                1,
+                t(
+                    'users.form.validation.lastNameRequired',
+                    'Last name is required',
+                ),
+            ),
+        email: z
+            .string()
+            .min(
+                1,
+                t('users.form.validation.emailRequired', 'Email is required'),
+            )
+            .email(t('users.form.validation.emailInvalid', 'Invalid email')),
+        phone: z.string().optional(),
+        role_id: z.number({
+            message: t('users.form.validation.roleRequired', 'Role is required'),
+        }),
+        is_active: z.boolean(),
+        password: z
+            .string()
+            .optional()
+            .refine(
+                (value) => !value || value.length >= 8,
+                t(
+                    'users.form.validation.passwordMin',
+                    'Password must be at least 8 characters',
+                ),
+            ),
+    })
 
 type UserEditDrawerProps = {
     isOpen: boolean
@@ -54,9 +84,12 @@ const UserEditDrawer = ({
     user,
     onSaved,
 }: UserEditDrawerProps) => {
+    const { t } = useTranslation()
     const { smaller } = useResponsive()
     const [roles, setRoles] = useState<{ value: number; label: string }[]>([])
     const [submitting, setSubmitting] = useState(false)
+
+    const schema = useMemo(() => userEditSchema(t), [t])
 
     const {
         control,
@@ -73,9 +106,7 @@ const UserEditDrawer = ({
             is_active: true,
             password: '',
         },
-        resolver: zodResolver(
-            userEditSchema,
-        ) as unknown as Resolver<UserEditValues>,
+        resolver: zodResolver(schema) as unknown as Resolver<UserEditValues>,
     })
 
     useEffect(() => {
@@ -128,7 +159,10 @@ const UserEditDrawer = ({
             toast.push(
                 <Notification
                     type="success"
-                    title="User updated successfully!"
+                    title={t(
+                        'users.form.toast.updated',
+                        'User updated successfully!',
+                    )}
                 />,
             )
             reset()
@@ -136,7 +170,10 @@ const UserEditDrawer = ({
             onSaved()
         } catch {
             toast.push(
-                <Notification type="danger" title="Something went wrong" />,
+                <Notification
+                    type="danger"
+                    title={t('users.form.toast.error', 'Something went wrong')}
+                />,
             )
         } finally {
             setSubmitting(false)
@@ -152,12 +189,14 @@ const UserEditDrawer = ({
         <Drawer
             isOpen={isOpen}
             onClose={handleClose}
-            title={`Edit User: ${user?.full_name || ''}`}
+            title={t('users.form.editTitle', 'Edit User: {{name}}', {
+                name: user?.full_name || '',
+            })}
             width={smaller.sm ? 350 : 400}
             footer={
                 <div className="flex w-full items-center justify-end gap-2">
                     <Button onClick={handleClose} disabled={submitting}>
-                        Cancel
+                        {t('common.cancel', 'Cancel')}
                     </Button>
                     <Button
                         variant="solid"
@@ -165,14 +204,14 @@ const UserEditDrawer = ({
                         loading={submitting}
                         onClick={handleSubmit(handleFormSubmit)}
                     >
-                        Update
+                        {t('users.form.update', 'Update')}
                     </Button>
                 </div>
             }
         >
             <Form onSubmit={handleSubmit(handleFormSubmit)}>
                 <FormItem
-                    label="First name"
+                    label={t('users.form.firstName', 'First name')}
                     invalid={Boolean(errors.first_name)}
                     errorMessage={errors.first_name?.message}
                 >
@@ -180,12 +219,18 @@ const UserEditDrawer = ({
                         name="first_name"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder="Yasmine" {...field} />
+                            <Input
+                                placeholder={t(
+                                    'users.form.placeholderFirstName',
+                                    'Yasmine',
+                                )}
+                                {...field}
+                            />
                         )}
                     />
                 </FormItem>
                 <FormItem
-                    label="Last name"
+                    label={t('users.form.lastName', 'Last name')}
                     invalid={Boolean(errors.last_name)}
                     errorMessage={errors.last_name?.message}
                 >
@@ -193,12 +238,18 @@ const UserEditDrawer = ({
                         name="last_name"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder="Benali" {...field} />
+                            <Input
+                                placeholder={t(
+                                    'users.form.placeholderLastName',
+                                    'Benali',
+                                )}
+                                {...field}
+                            />
                         )}
                     />
                 </FormItem>
                 <FormItem
-                    label="Email"
+                    label={t('users.form.email', 'Email')}
                     invalid={Boolean(errors.email)}
                     errorMessage={errors.email?.message}
                 >
@@ -208,26 +259,32 @@ const UserEditDrawer = ({
                         render={({ field }) => (
                             <Input
                                 type="email"
-                                placeholder="staff@location.ma"
+                                placeholder={t(
+                                    'users.form.placeholderEmail',
+                                    'staff@location.ma',
+                                )}
                                 {...field}
                             />
                         )}
                     />
                 </FormItem>
-                <FormItem label="Phone">
+                <FormItem label={t('users.form.phone', 'Phone')}>
                     <Controller
                         name="phone"
                         control={control}
                         render={({ field }) => (
                             <Input
-                                placeholder="+212 6 00 00 00 00"
+                                placeholder={t(
+                                    'users.form.placeholderPhone',
+                                    '+212 6 00 00 00 00',
+                                )}
                                 {...field}
                             />
                         )}
                     />
                 </FormItem>
                 <FormItem
-                    label="Role"
+                    label={t('users.form.role', 'Role')}
                     invalid={Boolean(errors.role_id)}
                     errorMessage={errors.role_id?.message}
                 >
@@ -236,7 +293,10 @@ const UserEditDrawer = ({
                         control={control}
                         render={({ field }) => (
                             <Select
-                                placeholder="Select role"
+                                placeholder={t(
+                                    'users.form.placeholderRole',
+                                    'Select role',
+                                )}
                                 options={roles}
                                 value={roles.find(
                                     (option) => option.value === field.value,
@@ -248,7 +308,7 @@ const UserEditDrawer = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="Active">
+                <FormItem label={t('users.form.active', 'Active')}>
                     <Controller
                         name="is_active"
                         control={control}
@@ -261,7 +321,7 @@ const UserEditDrawer = ({
                     />
                 </FormItem>
                 <FormItem
-                    label="New password"
+                    label={t('users.form.newPassword', 'New password')}
                     invalid={Boolean(errors.password)}
                     errorMessage={errors.password?.message}
                 >
@@ -271,7 +331,10 @@ const UserEditDrawer = ({
                         render={({ field }) => (
                             <Input
                                 type="password"
-                                placeholder="Leave blank to keep current"
+                                placeholder={t(
+                                    'users.form.placeholderNewPassword',
+                                    'Leave blank to keep current',
+                                )}
                                 autoComplete="new-password"
                                 {...field}
                             />

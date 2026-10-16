@@ -1033,5 +1033,187 @@
             "deleteError": "تعذر الحذف"
         },
         "selectDate": "اختر تاريخا"
+    },
+    "users": {
+        "title": "المستخدمون",
+        "count": "{{n}} من أعضاء الفريق",
+        "search": "البحث عن المستخدمين…",
+        "allRoles": "كل الأدوار",
+        "addUser": "إضافة مستخدم",
+        "selected": "تم تحديد {{n}}",
+        "tabs": {
+            "users": "المستخدمون",
+            "roles": "الأدوار والصلاحيات"
+        },
+        "status": {
+            "active": "نشط",
+            "inactive": "غير نشط"
+        },
+        "columns": {
+            "name": "الاسم",
+            "email": "البريد الإلكتروني",
+            "phone": "الهاتف",
+            "role": "الدور",
+            "status": "الحالة",
+            "lastLogin": "آخر تسجيل دخول"
+        },
+        "actions": {
+            "edit": "تعديل",
+            "deactivate": "إيقاف"
+        },
+        "toast": {
+            "deactivated": "تم إيقاف المستخدم بنجاح!",
+            "deactivateError": "تعذّر إيقاف المستخدم",
+            "bulkDeactivated": "تم إيقاف {{n}} مستخدم(ين)!",
+            "bulkFailed": "فشل تحديث {{n}}",
+            "bulkDeactivateError": "تعذّر إيقاف المستخدمين"
+        },
+        "deactivateDialog": {
+            "title": "إيقاف المستخدم",
+            "message": "هل تريد إيقاف {{name}}؟ لن يتمكن بعد الآن من تسجيل الدخول إلى هذه الوكالة."
+        },
+        "deactivateManyDialog": {
+            "title": "إيقاف المستخدمين",
+            "message": "هل أنت متأكد من إيقاف {{n}} مستخدم؟ لن يتمكنوا بعد الآن من تسجيل الدخول إلى هذه الوكالة."
+        },
+        "form": {
+            "addTitle": "إضافة مستخدم",
+            "addSubtitle": "إضافة عضو جديد إلى فريق العمل",
+            "editTitle": "تعديل المستخدم: {{name}}",
+            "firstName": "الاسم الأول",
+            "lastName": "اللقب",
+            "email": "البريد الإلكتروني",
+            "phone": "الهاتف",
+            "role": "الدور",
+            "active": "نشط",
+            "password": "كلمة المرور",
+            "passwordConfirmation": "تأكيد كلمة المرور",
+            "newPassword": "كلمة مرور جديدة",
+            "placeholderFirstName": "ياسمين",
+            "placeholderLastName": "بن علي",
+            "placeholderEmail": "staff@location.ma",
+            "placeholderPhone": "+212 6 00 00 00 00",
+            "placeholderRole": "اختر دورًا",
+            "placeholderPasswordMin": "8 أحرف على الأقل",
+            "placeholderPasswordRepeat": "أعد كتابة كلمة المرور",
+            "placeholderNewPassword": "اتركه فارغًا للاحتفاظ بالحالية",
+            "create": "إضافة مستخدم",
+            "update": "تحديث",
+            "validation": {
+                "firstNameRequired": "الاسم الأول مطلوب",
+                "lastNameRequired": "اللقب مطلوب",
+                "emailRequired": "البريد الإلكتروني مطلوب",
+                "emailInvalid": "بريد إلكتروني غير صالح",
+                "roleRequired": "الدور مطلوب",
+                "passwordMin": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+                "passwordConfirmationRequired": "يرجى تأكيد كلمة المرور",
+                "passwordsMismatch": "كلمتا المرور غير متطابقتين"
+            },
+            "toast": {
+                "created": "تم إنشاء المستخدم بنجاح!",
+                "updated": "تم تحديث المستخدم بنجاح!",
+                "error": "حدث خطأ ما"
+            }
+        }
+    },
+    "roles": {
+        "title": "إدارة الأدوار",
+        "subtitle": "أنشئ أدوارًا وتحكّم في ما يمكن لكل منها فعله في الوكالة.",
+        "addRole": "إضافة دور",
+        "empty": "لا توجد أدوار بعد — أنشئ الأول.",
+        "noDescription": "لا يوجد وصف.",
+        "actions": {
+            "manage": "إدارة",
+            "edit": "تعديل",
+            "clone": "نسخ",
+            "deactivate": "إيقاف",
+            "reactivate": "إعادة التنشيط"
+        },
+        "toast": {
+            "cloned": "تم نسخ الدور!",
+            "cloneError": "تعذّر نسخ الدور",
+            "deactivated": "تم إيقاف الدور!",
+            "reactivated": "تم إعادة تنشيط الدور!",
+            "updateError": "تعذّر تحديث الدور",
+            "updated": "تم تحديث الدور!",
+            "created": "تم إنشاء الدور!",
+            "saveError": "تعذّر حفظ الدور",
+            "selectPermission": "اختر صلاحية واحدة على الأقل"
+        },
+        "deactivateDialog": {
+            "title": "إيقاف الدور",
+            "message": "هل تريد إيقاف {{name}}؟ لن يظل قابلًا للتعيين للمستخدمين حتى إعادة تنشيطه."
+        },
+        "reactivateDialog": {
+            "title": "إعادة تنشيط الدور",
+            "message": "هل تريد إعادة تنشيط {{name}}؟ سيصبح قابلًا للتعيين للمستخدمين مرة أخرى."
+        },
+        "form": {
+            "editTitle": "تعديل الدور: {{name}}",
+            "addTitle": "إضافة دور",
+            "name": "اسم الدور",
+            "namePlaceholder": "مثال: مدير العمليات",
+            "description": "الوصف",
+            "descriptionPlaceholder": "صف مسؤوليات الدور ومستوى الوصول",
+            "icon": "الأيقونة",
+            "color": "اللون",
+            "status": "الحالة",
+            "permissions": "الصلاحيات",
+            "masterNote": "يمتلك هذا الدور الصلاحية الرئيسية « * » — جميع الصلاحيات ضمنية ولا يمكن إلغاؤها هنا.",
+            "permissionRequired": "اختر صلاحية واحدة على الأقل.",
+            "update": "تحديث",
+            "create": "إنشاء",
+            "validation": {
+                "nameRequired": "اسم الدور مطلوب",
+                "nameMax": "يجب أن يقل اسم الدور عن 100 حرف",
+                "descriptionRequired": "الوصف مطلوب",
+                "descriptionMax": "يجب أن يقل الوصف عن 200 حرف",
+                "iconRequired": "يرجى اختيار أيقونة",
+                "colorRequired": "يرجى اختيار لون"
+            }
+        },
+        "permissions": {
+            "title": "إدارة صلاحيات « {{name}} »",
+            "subtitle": "امنح أو اسحب الإجراءات لكل وحدة. تُحفظ التغييرات للوكالة بأكملها دفعة واحدة.",
+            "search": "البحث عن الصلاحيات…",
+            "updated": "تم تحديث الصلاحيات!",
+            "updateError": "تعذّر تحديث الصلاحيات",
+            "selectedCount": "تم تحديد {{n}} تصريح",
+            "fullAccess": "وصول كامل (*)",
+            "save": "حفظ التغييرات"
+        },
+        "checklist": {
+            "actionCount": "{{n}} إجراء",
+            "noMatch": "لا توجد صلاحيات مطابقة لـ « {{term}} »"
+        },
+        "module": {
+            "reservations": "الحجوزات",
+            "clients": "العملاء",
+            "fleet": "الأسطول",
+            "extras": "الإضافات",
+            "pricing": "التسعير",
+            "payments": "المدفوعات",
+            "expenses": "المصروفات",
+            "financing": "التمويل",
+            "reports": "التقارير",
+            "activity_logs": "سجل النشاط",
+            "users": "المستخدمون",
+            "roles": "الأدوار",
+            "settings": "الإعدادات",
+            "notifications": "الإشعارات"
+        },
+        "verb": {
+            "view": "عرض",
+            "create": "إنشاء",
+            "update": "تعديل",
+            "delete": "حذف",
+            "confirm": "تأكيد",
+            "activate": "تفعيل",
+            "complete": "إكمال",
+            "cancel": "إلغاء",
+            "manage": "إدارة",
+            "refund": "استرداد",
+            "send": "إرسال"
+        }
     }
 }

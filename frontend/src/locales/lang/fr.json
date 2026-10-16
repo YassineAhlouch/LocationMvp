@@ -1033,5 +1033,187 @@
             "deleteError": "Impossible de supprimer"
         },
         "selectDate": "Sélectionner une date"
+    },
+    "users": {
+        "title": "Utilisateurs",
+        "count": "{{n}} membres du personnel",
+        "search": "Rechercher des utilisateurs…",
+        "allRoles": "Tous les rôles",
+        "addUser": "Ajouter un utilisateur",
+        "selected": "{{n}} sélectionné(s)",
+        "tabs": {
+            "users": "Utilisateurs",
+            "roles": "Rôles et permissions"
+        },
+        "status": {
+            "active": "Actif",
+            "inactive": "Inactif"
+        },
+        "columns": {
+            "name": "Nom",
+            "email": "E-mail",
+            "phone": "Téléphone",
+            "role": "Rôle",
+            "status": "Statut",
+            "lastLogin": "Dernière connexion"
+        },
+        "actions": {
+            "edit": "Modifier",
+            "deactivate": "Désactiver"
+        },
+        "toast": {
+            "deactivated": "Utilisateur désactivé avec succès !",
+            "deactivateError": "Impossible de désactiver l'utilisateur",
+            "bulkDeactivated": "{{n}} utilisateur(s) désactivé(s) !",
+            "bulkFailed": "{{n}} mise(s) à jour échouée(s)",
+            "bulkDeactivateError": "Impossible de désactiver les utilisateurs"
+        },
+        "deactivateDialog": {
+            "title": "Désactiver l'utilisateur",
+            "message": "Désactiver {{name}} ? Cette personne ne pourra plus se connecter à cette agence."
+        },
+        "deactivateManyDialog": {
+            "title": "Désactiver les utilisateurs",
+            "message": "Voulez-vous vraiment désactiver {{n}} utilisateur(s) ? Ils ne pourront plus se connecter à cette agence."
+        },
+        "form": {
+            "addTitle": "Ajouter un utilisateur",
+            "addSubtitle": "Ajouter un nouveau membre du personnel",
+            "editTitle": "Modifier l'utilisateur : {{name}}",
+            "firstName": "Prénom",
+            "lastName": "Nom",
+            "email": "E-mail",
+            "phone": "Téléphone",
+            "role": "Rôle",
+            "active": "Actif",
+            "password": "Mot de passe",
+            "passwordConfirmation": "Confirmer le mot de passe",
+            "newPassword": "Nouveau mot de passe",
+            "placeholderFirstName": "Yasmine",
+            "placeholderLastName": "Benali",
+            "placeholderEmail": "staff@location.ma",
+            "placeholderPhone": "+212 6 00 00 00 00",
+            "placeholderRole": "Sélectionner un rôle",
+            "placeholderPasswordMin": "Min. 8 caractères",
+            "placeholderPasswordRepeat": "Répéter le mot de passe",
+            "placeholderNewPassword": "Laisser vide pour conserver l'actuel",
+            "create": "Ajouter un utilisateur",
+            "update": "Mettre à jour",
+            "validation": {
+                "firstNameRequired": "Le prénom est requis",
+                "lastNameRequired": "Le nom est requis",
+                "emailRequired": "L'e-mail est requis",
+                "emailInvalid": "E-mail invalide",
+                "roleRequired": "Le rôle est requis",
+                "passwordMin": "Le mot de passe doit comporter au moins 8 caractères",
+                "passwordConfirmationRequired": "Veuillez confirmer le mot de passe",
+                "passwordsMismatch": "Les mots de passe ne correspondent pas"
+            },
+            "toast": {
+                "created": "Utilisateur créé avec succès !",
+                "updated": "Utilisateur mis à jour avec succès !",
+                "error": "Une erreur est survenue"
+            }
+        }
+    },
+    "roles": {
+        "title": "Gestion des rôles",
+        "subtitle": "Créez des rôles et contrôlez ce que chacun peut faire dans l'agence.",
+        "addRole": "Ajouter un rôle",
+        "empty": "Aucun rôle pour le moment — créez le premier.",
+        "noDescription": "Aucune description fournie.",
+        "actions": {
+            "manage": "Gérer",
+            "edit": "Modifier",
+            "clone": "Dupliquer",
+            "deactivate": "Désactiver",
+            "reactivate": "Réactiver"
+        },
+        "toast": {
+            "cloned": "Rôle dupliqué !",
+            "cloneError": "Impossible de dupliquer le rôle",
+            "deactivated": "Rôle désactivé !",
+            "reactivated": "Rôle réactivé !",
+            "updateError": "Impossible de mettre à jour le rôle",
+            "updated": "Rôle mis à jour !",
+            "created": "Rôle créé !",
+            "saveError": "Impossible d'enregistrer le rôle",
+            "selectPermission": "Sélectionnez au moins une permission"
+        },
+        "deactivateDialog": {
+            "title": "Désactiver le rôle",
+            "message": "Désactiver {{name}} ? Il ne pourra plus être attribué aux utilisateurs avant d'être réactivé."
+        },
+        "reactivateDialog": {
+            "title": "Réactiver le rôle",
+            "message": "Réactiver {{name}} ? Il pourra de nouveau être attribué aux utilisateurs."
+        },
+        "form": {
+            "editTitle": "Modifier le rôle : {{name}}",
+            "addTitle": "Ajouter un rôle",
+            "name": "Nom du rôle",
+            "namePlaceholder": "ex. Responsable des opérations",
+            "description": "Description",
+            "descriptionPlaceholder": "Décrivez les responsabilités et le niveau d'accès du rôle",
+            "icon": "Icône",
+            "color": "Couleur",
+            "status": "Statut",
+            "permissions": "Permissions",
+            "masterNote": "Ce rôle détient l'autorisation principale « * » — toutes les permissions sont implicites et ne peuvent pas être retirées ici.",
+            "permissionRequired": "Sélectionnez au moins une permission.",
+            "update": "Mettre à jour",
+            "create": "Créer",
+            "validation": {
+                "nameRequired": "Le nom du rôle est requis",
+                "nameMax": "Le nom du rôle doit comporter moins de 100 caractères",
+                "descriptionRequired": "La description est requise",
+                "descriptionMax": "La description doit comporter moins de 200 caractères",
+                "iconRequired": "Veuillez sélectionner une icône",
+                "colorRequired": "Veuillez sélectionner une couleur"
+            }
+        },
+        "permissions": {
+            "title": "Gérer les permissions de « {{name}} »",
+            "subtitle": "Accordez ou révoquez des actions par module. Les modifications sont enregistrées pour toute l'agence en une fois.",
+            "search": "Rechercher des permissions…",
+            "updated": "Permissions mises à jour !",
+            "updateError": "Impossible de mettre à jour les permissions",
+            "selectedCount": "{{n}} autorisation(s) sélectionnée(s)",
+            "fullAccess": "Accès complet (*)",
+            "save": "Enregistrer les modifications"
+        },
+        "checklist": {
+            "actionCount": "{{n}} action(s)",
+            "noMatch": "Aucune permission ne correspond à « {{term}} »"
+        },
+        "module": {
+            "reservations": "Réservations",
+            "clients": "Clients",
+            "fleet": "Flotte",
+            "extras": "Extras",
+            "pricing": "Tarification",
+            "payments": "Paiements",
+            "expenses": "Dépenses",
+            "financing": "Financement",
+            "reports": "Rapports",
+            "activity_logs": "Journaux d'activité",
+            "users": "Utilisateurs",
+            "roles": "Rôles",
+            "settings": "Paramètres",
+            "notifications": "Notifications"
+        },
+        "verb": {
+            "view": "Voir",
+            "create": "Créer",
+            "update": "Modifier",
+            "delete": "Supprimer",
+            "confirm": "Confirmer",
+            "activate": "Activer",
+            "complete": "Terminer",
+            "cancel": "Annuler",
+            "manage": "Gérer",
+            "refund": "Rembourser",
+            "send": "Envoyer"
+        }
     }
 }

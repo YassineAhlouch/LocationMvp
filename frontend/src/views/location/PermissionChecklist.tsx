@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import Checkbox from '@/components/ui/Checkbox'
 import type { PermissionModule } from '@/@types/location'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 // Grant helpers shared by the role dialog and the manage-permissions dialog.
 // The backend stores grants as JSON: exact 'module.verb', a module wildcard
@@ -83,6 +84,8 @@ const PermissionChecklist = ({
     search = '',
     locked = false,
 }: PermissionChecklistProps) => {
+    const { t } = useTranslation()
+
     const filteredCatalog = useMemo(() => {
         const term = search.trim().toLowerCase()
         if (!term) {
@@ -126,12 +129,19 @@ const PermissionChecklist = ({
                                         )
                                     }
                                 />
-                                <span className="font-medium capitalize">
-                                    {formatModuleName(group.module)}
+                                <span className="font-medium">
+                                    {t(
+                                        `roles.module.${group.module}`,
+                                        formatModuleName(group.module),
+                                    )}
                                 </span>
                             </label>
                             <span className="text-xs text-gray-400 dark:text-gray-500">
-                                {group.actions.length} action(s)
+                                {t(
+                                    'roles.checklist.actionCount',
+                                    '{{n}} action(s)',
+                                    { n: group.actions.length },
+                                )}
                             </span>
                         </div>
                         <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1.5 ltr:pl-7 rtl:pr-7">
@@ -159,7 +169,10 @@ const PermissionChecklist = ({
                                         )
                                     }
                                 >
-                                    {action}
+                                    {t(
+                                        `roles.verb.${action}`,
+                                        action,
+                                    )}
                                 </Checkbox>
                             ))}
                         </div>
@@ -168,7 +181,11 @@ const PermissionChecklist = ({
             })}
             {filteredCatalog.length === 0 && (
                 <p className="py-6 text-center text-sm text-gray-400 dark:text-gray-500">
-                    No permissions match “{search.trim()}”
+                    {t(
+                        'roles.checklist.noMatch',
+                        'No permissions match “{{term}}”',
+                        { term: search.trim() },
+                    )}
                 </p>
             )}
         </div>

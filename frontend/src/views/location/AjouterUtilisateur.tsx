@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router'
 import Container from '@/components/shared/Container'
 import Card from '@/components/ui/Card'
@@ -16,6 +16,8 @@ import { z } from 'zod'
 import { apiCreateUser, apiGetRoles } from '@/services/LocationService'
 import type { StaffUserPayload } from '@/@types/location'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
+import useTranslation from '@/utils/hooks/useTranslation'
+import type { Translator } from './shared'
 
 type UserFormValues = {
     first_name: string
@@ -28,21 +30,68 @@ type UserFormValues = {
     is_active: boolean
 }
 
-const userSchema = z
-    .object({
-        first_name: z.string().min(1, 'First name is required'),
-        last_name: z.string().min(1, 'Last name is required'),
-        email: z.string().min(1, 'Email is required').email('Invalid email'),
-        phone: z.string().optional(),
-        role_id: z.number({ message: 'Role is required' }),
-        password: z.string().min(8, 'Password must be at least 8 characters'),
-        password_confirmation: z.string().min(1, 'Please confirm the password'),
-        is_active: z.boolean(),
-    })
-    .refine((data) => data.password === data.password_confirmation, {
-        message: 'Passwords do not match',
-        path: ['password_confirmation'],
-    })
+const userSchema = (t: Translator) =>
+    z
+        .object({
+            first_name: z
+                .string()
+                .min(
+                    1,
+                    t(
+                        'users.form.validation.firstNameRequired',
+                        'First name is required',
+                    ),
+                ),
+            last_name: z
+                .string()
+                .min(
+                    1,
+                    t(
+                        'users.form.validation.lastNameRequired',
+                        'Last name is required',
+                    ),
+                ),
+            email: z
+                .string()
+                .min(
+                    1,
+                    t(
+                        'users.form.validation.emailRequired',
+                        'Email is required',
+                    ),
+                )
+                .email(t('users.form.validation.emailInvalid', 'Invalid email')),
+            phone: z.string().optional(),
+            role_id: z.number({
+                message: t('users.form.validation.roleRequired', 'Role is required'),
+            }),
+            password: z
+                .string()
+                .min(
+                    8,
+                    t(
+                        'users.form.validation.passwordMin',
+                        'Password must be at least 8 characters',
+                    ),
+                ),
+            password_confirmation: z
+                .string()
+                .min(
+                    1,
+                    t(
+                        'users.form.validation.passwordConfirmationRequired',
+                        'Please confirm the password',
+                    ),
+                ),
+            is_active: z.boolean(),
+        })
+        .refine((data) => data.password === data.password_confirmation, {
+            message: t(
+                'users.form.validation.passwordsMismatch',
+                'Passwords do not match',
+            ),
+            path: ['password_confirmation'],
+        })
 
 const defaultFormValues: UserFormValues = {
     first_name: '',
@@ -55,10 +104,13 @@ const defaultFormValues: UserFormValues = {
 }
 
 const AjouterUtilisateur = () => {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const goToListe = () => navigate(`${APPS_PREFIX_PATH}/utilisateurs/liste`)
     const [roles, setRoles] = useState<{ value: number; label: string }[]>([])
     const [submitting, setSubmitting] = useState(false)
+
+    const schema = useMemo(() => userSchema(t), [t])
 
     const {
         handleSubmit,
@@ -66,9 +118,7 @@ const AjouterUtilisateur = () => {
         reset,
         formState: { errors },
     } = useForm<UserFormValues>({
-        resolver: zodResolver(
-            userSchema,
-        ) as unknown as Resolver<UserFormValues>,
+        resolver: zodResolver(schema) as unknown as Resolver<UserFormValues>,
         defaultValues: defaultFormValues,
     })
 
@@ -100,14 +150,20 @@ const AjouterUtilisateur = () => {
             toast.push(
                 <Notification
                     type="success"
-                    title="User created successfully!"
+                    title={t(
+                        'users.form.toast.created',
+                        'User created successfully!',
+                    )}
                 />,
             )
             reset(defaultFormValues)
             goToListe()
         } catch {
             toast.push(
-                <Notification type="danger" title="Something went wrong" />,
+                <Notification
+                    type="danger"
+                    title={t('users.form.toast.error', 'Something went wrong')}
+                />,
             )
         } finally {
             setSubmitting(false)
@@ -120,16 +176,19 @@ const AjouterUtilisateur = () => {
                 <div className="p-4">
                     <div className="mb-6">
                         <h3 className="text-xl font-bold dark:text-gray-100">
-                            Ajouter un utilisateur
+                            {t('users.form.addTitle', 'Add user')}
                         </h3>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                            Add a new staff member
+                            {t(
+                                'users.form.addSubtitle',
+                                'Add a new staff member',
+                            )}
                         </p>
                     </div>
                     <Form onSubmit={onSubmit}>
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <FormItem
-                                label="First name"
+                                label={t('users.form.firstName', 'First name')}
                                 invalid={Boolean(errors.first_name)}
                                 errorMessage={errors.first_name?.message}
                             >
@@ -138,14 +197,17 @@ const AjouterUtilisateur = () => {
                                     control={control}
                                     render={({ field }) => (
                                         <Input
-                                            placeholder="Yasmine"
+                                            placeholder={t(
+                                                'users.form.placeholderFirstName',
+                                                'Yasmine',
+                                            )}
                                             {...field}
                                         />
                                     )}
                                 />
                             </FormItem>
                             <FormItem
-                                label="Last name"
+                                label={t('users.form.lastName', 'Last name')}
                                 invalid={Boolean(errors.last_name)}
                                 errorMessage={errors.last_name?.message}
                             >
@@ -154,14 +216,17 @@ const AjouterUtilisateur = () => {
                                     control={control}
                                     render={({ field }) => (
                                         <Input
-                                            placeholder="Benali"
+                                            placeholder={t(
+                                                'users.form.placeholderLastName',
+                                                'Benali',
+                                            )}
                                             {...field}
                                         />
                                     )}
                                 />
                             </FormItem>
                             <FormItem
-                                label="Email"
+                                label={t('users.form.email', 'Email')}
                                 invalid={Boolean(errors.email)}
                                 errorMessage={errors.email?.message}
                             >
@@ -171,26 +236,32 @@ const AjouterUtilisateur = () => {
                                     render={({ field }) => (
                                         <Input
                                             type="email"
-                                            placeholder="staff@location.ma"
+                                            placeholder={t(
+                                                'users.form.placeholderEmail',
+                                                'staff@location.ma',
+                                            )}
                                             {...field}
                                         />
                                     )}
                                 />
                             </FormItem>
-                            <FormItem label="Phone">
+                            <FormItem label={t('users.form.phone', 'Phone')}>
                                 <Controller
                                     name="phone"
                                     control={control}
                                     render={({ field }) => (
                                         <Input
-                                            placeholder="+212 6 00 00 00 00"
+                                            placeholder={t(
+                                                'users.form.placeholderPhone',
+                                                '+212 6 00 00 00 00',
+                                            )}
                                             {...field}
                                         />
                                     )}
                                 />
                             </FormItem>
                             <FormItem
-                                label="Role"
+                                label={t('users.form.role', 'Role')}
                                 invalid={Boolean(errors.role_id)}
                                 errorMessage={errors.role_id?.message}
                             >
@@ -199,7 +270,10 @@ const AjouterUtilisateur = () => {
                                     control={control}
                                     render={({ field }) => (
                                         <Select
-                                            placeholder="Select role"
+                                            placeholder={t(
+                                                'users.form.placeholderRole',
+                                                'Select role',
+                                            )}
                                             options={roles}
                                             value={roles.find(
                                                 (o) => o.value === field.value,
@@ -211,7 +285,7 @@ const AjouterUtilisateur = () => {
                                     )}
                                 />
                             </FormItem>
-                            <FormItem label="Active">
+                            <FormItem label={t('users.form.active', 'Active')}>
                                 <Controller
                                     name="is_active"
                                     control={control}
@@ -226,7 +300,7 @@ const AjouterUtilisateur = () => {
                                 />
                             </FormItem>
                             <FormItem
-                                label="Password"
+                                label={t('users.form.password', 'Password')}
                                 invalid={Boolean(errors.password)}
                                 errorMessage={errors.password?.message}
                             >
@@ -236,7 +310,10 @@ const AjouterUtilisateur = () => {
                                     render={({ field }) => (
                                         <Input
                                             type="password"
-                                            placeholder="Min. 8 characters"
+                                            placeholder={t(
+                                                'users.form.placeholderPasswordMin',
+                                                'Min. 8 characters',
+                                            )}
                                             autoComplete="new-password"
                                             {...field}
                                         />
@@ -244,7 +321,10 @@ const AjouterUtilisateur = () => {
                                 />
                             </FormItem>
                             <FormItem
-                                label="Confirm password"
+                                label={t(
+                                    'users.form.passwordConfirmation',
+                                    'Confirm password',
+                                )}
                                 invalid={Boolean(errors.password_confirmation)}
                                 errorMessage={
                                     errors.password_confirmation?.message
@@ -256,7 +336,10 @@ const AjouterUtilisateur = () => {
                                     render={({ field }) => (
                                         <Input
                                             type="password"
-                                            placeholder="Repeat password"
+                                            placeholder={t(
+                                                'users.form.placeholderPasswordRepeat',
+                                                'Repeat password',
+                                            )}
                                             autoComplete="new-password"
                                             {...field}
                                         />
@@ -270,14 +353,14 @@ const AjouterUtilisateur = () => {
                                 variant="ghost"
                                 onClick={goToListe}
                             >
-                                Cancel
+                                {t('common.cancel', 'Cancel')}
                             </Button>
                             <Button
                                 type="submit"
                                 variant="solid"
                                 loading={submitting}
                             >
-                                Add user
+                                {t('users.form.create', 'Add user')}
                             </Button>
                         </div>
                     </Form>
