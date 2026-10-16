@@ -28,6 +28,7 @@ import {
     apiDeletePayment,
 } from '@/services/LocationService'
 import type { Payment, PaymentOverview } from '@/@types/location'
+import useTranslation from '@/utils/hooks/useTranslation'
 import {
     MAD,
     apiErrorMessage,
@@ -37,19 +38,22 @@ import {
     paymentRecordStatusTone,
     tagToneClass,
 } from './shared'
+import type { Translator } from './shared'
 import type { ColumnDef } from '@tanstack/react-table'
 
-const statusFilterOptions = [
-    { value: '', label: 'All statuses' },
-    ...paymentRecordStatusOptions,
+const statusFilterOptions = (t: Translator) => [
+    { value: '', label: t('payments.allStatuses', 'All statuses') },
+    ...paymentRecordStatusOptions(t),
 ]
 
-const methodFilterOptions = [
-    { value: '', label: 'All methods' },
-    ...paymentMethodOptions,
+const methodFilterOptions = (t: Translator) => [
+    { value: '', label: t('payments.allMethods', 'All methods') },
+    ...paymentMethodOptions(t),
 ]
 
 const Payments = () => {
+    const { t } = useTranslation()
+
     const [selectedDate, setSelectedDate] = useState(
         dayjs().format('YYYY-MM-DD'),
     )
@@ -70,6 +74,9 @@ const Payments = () => {
     const [refundTarget, setRefundTarget] = useState<Payment | null>(null)
     const [refundReason, setRefundReason] = useState('')
     const [deleteTarget, setDeleteTarget] = useState<Payment | null>(null)
+
+    const methodOptions = useMemo(() => methodFilterOptions(t), [t])
+    const statusOptions = useMemo(() => statusFilterOptions(t), [t])
 
     const range = useMemo(
         () => ({
@@ -139,7 +146,10 @@ const Payments = () => {
             try {
                 await apiConfirmPayment(payment.id)
                 toast.push(
-                    <Notification type="success" title="Payment confirmed" />,
+                    <Notification
+                        type="success"
+                        title={t('payments.toast.confirmed', 'Payment confirmed')}
+                    />,
                 )
                 fetchLedger()
                 loadOverview()
@@ -149,7 +159,10 @@ const Payments = () => {
                         type="danger"
                         title={apiErrorMessage(
                             error,
-                            'Could not confirm the payment',
+                            t(
+                                'payments.toast.confirmError',
+                                'Could not confirm the payment',
+                            ),
                         )}
                     />,
                 )
@@ -157,7 +170,7 @@ const Payments = () => {
                 setBusyId(null)
             }
         },
-        [fetchLedger, loadOverview],
+        [fetchLedger, loadOverview, t],
     )
 
     const submitRefund = async () => {
@@ -168,7 +181,10 @@ const Payments = () => {
         try {
             await apiRefundPayment(refundTarget.id, refundReason.trim())
             toast.push(
-                <Notification type="success" title="Payment refunded" />,
+                <Notification
+                    type="success"
+                    title={t('payments.toast.refunded', 'Payment refunded')}
+                />,
             )
             setRefundTarget(null)
             setRefundReason('')
@@ -178,7 +194,10 @@ const Payments = () => {
             toast.push(
                 <Notification
                     type="danger"
-                    title={apiErrorMessage(error, 'Could not refund')}
+                    title={apiErrorMessage(
+                        error,
+                        t('payments.toast.refundError', 'Could not refund'),
+                    )}
                 />,
             )
         } finally {
@@ -194,7 +213,10 @@ const Payments = () => {
         try {
             await apiDeletePayment(deleteTarget.reservation_id, deleteTarget.id)
             toast.push(
-                <Notification type="success" title="Payment deleted" />,
+                <Notification
+                    type="success"
+                    title={t('payments.toast.deleted', 'Payment deleted')}
+                />,
             )
             setDeleteTarget(null)
             fetchLedger()
@@ -203,7 +225,10 @@ const Payments = () => {
             toast.push(
                 <Notification
                     type="danger"
-                    title={apiErrorMessage(error, 'Could not delete')}
+                    title={apiErrorMessage(
+                        error,
+                        t('payments.toast.deleteError', 'Could not delete'),
+                    )}
                 />,
             )
         } finally {
@@ -214,28 +239,28 @@ const Payments = () => {
     const metricsData = [
         {
             key: 'paid',
-            title: 'Total Received',
+            title: t('payments.metrics.totalReceived', 'Total Received'),
             value: overview?.totals.paid ?? 0,
             icon: <LiWallet />,
             color: colors.emerald,
         },
         {
             key: 'pending',
-            title: 'Pending',
+            title: t('payments.metrics.pending', 'Pending'),
             value: overview?.totals.pending ?? 0,
             icon: <LiClock />,
             color: colors.yellow,
         },
         {
             key: 'refunded',
-            title: 'Refunded',
+            title: t('payments.metrics.refunded', 'Refunded'),
             value: overview?.totals.refunded ?? 0,
             icon: <LiRefresh />,
             color: colors.red,
         },
         {
             key: 'net',
-            title: 'Net Revenue',
+            title: t('payments.metrics.netRevenue', 'Net Revenue'),
             value: overview?.totals.net ?? 0,
             icon: <LiStatusUp />,
             color: colors.blue,
@@ -245,7 +270,7 @@ const Payments = () => {
     const columns = useMemo<ColumnDef<Payment>[]>(
         () => [
             {
-                header: 'Date',
+                header: t('payments.columns.date', 'Date'),
                 accessorKey: 'payment_date',
                 cell: (props) => (
                     <span className="text-nowrap text-sm text-gray-600 dark:text-gray-300">
@@ -254,7 +279,7 @@ const Payments = () => {
                 ),
             },
             {
-                header: 'Reservation',
+                header: t('payments.columns.reservation', 'Reservation'),
                 id: 'reservation',
                 cell: (props) => {
                     const payment = props.row.original
@@ -277,7 +302,7 @@ const Payments = () => {
                 },
             },
             {
-                header: 'Client',
+                header: t('payments.columns.client', 'Client'),
                 id: 'client',
                 cell: (props) => (
                     <span className="text-gray-700 dark:text-gray-200">
@@ -287,16 +312,19 @@ const Payments = () => {
                 ),
             },
             {
-                header: 'Method',
+                header: t('payments.columns.method', 'Method'),
                 accessorKey: 'method',
                 cell: (props) => (
                     <Tag className="bg-white font-medium capitalize shadow dark:bg-gray-800">
-                        {props.row.original.method}
+                        {t(
+                            `payments.method.${props.row.original.method}`,
+                            props.row.original.method,
+                        )}
                     </Tag>
                 ),
             },
             {
-                header: 'Amount',
+                header: t('payments.columns.amount', 'Amount'),
                 accessorKey: 'amount',
                 cell: (props) => (
                     <span className="text-nowrap font-semibold dark:text-gray-100">
@@ -305,7 +333,7 @@ const Payments = () => {
                 ),
             },
             {
-                header: 'Status',
+                header: t('payments.columns.status', 'Status'),
                 accessorKey: 'status',
                 cell: (props) => {
                     const status = props.row.original.status
@@ -313,13 +341,13 @@ const Payments = () => {
                         <Tag
                             className={`capitalize ${tagToneClass[paymentRecordStatusTone[status]]}`}
                         >
-                            {status}
+                            {t(`payments.status.${status}`, status)}
                         </Tag>
                     )
                 },
             },
             {
-                header: 'Reference',
+                header: t('payments.columns.reference', 'Reference'),
                 accessorKey: 'reference',
                 cell: (props) => (
                     <span className="text-sm text-gray-500 dark:text-gray-400">
@@ -328,7 +356,7 @@ const Payments = () => {
                 ),
             },
             {
-                header: 'Actions',
+                header: t('payments.columns.actions', 'Actions'),
                 id: 'actions',
                 cell: (props) => {
                     const payment = props.row.original
@@ -340,7 +368,10 @@ const Payments = () => {
                                     size="sm"
                                     variant="link"
                                     className="px-2 text-success hover:text-success"
-                                    title="Confirm payment"
+                                    title={t(
+                                        'payments.actions.confirm',
+                                        'Confirm payment',
+                                    )}
                                     disabled={busy}
                                     onClick={() => handleConfirm(payment)}
                                 >
@@ -352,7 +383,10 @@ const Payments = () => {
                                     size="sm"
                                     variant="link"
                                     className="px-2 text-warning hover:text-warning"
-                                    title="Refund payment"
+                                    title={t(
+                                        'payments.actions.refund',
+                                        'Refund payment',
+                                    )}
                                     disabled={busy}
                                     onClick={() => {
                                         setRefundReason('')
@@ -367,7 +401,10 @@ const Payments = () => {
                                     size="sm"
                                     variant="link"
                                     className="px-2 text-error hover:text-error"
-                                    title="Delete payment"
+                                    title={t(
+                                        'payments.actions.delete',
+                                        'Delete payment',
+                                    )}
                                     disabled={busy}
                                     onClick={() => setDeleteTarget(payment)}
                                 >
@@ -379,7 +416,7 @@ const Payments = () => {
                 },
             },
         ],
-        [busyId, handleConfirm],
+        [busyId, handleConfirm, t],
     )
 
     return (
@@ -387,17 +424,19 @@ const Payments = () => {
             {/* Header */}
             <div className="flex flex-col gap-4 mb-6 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                    <h4>Payments</h4>
+                    <h4>{t('payments.title', 'Payments')}</h4>
                     <p>
-                        Every payment received across reservations, with
-                        confirmation and refund controls
+                        {t(
+                            'payments.subtitle',
+                            'Every payment received across reservations, with confirmation and refund controls',
+                        )}
                     </p>
                 </div>
                 <div className="flex items-center gap-3">
                     <DatePicker
                         value={new Date(selectedDate)}
                         onChange={handleDateChange}
-                        placeholder="Select date"
+                        placeholder={t('payments.selectDate', 'Select date')}
                         inputFormat="DD MMM YYYY"
                         clearable={false}
                     />
@@ -440,7 +479,10 @@ const Payments = () => {
                                     prefix={
                                         <LuSearch className="text-base heading-text" />
                                     }
-                                    placeholder="Search reference, client..."
+                                    placeholder={t(
+                                        'payments.search',
+                                        'Search reference, client…',
+                                    )}
                                     onChange={(e) => {
                                         setQ(e.target.value)
                                         setPageIndex(1)
@@ -449,9 +491,9 @@ const Payments = () => {
                             </div>
                             <div className="w-full sm:min-w-[150px] sm:w-auto">
                                 <Select
-                                    options={methodFilterOptions}
+                                    options={methodOptions}
                                     value={
-                                        methodFilterOptions.find(
+                                        methodOptions.find(
                                             (o) => o.value === methodFilter,
                                         ) ?? null
                                     }
@@ -459,14 +501,17 @@ const Payments = () => {
                                         setMethodFilter(option?.value ?? '')
                                         setPageIndex(1)
                                     }}
-                                    placeholder="Filter by method"
+                                    placeholder={t(
+                                        'payments.filterMethod',
+                                        'Filter by method',
+                                    )}
                                 />
                             </div>
                             <div className="w-full sm:min-w-[150px] sm:w-auto">
                                 <Select
-                                    options={statusFilterOptions}
+                                    options={statusOptions}
                                     value={
-                                        statusFilterOptions.find(
+                                        statusOptions.find(
                                             (o) => o.value === statusFilter,
                                         ) ?? null
                                     }
@@ -474,12 +519,17 @@ const Payments = () => {
                                         setStatusFilter(option?.value ?? '')
                                         setPageIndex(1)
                                     }}
-                                    placeholder="Filter by status"
+                                    placeholder={t(
+                                        'payments.filterStatus',
+                                        'Filter by status',
+                                    )}
                                 />
                             </div>
                         </div>
                         <div className="font-medium heading-text text-center sm:text-left">
-                            {total} payment{total === 1 ? '' : 's'}
+                            {t('payments.count', '{{n}} payments', {
+                                n: total,
+                            })}
                         </div>
                     </div>
                 </div>
@@ -506,16 +556,25 @@ const Payments = () => {
                 width={440}
             >
                 <h5 className="mb-2 text-base font-bold dark:text-gray-100">
-                    Refund payment
+                    {t('payments.refundDialog.title', 'Refund payment')}
                 </h5>
                 <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
                     {refundTarget
-                        ? `${MAD(refundTarget.amount)} · ${refundTarget.reference ?? 'no reference'}`
+                        ? `${MAD(refundTarget.amount)} · ${
+                              refundTarget.reference ??
+                              t(
+                                  'payments.refundDialog.noReference',
+                                  'no reference',
+                              )
+                          }`
                         : ''}
                 </p>
                 <Input
                     textArea
-                    placeholder="Reason for the refund (required)"
+                    placeholder={t(
+                        'payments.refundDialog.reasonPlaceholder',
+                        'Reason for the refund (required)',
+                    )}
                     value={refundReason}
                     onChange={(e) => setRefundReason(e.target.value)}
                 />
@@ -525,7 +584,7 @@ const Payments = () => {
                         variant="ghost"
                         onClick={() => setRefundTarget(null)}
                     >
-                        Cancel
+                        {t('common.cancel', 'Cancel')}
                     </Button>
                     <Button
                         type="button"
@@ -534,7 +593,7 @@ const Payments = () => {
                         loading={busyId === refundTarget?.id}
                         onClick={submitRefund}
                     >
-                        Refund
+                        {t('payments.refundDialog.submit', 'Refund')}
                     </Button>
                 </div>
             </Dialog>
@@ -546,10 +605,13 @@ const Payments = () => {
                 width={420}
             >
                 <h5 className="mb-2 text-base font-bold dark:text-gray-100">
-                    Delete payment
+                    {t('payments.deleteDialog.title', 'Delete payment')}
                 </h5>
                 <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
-                    Only pending payments can be deleted. This cannot be undone.
+                    {t(
+                        'payments.deleteDialog.message',
+                        'Only pending payments can be deleted. This cannot be undone.',
+                    )}
                 </p>
                 <div className="flex justify-end gap-2">
                     <Button
@@ -557,7 +619,7 @@ const Payments = () => {
                         variant="ghost"
                         onClick={() => setDeleteTarget(null)}
                     >
-                        Cancel
+                        {t('common.cancel', 'Cancel')}
                     </Button>
                     <Button
                         type="button"
@@ -566,7 +628,7 @@ const Payments = () => {
                         loading={busyId === deleteTarget?.id}
                         onClick={submitDelete}
                     >
-                        Delete
+                        {t('payments.deleteDialog.submit', 'Delete')}
                     </Button>
                 </div>
             </Dialog>

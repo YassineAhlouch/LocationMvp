@@ -972,5 +972,66 @@
             "titleRequired": "العنوان مطلوب",
             "amountRequired": "المبلغ مطلوب"
         }
+    },
+    "payments": {
+        "title": "المدفوعات",
+        "subtitle": "كل المدفوعات المستلمة عبر الحجوزات، مع إمكانية التأكيد والاسترداد",
+        "search": "البحث عن مرجع أو عميل…",
+        "filterMethod": "تصفية حسب طريقة الدفع",
+        "filterStatus": "تصفية حسب الحالة",
+        "count": "{{n}} عملية دفع",
+        "allStatuses": "كل الحالات",
+        "allMethods": "كل طرق الدفع",
+        "metrics": {
+            "totalReceived": "إجمالي المستلم",
+            "pending": "قيد الانتظار",
+            "refunded": "المسترد",
+            "netRevenue": "صافي الإيرادات"
+        },
+        "columns": {
+            "date": "التاريخ",
+            "reservation": "الحجز",
+            "client": "العميل",
+            "method": "طريقة الدفع",
+            "amount": "المبلغ",
+            "status": "الحالة",
+            "reference": "المرجع",
+            "actions": "إجراءات"
+        },
+        "method": {
+            "cash": "نقدا",
+            "card": "بطاقة",
+            "transfer": "تحويل"
+        },
+        "status": {
+            "paid": "مدفوع",
+            "pending": "قيد الانتظار",
+            "refunded": "مسترد"
+        },
+        "actions": {
+            "confirm": "تأكيد الدفع",
+            "refund": "استرداد الدفع",
+            "delete": "حذف الدفع"
+        },
+        "refundDialog": {
+            "title": "استرداد الدفع",
+            "noReference": "لا يوجد مرجع",
+            "reasonPlaceholder": "سبب الاسترداد (مطلوب)",
+            "submit": "استرداد"
+        },
+        "deleteDialog": {
+            "title": "حذف الدفع",
+            "message": "يمكن حذف المدفوعات قيد الانتظار فقط. لا يمكن التراجع عن هذا الإجراء.",
+            "submit": "حذف"
+        },
+        "toast": {
+            "confirmed": "تم تأكيد الدفع",
+            "refunded": "تم استرداد الدفع",
+            "deleted": "تم حذف الدفع",
+            "confirmError": "تعذر تأكيد الدفع",
+            "refundError": "تعذر الاسترداد",
+            "deleteError": "تعذر الحذف"
+        },
+        "selectDate": "اختر تاريخا"
     }
 }

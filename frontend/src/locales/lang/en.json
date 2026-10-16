@@ -972,5 +972,66 @@
             "titleRequired": "Title is required",
             "amountRequired": "Amount is required"
         }
+    },
+    "payments": {
+        "title": "Payments",
+        "subtitle": "Every payment received across reservations, with confirmation and refund controls",
+        "search": "Search reference, client…",
+        "filterMethod": "Filter by method",
+        "filterStatus": "Filter by status",
+        "count": "{{n}} payments",
+        "allStatuses": "All statuses",
+        "allMethods": "All methods",
+        "metrics": {
+            "totalReceived": "Total Received",
+            "pending": "Pending",
+            "refunded": "Refunded",
+            "netRevenue": "Net Revenue"
+        },
+        "columns": {
+            "date": "Date",
+            "reservation": "Reservation",
+            "client": "Client",
+            "method": "Method",
+            "amount": "Amount",
+            "status": "Status",
+            "reference": "Reference",
+            "actions": "Actions"
+        },
+        "method": {
+            "cash": "Cash",
+            "card": "Card",
+            "transfer": "Transfer"
+        },
+        "status": {
+            "paid": "Paid",
+            "pending": "Pending",
+            "refunded": "Refunded"
+        },
+        "actions": {
+            "confirm": "Confirm payment",
+            "refund": "Refund payment",
+            "delete": "Delete payment"
+        },
+        "refundDialog": {
+            "title": "Refund payment",
+            "noReference": "no reference",
+            "reasonPlaceholder": "Reason for the refund (required)",
+            "submit": "Refund"
+        },
+        "deleteDialog": {
+            "title": "Delete payment",
+            "message": "Only pending payments can be deleted. This cannot be undone.",
+            "submit": "Delete"
+        },
+        "toast": {
+            "confirmed": "Payment confirmed",
+            "refunded": "Payment refunded",
+            "deleted": "Payment deleted",
+            "confirmError": "Could not confirm the payment",
+            "refundError": "Could not refund",
+            "deleteError": "Could not delete"
+        },
+        "selectDate": "Select date"
     }
 }

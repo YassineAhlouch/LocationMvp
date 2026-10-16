@@ -972,5 +972,66 @@
             "titleRequired": "Le titre est requis",
             "amountRequired": "Le montant est requis"
         }
+    },
+    "payments": {
+        "title": "Paiements",
+        "subtitle": "Tous les paiements reçus sur les réservations, avec contrôle de confirmation et de remboursement",
+        "search": "Rechercher une référence, un client…",
+        "filterMethod": "Filtrer par méthode",
+        "filterStatus": "Filtrer par statut",
+        "count": "{{n}} paiements",
+        "allStatuses": "Tous les statuts",
+        "allMethods": "Toutes les méthodes",
+        "metrics": {
+            "totalReceived": "Total encaissé",
+            "pending": "En attente",
+            "refunded": "Remboursé",
+            "netRevenue": "Revenu net"
+        },
+        "columns": {
+            "date": "Date",
+            "reservation": "Réservation",
+            "client": "Client",
+            "method": "Méthode",
+            "amount": "Montant",
+            "status": "Statut",
+            "reference": "Référence",
+            "actions": "Actions"
+        },
+        "method": {
+            "cash": "Espèces",
+            "card": "Carte",
+            "transfer": "Virement"
+        },
+        "status": {
+            "paid": "Payé",
+            "pending": "En attente",
+            "refunded": "Remboursé"
+        },
+        "actions": {
+            "confirm": "Confirmer le paiement",
+            "refund": "Rembourser le paiement",
+            "delete": "Supprimer le paiement"
+        },
+        "refundDialog": {
+            "title": "Rembourser le paiement",
+            "noReference": "aucune référence",
+            "reasonPlaceholder": "Motif du remboursement (obligatoire)",
+            "submit": "Rembourser"
+        },
+        "deleteDialog": {
+            "title": "Supprimer le paiement",
+            "message": "Seuls les paiements en attente peuvent être supprimés. Cette action est irréversible.",
+            "submit": "Supprimer"
+        },
+        "toast": {
+            "confirmed": "Paiement confirmé",
+            "refunded": "Paiement remboursé",
+            "deleted": "Paiement supprimé",
+            "confirmError": "Impossible de confirmer le paiement",
+            "refundError": "Impossible de rembourser",
+            "deleteError": "Impossible de supprimer"
+        },
+        "selectDate": "Sélectionner une date"
     }
 }

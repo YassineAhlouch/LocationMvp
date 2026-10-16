@@ -191,14 +191,18 @@ export const paymentStatusOptions: SelectOption<PaymentStatus>[] = [
     { value: 'paid', label: 'Paid' },
 ]
 
-export const paymentMethodOptions: SelectOption<PaymentMethod>[] = [
-    { value: 'cash', label: 'Cash' },
-    { value: 'card', label: 'Card' },
-    { value: 'transfer', label: 'Transfer' },
+export const paymentMethodOptions = (
+    t: Translator,
+): SelectOption<PaymentMethod>[] => [
+    { value: 'cash', label: t('payments.method.cash', 'Cash') },
+    { value: 'card', label: t('payments.method.card', 'Card') },
+    { value: 'transfer', label: t('payments.method.transfer', 'Transfer') },
 ]
 
-export const paymentRecordStatusOptions: SelectOption<PaymentRecordStatus>[] = [
-    { value: 'paid', label: 'Paid' },
-    { value: 'pending', label: 'Pending' },
-    { value: 'refunded', label: 'Refunded' },
+export const paymentRecordStatusOptions = (
+    t: Translator,
+): SelectOption<PaymentRecordStatus>[] => [
+    { value: 'paid', label: t('payments.status.paid', 'Paid') },
+    { value: 'pending', label: t('payments.status.pending', 'Pending') },
+    { value: 'refunded', label: t('payments.status.refunded', 'Refunded') },
 ]
