@@ -18,7 +18,10 @@ use App\Models\Reservation;
 use App\Models\ReservationChange;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\Activity\ActivityLogger;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use RuntimeException;
 use Tests\TestCase;
 
 class ActivityLogTest extends TestCase
@@ -199,6 +202,47 @@ class ActivityLogTest extends TestCase
             ->postJson("/api/v1/reservations/{$reservation->id}/complete")
             ->assertStatus(422)
             ->assertJsonPath('code', 'invalid_transition');
+
+        $this->assertDatabaseCount('activity_logs', 0);
+    }
+
+    public function test_activity_entries_land_without_a_running_queue_worker(): void
+    {
+        // Force the production-style database queue. An audit row must never
+        // wait on a worker: if it were still queued it would sit in `jobs`
+        // until something processed it, and the activity page would stay empty.
+        config(['queue.default' => 'database']);
+
+        $actor = $this->actor(['reservations.*']);
+
+        $created = $this->actingAs($actor, 'sanctum')
+            ->postJson('/api/v1/reservations', $this->storePayload($this->car(), $this->client()));
+
+        $created->assertCreated();
+
+        $this->assertDatabaseHas('activity_logs', [
+            'module' => 'reservations',
+            'action' => 'created',
+            'entity_id' => $created->json('id'),
+            'user_id' => $actor->id,
+        ]);
+
+        $this->assertDatabaseCount('jobs', 0);
+    }
+
+    public function test_audit_entry_is_discarded_when_the_transaction_rolls_back(): void
+    {
+        $actor = $this->actor(['activity_logs.view']);
+
+        try {
+            DB::transaction(function () use ($actor): void {
+                app(ActivityLogger::class)->log('auth', 'login', $actor, $actor, 'Signed in');
+
+                throw new RuntimeException('the surrounding action failed');
+            });
+        } catch (RuntimeException) {
+            // Expected: the business operation blew up after logging.
+        }
 
         $this->assertDatabaseCount('activity_logs', 0);
     }

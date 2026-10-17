@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Append-only activity trail. Writes come from ActivityLogger (queued,
- * after commit) — never from model observers on this model itself.
+ * Append-only activity trail. Writes come from ActivityLogger (in-process,
+ * deferred to commit) — never from model observers on this model itself.
  */
 #[Fillable([
     'agency_id',
