@@ -1257,6 +1257,31 @@
                 "margin": "الهامش",
                 "bookedDays": "الأيام المحجوزة"
             }
+        },
+        "collections": {
+            "title": "أداء التحصيل",
+            "description": "المبالغ المحصّلة والمعلّقة والمستردة خلال الفترة",
+            "metrics": {
+                "received": "إجمالي المستلم",
+                "pending": "معلّق",
+                "refunded": "مسترد",
+                "net": "الصافي المحصّل"
+            },
+            "series": {
+                "received": "المستلم",
+                "pending": "معلّق",
+                "refunded": "مسترد"
+            },
+            "dailyCollections": "التحصيلات اليومية",
+            "collectionRate": "معدل التحصيل:",
+            "byStatus": "التحصيل حسب الحالة",
+            "columns": {
+                "status": "الحالة",
+                "records": "السجلات",
+                "amount": "المبلغ"
+            },
+            "total": "الإجمالي",
+            "noData": "لا توجد مدفوعات في هذه الفترة"
         }
     }
 }

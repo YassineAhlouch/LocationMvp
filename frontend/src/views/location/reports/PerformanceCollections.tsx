@@ -10,6 +10,7 @@ import { colors } from '@/constants/colors.constant'
 import { apiGetPaymentsOverview } from '@/services/LocationService'
 import { LiClock, LiRefresh, LiStatusUp, LiWalletMoney } from '@/icons'
 import { MAD, tagToneClass } from '../shared'
+import useTranslation from '@/utils/hooks/useTranslation'
 import type { TagTone } from '../shared'
 import { ReportEmpty, ReportHeader, ReportMetrics } from './shared'
 import { resolveReportRange } from './shared'
@@ -19,6 +20,7 @@ import type { PaymentOverview } from '@/@types/location'
 const { Tr, Th, Td, THead, TBody } = Table
 
 const PerformanceCollections = () => {
+    const { t } = useTranslation()
     const [range, setRange] = useState<ReportRange>('thisMonth')
     const [overview, setOverview] = useState<PaymentOverview | null>(null)
     const [loading, setLoading] = useState(true)
@@ -61,28 +63,28 @@ const PerformanceCollections = () => {
     const metrics: ReportMetric[] = [
         {
             key: 'received',
-            title: 'Total received',
+            title: t('reports.collections.metrics.received', 'Total received'),
             value: overview?.totals.paid ?? 0,
             icon: <LiWalletMoney />,
             color: colors.emerald,
         },
         {
             key: 'pending',
-            title: 'Pending',
+            title: t('reports.collections.metrics.pending', 'Pending'),
             value: overview?.totals.pending ?? 0,
             icon: <LiClock />,
             color: colors.yellow,
         },
         {
             key: 'refunded',
-            title: 'Refunded',
+            title: t('reports.collections.metrics.refunded', 'Refunded'),
             value: overview?.totals.refunded ?? 0,
             icon: <LiRefresh />,
             color: colors.red,
         },
         {
             key: 'net',
-            title: 'Net collected',
+            title: t('reports.collections.metrics.net', 'Net collected'),
             value: overview?.totals.net ?? 0,
             icon: <LiStatusUp />,
             color: colors.blue,
@@ -118,8 +120,11 @@ const PerformanceCollections = () => {
     return (
         <Container>
             <ReportHeader
-                title="Collection performance"
-                description="Cash collected, still pending and refunded over the period"
+                title={t('reports.collections.title', 'Collection performance')}
+                description={t(
+                    'reports.collections.description',
+                    'Cash collected, still pending and refunded over the period',
+                )}
                 range={range}
                 onRangeChange={setRange}
             />
@@ -129,9 +134,17 @@ const PerformanceCollections = () => {
             <div className="mb-6">
                 <Card>
                     <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
-                        <h5>Daily collections</h5>
+                        <h5>
+                            {t(
+                                'reports.collections.dailyCollections',
+                                'Daily collections',
+                            )}
+                        </h5>
                         <span className="text-sm text-gray-500 dark:text-gray-400">
-                            Collection rate:{' '}
+                            {t(
+                                'reports.collections.collectionRate',
+                                'Collection rate:',
+                            )}{' '}
                             <span className="font-semibold heading-text">
                                 {collectionRate.toFixed(1)}%
                             </span>
@@ -162,21 +175,48 @@ const PerformanceCollections = () => {
                                 valueFormatter: (value: number) => MAD(value),
                                 nameFormatter: (name: string) => {
                                     if (name === 'paid') {
-                                        return 'Received'
+                                        return t(
+                                            'reports.collections.series.received',
+                                            'Received',
+                                        )
                                     }
                                     if (name === 'pending') {
-                                        return 'Pending'
+                                        return t(
+                                            'reports.collections.series.pending',
+                                            'Pending',
+                                        )
                                     }
-                                    return 'Refunded'
+                                    return t(
+                                        'reports.collections.series.refunded',
+                                        'Refunded',
+                                    )
                                 },
                             }}
                         />
                     )}
                     <div className="flex items-center justify-center gap-4 mt-4">
                         {[
-                            { label: 'Received', color: colors.emerald.chart },
-                            { label: 'Pending', color: colors.yellow.chart },
-                            { label: 'Refunded', color: colors.red.chart },
+                            {
+                                label: t(
+                                    'reports.collections.series.received',
+                                    'Received',
+                                ),
+                                color: colors.emerald.chart,
+                            },
+                            {
+                                label: t(
+                                    'reports.collections.series.pending',
+                                    'Pending',
+                                ),
+                                color: colors.yellow.chart,
+                            },
+                            {
+                                label: t(
+                                    'reports.collections.series.refunded',
+                                    'Refunded',
+                                ),
+                                color: colors.red.chart,
+                            },
                         ].map((item) => (
                             <div
                                 key={item.label}
@@ -195,7 +235,12 @@ const PerformanceCollections = () => {
 
             <Card bodyClass="p-0">
                 <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-                    <h5>Collection by status</h5>
+                    <h5>
+                        {t(
+                            'reports.collections.byStatus',
+                            'Collection by status',
+                        )}
+                    </h5>
                 </div>
                 {loading ? (
                     <div className="p-4">
@@ -205,9 +250,9 @@ const PerformanceCollections = () => {
                     <Table>
                         <THead>
                             <Tr>
-                                <Th>Status</Th>
-                                <Th>Records</Th>
-                                <Th>Amount</Th>
+                                <Th>{t('reports.collections.columns.status', 'Status')}</Th>
+                                <Th>{t('reports.collections.columns.records', 'Records')}</Th>
+                                <Th>{t('reports.collections.columns.amount', 'Amount')}</Th>
                             </Tr>
                         </THead>
                         <TBody>
@@ -217,7 +262,10 @@ const PerformanceCollections = () => {
                                         <Tag
                                             className={`capitalize ${tagToneClass[row.tone]}`}
                                         >
-                                            {row.status}
+                                            {t(
+                                                `payments.status.${row.status}`,
+                                                row.status,
+                                            )}
                                         </Tag>
                                     </Td>
                                     <Td className="heading-text">
@@ -230,7 +278,10 @@ const PerformanceCollections = () => {
                             ))}
                             <Tr>
                                 <Td className="font-medium heading-text">
-                                    Total
+                                    {t(
+                                        'reports.collections.total',
+                                        'Total',
+                                    )}
                                 </Td>
                                 <Td className="heading-text">
                                     {(
@@ -254,7 +305,12 @@ const PerformanceCollections = () => {
 
             {!loading && chartData.length === 0 && (
                 <div className="mt-6">
-                    <ReportEmpty message="No payments in this period" />
+                    <ReportEmpty
+                        message={t(
+                            'reports.collections.noData',
+                            'No payments in this period',
+                        )}
+                    />
                 </div>
             )}
         </Container>

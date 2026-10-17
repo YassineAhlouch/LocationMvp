@@ -1257,6 +1257,31 @@
                 "margin": "Margin",
                 "bookedDays": "Booked days"
             }
+        },
+        "collections": {
+            "title": "Collection performance",
+            "description": "Cash collected, still pending and refunded over the period",
+            "metrics": {
+                "received": "Total received",
+                "pending": "Pending",
+                "refunded": "Refunded",
+                "net": "Net collected"
+            },
+            "series": {
+                "received": "Received",
+                "pending": "Pending",
+                "refunded": "Refunded"
+            },
+            "dailyCollections": "Daily collections",
+            "collectionRate": "Collection rate:",
+            "byStatus": "Collection by status",
+            "columns": {
+                "status": "Status",
+                "records": "Records",
+                "amount": "Amount"
+            },
+            "total": "Total",
+            "noData": "No payments in this period"
         }
     }
 }

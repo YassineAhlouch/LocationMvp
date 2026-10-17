@@ -1257,6 +1257,31 @@
                 "margin": "Marge",
                 "bookedDays": "Jours réservés"
             }
+        },
+        "collections": {
+            "title": "Performance des encaissements",
+            "description": "Encaissements perçus, en attente et remboursés sur la période",
+            "metrics": {
+                "received": "Total perçu",
+                "pending": "En attente",
+                "refunded": "Remboursé",
+                "net": "Net encaissé"
+            },
+            "series": {
+                "received": "Perçu",
+                "pending": "En attente",
+                "refunded": "Remboursé"
+            },
+            "dailyCollections": "Encaissements quotidiens",
+            "collectionRate": "Taux d'encaissement :",
+            "byStatus": "Encaissements par statut",
+            "columns": {
+                "status": "Statut",
+                "records": "Enregistrements",
+                "amount": "Montant"
+            },
+            "total": "Total",
+            "noData": "Aucun paiement sur cette période"
         }
     }
 }
