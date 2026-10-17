@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import useTranslation from '@/utils/hooks/useTranslation'
 import Container from '@/components/shared/Container'
 import Select from '@/components/ui/Select'
 import Spinner from '@/components/ui/Spinner'
@@ -20,6 +21,7 @@ import type { Agency, InvoiceTemplate } from '@/@types/location'
  */
 const InvoiceTemplateSettings = () => {
     const { user } = useSessionUser()
+    const { t } = useTranslation()
     const canManage = isVerbGranted(
         user?.role?.permissions ?? [],
         'settings',
@@ -51,7 +53,10 @@ const InvoiceTemplateSettings = () => {
                     toast.push(
                         <Notification
                             type="danger"
-                            title="Could not load invoice templates"
+                            title={t(
+                                'settings.invoiceTemplates.loadFailed',
+                                'Could not load invoice templates',
+                            )}
                         />,
                     )
                 }
@@ -64,7 +69,7 @@ const InvoiceTemplateSettings = () => {
         return () => {
             active = false
         }
-    }, [canManage])
+    }, [canManage, t])
 
     const templateOptions = useMemo(
         () => templates.map((template) => ({ value: template.id, label: template.name })),
@@ -84,14 +89,20 @@ const InvoiceTemplateSettings = () => {
             toast.push(
                 <Notification
                     type="success"
-                    title="Invoice template updated"
+                    title={t(
+                        'settings.invoiceTemplates.updated',
+                        'Invoice template updated',
+                    )}
                 />,
             )
         } catch {
             toast.push(
                 <Notification
                     type="danger"
-                    title="Could not update invoice template"
+                    title={t(
+                        'settings.invoiceTemplates.updateFailed',
+                        'Could not update invoice template',
+                    )}
                 />,
             )
         } finally {
@@ -102,9 +113,17 @@ const InvoiceTemplateSettings = () => {
     if (!canManage) {
         return (
             <div className="flex min-h-[50vh] flex-col items-center justify-center gap-2 p-4 text-center">
-                <h5 className="dark:text-gray-100">Access restricted</h5>
+                <h5 className="dark:text-gray-100">
+                    {t(
+                        'settings.invoiceTemplates.accessRestricted',
+                        'Access restricted',
+                    )}
+                </h5>
                 <p className="text-sm text-gray-400 dark:text-gray-500">
-                    Only administrators can assign invoice templates.
+                    {t(
+                        'settings.invoiceTemplates.accessRestrictedDescription',
+                        'Only administrators can assign invoice templates.',
+                    )}
                 </p>
             </div>
         )
@@ -114,10 +133,17 @@ const InvoiceTemplateSettings = () => {
         <Container className="">
             <div className="space-y-4">
                 <div>
-                    <h4>Invoice templates</h4>
+                    <h4>
+                        {t(
+                            'settings.invoiceTemplates.title',
+                            'Invoice templates',
+                        )}
+                    </h4>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                        Assign one contract layout to each agency. Agencies
-                        cannot switch it themselves.
+                        {t(
+                            'settings.invoiceTemplates.description',
+                            'Assign one contract layout to each agency. Agencies cannot switch it themselves.',
+                        )}
                     </p>
                 </div>
 
@@ -127,7 +153,10 @@ const InvoiceTemplateSettings = () => {
                     </div>
                 ) : agencies.length === 0 ? (
                     <p className="py-8 text-center text-sm text-gray-400 dark:text-gray-500">
-                        No agencies to configure.
+                        {t(
+                            'settings.invoiceTemplates.noAgencies',
+                            'No agencies to configure.',
+                        )}
                     </p>
                 ) : (
                     <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
@@ -135,10 +164,16 @@ const InvoiceTemplateSettings = () => {
                             <thead className="bg-gray-50 dark:bg-gray-800">
                                 <tr>
                                     <th className="px-4 py-3 text-left font-semibold">
-                                        Agency
+                                        {t(
+                                            'settings.invoiceTemplates.agency',
+                                            'Agency',
+                                        )}
                                     </th>
                                     <th className="px-4 py-3 text-left font-semibold">
-                                        Invoice template
+                                        {t(
+                                            'settings.invoiceTemplates.template',
+                                            'Invoice template',
+                                        )}
                                     </th>
                                 </tr>
                             </thead>

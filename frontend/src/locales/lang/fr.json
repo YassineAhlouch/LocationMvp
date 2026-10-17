@@ -1283,5 +1283,19 @@
             "total": "Total",
             "noData": "Aucun paiement sur cette période"
         }
+    },
+    "settings": {
+        "invoiceTemplates": {
+            "title": "Modèles de facture",
+            "description": "Attribuez un modèle de contrat à chaque agence. Les agences ne peuvent pas le changer elles-mêmes.",
+            "agency": "Agence",
+            "template": "Modèle de facture",
+            "noAgencies": "Aucune agence à configurer.",
+            "accessRestricted": "Accès restreint",
+            "accessRestrictedDescription": "Seuls les administrateurs peuvent attribuer des modèles de facture.",
+            "updated": "Modèle de facture mis à jour",
+            "updateFailed": "Impossible de mettre à jour le modèle de facture",
+            "loadFailed": "Impossible de charger les modèles de facture"
+        }
     }
 }

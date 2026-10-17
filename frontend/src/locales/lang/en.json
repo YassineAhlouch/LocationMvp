@@ -1283,5 +1283,19 @@
             "total": "Total",
             "noData": "No payments in this period"
         }
+    },
+    "settings": {
+        "invoiceTemplates": {
+            "title": "Invoice templates",
+            "description": "Assign one contract layout to each agency. Agencies cannot switch it themselves.",
+            "agency": "Agency",
+            "template": "Invoice template",
+            "noAgencies": "No agencies to configure.",
+            "accessRestricted": "Access restricted",
+            "accessRestrictedDescription": "Only administrators can assign invoice templates.",
+            "updated": "Invoice template updated",
+            "updateFailed": "Could not update invoice template",
+            "loadFailed": "Could not load invoice templates"
+        }
     }
 }
