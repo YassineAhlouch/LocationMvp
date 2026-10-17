@@ -20,6 +20,12 @@ import type { ActivityLog } from '@/@types/location'
 import { isVerbGranted } from './PermissionChecklist'
 import { formatDateTime, tagToneClass } from './shared'
 import type { TagTone, Translator } from './shared'
+import {
+    activityChanges,
+    describeActivity,
+    describeChange,
+    entityReference,
+} from './activityDescription'
 import useTranslation from '@/utils/hooks/useTranslation'
 import acronym from '@/utils/acronym'
 import useRandomColor from '@/utils/hooks/useRandomColor'
@@ -108,23 +114,6 @@ const actionOptions = (t: Translator) => [
     })),
 ]
 
-/** `App\Models\Reservation` renders as `Reservation`. */
-const entityLabel = (entityType: string) =>
-    entityType.split('\\').pop() ?? entityType
-
-const formatValue = (value: unknown) => {
-    if (value === null || value === undefined) {
-        return '—'
-    }
-    if (typeof value === 'object') {
-        return JSON.stringify(value)
-    }
-    return String(value)
-}
-
-const valueEntries = (values: Record<string, unknown> | null) =>
-    Object.entries(values ?? {}).filter(([key]) => key !== 'password')
-
 type LogAvatarProps = {
     name: string
 }
@@ -158,34 +147,6 @@ const DetailRow = ({ label, value }: DetailRowProps) => (
     </div>
 )
 
-type ValueBlockProps = {
-    title: string
-    entries: [string, unknown][]
-}
-
-const ValueBlock = ({ title, entries }: ValueBlockProps) => (
-    <div>
-        <p className="mb-1 text-xs uppercase tracking-wide text-gray-400 dark:text-gray-500">
-            {title}
-        </p>
-        <div className="divide-y divide-gray-100 rounded-lg border border-gray-200 dark:divide-gray-800 dark:border-gray-700">
-            {entries.map(([key, value]) => (
-                <div
-                    key={key}
-                    className="flex items-start justify-between gap-4 px-3 py-2"
-                >
-                    <span className="text-gray-500 dark:text-gray-400">
-                        {key}
-                    </span>
-                    <span className="break-words text-right dark:text-gray-100">
-                        {formatValue(value)}
-                    </span>
-                </div>
-            ))}
-        </div>
-    </div>
-)
-
 type ActivityDetailDrawerProps = {
     entry: ActivityLog | null
     onClose: () => void
@@ -196,9 +157,10 @@ const ActivityDetailDrawer = ({
     onClose,
 }: ActivityDetailDrawerProps) => {
     const { t } = useTranslation()
-    const oldEntries = valueEntries(entry?.old_values ?? null)
-    const newEntries = valueEntries(entry?.new_values ?? null)
-    const hasChanges = oldEntries.length > 0 || newEntries.length > 0
+    const changes = useMemo(
+        () => (entry ? activityChanges(entry, t) : []),
+        [entry, t],
+    )
 
     return (
         <Drawer
@@ -230,7 +192,7 @@ const ActivityDetailDrawer = ({
                     />
                     <DetailRow
                         label={t('activity.drawer.entity', 'Entity')}
-                        value={`${entityLabel(entry.entity_type)} #${entry.entity_id}`}
+                        value={entityReference(t, entry)}
                     />
                     {entry.description ? (
                         <DetailRow
@@ -247,27 +209,27 @@ const ActivityDetailDrawer = ({
                         value={entry.user_agent ?? '—'}
                     />
 
-                    {hasChanges ? (
-                        <>
-                            {oldEntries.length > 0 ? (
-                                <ValueBlock
-                                    title={t(
-                                        'activity.drawer.oldValues',
-                                        'Previous values',
-                                    )}
-                                    entries={oldEntries}
-                                />
-                            ) : null}
-                            {newEntries.length > 0 ? (
-                                <ValueBlock
-                                    title={t(
-                                        'activity.drawer.newValues',
-                                        'New values',
-                                    )}
-                                    entries={newEntries}
-                                />
-                            ) : null}
-                        </>
+                    {changes.length > 0 ? (
+                        <div>
+                            <p className="mb-1 text-xs uppercase tracking-wide text-gray-400 dark:text-gray-500">
+                                {t('activity.drawer.changes', 'Changes')}
+                            </p>
+                            <div className="divide-y divide-gray-100 rounded-lg border border-gray-200 dark:divide-gray-800 dark:border-gray-700">
+                                {changes.map((change) => (
+                                    <div
+                                        key={change.field}
+                                        className="flex flex-col gap-0.5 px-3 py-2"
+                                    >
+                                        <span className="text-xs uppercase tracking-wide text-gray-400 dark:text-gray-500">
+                                            {change.label}
+                                        </span>
+                                        <span className="break-words dark:text-gray-100">
+                                            {describeChange(change)}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     ) : (
                         <p className="text-sm text-gray-400 dark:text-gray-500">
                             {t(
@@ -451,7 +413,7 @@ const ActivityLogs = () => {
                 accessorKey: 'description',
                 cell: (props) => (
                     <span className="text-sm text-gray-500 dark:text-gray-400">
-                        {props.row.original.description ?? '—'}
+                        {describeActivity(t, props.row.original)}
                     </span>
                 ),
             },
@@ -729,23 +691,13 @@ const ActivityLogs = () => {
                                                                         log.module,
                                                                     )}
                                                                 </Tag>
-                                                                <span className="text-sm text-gray-400 dark:text-gray-500">
-                                                                    {entityLabel(
-                                                                        log.entity_type,
-                                                                    )}{' '}
-                                                                    #
-                                                                    {
-                                                                        log.entity_id
-                                                                    }
-                                                                </span>
                                                             </div>
-                                                            {log.description ? (
-                                                                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                                                    {
-                                                                        log.description
-                                                                    }
-                                                                </p>
-                                                            ) : null}
+                                                            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                                {describeActivity(
+                                                                    t,
+                                                                    log,
+                                                                )}
+                                                            </p>
                                                             <div className="mt-1 flex items-center gap-3 text-xs text-gray-400 dark:text-gray-500">
                                                                 <span>
                                                                     {dayjs(
