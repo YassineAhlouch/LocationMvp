@@ -250,6 +250,19 @@ const appsRoute: Routes = [
         },
     },
 
+    // ===== ACTIVITE =====
+    {
+        key: 'gestion.activite.journal',
+        path: `${APPS_PREFIX_PATH}/journal-activite`,
+        component: lazy(() => import('@/views/location/ActivityLogs')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'contained',
+            footer: false,
+        },
+    },
+
     // ===== OPERATIONS ===== (planned: maintenance / accidents)
     // +++++ End NEW Links
     {

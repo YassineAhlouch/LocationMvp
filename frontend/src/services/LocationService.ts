@@ -1,6 +1,7 @@
 import ApiService from './ApiService'
 import { SUBSCRIPTION_SWR_KEY } from '@/constants/billing.constant'
 import type {
+    ActivityLog,
     Agency,
     Brand,
     Car,
@@ -559,4 +560,20 @@ export const apiUpdateRole = (id: number, data: Partial<RolePayload>) =>
         url: `/v1/roles/${id}`,
         method: 'patch',
         data,
+    })
+
+// ---- Activity log (audit trail) -------------------------------------------
+
+/** The agency's append-only audit feed, newest first, with exact filters. */
+export const apiGetActivityLogs = (params?: Record<string, unknown>) =>
+    ApiService.fetchDataWithAxios<Paginated<ActivityLog>>({
+        url: '/v1/activity-logs',
+        method: 'get',
+        params,
+    })
+
+export const apiGetActivityLog = (id: number) =>
+    ApiService.fetchDataWithAxios<ActivityLog>({
+        url: `/v1/activity-logs/${id}`,
+        method: 'get',
     })

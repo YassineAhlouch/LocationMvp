@@ -1,4 +1,5 @@
 import {
+    LiActivity,
     LiChartSquare,
     LiChart,
     LiSetting,
@@ -74,6 +75,7 @@ const navigationIcon: NavigationIcons = {
     gestionUtilisateurs: <LiUserCircle className={CLASS_NAME} />,
     statistiques: <LiBarChartUp className={CLASS_NAME} />,
     gestionRapports: <LiChartSquare className={CLASS_NAME} />,
+    activite: <LiActivity className={CLASS_NAME} />,
     documentation: <LiFileText className={CLASS_NAME} />,
     sharedComponentDoc: <LiLayer className={CLASS_NAME} />,
     utilsDoc: <LiZapCircle className={CLASS_NAME} />,

@@ -439,6 +439,40 @@ const appsNavigationConfig: NavigationTree[] = [
             },
         ],
     },
+    // ===== ACTIVITE =====
+    {
+        key: 'activite',
+        path: '',
+        title: 'Activity',
+        translateKey: 'nav.activite',
+        icon: 'activite',
+        type: NAV_ITEM_TYPE_TITLE,
+        authority: [ADMIN, USER],
+        meta: {
+            horizontalMenu: {
+                layout: 'tabs',
+                columns: 1,
+            },
+        },
+        subMenu: [
+            {
+                key: 'gestion.activite.journal',
+                path: `${APPS_PREFIX_PATH}/journal-activite`,
+                title: 'Activity log',
+                translateKey: 'nav.gestion.activiteJournal',
+                icon: 'activite',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                meta: {
+                    description: {
+                        translateKey: 'nav.gestion.activiteJournalDesc',
+                        label: 'Audit trail of staff actions',
+                    },
+                },
+                subMenu: [],
+            },
+        ],
+    },
 ]
 
 export default appsNavigationConfig

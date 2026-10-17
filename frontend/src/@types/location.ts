@@ -902,6 +902,25 @@ export type CarStatistics = {
     installments: CarInstallment[]
 }
 
+/** One append-only audit row (GET /api/v1/activity-logs). */
+export type ActivityLog = {
+    id: number
+    module: string
+    action: string
+    entity_type: string
+    entity_id: number
+    description: string | null
+    old_values: Record<string, unknown> | null
+    new_values: Record<string, unknown> | null
+    ip_address: string | null
+    user_agent: string | null
+    user: {
+        id: number | null
+        full_name: string | null
+    }
+    created_at: string | null
+}
+
 export type CarFinancingPayloadUpdate = Partial<CarFinancingPayload>
 
 export type MarkInstallmentPaidPayload = {
