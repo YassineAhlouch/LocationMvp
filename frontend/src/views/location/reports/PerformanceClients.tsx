@@ -9,6 +9,7 @@ import { colors } from '@/constants/colors.constant'
 import { apiGetClientReports } from '@/services/LocationService'
 import { LiCalendar, LiMoney, LiProfiles, LiWalletMoney } from '@/icons'
 import { MAD, clientStatusTone, formatDate, tagToneClass } from '../shared'
+import useTranslation from '@/utils/hooks/useTranslation'
 import { ReportEmpty, ReportHeader, ReportMetrics } from './shared'
 import { resolveReportRange } from './shared'
 import type { ReportMetric, ReportRange } from './shared'
@@ -26,6 +27,7 @@ const compactMAD = (value: number) => {
 }
 
 const PerformanceClients = () => {
+    const { t } = useTranslation()
     const [range, setRange] = useState<ReportRange>('thisMonth')
     const [clients, setClients] = useState<ClientReport[]>([])
     const [loading, setLoading] = useState(true)
@@ -62,7 +64,7 @@ const PerformanceClients = () => {
     const metrics: ReportMetric[] = [
         {
             key: 'clients',
-            title: 'Active clients',
+            title: t('reports.clients.metricClients', 'Active clients'),
             value: clients.length,
             icon: <LiProfiles />,
             color: colors.blue,
@@ -70,14 +72,14 @@ const PerformanceClients = () => {
         },
         {
             key: 'revenue',
-            title: 'Revenue',
+            title: t('reports.clients.metricRevenue', 'Revenue'),
             value: totals.revenue,
             icon: <LiWalletMoney />,
             color: colors.emerald,
         },
         {
             key: 'reservations',
-            title: 'Reservations',
+            title: t('reports.clients.metricReservations', 'Reservations'),
             value: totals.reservations,
             icon: <LiCalendar />,
             color: colors.orange,
@@ -85,7 +87,7 @@ const PerformanceClients = () => {
         },
         {
             key: 'average',
-            title: 'Revenue / client',
+            title: t('reports.clients.metricAverage', 'Revenue / client'),
             value: averagePerClient,
             icon: <LiMoney />,
             color: colors.purple,
@@ -106,8 +108,11 @@ const PerformanceClients = () => {
     return (
         <Container>
             <ReportHeader
-                title="Client performance"
-                description="Your best clients ranked by revenue over the period"
+                title={t('reports.clients.title', 'Client performance')}
+                description={t(
+                    'reports.clients.description',
+                    'Your best clients ranked by revenue over the period',
+                )}
                 range={range}
                 onRangeChange={setRange}
             />
@@ -117,7 +122,12 @@ const PerformanceClients = () => {
             <div className="mb-6">
                 <Card>
                     <div className="mb-4">
-                        <h5>Top clients by revenue</h5>
+                        <h5>
+                            {t(
+                                'reports.clients.topClients',
+                                'Top clients by revenue',
+                            )}
+                        </h5>
                     </div>
                     {loading ? (
                         <Skeleton height={280} />
@@ -146,29 +156,35 @@ const PerformanceClients = () => {
                             }}
                             tooltipContentConfig={{
                                 valueFormatter: (value: number) => MAD(value),
-                                nameFormatter: () => 'Revenue',
+                                nameFormatter: () =>
+                                    t('reports.clients.metricRevenue', 'Revenue'),
                             }}
                         />
                     ) : (
-                        <ReportEmpty message="No client data available" />
+                        <ReportEmpty
+                            message={t(
+                                'reports.clients.noData',
+                                'No client data available',
+                            )}
+                        />
                     )}
                 </Card>
             </div>
 
             <Card bodyClass="p-0">
                 <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-                    <h5>Client performance</h5>
+                    <h5>{t('reports.clients.title', 'Client performance')}</h5>
                 </div>
                 {loading ? (
                     <Table hoverable={false}>
                         <THead>
                             <Tr>
-                                <Th>Client</Th>
-                                <Th>Status</Th>
-                                <Th>Reservations</Th>
-                                <Th>Revenue</Th>
-                                <Th>Avg / rental</Th>
-                                <Th>Last rental</Th>
+                                <Th>{t('reports.clients.columns.client', 'Client')}</Th>
+                                <Th>{t('reports.clients.columns.status', 'Status')}</Th>
+                                <Th>{t('reports.clients.columns.reservations', 'Reservations')}</Th>
+                                <Th>{t('reports.clients.columns.revenue', 'Revenue')}</Th>
+                                <Th>{t('reports.clients.columns.average', 'Avg / rental')}</Th>
+                                <Th>{t('reports.clients.columns.lastRental', 'Last rental')}</Th>
                             </Tr>
                         </THead>
                         <TBody>
@@ -192,12 +208,12 @@ const PerformanceClients = () => {
                     <Table>
                         <THead>
                             <Tr>
-                                <Th>Client</Th>
-                                <Th>Status</Th>
-                                <Th>Reservations</Th>
-                                <Th>Revenue</Th>
-                                <Th>Avg / rental</Th>
-                                <Th>Last rental</Th>
+                                <Th>{t('reports.clients.columns.client', 'Client')}</Th>
+                                <Th>{t('reports.clients.columns.status', 'Status')}</Th>
+                                <Th>{t('reports.clients.columns.reservations', 'Reservations')}</Th>
+                                <Th>{t('reports.clients.columns.revenue', 'Revenue')}</Th>
+                                <Th>{t('reports.clients.columns.average', 'Avg / rental')}</Th>
+                                <Th>{t('reports.clients.columns.lastRental', 'Last rental')}</Th>
                             </Tr>
                         </THead>
                         <TBody>
@@ -220,7 +236,10 @@ const PerformanceClients = () => {
                                             <Tag
                                                 className={`capitalize ${tagToneClass[clientStatusTone[client.status]]}`}
                                             >
-                                                {client.status}
+                                                {t(
+                                                    `clients.statusOption.${client.status}`,
+                                                    client.status,
+                                                )}
                                             </Tag>
                                         ) : (
                                             '—'
@@ -243,7 +262,12 @@ const PerformanceClients = () => {
                         </TBody>
                     </Table>
                 ) : (
-                    <ReportEmpty message="No client data available" />
+                    <ReportEmpty
+                        message={t(
+                            'reports.clients.noData',
+                            'No client data available',
+                        )}
+                    />
                 )}
             </Card>
         </Container>

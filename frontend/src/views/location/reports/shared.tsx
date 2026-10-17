@@ -7,6 +7,7 @@ import StatisticCard from '@/components/shared/StatisticCard'
 import classNames from '@/utils/classNames'
 import { LiChevronDown } from '@/icons'
 import { MAD } from '../shared'
+import useTranslation from '@/utils/hooks/useTranslation'
 import type { ReactNode } from 'react'
 
 dayjs.extend(quarterOfYear)
@@ -68,9 +69,13 @@ export const ReportHeader = ({
     onRangeChange,
     actions,
 }: ReportHeaderProps) => {
-    const currentLabel =
-        reportRangeOptions.find((option) => option.key === range)?.label ??
-        'This Month'
+    const { t } = useTranslation()
+    const currentOption = reportRangeOptions.find(
+        (option) => option.key === range,
+    )
+    const currentLabel = currentOption
+        ? t(`reports.range.${currentOption.key}`, currentOption.label)
+        : t('reports.range.thisMonth', 'This Month')
 
     return (
         <div className="flex flex-col gap-4 mb-6 lg:flex-row lg:items-center lg:justify-between">
@@ -100,7 +105,7 @@ export const ReportHeader = ({
                                 onRangeChange(eventKey as ReportRange)
                             }
                         >
-                            {option.label}
+                            {t(`reports.range.${option.key}`, option.label)}
                         </Dropdown.Item>
                     ))}
                 </Dropdown>

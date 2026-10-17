@@ -1215,5 +1215,31 @@
             "refund": "استرداد",
             "send": "إرسال"
         }
+    },
+    "reports": {
+        "range": {
+            "thisWeek": "هذا الأسبوع",
+            "thisMonth": "هذا الشهر",
+            "thisQuarter": "هذا الربع",
+            "thisYear": "هذه السنة"
+        },
+        "clients": {
+            "title": "أداء العملاء",
+            "description": "أفضل عملائك مرتبين حسب الإيرادات خلال الفترة",
+            "metricClients": "العملاء النشطون",
+            "metricRevenue": "الإيرادات",
+            "metricReservations": "الحجوزات",
+            "metricAverage": "الإيراد / عميل",
+            "topClients": "أفضل العملاء حسب الإيرادات",
+            "noData": "لا تتوفر بيانات العملاء",
+            "columns": {
+                "client": "العميل",
+                "status": "الحالة",
+                "reservations": "الحجوزات",
+                "revenue": "الإيرادات",
+                "average": "المتوسط / إيجار",
+                "lastRental": "آخر إيجار"
+            }
+        }
     }
 }

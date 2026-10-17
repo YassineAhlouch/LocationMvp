@@ -1215,5 +1215,31 @@
             "refund": "Rembourser",
             "send": "Envoyer"
         }
+    },
+    "reports": {
+        "range": {
+            "thisWeek": "Cette semaine",
+            "thisMonth": "Ce mois-ci",
+            "thisQuarter": "Ce trimestre",
+            "thisYear": "Cette année"
+        },
+        "clients": {
+            "title": "Performance des clients",
+            "description": "Vos meilleurs clients classés par revenu sur la période",
+            "metricClients": "Clients actifs",
+            "metricRevenue": "Revenu",
+            "metricReservations": "Réservations",
+            "metricAverage": "Revenu / client",
+            "topClients": "Meilleurs clients par revenu",
+            "noData": "Aucune donnée client disponible",
+            "columns": {
+                "client": "Client",
+                "status": "Statut",
+                "reservations": "Réservations",
+                "revenue": "Revenu",
+                "average": "Moy. / location",
+                "lastRental": "Dernière location"
+            }
+        }
     }
 }

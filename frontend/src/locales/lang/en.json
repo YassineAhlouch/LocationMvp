@@ -1215,5 +1215,31 @@
             "refund": "Refund",
             "send": "Send"
         }
+    },
+    "reports": {
+        "range": {
+            "thisWeek": "This Week",
+            "thisMonth": "This Month",
+            "thisQuarter": "This Quarter",
+            "thisYear": "This Year"
+        },
+        "clients": {
+            "title": "Client performance",
+            "description": "Your best clients ranked by revenue over the period",
+            "metricClients": "Active clients",
+            "metricRevenue": "Revenue",
+            "metricReservations": "Reservations",
+            "metricAverage": "Revenue / client",
+            "topClients": "Top clients by revenue",
+            "noData": "No client data available",
+            "columns": {
+                "client": "Client",
+                "status": "Status",
+                "reservations": "Reservations",
+                "revenue": "Revenue",
+                "average": "Avg / rental",
+                "lastRental": "Last rental"
+            }
+        }
     }
 }
