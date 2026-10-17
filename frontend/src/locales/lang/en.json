@@ -1240,6 +1240,23 @@
                 "average": "Avg / rental",
                 "lastRental": "Last rental"
             }
+        },
+        "cars": {
+            "title": "Vehicle performance",
+            "description": "Revenue, expenses and margin for every car on hire",
+            "metricRevenue": "Revenue",
+            "metricExpenses": "Expenses",
+            "metricMargin": "Margin",
+            "metricBookedDays": "Booked days",
+            "topVehicles": "Top vehicles by margin",
+            "noData": "No vehicle data available",
+            "columns": {
+                "vehicle": "Vehicle",
+                "revenue": "Revenue",
+                "expenses": "Expenses",
+                "margin": "Margin",
+                "bookedDays": "Booked days"
+            }
         }
     }
 }

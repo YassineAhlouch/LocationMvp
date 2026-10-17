@@ -10,6 +10,7 @@ import classNames from '@/utils/classNames'
 import { apiGetCarReports } from '@/services/LocationService'
 import { LiBarChartUp, LiCar, LiReceipt, LiWalletMoney } from '@/icons'
 import { MAD } from '../shared'
+import useTranslation from '@/utils/hooks/useTranslation'
 import { ReportEmpty, ReportHeader, ReportMetrics } from './shared'
 import { resolveReportRange } from './shared'
 import type { ReportMetric, ReportRange } from './shared'
@@ -28,6 +29,7 @@ const compactMAD = (value: number) => {
 }
 
 const PerformanceCars = () => {
+    const { t } = useTranslation()
     const [range, setRange] = useState<ReportRange>('thisMonth')
     const [cars, setCars] = useState<CarReport[]>([])
     const [loading, setLoading] = useState(true)
@@ -63,28 +65,28 @@ const PerformanceCars = () => {
     const metrics: ReportMetric[] = [
         {
             key: 'revenue',
-            title: 'Revenue',
+            title: t('reports.cars.metricRevenue', 'Revenue'),
             value: totals.revenue,
             icon: <LiWalletMoney />,
             color: colors.emerald,
         },
         {
             key: 'expenses',
-            title: 'Expenses',
+            title: t('reports.cars.metricExpenses', 'Expenses'),
             value: totals.expenses,
             icon: <LiReceipt />,
             color: colors.rose,
         },
         {
             key: 'margin',
-            title: 'Margin',
+            title: t('reports.cars.metricMargin', 'Margin'),
             value: totals.margin,
             icon: <LiBarChartUp />,
             color: colors.blue,
         },
         {
             key: 'booked',
-            title: 'Booked days',
+            title: t('reports.cars.metricBookedDays', 'Booked days'),
             value: totals.booked_days,
             icon: <LiCar />,
             color: colors.orange,
@@ -106,8 +108,11 @@ const PerformanceCars = () => {
     return (
         <Container>
             <ReportHeader
-                title="Vehicle performance"
-                description="Revenue, expenses and margin for every car on hire"
+                title={t('reports.cars.title', 'Vehicle performance')}
+                description={t(
+                    'reports.cars.description',
+                    'Revenue, expenses and margin for every car on hire',
+                )}
                 range={range}
                 onRangeChange={setRange}
             />
@@ -117,7 +122,12 @@ const PerformanceCars = () => {
             <div className="mb-6">
                 <Card>
                     <div className="mb-4">
-                        <h5>Top vehicles by margin</h5>
+                        <h5>
+                            {t(
+                                'reports.cars.topVehicles',
+                                'Top vehicles by margin',
+                            )}
+                        </h5>
                     </div>
                     {loading ? (
                         <Skeleton height={280} />
@@ -146,28 +156,34 @@ const PerformanceCars = () => {
                             }}
                             tooltipContentConfig={{
                                 valueFormatter: (value: number) => MAD(value),
-                                nameFormatter: () => 'Margin',
+                                nameFormatter: () =>
+                                    t('reports.cars.metricMargin', 'Margin'),
                             }}
                         />
                     ) : (
-                        <ReportEmpty message="No vehicle data available" />
+                        <ReportEmpty
+                            message={t(
+                                'reports.cars.noData',
+                                'No vehicle data available',
+                            )}
+                        />
                     )}
                 </Card>
             </div>
 
             <Card bodyClass="p-0">
                 <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-                    <h5>Vehicle performance</h5>
+                    <h5>{t('reports.cars.title', 'Vehicle performance')}</h5>
                 </div>
                 {loading ? (
                     <Table hoverable={false}>
                         <THead>
                             <Tr>
-                                <Th>Vehicle</Th>
-                                <Th>Revenue</Th>
-                                <Th>Expenses</Th>
-                                <Th>Margin</Th>
-                                <Th>Booked days</Th>
+                                <Th>{t('reports.cars.columns.vehicle', 'Vehicle')}</Th>
+                                <Th>{t('reports.cars.columns.revenue', 'Revenue')}</Th>
+                                <Th>{t('reports.cars.columns.expenses', 'Expenses')}</Th>
+                                <Th>{t('reports.cars.columns.margin', 'Margin')}</Th>
+                                <Th>{t('reports.cars.columns.bookedDays', 'Booked days')}</Th>
                             </Tr>
                         </THead>
                         <TBody>
@@ -191,11 +207,11 @@ const PerformanceCars = () => {
                     <Table>
                         <THead>
                             <Tr>
-                                <Th>Vehicle</Th>
-                                <Th>Revenue</Th>
-                                <Th>Expenses</Th>
-                                <Th>Margin</Th>
-                                <Th>Booked days</Th>
+                                <Th>{t('reports.cars.columns.vehicle', 'Vehicle')}</Th>
+                                <Th>{t('reports.cars.columns.revenue', 'Revenue')}</Th>
+                                <Th>{t('reports.cars.columns.expenses', 'Expenses')}</Th>
+                                <Th>{t('reports.cars.columns.margin', 'Margin')}</Th>
+                                <Th>{t('reports.cars.columns.bookedDays', 'Booked days')}</Th>
                             </Tr>
                         </THead>
                         <TBody>
@@ -251,7 +267,12 @@ const PerformanceCars = () => {
                         </TBody>
                     </Table>
                 ) : (
-                    <ReportEmpty message="No vehicle data available" />
+                    <ReportEmpty
+                        message={t(
+                            'reports.cars.noData',
+                            'No vehicle data available',
+                        )}
+                    />
                 )}
             </Card>
         </Container>

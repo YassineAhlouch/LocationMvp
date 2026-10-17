@@ -1240,6 +1240,23 @@
                 "average": "Moy. / location",
                 "lastRental": "Dernière location"
             }
+        },
+        "cars": {
+            "title": "Performance des véhicules",
+            "description": "Revenu, dépenses et marge pour chaque véhicule en location",
+            "metricRevenue": "Revenu",
+            "metricExpenses": "Dépenses",
+            "metricMargin": "Marge",
+            "metricBookedDays": "Jours réservés",
+            "topVehicles": "Meilleurs véhicules par marge",
+            "noData": "Aucune donnée véhicule disponible",
+            "columns": {
+                "vehicle": "Véhicule",
+                "revenue": "Revenu",
+                "expenses": "Dépenses",
+                "margin": "Marge",
+                "bookedDays": "Jours réservés"
+            }
         }
     }
 }

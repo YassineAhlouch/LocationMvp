@@ -1240,6 +1240,23 @@
                 "average": "المتوسط / إيجار",
                 "lastRental": "آخر إيجار"
             }
+        },
+        "cars": {
+            "title": "أداء المركبات",
+            "description": "الإيرادات والمصروفات والهامش لكل سيارة للإيجار",
+            "metricRevenue": "الإيرادات",
+            "metricExpenses": "المصروفات",
+            "metricMargin": "الهامش",
+            "metricBookedDays": "الأيام المحجوزة",
+            "topVehicles": "أفضل المركبات حسب الهامش",
+            "noData": "لا تتوفر بيانات المركبات",
+            "columns": {
+                "vehicle": "المركبة",
+                "revenue": "الإيرادات",
+                "expenses": "المصروفات",
+                "margin": "الهامش",
+                "bookedDays": "الأيام المحجوزة"
+            }
         }
     }
 }
