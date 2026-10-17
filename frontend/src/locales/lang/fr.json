@@ -970,6 +970,12 @@
         "description": "Historique de toutes les actions du personnel dans l'espace de travail",
         "system": "Système",
         "count": "Entrées : {{n}}",
+        "view": {
+            "table": "Tableau",
+            "timeline": "Chronologie"
+        },
+        "empty": "Aucune activité trouvée",
+        "emptyDescription": "Essayez d'élargir les filtres ou revenez plus tard.",
         "accessRestricted": "Accès restreint",
         "accessRestrictedDescription": "Vous n'avez pas la permission d'afficher le journal d'activité.",
         "filters": {

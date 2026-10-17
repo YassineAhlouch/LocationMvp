@@ -1,13 +1,19 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { ColumnDef } from '@tanstack/react-table'
+import dayjs from 'dayjs'
 import Container from '@/components/shared/Container'
 import DataTable from '@/components/shared/DataTable'
+import Loading from '@/components/shared/Loading'
+import Avatar from '@/components/ui/Avatar'
 import Drawer from '@/components/ui/Drawer'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
+import Pagination from '@/components/ui/Pagination'
+import Segment from '@/components/ui/Segment'
 import Select from '@/components/ui/Select'
 import Tag from '@/components/ui/Tag'
-import { LiEye } from '@/icons'
+import Timeline from '@/components/ui/Timeline'
+import { LiActivity, LiEye, LiTextAlignLeft } from '@/icons'
 import { useSessionUser } from '@/store/authStore'
 import { apiGetActivityLogs, apiGetUsers } from '@/services/LocationService'
 import type { ActivityLog } from '@/@types/location'
@@ -15,6 +21,8 @@ import { isVerbGranted } from './PermissionChecklist'
 import { formatDateTime, tagToneClass } from './shared'
 import type { TagTone, Translator } from './shared'
 import useTranslation from '@/utils/hooks/useTranslation'
+import acronym from '@/utils/acronym'
+import useRandomColor from '@/utils/hooks/useRandomColor'
 
 /**
  * Audit modules that show up in the trail. Catalog names reuse the existing
@@ -116,6 +124,25 @@ const formatValue = (value: unknown) => {
 
 const valueEntries = (values: Record<string, unknown> | null) =>
     Object.entries(values ?? {}).filter(([key]) => key !== 'password')
+
+type LogAvatarProps = {
+    name: string
+}
+
+/** Coloured initials badge used as the media node of each timeline entry. */
+const LogAvatar = ({ name }: LogAvatarProps) => {
+    const generateRandomColor = useRandomColor()
+
+    return (
+        <Avatar
+            size={36}
+            shape="circle"
+            className={`border-0 text-gray-900 ${generateRandomColor(name).background}`}
+        >
+            {acronym(name)}
+        </Avatar>
+    )
+}
 
 type DetailRowProps = {
     label: string
@@ -278,6 +305,7 @@ const ActivityLogs = () => {
     const [toDate, setToDate] = useState('')
 
     const [selected, setSelected] = useState<ActivityLog | null>(null)
+    const [viewMode, setViewMode] = useState<'table' | 'timeline'>('table')
 
     const fetchLogs = useCallback(() => {
         setLoading(true)
@@ -362,6 +390,18 @@ const ActivityLogs = () => {
         setToDate('')
         setPageIndex(1)
     }
+
+    /** The current page of entries grouped into day buckets for the timeline. */
+    const groupedLogs = useMemo(() => {
+        const groups = new Map<string, ActivityLog[]>()
+        logs.forEach((log) => {
+            const key = dayjs(log.created_at).format('YYYY-MM-DD')
+            const entries = groups.get(key) ?? []
+            entries.push(log)
+            groups.set(key, entries)
+        })
+        return Array.from(groups.entries())
+    }, [logs])
 
     const columns = useMemo<ColumnDef<ActivityLog>[]>(
         () => [
@@ -556,40 +596,198 @@ const ActivityLogs = () => {
                                 n: total,
                             })}
                         </p>
-                        <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={resetFilters}
-                        >
-                            {t('activity.filters.reset', 'Reset')}
-                        </Button>
+                        <div className="flex items-center gap-2">
+                            <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={resetFilters}
+                            >
+                                {t('activity.filters.reset', 'Reset')}
+                            </Button>
+                            <Segment
+                                value={viewMode}
+                                onChange={(value) =>
+                                    setViewMode(value as 'table' | 'timeline')
+                                }
+                            >
+                                <Segment.Item
+                                    value="table"
+                                    className="px-2"
+                                    title={t('activity.view.table', 'Table')}
+                                >
+                                    <LiTextAlignLeft />
+                                </Segment.Item>
+                                <Segment.Item
+                                    value="timeline"
+                                    className="px-2"
+                                    title={t(
+                                        'activity.view.timeline',
+                                        'Timeline',
+                                    )}
+                                >
+                                    <LiActivity />
+                                </Segment.Item>
+                            </Segment>
+                        </div>
                     </div>
 
                     <div className="mb-4">
-                        <DataTable<ActivityLog>
-                            compact
-                            verticalDivider={{
-                                head: true,
-                                body: true,
-                            }}
-                            className="border-t border-b border-gray-200 dark:border-gray-700"
-                            columns={columns}
-                            data={logs}
-                            noData={!loading && logs.length === 0}
-                            loading={loading}
-                            pagingData={{
-                                total,
-                                pageIndex,
-                                pageSize,
-                            }}
-                            onPaginationChange={(page: number) =>
-                                setPageIndex(page)
-                            }
-                            onPageSizeChange={(size: number) => {
-                                setPageSize(size)
-                                setPageIndex(1)
-                            }}
-                        />
+                        {viewMode === 'table' ? (
+                            <DataTable<ActivityLog>
+                                compact
+                                verticalDivider={{
+                                    head: true,
+                                    body: true,
+                                }}
+                                className="border-t border-b border-gray-200 dark:border-gray-700"
+                                columns={columns}
+                                data={logs}
+                                noData={!loading && logs.length === 0}
+                                loading={loading}
+                                pagingData={{
+                                    total,
+                                    pageIndex,
+                                    pageSize,
+                                }}
+                                onPaginationChange={(page: number) =>
+                                    setPageIndex(page)
+                                }
+                                onPageSizeChange={(size: number) => {
+                                    setPageSize(size)
+                                    setPageIndex(1)
+                                }}
+                            />
+                        ) : (
+                            <Loading loading={loading}>
+                                {!loading && logs.length === 0 ? (
+                                    <div className="py-16 text-center">
+                                        <h6 className="mb-1 font-semibold">
+                                            {t(
+                                                'activity.empty',
+                                                'No activity found',
+                                            )}
+                                        </h6>
+                                        <p className="text-sm text-gray-400">
+                                            {t(
+                                                'activity.emptyDescription',
+                                                'Try widening the filters or come back later.',
+                                            )}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-8">
+                                        {groupedLogs.map(([day, entries]) => (
+                                            <div key={day}>
+                                                <div className="mb-3 text-xs font-semibold tracking-wide text-gray-400 uppercase dark:text-gray-500">
+                                                    {dayjs(day).format(
+                                                        'dddd, DD MMMM',
+                                                    )}
+                                                </div>
+                                                <Timeline>
+                                                    {entries.map((log) => (
+                                                        <Timeline.Item
+                                                            key={log.id}
+                                                            media={
+                                                                <LogAvatar
+                                                                    name={
+                                                                        log.user
+                                                                            ?.full_name ??
+                                                                        t(
+                                                                            'activity.system',
+                                                                            'System',
+                                                                        )
+                                                                    }
+                                                                />
+                                                            }
+                                                        >
+                                                            <div className="flex flex-wrap items-center gap-2">
+                                                                <span className="heading-text font-semibold">
+                                                                    {log.user
+                                                                        ?.full_name ??
+                                                                        t(
+                                                                            'activity.system',
+                                                                            'System',
+                                                                        )}
+                                                                </span>
+                                                                <Tag
+                                                                    className={
+                                                                        tagToneClass[
+                                                                            actionToneFor(
+                                                                                log.action,
+                                                                            )
+                                                                        ]
+                                                                    }
+                                                                >
+                                                                    {actionLabel(
+                                                                        t,
+                                                                        log.action,
+                                                                    )}
+                                                                </Tag>
+                                                                <Tag className="border-0 bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                                                                    {moduleLabel(
+                                                                        t,
+                                                                        log.module,
+                                                                    )}
+                                                                </Tag>
+                                                                <span className="text-sm text-gray-400 dark:text-gray-500">
+                                                                    {entityLabel(
+                                                                        log.entity_type,
+                                                                    )}{' '}
+                                                                    #
+                                                                    {
+                                                                        log.entity_id
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                            {log.description ? (
+                                                                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                                    {
+                                                                        log.description
+                                                                    }
+                                                                </p>
+                                                            ) : null}
+                                                            <div className="mt-1 flex items-center gap-3 text-xs text-gray-400 dark:text-gray-500">
+                                                                <span>
+                                                                    {dayjs(
+                                                                        log.created_at,
+                                                                    ).format(
+                                                                        'HH:mm',
+                                                                    )}
+                                                                </span>
+                                                                <button
+                                                                    type="button"
+                                                                    className="hover:underline"
+                                                                    onClick={() =>
+                                                                        setSelected(
+                                                                            log,
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    {t(
+                                                                        'activity.columns.details',
+                                                                        'Details',
+                                                                    )}
+                                                                </button>
+                                                            </div>
+                                                        </Timeline.Item>
+                                                    ))}
+                                                </Timeline>
+                                            </div>
+                                        ))}
+                                        <div className="flex justify-end px-2">
+                                            <Pagination
+                                                pageSize={pageSize}
+                                                currentPage={pageIndex}
+                                                total={total}
+                                                onChange={(page) =>
+                                                    setPageIndex(page)
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+                            </Loading>
+                        )}
                     </div>
                 </div>
             </Container>

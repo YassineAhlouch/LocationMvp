@@ -970,6 +970,12 @@
         "description": "سجل تدقيق لجميع إجراءات الموظفين في مساحة العمل",
         "system": "النظام",
         "count": "الإدخالات: {{n}}",
+        "view": {
+            "table": "جدول",
+            "timeline": "الخط الزمني"
+        },
+        "empty": "لا توجد أنشطة",
+        "emptyDescription": "جرّب توسيع الفلاتر أو عد لاحقًا.",
         "accessRestricted": "الوصول مقيّد",
         "accessRestrictedDescription": "ليس لديك إذن لعرض سجل الأنشطة.",
         "filters": {

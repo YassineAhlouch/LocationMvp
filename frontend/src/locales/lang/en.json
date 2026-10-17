@@ -970,6 +970,12 @@
         "description": "Audit trail of every staff action across the workspace",
         "system": "System",
         "count": "Entries: {{n}}",
+        "view": {
+            "table": "Table",
+            "timeline": "Timeline"
+        },
+        "empty": "No activity found",
+        "emptyDescription": "Try widening the filters or come back later.",
         "accessRestricted": "Access restricted",
         "accessRestrictedDescription": "You do not have permission to view the activity log.",
         "filters": {
