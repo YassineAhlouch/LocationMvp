@@ -52,7 +52,9 @@
             "activiteJournal": "Activity log",
             "activiteJournalDesc": "Audit trail of staff actions",
             "parametresDevise": "Currency",
-            "parametresDeviseDesc": "Choose the currency amounts are shown in"
+            "parametresDeviseDesc": "Choose the currency amounts are shown in",
+            "notifications": "Notifications",
+            "notificationsDesc": "Announcements and alerts for you"
         },
         "uiComponents": "UI Components",
         "uiComponentsCommon": {
@@ -1481,6 +1483,69 @@
             "recipients": "Recipients",
             "invoice_template_id": "Invoice template",
             "currency": "Currency"
+        }
+    },
+    "notifications": {
+        "title": "Notifications",
+        "description": "Announcements and system alerts addressed to you",
+        "count": "Notifications: {{n}}",
+        "markAllRead": "Mark all read",
+        "viewAll": "View all",
+        "markRead": "Mark read",
+        "compose": "New announcement",
+        "markReadError": "Could not mark the notification as read",
+        "markAllError": "Could not mark all notifications as read",
+        "empty": "No notifications",
+        "emptyDescription": "You are all caught up.",
+        "untitled": "Notification",
+        "sentBy": "From {{name}}",
+        "paymentRecorded": "Payment of {{amount}} recorded",
+        "accessRestricted": "Access restricted",
+        "accessRestrictedDescription": "You do not have permission to view notifications.",
+        "tabs": {
+            "all": "All",
+            "unread": "Unread",
+            "announcements": "Announcements",
+            "payments": "Payments"
+        },
+        "filters": {
+            "type": "Type",
+            "allTypes": "All types",
+            "all": "All",
+            "unread": "Unread"
+        },
+        "status": {
+            "read": "Read",
+            "unread": "Unread"
+        },
+        "types": {
+            "announcement": "Announcement",
+            "payment": "Payment"
+        },
+        "columns": {
+            "notification": "Notification",
+            "type": "Type",
+            "status": "Status",
+            "date": "Date"
+        },
+        "composer": {
+            "title": "New announcement",
+            "subtitle": "In-app message delivered to the people you choose.",
+            "subject": "Subject",
+            "subjectPlaceholder": "Short headline",
+            "body": "Message",
+            "bodyPlaceholder": "Write the announcement…",
+            "audience": "Audience",
+            "audienceAll": "Everyone",
+            "audienceUsers": "Specific people",
+            "audienceRoles": "Specific roles",
+            "recipients": "Recipients",
+            "recipientsPlaceholder": "Choose people…",
+            "roles": "Roles",
+            "rolesPlaceholder": "Choose roles…",
+            "send": "Send",
+            "sent": "Announcement sent to {{n}} recipient(s)",
+            "sendError": "Could not send the announcement"
         }
     }
 }

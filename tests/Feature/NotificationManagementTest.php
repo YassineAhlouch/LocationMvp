@@ -127,6 +127,42 @@ class NotificationManagementTest extends TestCase
             ->assertJsonStructure(['meta' => ['current_page', 'per_page', 'total']]);
     }
 
+    public function test_index_filters_by_unread_and_type(): void
+    {
+        $user = $this->userInAgency();
+
+        $this->notify($user, ['title' => 'Unread announcement']);
+        $this->notify($user, ['title' => 'Read announcement'], now()->toDateTimeString());
+        $this->notify($user, ['title' => 'Unread payment'], null, 'payment');
+
+        // Unread only.
+        $this->actingAs($user, 'sanctum')
+            ->getJson('/api/v1/notifications?unread=1')
+            ->assertOk()
+            ->assertJsonCount(2, 'data')
+            ->assertJsonPath('meta.total', 2);
+
+        // Type filter.
+        $this->actingAs($user, 'sanctum')
+            ->getJson('/api/v1/notifications?type=payment')
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.type', 'payment');
+
+        // Both filters combine.
+        $this->actingAs($user, 'sanctum')
+            ->getJson('/api/v1/notifications?unread=1&type=announcement')
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.data.title', 'Unread announcement');
+
+        // Unknown type is rejected by validation.
+        $this->actingAs($user, 'sanctum')
+            ->getJson('/api/v1/notifications?type=bogus')
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['type']);
+    }
+
     public function test_unread_count_and_mark_read_are_scoped_and_idempotent(): void
     {
         $user = $this->userInAgency();

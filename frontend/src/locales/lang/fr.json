@@ -52,7 +52,9 @@
             "activiteJournal": "Journal d'activité",
             "activiteJournalDesc": "Historique des actions du personnel",
             "parametresDevise": "Devise",
-            "parametresDeviseDesc": "Choisir la devise d'affichage des montants"
+            "parametresDeviseDesc": "Choisir la devise d'affichage des montants",
+            "notifications": "Notifications",
+            "notificationsDesc": "Annonces et alertes pour vous"
         },
         "uiComponents": "UI Components",
         "uiComponentsCommon": {
@@ -1481,6 +1483,69 @@
             "recipients": "Destinataires",
             "invoice_template_id": "Modèle de facture",
             "currency": "Devise"
+        }
+    },
+    "notifications": {
+        "title": "Notifications",
+        "description": "Annonces et alertes système qui vous sont adressées",
+        "count": "Notifications : {{n}}",
+        "markAllRead": "Tout marquer comme lu",
+        "viewAll": "Voir tout",
+        "markRead": "Marquer comme lu",
+        "compose": "Nouvelle annonce",
+        "markReadError": "Impossible de marquer la notification comme lue",
+        "markAllError": "Impossible de tout marquer comme lu",
+        "empty": "Aucune notification",
+        "emptyDescription": "Vous êtes à jour.",
+        "untitled": "Notification",
+        "sentBy": "De {{name}}",
+        "paymentRecorded": "Paiement de {{amount}} enregistré",
+        "accessRestricted": "Accès restreint",
+        "accessRestrictedDescription": "Vous n'avez pas la permission de consulter les notifications.",
+        "tabs": {
+            "all": "Toutes",
+            "unread": "Non lues",
+            "announcements": "Annonces",
+            "payments": "Paiements"
+        },
+        "filters": {
+            "type": "Type",
+            "allTypes": "Tous les types",
+            "all": "Toutes",
+            "unread": "Non lues"
+        },
+        "status": {
+            "read": "Lue",
+            "unread": "Non lue"
+        },
+        "types": {
+            "announcement": "Annonce",
+            "payment": "Paiement"
+        },
+        "columns": {
+            "notification": "Notification",
+            "type": "Type",
+            "status": "Statut",
+            "date": "Date"
+        },
+        "composer": {
+            "title": "Nouvelle annonce",
+            "subtitle": "Message in-app envoyé aux personnes de votre choix.",
+            "subject": "Objet",
+            "subjectPlaceholder": "Titre court",
+            "body": "Message",
+            "bodyPlaceholder": "Rédigez l'annonce…",
+            "audience": "Audience",
+            "audienceAll": "Tout le monde",
+            "audienceUsers": "Personnes spécifiques",
+            "audienceRoles": "Rôles spécifiques",
+            "recipients": "Destinataires",
+            "recipientsPlaceholder": "Choisir des personnes…",
+            "roles": "Rôles",
+            "rolesPlaceholder": "Choisir des rôles…",
+            "send": "Envoyer",
+            "sent": "Annonce envoyée à {{n}} destinataire(s)",
+            "sendError": "Impossible d'envoyer l'annonce"
         }
     }
 }

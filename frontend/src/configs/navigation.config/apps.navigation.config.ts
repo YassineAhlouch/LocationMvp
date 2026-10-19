@@ -436,6 +436,22 @@ const appsNavigationConfig: NavigationTree[] = [
                 },
                 subMenu: [],
             },
+            {
+                key: 'gestion.activite.notifications',
+                path: `${APPS_PREFIX_PATH}/notifications`,
+                title: 'Notifications',
+                translateKey: 'nav.gestion.notifications',
+                icon: 'gestionNotifications',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                meta: {
+                    description: {
+                        translateKey: 'nav.gestion.notificationsDesc',
+                        label: 'Announcements and alerts for you',
+                    },
+                },
+                subMenu: [],
+            },
         ],
     },
 ]

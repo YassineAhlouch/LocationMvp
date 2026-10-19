@@ -273,6 +273,17 @@ const appsRoute: Routes = [
             footer: false,
         },
     },
+    {
+        key: 'gestion.activite.notifications',
+        path: `${APPS_PREFIX_PATH}/notifications`,
+        component: lazy(() => import('@/views/location/Notifications')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'contained',
+            footer: false,
+        },
+    },
 
     // ===== OPERATIONS ===== (planned: maintenance / accidents)
     // +++++ End NEW Links

@@ -31,6 +31,11 @@ class NotificationController extends Controller
                 // The relation's default ->latest() must be discarded, or the
                 // unread-first grouping below would be a dead tiebreaker.
                 ->reorder()
+                ->when($request->boolean('unread'), fn ($query) => $query->whereNull('read_at'))
+                ->when(
+                    $request->filled('type'),
+                    fn ($query) => $query->where('type', $request->string('type')->toString()),
+                )
                 ->orderByRaw('read_at is null desc')
                 ->orderByDesc('created_at')
                 ->orderByDesc('id')

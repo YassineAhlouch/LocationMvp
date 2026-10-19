@@ -52,7 +52,9 @@
             "activiteJournal": "سجل الأنشطة",
             "activiteJournalDesc": "سجل تدقيق إجراءات الموظفين",
             "parametresDevise": "العملة",
-            "parametresDeviseDesc": "اختيار العملة التي تُعرض بها المبالغ"
+            "parametresDeviseDesc": "اختيار العملة التي تُعرض بها المبالغ",
+            "notifications": "الإشعارات",
+            "notificationsDesc": "إعلانات وتنبيهات موجهة إليك"
         },
         "uiComponents": "مكونات الواجهة",
         "uiComponentsCommon": {
@@ -1481,6 +1483,69 @@
             "recipients": "المستلمون",
             "invoice_template_id": "قالب الفاتورة",
             "currency": "العملة"
+        }
+    },
+    "notifications": {
+        "title": "الإشعارات",
+        "description": "إعلانات وتنبيهات النظام الموجهة إليك",
+        "count": "الإشعارات: {{n}}",
+        "markAllRead": "تعليم الكل كمقروء",
+        "viewAll": "عرض الكل",
+        "markRead": "تعليم كمقروء",
+        "compose": "إعلان جديد",
+        "markReadError": "تعذّر تعليم الإشعار كمقروء",
+        "markAllError": "تعذّر تعليم كل الإشعارات كمقروءة",
+        "empty": "لا توجد إشعارات",
+        "emptyDescription": "لا جديد لديك.",
+        "untitled": "إشعار",
+        "sentBy": "من {{name}}",
+        "paymentRecorded": "تم تسجيل دفعة بقيمة {{amount}}",
+        "accessRestricted": "الوصول مقيّد",
+        "accessRestrictedDescription": "ليست لديك صلاحية عرض الإشعارات.",
+        "tabs": {
+            "all": "الكل",
+            "unread": "غير المقروءة",
+            "announcements": "الإعلانات",
+            "payments": "المدفوعات"
+        },
+        "filters": {
+            "type": "النوع",
+            "allTypes": "كل الأنواع",
+            "all": "الكل",
+            "unread": "غير المقروءة"
+        },
+        "status": {
+            "read": "مقروء",
+            "unread": "غير مقروء"
+        },
+        "types": {
+            "announcement": "إعلان",
+            "payment": "دفعة"
+        },
+        "columns": {
+            "notification": "الإشعار",
+            "type": "النوع",
+            "status": "الحالة",
+            "date": "التاريخ"
+        },
+        "composer": {
+            "title": "إعلان جديد",
+            "subtitle": "رسالة داخل التطبيق تُرسل إلى من تختار.",
+            "subject": "الموضوع",
+            "subjectPlaceholder": "عنوان قصير",
+            "body": "الرسالة",
+            "bodyPlaceholder": "اكتب الإعلان…",
+            "audience": "الجمهور",
+            "audienceAll": "الجميع",
+            "audienceUsers": "أشخاص محددون",
+            "audienceRoles": "أدوار محددة",
+            "recipients": "المستلمون",
+            "recipientsPlaceholder": "اختر أشخاصًا…",
+            "roles": "الأدوار",
+            "rolesPlaceholder": "اختر الأدوار…",
+            "send": "إرسال",
+            "sent": "تم إرسال الإعلان إلى {{n}} مستلم",
+            "sendError": "تعذّر إرسال الإعلان"
         }
     }
 }

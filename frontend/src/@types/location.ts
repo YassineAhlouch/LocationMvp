@@ -931,6 +931,40 @@ export type ActivityLog = {
     created_at: string | null
 }
 
+/** The `data` JSON of an in-app notification (see NotificationDispatcher). */
+export type AppNotificationData = {
+    title?: string
+    body?: string
+    sent_by?: {
+        id: number
+        first_name: string
+        last_name: string
+    }
+    reservation_id?: number
+    reservation_number?: string
+    amount?: number
+    method?: string | null
+}
+
+/** One inbox row (GET /api/v1/notifications). */
+export type AppNotification = {
+    id: string
+    type: string
+    data: AppNotificationData
+    read: boolean
+    read_at: string | null
+    created_at: string | null
+}
+
+/** POST /api/v1/notifications — exactly one audience shape must be sent. */
+export type AppNotificationPayload = {
+    title: string
+    body: string
+    send_to_all?: boolean
+    user_ids?: number[]
+    role_ids?: number[]
+}
+
 export type CarFinancingPayloadUpdate = Partial<CarFinancingPayload>
 
 export type MarkInstallmentPaidPayload = {

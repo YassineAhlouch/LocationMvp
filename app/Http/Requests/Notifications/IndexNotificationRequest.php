@@ -18,6 +18,8 @@ class IndexNotificationRequest extends FormRequest
     {
         return [
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:100'],
+            'unread' => ['sometimes', 'boolean'],
+            'type' => ['sometimes', 'string', 'in:announcement,payment'],
         ];
     }
 }

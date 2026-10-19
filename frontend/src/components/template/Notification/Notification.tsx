@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import classNames from 'classnames'
 import Drawer from '@/components/ui/Drawer'
 import Scroll from '@/components/ui/Scroll'
@@ -7,40 +7,54 @@ import Button from '@/components/ui/Button'
 import Tabs from '@/components/ui/Tabs'
 import NotificationAvatar from './NotificationAvatar'
 import NotificationToggle from './NotificationToggle'
-import NotificationExtension from './NotificationExtension'
 import NotificationMessage from './NotificationMessage'
 import EmptyState from '@/components/shared/EmptyState'
 import Elements from '@/components/svg/Elements'
 import {
-    apiGetNotificationList,
-    apiGetNotificationCount,
-} from '@/services/CommonService'
+    apiGetNotifications,
+    apiGetNotificationUnreadCount,
+    apiMarkAllNotificationsRead,
+    apiMarkNotificationRead,
+} from '@/services/LocationService'
+import { useSessionUser } from '@/store/authStore'
 import useResponsive from '@/utils/hooks/useResponsive'
+import useTranslation from '@/utils/hooks/useTranslation'
+import useInterval from '@/utils/hooks/useInterval'
 import { useNavigate } from 'react-router'
 import useSWR from 'swr'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-
-import type { NotificationItem } from './types'
 import { LiCross } from '@/icons'
+import type { AppNotification } from '@/@types/location'
 
 dayjs.extend(relativeTime)
 
 const { TabList, TabNav, TabContent } = Tabs
 
-type NotificationCategory = 'general' | 'mentions' | 'archive'
+type NotificationFilter = 'all' | 'unread' | 'announcement' | 'payment'
 
+const NOTIFICATIONS_ROUTE = '/apps/notifications'
+const DRAWER_PAGE_SIZE = 20
+const UNREAD_POLL_MS = 30000
 const notificationHeight = 'h-[calc(100vh-200px)]'
+
+/** The inbox is permission-gated server-side; don't poll what we can't read. */
+const canViewNotifications = (permissions: string[]) =>
+    permissions.includes('*') ||
+    permissions.includes('notifications.*') ||
+    permissions.includes('notifications.view')
 
 const NotificationList = ({
     notifications,
     loading,
-    noResult,
+    onSelect,
 }: {
-    notifications: NotificationItem[]
+    notifications: AppNotification[]
     loading: boolean
-    noResult: boolean
+    onSelect: (item: AppNotification) => void
 }) => {
+    const { t } = useTranslation()
+
     if (loading) {
         return (
             <div
@@ -54,7 +68,7 @@ const NotificationList = ({
         )
     }
 
-    if (noResult || notifications.length === 0) {
+    if (notifications.length === 0) {
         return (
             <div
                 className={classNames(
@@ -68,14 +82,21 @@ const NotificationList = ({
                         variant="grid"
                         offset={20}
                         illustration={
-                            <div className="bg-white dark:bg-gray-800 shadow-white-xl rounded-full p-2">
+                            <div className="rounded-full bg-white p-2 shadow-white-xl dark:bg-gray-800">
                                 <Elements height={120} width={120} />
                             </div>
                         }
                     >
                         <div className="text-center">
-                            <h3>No notifications!</h3>
-                            <p className="text-base">Please Try again later</p>
+                            <h3>
+                                {t('notifications.empty', 'No notifications')}
+                            </h3>
+                            <p className="text-base">
+                                {t(
+                                    'notifications.emptyDescription',
+                                    'You are all caught up.',
+                                )}
+                            </p>
                         </div>
                     </EmptyState>
                 </div>
@@ -86,40 +107,49 @@ const NotificationList = ({
     return (
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {notifications.map((item) => (
-                <div key={item.id} className="relative flex p-4">
-                    <NotificationAvatar
-                        type={item.type}
-                        actor={item.actor}
-                        payload={item.payload}
-                    />
+                <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => onSelect(item)}
+                    className={classNames(
+                        'relative flex w-full p-4 text-start transition-colors',
+                        item.read
+                            ? 'hover:bg-gray-50 dark:hover:bg-gray-800'
+                            : 'bg-gray-50 hover:bg-gray-100 dark:bg-gray-800/60 dark:hover:bg-gray-800',
+                    )}
+                >
+                    <NotificationAvatar notification={item} />
                     <div className="mx-3 flex-1">
-                        <div>
-                            <NotificationMessage notification={item} />
-                        </div>
-                        <span className="text-xs">
-                            {dayjs(item.createdAt).fromNow()}
+                        <NotificationMessage notification={item} compact />
+                        <span className="mt-1 block text-xs text-gray-400 dark:text-gray-500">
+                            {item.created_at
+                                ? dayjs(item.created_at).fromNow()
+                                : ''}
                         </span>
-                        <NotificationExtension
-                            type={item.type}
-                            payload={item.payload}
-                        />
                     </div>
-                </div>
+                    {!item.read && (
+                        <span className="absolute end-4 top-4 h-2 w-2 rounded-full bg-primary" />
+                    )}
+                </button>
             ))}
         </div>
     )
 }
 
 const Notification = ({ className }: { className?: string }) => {
-    const [activeTab, setActiveTab] = useState<NotificationCategory>('general')
+    const [activeTab, setActiveTab] = useState<NotificationFilter>('all')
     const [isOpen, setIsOpen] = useState(false)
 
     const navigate = useNavigate()
+    const { t } = useTranslation()
     const { larger } = useResponsive()
+    const { user } = useSessionUser()
+
+    const canView = canViewNotifications(user?.role?.permissions ?? [])
 
     const { data: countData, mutate: mutateCount } = useSWR(
-        '/notification/count',
-        apiGetNotificationCount,
+        canView ? '/v1/notifications/unread-count' : null,
+        apiGetNotificationUnreadCount,
         {
             revalidateOnFocus: true,
             revalidateOnReconnect: true,
@@ -127,54 +157,90 @@ const Notification = ({ className }: { className?: string }) => {
     )
 
     const {
-        data: notifications,
+        data: listData,
         isLoading,
-        mutate: mutateNotificationItem,
-    } = useSWR<NotificationItem[]>(
-        '/notification/list',
-        apiGetNotificationList<NotificationItem[]>,
+        mutate: mutateList,
+    } = useSWR(
+        canView ? ['/v1/notifications/inbox', DRAWER_PAGE_SIZE] : null,
+        () => apiGetNotifications({ per_page: DRAWER_PAGE_SIZE }),
         {
             revalidateOnFocus: false,
             revalidateOnReconnect: false,
         },
     )
 
-    const unreadCount = countData?.count || 0
+    // Keep the navbar badge honest without a page reload.
+    useInterval(() => mutateCount(), canView ? UNREAD_POLL_MS : null)
+
+    const unreadCount = countData?.unread_count ?? 0
     const hasUnread = unreadCount > 0
-    const noResult = countData !== undefined && unreadCount === 0
+    const notifications = useMemo(() => listData?.data ?? [], [listData])
 
     const filteredNotifications = useMemo(() => {
-        return (notifications || [])?.filter((item) => item.category === activeTab) || []
+        switch (activeTab) {
+            case 'unread':
+                return notifications.filter((item) => !item.read)
+            case 'announcement':
+            case 'payment':
+                return notifications.filter((item) => item.type === activeTab)
+            default:
+                return notifications
+        }
     }, [notifications, activeTab])
 
     const onDrawerOpen = () => {
         setIsOpen(true)
+        mutateList()
+        mutateCount()
     }
 
     const onDrawerClose = () => {
         setIsOpen(false)
     }
 
-    const onMarkAllAsRead = () => {
-        if (!notifications) {
+    const handleSelect = async (item: AppNotification) => {
+        if (item.read) {
             return
         }
-
-        mutateNotificationItem(
-            notifications.map((item) => ({
-                ...item,
-                read: true,
-            })),
-            false,
-        )
-        mutateCount({ count: 0 }, false)
-        setIsOpen(false)
+        try {
+            await apiMarkNotificationRead(item.id)
+            mutateList()
+            mutateCount()
+        } catch {
+            // Leave the row unread; the next poll reconciles the badge.
+        }
     }
 
-    const handleViewAllActivity = () => {
-        setIsOpen(false)
-        navigate('/apps/journal-activite')
+    const onMarkAllAsRead = async () => {
+        if (unreadCount === 0) {
+            return
+        }
+        try {
+            await apiMarkAllNotificationsRead()
+            mutateList()
+            mutateCount({ unread_count: 0 }, false)
+        } catch {
+            mutateCount()
+        }
     }
+
+    const handleViewAll = () => {
+        setIsOpen(false)
+        navigate(NOTIFICATIONS_ROUTE)
+    }
+
+    const tabs: { value: NotificationFilter; label: string }[] = [
+        { value: 'all', label: t('notifications.tabs.all', 'All') },
+        { value: 'unread', label: t('notifications.tabs.unread', 'Unread') },
+        {
+            value: 'announcement',
+            label: t('notifications.tabs.announcements', 'Announcements'),
+        },
+        {
+            value: 'payment',
+            label: t('notifications.tabs.payments', 'Payments'),
+        },
+    ]
 
     return (
         <>
@@ -192,35 +258,42 @@ const Notification = ({ className }: { className?: string }) => {
                 shouldCloseOnEsc
                 bodyClass="p-0"
                 footer={
-                    <div className="flex justify-end gap-2 w-full">
-                        <Button onClick={onMarkAllAsRead}>Mark all read</Button>
-                        <Button variant="solid" onClick={handleViewAllActivity}>
-                            View All Activity
+                    <div className="flex w-full justify-end gap-2">
+                        <Button
+                            onClick={onMarkAllAsRead}
+                            disabled={!hasUnread}
+                        >
+                            {t('notifications.markAllRead', 'Mark all read')}
+                        </Button>
+                        <Button variant="solid" onClick={handleViewAll}>
+                            {t('notifications.viewAll', 'View all')}
                         </Button>
                     </div>
                 }
             >
-                <div className="flex items-center justify-between py-4 px-4">
-                    <h5>Notifications</h5>
+                <div className="flex items-center justify-between px-4 py-4">
+                    <h5>{t('notifications.title', 'Notifications')}</h5>
                     <Button
                         size="sm"
                         variant="subtle"
                         icon={<LiCross className="text-xl" />}
-                        onClick={() => setIsOpen(false)}
+                        onClick={onDrawerClose}
                     />
                 </div>
                 <div className="flex items-center justify-between">
                     <Tabs
                         value={activeTab}
                         onChange={(val) =>
-                            setActiveTab(val as NotificationCategory)
+                            setActiveTab(val as NotificationFilter)
                         }
                         className="flex-1"
                     >
                         <TabList className="px-2">
-                            <TabNav value="general">General</TabNav>
-                            <TabNav value="mentions">Mentions</TabNav>
-                            <TabNav value="archive">Archive</TabNav>
+                            {tabs.map((tab) => (
+                                <TabNav key={tab.value} value={tab.value}>
+                                    {tab.label}
+                                </TabNav>
+                            ))}
                         </TabList>
                     </Tabs>
                 </div>
@@ -232,27 +305,15 @@ const Notification = ({ className }: { className?: string }) => {
                     )}
                 >
                     <Tabs value={activeTab}>
-                        <TabContent value="general">
-                            <NotificationList
-                                notifications={filteredNotifications}
-                                loading={isLoading}
-                                noResult={noResult && activeTab === 'general'}
-                            />
-                        </TabContent>
-                        <TabContent value="mentions">
-                            <NotificationList
-                                notifications={filteredNotifications}
-                                loading={isLoading}
-                                noResult={noResult && activeTab === 'mentions'}
-                            />
-                        </TabContent>
-                        <TabContent value="archive">
-                            <NotificationList
-                                notifications={filteredNotifications}
-                                loading={isLoading}
-                                noResult={noResult && activeTab === 'archive'}
-                            />
-                        </TabContent>
+                        {tabs.map((tab) => (
+                            <TabContent key={tab.value} value={tab.value}>
+                                <NotificationList
+                                    notifications={filteredNotifications}
+                                    loading={isLoading}
+                                    onSelect={handleSelect}
+                                />
+                            </TabContent>
+                        ))}
                     </Tabs>
                 </Scroll>
             </Drawer>

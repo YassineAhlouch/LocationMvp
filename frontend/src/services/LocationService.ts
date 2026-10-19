@@ -3,6 +3,8 @@ import { SUBSCRIPTION_SWR_KEY } from '@/constants/billing.constant'
 import type {
     ActivityLog,
     Agency,
+    AppNotification,
+    AppNotificationPayload,
     Brand,
     Car,
     CarAvailability,
@@ -592,4 +594,43 @@ export const apiGetActivityLog = (id: number) =>
     ApiService.fetchDataWithAxios<ActivityLog>({
         url: `/v1/activity-logs/${id}`,
         method: 'get',
+    })
+
+// ---- In-app notifications (my inbox) --------------------------------------
+
+/** The authenticated user's inbox, unread first, newest first. */
+export const apiGetNotifications = (params?: Record<string, unknown>) =>
+    ApiService.fetchDataWithAxios<Paginated<AppNotification>>({
+        url: '/v1/notifications',
+        method: 'get',
+        params,
+    })
+
+export const apiGetNotificationUnreadCount = () =>
+    ApiService.fetchDataWithAxios<{ unread_count: number }>({
+        url: '/v1/notifications/unread-count',
+        method: 'get',
+    })
+
+export const apiMarkNotificationRead = (id: string) =>
+    ApiService.fetchDataWithAxios<AppNotification>({
+        url: `/v1/notifications/read/${id}`,
+        method: 'post',
+    })
+
+export const apiMarkAllNotificationsRead = () =>
+    ApiService.fetchDataWithAxios<{
+        marked_count: number
+        unread_count: number
+    }>({
+        url: '/v1/notifications/read-all',
+        method: 'post',
+    })
+
+/** Compose an announcement (permission notifications.send). */
+export const apiSendNotification = (data: AppNotificationPayload) =>
+    ApiService.fetchDataWithAxios<{ sent: number }>({
+        url: '/v1/notifications',
+        method: 'post',
+        data,
     })
