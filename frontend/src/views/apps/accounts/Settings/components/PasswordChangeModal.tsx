@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Dialog from '@/components/ui/Dialog'
@@ -6,47 +6,110 @@ import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import { FormItem, Form } from '@/components/ui/Form'
 import IconFrame from '@/components/shared/IconFrame'
+import useTranslation from '@/utils/hooks/useTranslation'
 import { LiLockPassword, LiEye, LiEyeSlash, LiCross } from '@/icons'
 import { z } from 'zod'
-import type { SecurityStrength } from '../types'
 import type { MouseEvent } from 'react'
+import type { SecurityStrength } from '../types'
+import type { Translator } from '@/views/location/shared'
 
 interface PasswordChangeModalProps {
     isOpen: boolean
     onClose: () => void
-    onSubmit: (data: PasswordChangeFormData) => Promise<void>
+    /** Resolves true when the password changed; false keeps the modal open. */
+    onSubmit: (data: PasswordChangeFormData) => Promise<boolean>
     isSubmitting?: boolean
 }
 
-const passwordChangeSchema = z
-    .object({
-        currentPassword: z.string().min(1, 'Current password is required'),
-        newPassword: z
-            .string()
-            .min(8, 'Password must be at least 8 characters')
-            .regex(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-                'Password must contain uppercase, lowercase, number and special character',
+const passwordChangeSchema = (t: Translator) =>
+    z
+        .object({
+            currentPassword: z
+                .string()
+                .min(
+                    1,
+                    t(
+                        'settings.security.validation.currentRequired',
+                        'Current password is required',
+                    ),
+                ),
+            newPassword: z
+                .string()
+                .min(
+                    8,
+                    t(
+                        'settings.security.validation.newMin',
+                        'Password must be at least 8 characters',
+                    ),
+                )
+                .regex(
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+                    t(
+                        'settings.security.validation.newComplexity',
+                        'Password must contain uppercase, lowercase, number and special character',
+                    ),
+                ),
+            confirmPassword: z.string(),
+        })
+        .refine((data) => data.newPassword === data.confirmPassword, {
+            message: t(
+                'settings.security.validation.mismatch',
+                "Passwords don't match",
             ),
-        confirmPassword: z.string(),
-    })
-    .refine((data) => data.newPassword === data.confirmPassword, {
-        message: "Passwords don't match",
-        path: ['confirmPassword'],
-    })
+            path: ['confirmPassword'],
+        })
 
-type PasswordChangeFormData = z.infer<typeof passwordChangeSchema>
+type PasswordChangeFormData = z.infer<ReturnType<typeof passwordChangeSchema>>
+
+const STRENGTH_META: Record<
+    SecurityStrength,
+    {
+        key: string
+        fallback: string
+        color: string
+        bgColor: string
+        percent: number
+    }
+> = {
+    weak: {
+        key: 'settings.security.strength.weak',
+        fallback: 'Weak',
+        color: 'text-error',
+        bgColor: 'bg-error',
+        percent: 25,
+    },
+    medium: {
+        key: 'settings.security.strength.medium',
+        fallback: 'Medium',
+        color: 'text-warning',
+        bgColor: 'bg-warning',
+        percent: 50,
+    },
+    strong: {
+        key: 'settings.security.strength.strong',
+        fallback: 'Strong',
+        color: 'text-success',
+        bgColor: 'bg-success',
+        percent: 75,
+    },
+    'very-secure': {
+        key: 'settings.security.strength.verySecure',
+        fallback: 'Very secure',
+        color: 'text-success',
+        bgColor: 'bg-success',
+        percent: 100,
+    },
+}
 
 const getPasswordStrength = (password: string): SecurityStrength => {
-    if (password.length === 0) return 'weak'
+    if (password.length === 0) {
+        return 'weak'
+    }
 
     let score = 0
 
-    // Length check
     if (password.length >= 8) score++
     if (password.length >= 12) score++
-
-    // Character variety checks
     if (/[a-z]/.test(password)) score++
     if (/[A-Z]/.test(password)) score++
     if (/\d/.test(password)) score++
@@ -55,38 +118,8 @@ const getPasswordStrength = (password: string): SecurityStrength => {
     if (score <= 2) return 'weak'
     if (score <= 4) return 'medium'
     if (score <= 5) return 'strong'
-    return 'very-secure'
-}
 
-const getStrengthDisplay = (strength: SecurityStrength) => {
-    switch (strength) {
-        case 'very-secure':
-            return {
-                text: 'Very secure',
-                color: 'text-success',
-                bgColor: 'bg-success',
-            }
-        case 'strong':
-            return {
-                text: 'Strong',
-                color: 'text-success',
-                bgColor: 'bg-success',
-            }
-        case 'medium':
-            return {
-                text: 'Medium',
-                color: 'text-warning',
-                bgColor: 'bg-warning',
-            }
-        case 'weak':
-            return { text: 'Weak', color: 'text-error', bgColor: 'bg-error' }
-        default:
-            return {
-                text: 'Unknown',
-                color: 'text-gray-500',
-                bgColor: 'bg-gray-500',
-            }
-    }
+    return 'very-secure'
 }
 
 const PasswordChangeModal = ({
@@ -95,9 +128,12 @@ const PasswordChangeModal = ({
     onSubmit,
     isSubmitting = false,
 }: PasswordChangeModalProps) => {
+    const { t } = useTranslation()
     const [currentPasswordVisible, setCurrentPasswordVisible] = useState(false)
     const [newPasswordVisible, setNewPasswordVisible] = useState(false)
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
+
+    const schema = useMemo(() => passwordChangeSchema(t), [t])
 
     const {
         control,
@@ -111,12 +147,11 @@ const PasswordChangeModal = ({
             newPassword: '',
             confirmPassword: '',
         },
-        resolver: zodResolver(passwordChangeSchema),
+        resolver: zodResolver(schema),
     })
 
-    const newPassword = watch('newPassword')
-    const passwordStrength = getPasswordStrength(newPassword)
-    const strengthDisplay = getStrengthDisplay(passwordStrength)
+    const strength = STRENGTH_META[getPasswordStrength(watch('newPassword'))]
+    const strengthText = t(strength.key, strength.fallback)
 
     const handleClose = () => {
         reset()
@@ -124,24 +159,33 @@ const PasswordChangeModal = ({
     }
 
     const handleFormSubmit = async (data: PasswordChangeFormData) => {
-        await onSubmit(data)
-        handleClose()
+        const success = await onSubmit(data)
+
+        if (success) {
+            handleClose()
+        }
     }
 
-    const createPasswordVisibilityToggle = (
+    const visibilityToggle = (
         visible: boolean,
-        setVisible: (visible: boolean) => void,
-        fieldName: string,
+        onToggle: () => void,
+        fieldLabel: string,
     ) => (
         <button
             type="button"
-            onClick={(e: MouseEvent) => {
-                e.preventDefault()
-                setVisible(!visible)
+            onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                event.preventDefault()
+                onToggle()
             }}
-            aria-label={`${visible ? 'Hide' : 'Show'} ${fieldName}`}
-            tabIndex={0}
-            className="heading-text text-base"
+            aria-label={
+                visible
+                    ? t('settings.security.hide', 'Hide {{field}}', {
+                          field: fieldLabel,
+                      })
+                    : t('settings.security.show', 'Show {{field}}', {
+                          field: fieldLabel,
+                      })
+            }
         >
             {visible ? <LiEye /> : <LiEyeSlash />}
         </button>
@@ -152,9 +196,7 @@ const PasswordChangeModal = ({
             isOpen={isOpen}
             onClose={handleClose}
             className="p-0"
-            closable={false}
-            aria-labelledby="password-modal-title"
-            aria-describedby="password-modal-description"
+            aria-labelledby="password-change-title"
         >
             <div className="border-b border-gray-200 dark:border-gray-700 p-4 flex justify-between gap-2">
                 <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
@@ -162,9 +204,17 @@ const PasswordChangeModal = ({
                         <LiLockPassword className="text-xl heading-text" />
                     </IconFrame>
                     <div className="min-w-0 flex-1">
-                        <h5>Change Password</h5>
+                        <h5 id="password-change-title">
+                            {t(
+                                'settings.security.modal.title',
+                                'Change password',
+                            )}
+                        </h5>
                         <p className="hidden sm:block">
-                            Update password to keep account secure.
+                            {t(
+                                'settings.security.modal.description',
+                                'Update your password to keep your account secure.',
+                            )}
                         </p>
                     </div>
                 </div>
@@ -175,7 +225,7 @@ const PasswordChangeModal = ({
                         size="sm"
                         onClick={handleClose}
                         disabled={isSubmitting}
-                        aria-label="Close password change dialog"
+                        aria-label={t('common.close', 'Close')}
                         icon={
                             <LiCross className="text-lg" aria-hidden="true" />
                         }
@@ -186,7 +236,10 @@ const PasswordChangeModal = ({
             <div className="p-3 sm:p-4">
                 <Form onSubmit={handleSubmit(handleFormSubmit)}>
                     <FormItem
-                        label="Current Password"
+                        label={t(
+                            'settings.security.modal.currentPassword',
+                            'Current password',
+                        )}
                         invalid={Boolean(errors.currentPassword)}
                         errorMessage={errors.currentPassword?.message}
                     >
@@ -200,14 +253,22 @@ const PasswordChangeModal = ({
                                             ? 'text'
                                             : 'password'
                                     }
-                                    placeholder="Enter your current password"
-                                    suffix={createPasswordVisibilityToggle(
+                                    placeholder={t(
+                                        'settings.security.modal.currentPasswordPlaceholder',
+                                        'Enter your current password',
+                                    )}
+                                    suffix={visibilityToggle(
                                         currentPasswordVisible,
-                                        setCurrentPasswordVisible,
-                                        'current password',
+                                        () =>
+                                            setCurrentPasswordVisible(
+                                                (visible) => !visible,
+                                            ),
+                                        t(
+                                            'settings.security.modal.currentPassword',
+                                            'Current password',
+                                        ),
                                     )}
                                     disabled={isSubmitting}
-                                    aria-describedby="current-password-help"
                                     {...field}
                                 />
                             )}
@@ -215,7 +276,10 @@ const PasswordChangeModal = ({
                     </FormItem>
 
                     <FormItem
-                        label="New Password"
+                        label={t(
+                            'settings.security.modal.newPassword',
+                            'New password',
+                        )}
                         invalid={Boolean(errors.newPassword)}
                         errorMessage={errors.newPassword?.message}
                     >
@@ -230,74 +294,64 @@ const PasswordChangeModal = ({
                                                 ? 'text'
                                                 : 'password'
                                         }
-                                        placeholder="Enter your new password"
-                                        suffix={createPasswordVisibilityToggle(
+                                        placeholder={t(
+                                            'settings.security.modal.newPasswordPlaceholder',
+                                            'Enter your new password',
+                                        )}
+                                        suffix={visibilityToggle(
                                             newPasswordVisible,
-                                            setNewPasswordVisible,
-                                            'new password',
+                                            () =>
+                                                setNewPasswordVisible(
+                                                    (visible) => !visible,
+                                                ),
+                                            t(
+                                                'settings.security.modal.newPassword',
+                                                'New password',
+                                            ),
                                         )}
                                         disabled={isSubmitting}
-                                        aria-describedby="new-password-help password-strength"
                                         {...field}
                                     />
-                                    {newPassword && (
+                                    <div
+                                        className="flex items-center gap-2"
+                                        role="status"
+                                        aria-live="polite"
+                                    >
                                         <div
-                                            className="flex items-center gap-2"
-                                            role="status"
-                                            aria-live="polite"
-                                            aria-label={`Password strength: ${strengthDisplay.text}`}
+                                            className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-1"
+                                            role="progressbar"
+                                            aria-valuenow={strength.percent}
+                                            aria-valuemin={0}
+                                            aria-valuemax={100}
+                                            aria-label={t(
+                                                'settings.security.strength.label',
+                                                'Password strength',
+                                            )}
                                         >
                                             <div
-                                                className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-1"
-                                                role="progressbar"
-                                                aria-valuenow={
-                                                    passwordStrength === 'weak'
-                                                        ? 25
-                                                        : passwordStrength ===
-                                                            'medium'
-                                                          ? 50
-                                                          : passwordStrength ===
-                                                              'strong'
-                                                            ? 75
-                                                            : 100
-                                                }
-                                                aria-valuemin={0}
-                                                aria-valuemax={100}
-                                                aria-label="Password strength indicator"
-                                                id="password-strength"
-                                            >
-                                                <div
-                                                    className={`h-1 rounded-full transition-all duration-300 ${strengthDisplay.bgColor}`}
-                                                    style={{
-                                                        width:
-                                                            passwordStrength ===
-                                                            'weak'
-                                                                ? '25%'
-                                                                : passwordStrength ===
-                                                                    'medium'
-                                                                  ? '50%'
-                                                                  : passwordStrength ===
-                                                                      'strong'
-                                                                    ? '75%'
-                                                                    : '100%',
-                                                    }}
-                                                />
-                                            </div>
-                                            <span
-                                                className={`text-xs font-medium ${strengthDisplay.color}`}
-                                                aria-hidden="true"
-                                            >
-                                                {strengthDisplay.text}
-                                            </span>
+                                                className={`h-1 rounded-full transition-all duration-300 ${strength.bgColor}`}
+                                                style={{
+                                                    width: `${strength.percent}%`,
+                                                }}
+                                            />
                                         </div>
-                                    )}
+                                        <span
+                                            className={`text-xs font-medium ${strength.color}`}
+                                            aria-hidden="true"
+                                        >
+                                            {strengthText}
+                                        </span>
+                                    </div>
                                 </div>
                             )}
                         />
                     </FormItem>
 
                     <FormItem
-                        label="Confirm New Password"
+                        label={t(
+                            'settings.security.modal.confirmPassword',
+                            'Confirm new password',
+                        )}
                         invalid={Boolean(errors.confirmPassword)}
                         errorMessage={errors.confirmPassword?.message}
                     >
@@ -311,14 +365,22 @@ const PasswordChangeModal = ({
                                             ? 'text'
                                             : 'password'
                                     }
-                                    placeholder="Confirm your new password"
-                                    suffix={createPasswordVisibilityToggle(
+                                    placeholder={t(
+                                        'settings.security.modal.confirmPasswordPlaceholder',
+                                        'Confirm your new password',
+                                    )}
+                                    suffix={visibilityToggle(
                                         confirmPasswordVisible,
-                                        setConfirmPasswordVisible,
-                                        'confirm password',
+                                        () =>
+                                            setConfirmPasswordVisible(
+                                                (visible) => !visible,
+                                            ),
+                                        t(
+                                            'settings.security.modal.confirmPassword',
+                                            'Confirm new password',
+                                        ),
                                     )}
                                     disabled={isSubmitting}
-                                    aria-describedby="confirm-password-help"
                                     {...field}
                                 />
                             )}
@@ -327,11 +389,12 @@ const PasswordChangeModal = ({
 
                     <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 mt-4 sm:mt-6">
                         <Button
+                            type="button"
                             onClick={handleClose}
                             disabled={isSubmitting}
                             className="w-full sm:w-auto"
                         >
-                            Cancel
+                            {t('common.cancel', 'Cancel')}
                         </Button>
                         <Button
                             type="submit"
@@ -339,7 +402,10 @@ const PasswordChangeModal = ({
                             loading={isSubmitting}
                             className="w-full sm:w-auto"
                         >
-                            Update Password
+                            {t(
+                                'settings.security.modal.update',
+                                'Update password',
+                            )}
                         </Button>
                     </div>
                 </Form>

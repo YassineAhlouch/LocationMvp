@@ -263,7 +263,8 @@
         "hi": "Bonjour",
         "comparison": "Comparaison",
         "cancel": "Annuler",
-        "save": "Enregistrer"
+        "save": "Enregistrer",
+        "close": "Fermer"
     },
     "reservations": {
         "reservations": "Réservations",
@@ -1148,6 +1149,11 @@
         }
     },
     "settings": {
+        "title": "Paramètres",
+        "tabs": {
+            "profile": "Profil",
+            "security": "Sécurité"
+        },
         "invoiceTemplates": {
             "title": "Modèles de facture",
             "description": "Attribuez un modèle de contrat à chaque agence. Les agences ne peuvent pas le changer elles-mêmes.",
@@ -1172,6 +1178,68 @@
             "accessRestricted": "Accès restreint",
             "accessRestrictedDescription": "Seuls les administrateurs peuvent modifier la devise de l'agence.",
             "noCurrencies": "Aucune devise disponible."
+        },
+        "profile": {
+            "title": "Informations de base",
+            "description": "Modifiez votre nom, votre e-mail et vos coordonnées.",
+            "avatar": "Photo",
+            "avatarHint": "JPEG, PNG ou WebP, jusqu'à 4 Mo.",
+            "uploadAvatar": "Téléverser une photo",
+            "avatarUpdated": "Photo mise à jour",
+            "avatarFailed": "Impossible de téléverser la photo",
+            "avatarType": "Téléversez une image JPEG, PNG ou WebP.",
+            "firstName": "Prénom",
+            "lastName": "Nom",
+            "email": "E-mail",
+            "phone": "Téléphone",
+            "placeholderFirstName": "Yassine",
+            "placeholderLastName": "Ahlouch",
+            "placeholderEmail": "personnel@location.ma",
+            "placeholderPhone": "+212 6 00 00 00 00",
+            "updated": "Profil mis à jour",
+            "updateFailed": "Impossible de mettre à jour votre profil",
+            "validation": {
+                "firstNameRequired": "Le prénom est requis",
+                "lastNameRequired": "Le nom est requis",
+                "emailRequired": "L'e-mail est requis",
+                "emailInvalid": "Saisissez une adresse e-mail valide"
+            }
+        },
+        "security": {
+            "title": "Sécurité du compte",
+            "description": "Modifiez votre mot de passe pour sécuriser votre compte.",
+            "password": "Mot de passe",
+            "passwordHint": "Utilisez au moins 8 caractères.",
+            "changePassword": "Changer le mot de passe",
+            "updated": "Mot de passe mis à jour",
+            "updateFailed": "Impossible de mettre à jour le mot de passe",
+            "show": "Afficher {{field}}",
+            "hide": "Masquer {{field}}",
+            "modal": {
+                "title": "Changer le mot de passe",
+                "description": "Modifiez votre mot de passe pour sécuriser votre compte.",
+                "currentPassword": "Mot de passe actuel",
+                "currentPasswordPlaceholder": "Saisissez votre mot de passe actuel",
+                "newPassword": "Nouveau mot de passe",
+                "newPasswordPlaceholder": "Saisissez votre nouveau mot de passe",
+                "confirmPassword": "Confirmer le nouveau mot de passe",
+                "confirmPasswordPlaceholder": "Confirmez votre nouveau mot de passe",
+                "close": "Fermer",
+                "update": "Mettre à jour le mot de passe"
+            },
+            "strength": {
+                "label": "Force du mot de passe",
+                "weak": "Faible",
+                "medium": "Moyen",
+                "strong": "Fort",
+                "verySecure": "Très sécurisé"
+            },
+            "validation": {
+                "currentRequired": "Le mot de passe actuel est requis",
+                "newMin": "Le mot de passe doit comporter au moins 8 caractères",
+                "newComplexity": "Le mot de passe doit contenir des majuscules, des minuscules, un chiffre et un caractère spécial",
+                "mismatch": "Les mots de passe ne correspondent pas"
+            }
         }
     },
     "activity": {

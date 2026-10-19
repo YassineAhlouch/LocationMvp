@@ -263,7 +263,8 @@
         "hi": "Hi",
         "comparison": "Comparison",
         "cancel": "Cancel",
-        "save": "Save"
+        "save": "Save",
+        "close": "Close"
     },
     "reservations": {
         "reservations": "Reservations",
@@ -1148,6 +1149,11 @@
         }
     },
     "settings": {
+        "title": "Settings",
+        "tabs": {
+            "profile": "Profile",
+            "security": "Security"
+        },
         "invoiceTemplates": {
             "title": "Invoice templates",
             "description": "Assign one contract layout to each agency. Agencies cannot switch it themselves.",
@@ -1172,6 +1178,68 @@
             "accessRestricted": "Access restricted",
             "accessRestrictedDescription": "Only administrators can change the agency currency.",
             "noCurrencies": "No currencies available."
+        },
+        "profile": {
+            "title": "Basic information",
+            "description": "Edit your name, email and contact details.",
+            "avatar": "Photo",
+            "avatarHint": "JPEG, PNG or WebP, up to 4 MB.",
+            "uploadAvatar": "Upload photo",
+            "avatarUpdated": "Photo updated",
+            "avatarFailed": "Could not upload the photo",
+            "avatarType": "Upload a JPEG, PNG or WebP image.",
+            "firstName": "First name",
+            "lastName": "Last name",
+            "email": "Email",
+            "phone": "Phone",
+            "placeholderFirstName": "Yassine",
+            "placeholderLastName": "Ahlouch",
+            "placeholderEmail": "staff@location.ma",
+            "placeholderPhone": "+212 6 00 00 00 00",
+            "updated": "Profile updated",
+            "updateFailed": "Could not update your profile",
+            "validation": {
+                "firstNameRequired": "First name is required",
+                "lastNameRequired": "Last name is required",
+                "emailRequired": "Email is required",
+                "emailInvalid": "Enter a valid email address"
+            }
+        },
+        "security": {
+            "title": "Account security",
+            "description": "Update your password to keep your account secure.",
+            "password": "Password",
+            "passwordHint": "Use at least 8 characters.",
+            "changePassword": "Change password",
+            "updated": "Password updated",
+            "updateFailed": "Could not update the password",
+            "show": "Show {{field}}",
+            "hide": "Hide {{field}}",
+            "modal": {
+                "title": "Change password",
+                "description": "Update your password to keep your account secure.",
+                "currentPassword": "Current password",
+                "currentPasswordPlaceholder": "Enter your current password",
+                "newPassword": "New password",
+                "newPasswordPlaceholder": "Enter your new password",
+                "confirmPassword": "Confirm new password",
+                "confirmPasswordPlaceholder": "Confirm your new password",
+                "close": "Close",
+                "update": "Update password"
+            },
+            "strength": {
+                "label": "Password strength",
+                "weak": "Weak",
+                "medium": "Medium",
+                "strong": "Strong",
+                "verySecure": "Very secure"
+            },
+            "validation": {
+                "currentRequired": "Current password is required",
+                "newMin": "Password must be at least 8 characters",
+                "newComplexity": "Password must contain uppercase, lowercase, number and special character",
+                "mismatch": "Passwords don't match"
+            }
         }
     },
     "activity": {

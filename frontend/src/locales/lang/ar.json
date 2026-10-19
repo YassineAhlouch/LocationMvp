@@ -263,7 +263,8 @@
         "hi": "مرحبا",
         "comparison": "مقارنة",
         "cancel": "إلغاء",
-        "save": "حفظ"
+        "save": "حفظ",
+        "close": "إغلاق"
     },
     "reservations": {
         "reservations": "الحجوزات",
@@ -1148,6 +1149,11 @@
         }
     },
     "settings": {
+        "title": "الإعدادات",
+        "tabs": {
+            "profile": "الملف الشخصي",
+            "security": "الأمان"
+        },
         "invoiceTemplates": {
             "title": "قوالب الفواتير",
             "description": "عيّن قالب عقد واحد لكل وكالة. لا يمكن للوكالات تغييره بنفسها.",
@@ -1172,6 +1178,68 @@
             "accessRestricted": "الوصول مقيّد",
             "accessRestrictedDescription": "يمكن للمسؤولين فقط تغيير عملة الوكالة.",
             "noCurrencies": "لا توجد عملات متاحة."
+        },
+        "profile": {
+            "title": "المعلومات الأساسية",
+            "description": "عدّل اسمك وبريدك الإلكتروني وبيانات الاتصال بك.",
+            "avatar": "الصورة",
+            "avatarHint": "JPEG أو PNG أو WebP، حتى 4 ميغابايت.",
+            "uploadAvatar": "تحميل صورة",
+            "avatarUpdated": "تم تحديث الصورة",
+            "avatarFailed": "تعذّر تحميل الصورة",
+            "avatarType": "حمّل صورة بصيغة JPEG أو PNG أو WebP.",
+            "firstName": "الاسم الأول",
+            "lastName": "اسم العائلة",
+            "email": "البريد الإلكتروني",
+            "phone": "الهاتف",
+            "placeholderFirstName": "ياسين",
+            "placeholderLastName": "أحلوش",
+            "placeholderEmail": "staff@location.ma",
+            "placeholderPhone": "+212 6 00 00 00 00",
+            "updated": "تم تحديث الملف الشخصي",
+            "updateFailed": "تعذّر تحديث ملفك الشخصي",
+            "validation": {
+                "firstNameRequired": "الاسم الأول مطلوب",
+                "lastNameRequired": "اسم العائلة مطلوب",
+                "emailRequired": "البريد الإلكتروني مطلوب",
+                "emailInvalid": "أدخل بريدًا إلكترونيًا صالحًا"
+            }
+        },
+        "security": {
+            "title": "أمان الحساب",
+            "description": "حدّث كلمة المرور للحفاظ على أمان حسابك.",
+            "password": "كلمة المرور",
+            "passwordHint": "استخدم 8 أحرف على الأقل.",
+            "changePassword": "تغيير كلمة المرور",
+            "updated": "تم تحديث كلمة المرور",
+            "updateFailed": "تعذّر تحديث كلمة المرور",
+            "show": "إظهار {{field}}",
+            "hide": "إخفاء {{field}}",
+            "modal": {
+                "title": "تغيير كلمة المرور",
+                "description": "حدّث كلمة المرور للحفاظ على أمان حسابك.",
+                "currentPassword": "كلمة المرور الحالية",
+                "currentPasswordPlaceholder": "أدخل كلمة المرور الحالية",
+                "newPassword": "كلمة المرور الجديدة",
+                "newPasswordPlaceholder": "أدخل كلمة المرور الجديدة",
+                "confirmPassword": "تأكيد كلمة المرور الجديدة",
+                "confirmPasswordPlaceholder": "أكّد كلمة المرور الجديدة",
+                "close": "إغلاق",
+                "update": "تحديث كلمة المرور"
+            },
+            "strength": {
+                "label": "قوة كلمة المرور",
+                "weak": "ضعيفة",
+                "medium": "متوسطة",
+                "strong": "قوية",
+                "verySecure": "آمنة جدًا"
+            },
+            "validation": {
+                "currentRequired": "كلمة المرور الحالية مطلوبة",
+                "newMin": "يجب أن تتكوّن كلمة المرور من 8 أحرف على الأقل",
+                "newComplexity": "يجب أن تحتوي كلمة المرور على أحرف كبيرة وصغيرة ورقم ورمز خاص",
+                "mismatch": "كلمتا المرور غير متطابقتين"
+            }
         }
     },
     "activity": {

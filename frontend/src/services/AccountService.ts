@@ -1,37 +1,49 @@
 import ApiService from './ApiService'
+import type {
+    ProfilePasswordPayload,
+    ProfileUpdatePayload,
+    User,
+} from '@/@types/auth'
 
-export async function apiGetUserProfile<T>() {
-    return ApiService.fetchDataWithAxios<T>({
-        url: '/settings/profile',
+/**
+ * The signed-in staff member's own account. These hit the real
+ * /api/v1/profile endpoints: self-service, no permission gate, and the actor
+ * can only ever touch the record behind their own token.
+ */
+export async function apiGetProfile() {
+    return ApiService.fetchDataWithAxios<User>({
+        url: '/v1/profile',
         method: 'get',
     })
 }
 
-export async function apiGetAccountSecuritySettings<T>() {
-    return ApiService.fetchDataWithAxios<T>({
-        url: '/settings/security',
-        method: 'get',
+export async function apiUpdateProfile(data: ProfileUpdatePayload) {
+    return ApiService.fetchDataWithAxios<User, ProfileUpdatePayload>({
+        url: '/v1/profile',
+        method: 'patch',
+        data,
     })
 }
 
-export async function apiGetAccountIntegrationSettings<T>() {
-    return ApiService.fetchDataWithAxios<T>({
-        url: '/settings/integration',
-        method: 'get',
+export async function apiUpdateProfilePassword(data: ProfilePasswordPayload) {
+    return ApiService.fetchDataWithAxios<
+        { message: string },
+        ProfilePasswordPayload
+    >({
+        url: '/v1/profile/password',
+        method: 'patch',
+        data,
     })
 }
 
-export async function apiGetAccountNotificationSettings<T>() {
-    return ApiService.fetchDataWithAxios<T>({
-        url: '/settings/notification',
-        method: 'get',
-    })
-}
-
-export async function apiGetAccountBillingSettings<T>() {
-    return ApiService.fetchDataWithAxios<T>({
-        url: '/settings/billing',
-        method: 'get',
+/** Upload a new avatar; the API stores it and returns the updated user. */
+export async function apiUploadAvatar(file: File) {
+    const formData = new FormData()
+    formData.append('file', file)
+    return ApiService.fetchDataWithAxios<User, FormData>({
+        url: '/v1/profile/avatar',
+        method: 'post',
+        data: formData,
     })
 }
 

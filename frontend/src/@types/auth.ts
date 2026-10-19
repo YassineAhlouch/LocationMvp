@@ -66,6 +66,21 @@ export type User = {
     authority?: string[]
 }
 
+/** Payload for PATCH /v1/profile — every field is optional. */
+export type ProfileUpdatePayload = {
+    first_name?: string
+    last_name?: string
+    email?: string
+    phone?: string | null
+}
+
+/** Payload for PATCH /v1/profile/password (Laravel `confirmed` convention). */
+export type ProfilePasswordPayload = {
+    current_password: string
+    password: string
+    password_confirmation: string
+}
+
 export type Token = {
     accessToken: string
     refereshToken?: string
