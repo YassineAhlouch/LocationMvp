@@ -1,0 +1,404 @@
+{
+    "landing": {
+        "nav": {
+            "items": [
+                {
+                    "title": "Fonctionnalités",
+                    "value": "features",
+                    "anchor": "features"
+                },
+                { "title": "Modules", "value": "modules", "anchor": "modules" },
+                { "title": "Pourquoi nous", "value": "why", "anchor": "why" },
+                { "title": "Contact", "value": "contact", "anchor": "cta" }
+            ]
+        },
+        "hero": {
+            "headingLines": [
+                "La plateforme complète",
+                "pour les agences de location."
+            ],
+            "subtext": "Réservations, flotte, clients, contrats, paiements et rapports — réunis dans un seul système fiable pour toute votre équipe.",
+            "primaryCta": { "label": "Demander une démo", "href": "#cta" },
+            "secondaryCta": {
+                "label": "Découvrir les modules",
+                "href": "#modules"
+            },
+            "tabs": [
+                {
+                    "value": "reservations",
+                    "label": "Réservations",
+                    "description": "réservations & contrats"
+                },
+                {
+                    "value": "fleet",
+                    "label": "Flotte",
+                    "description": "véhicules & disponibilité"
+                },
+                {
+                    "value": "payments",
+                    "label": "Paiements",
+                    "description": "factures & revenus"
+                },
+                {
+                    "value": "reports",
+                    "label": "Rapports",
+                    "description": "analyse des performances"
+                }
+            ]
+        },
+        "bento": {
+            "heading": {
+                "primary": "Conçu pour le quotidien des agences de location.",
+                "secondary": "Tous les outils dont votre équipe a besoin au quotidien — sans tableurs."
+            },
+            "cards": {
+                "ai": {
+                    "title": "Automatisez les tâches répétitives",
+                    "description": "Rappels automatiques pour les retraits, les retours, les assurances et les paiements en retard."
+                },
+                "theming": {
+                    "title": "Votre marque, intégrée",
+                    "description": "Personnalisez les couleurs, les documents et l'espace client à l'image de votre agence."
+                },
+                "docs": {
+                    "title": "Des contrats en quelques secondes",
+                    "description": "Générez automatiquement contrats de location, factures et fiches de restitution.",
+                    "floatingTags": [
+                        { "label": "Contrat de location" },
+                        { "label": "Facture" },
+                        { "label": "Constat de dommages" },
+                        { "label": "Checklist de remise" }
+                    ]
+                },
+                "i18n": {
+                    "title": "Prêt pour tous vos clients",
+                    "description": "Internationalisation intégrée avec prise en charge complète du RTL.",
+                    "locales": [
+                        {
+                            "flag": "/img/countries/US.png",
+                            "text": "Votre véhicule est prêt à être retiré.",
+                            "code": "US"
+                        },
+                        {
+                            "flag": "/img/countries/CN.png",
+                            "text": "您的车辆已准备好提车。",
+                            "code": "CN"
+                        },
+                        {
+                            "flag": "/img/countries/ES.png",
+                            "text": "Su vehículo está listo para recoger.",
+                            "code": "ES"
+                        },
+                        {
+                            "flag": "/img/countries/SA.png",
+                            "text": "سيارتك جاهزة للاستلام.",
+                            "code": "SA"
+                        }
+                    ]
+                },
+                "responsive": {
+                    "title": "Votre agence dans votre poche",
+                    "description": "Gérez les réservations, la disponibilité et les paiements depuis n'importe quel appareil."
+                }
+            }
+        },
+        "tech": {
+            "heading": {
+                "primary": "Une base fiable, conçue pour évoluer.",
+                "secondary": "Moderne, sécurisée et rapide — avec accès par rôle, traçabilité et support multilingue."
+            },
+            "stack": [
+                { "id": "react", "image": "react.png", "title": "React" },
+                {
+                    "id": "typescript",
+                    "image": "typescript.png",
+                    "title": "TypeScript"
+                },
+                {
+                    "id": "tailwind",
+                    "image": "tailwind.png",
+                    "title": "TailwindCSS"
+                },
+                { "id": "vite", "image": "vite.png", "title": "Vite" },
+                { "id": "zustand", "image": "zustand.png", "title": "Zustand" },
+                {
+                    "id": "react-hook-form",
+                    "image": "react-hook-form.png",
+                    "title": "React Hook Form"
+                },
+                {
+                    "id": "tanstack",
+                    "image": "tanstack.png",
+                    "title": "TanStack Table"
+                },
+                {
+                    "id": "i18next",
+                    "image": "i18next.svg",
+                    "title": "React i18next"
+                },
+                { "id": "motion", "image": "motion.png", "title": "Motion" },
+                {
+                    "id": "react-router",
+                    "image": "react-router.svg",
+                    "title": "React Router"
+                }
+            ]
+        },
+        "modules": {
+            "heading": "Un seul système pour toute votre agence.",
+            "subheading": "Remplacez les tableurs et les outils déconnectés par une source de vérité unique.",
+            "items": [
+                {
+                    "id": "reservations",
+                    "title": "Réservations",
+                    "description": "Créez, modifiez et suivez les réservations avec disponibilité en temps réel.",
+                    "icon": "calendar"
+                },
+                {
+                    "id": "fleet",
+                    "title": "Flotte",
+                    "description": "Gérez véhicules, plaques, assurances, maintenance et documents.",
+                    "icon": "car"
+                },
+                {
+                    "id": "customers",
+                    "title": "Clients",
+                    "description": "Centralisez profils clients, permis et historique de location.",
+                    "icon": "users"
+                },
+                {
+                    "id": "contracts",
+                    "title": "Contrats",
+                    "description": "Générez, signez et archivez automatiquement les contrats de location.",
+                    "icon": "contract"
+                },
+                {
+                    "id": "payments",
+                    "title": "Paiements",
+                    "description": "Suivez dépôts, paiements, remboursements et soldes en attente.",
+                    "icon": "payments"
+                },
+                {
+                    "id": "invoices",
+                    "title": "Factures",
+                    "description": "Émettez des factures en plusieurs devises et exportez-les pour la comptabilité.",
+                    "icon": "invoice"
+                },
+                {
+                    "id": "reports",
+                    "title": "Rapports",
+                    "description": "Chiffre d'affaires, taux d'occupation et performance de flotte en un coup d'œil.",
+                    "icon": "reports"
+                },
+                {
+                    "id": "team",
+                    "title": "Équipe & rôles",
+                    "description": "Accès par rôle pour dirigeants, managers, agents et service financier.",
+                    "icon": "team"
+                }
+            ]
+        },
+        "showcase": {
+            "statuses": {
+                "confirmed": "Confirmée",
+                "pickedUp": "Parti en location",
+                "paid": "Payée",
+                "pending": "En attente",
+                "returned": "Restitué",
+                "available": "Disponible",
+                "onRent": "En location",
+                "maintenance": "Maintenance"
+            },
+            "reservations": {
+                "eyebrow": "Réservations",
+                "title": "Cette semaine",
+                "badge": "24 actives",
+                "columns": {
+                    "reference": "Référence",
+                    "customer": "Client",
+                    "vehicle": "Véhicule",
+                    "dates": "Dates",
+                    "status": "Statut"
+                },
+                "stats": [
+                    {
+                        "label": "Disponible",
+                        "value": "18",
+                        "hint": "véhicules prêts"
+                    },
+                    { "label": "En location", "value": "9", "hint": "+3 aujourd'hui" },
+                    {
+                        "label": "Retraits aujourd'hui",
+                        "value": "5",
+                        "hint": "2 imminents"
+                    }
+                ],
+                "rows": [
+                    {
+                        "id": "RSV-1042",
+                        "customer": "Sara Mansouri",
+                        "vehicle": "Dacia Duster",
+                        "dates": "12 oct. – 18 oct.",
+                        "status": "confirmed"
+                    },
+                    {
+                        "id": "RSV-1041",
+                        "customer": "Youssef El Amrani",
+                        "vehicle": "Renault Clio",
+                        "dates": "11 oct. – 15 oct.",
+                        "status": "pickedUp"
+                    },
+                    {
+                        "id": "RSV-1040",
+                        "customer": "Lina Haddad",
+                        "vehicle": "Peugeot 208",
+                        "dates": "10 oct. – 14 oct.",
+                        "status": "paid"
+                    },
+                    {
+                        "id": "RSV-1039",
+                        "customer": "Omar Benali",
+                        "vehicle": "Hyundai Tucson",
+                        "dates": "09 oct. – 20 oct.",
+                        "status": "pending"
+                    },
+                    {
+                        "id": "RSV-1038",
+                        "customer": "Emma Laurent",
+                        "vehicle": "Toyota Yaris",
+                        "dates": "08 oct. – 12 oct.",
+                        "status": "returned"
+                    }
+                ]
+            },
+            "fleet": {
+                "eyebrow": "Flotte",
+                "title": "Véhicules",
+                "badge": "32 au total",
+                "items": [
+                    {
+                        "name": "Dacia Duster",
+                        "plate": "12345-A-6",
+                        "status": "available",
+                        "rate": "450 MAD",
+                        "fuel": "Diesel"
+                    },
+                    {
+                        "name": "Renault Clio",
+                        "plate": "88421-B-3",
+                        "status": "onRent",
+                        "rate": "320 MAD",
+                        "fuel": "Essence"
+                    },
+                    {
+                        "name": "Hyundai Tucson",
+                        "plate": "55710-C-1",
+                        "status": "available",
+                        "rate": "650 MAD",
+                        "fuel": "Hybride"
+                    },
+                    {
+                        "name": "Toyota Yaris",
+                        "plate": "90233-D-8",
+                        "status": "maintenance",
+                        "rate": "300 MAD",
+                        "fuel": "Essence"
+                    }
+                ]
+            },
+            "payments": {
+                "eyebrow": "Paiements",
+                "title": "Revenu ce mois-ci",
+                "badge": "+18.4%",
+                "stats": [
+                    {
+                        "label": "Encaissé",
+                        "value": "128 450",
+                        "hint": "MAD"
+                    },
+                    {
+                        "label": "En attente",
+                        "value": "14 300",
+                        "hint": "MAD"
+                    },
+                    {
+                        "label": "Location moyenne",
+                        "value": "2 140",
+                        "hint": "MAD"
+                    }
+                ],
+                "columns": {
+                    "recent": "Paiements récents",
+                    "period": "Cette semaine"
+                },
+                "rows": [
+                    {
+                        "id": "INV-2041",
+                        "customer": "Sara Mansouri",
+                        "amount": "2 700 MAD",
+                        "method": "Carte",
+                        "status": "paid"
+                    },
+                    {
+                        "id": "INV-2040",
+                        "customer": "Youssef El Amrani",
+                        "amount": "1 280 MAD",
+                        "method": "Espèces",
+                        "status": "paid"
+                    },
+                    {
+                        "id": "INV-2039",
+                        "customer": "Lina Haddad",
+                        "amount": "3 900 MAD",
+                        "method": "Virement",
+                        "status": "pending"
+                    },
+                    {
+                        "id": "INV-2038",
+                        "customer": "Omar Benali",
+                        "amount": "4 550 MAD",
+                        "method": "Carte",
+                        "status": "pending"
+                    }
+                ]
+            },
+            "reports": {
+                "eyebrow": "Rapports",
+                "title": "Performance de la flotte",
+                "badge": "6 derniers mois",
+                "stats": [
+                    {
+                        "label": "Chiffre d'affaires",
+                        "value": "412 900",
+                        "hint": "+22.1%"
+                    },
+                    { "label": "Occupation", "value": "78%", "hint": "+6.4%" },
+                    {
+                        "label": "Utilisation",
+                        "value": "84%",
+                        "hint": "+3.2%"
+                    }
+                ],
+                "chart": { "title": "Revenu mensuel", "trend": "En hausse" },
+                "months": [
+                    "Mai",
+                    "Juin",
+                    "Juil",
+                    "Août",
+                    "Sept",
+                    "Oct"
+                ]
+            }
+        },
+        "cta": {
+            "title": "Prêt à moderniser",
+            "subtitle": "votre activité de location ?",
+            "ctaLabel": "Demander une démo",
+            "ctaHref": "mailto:hello@doublevdrive.com"
+        },
+        "footer": {
+            "copyright": "© 2026 Double V Drive. Tous droits réservés.",
+            "brandText": "DOUBLE V DRIVE"
+        }
+    }
+}

@@ -1,8 +1,7 @@
 export type LandingNavItem = {
     title: string
     value: string
-    anchor?: string
-    hrefPattern?: string
+    anchor: string
 }
 
 export type LandingHeroTab = {
@@ -12,9 +11,9 @@ export type LandingHeroTab = {
 }
 
 export type LandingHero = {
-    headingLines: [string, string]
+    headingLines: string[]
     subtext: string
-    primaryCta: string
+    primaryCta: { label: string; href: string }
     secondaryCta: { label: string; href: string }
     tabs: LandingHeroTab[]
 }
@@ -53,39 +52,101 @@ export type LandingTechItem = {
 
 export type LandingTech = {
     heading: { primary: string; secondary: string }
-    viteStack: LandingTechItem[]
-    nextStack: LandingTechItem[]
+    stack: LandingTechItem[]
 }
 
-export type LandingDemoItem = {
+export type LandingModuleItem = {
     id: string
-    name: string
-    path: string
+    title: string
+    description: string
+    icon: string
 }
 
-export type LandingDemoCategory = {
-    id: string
-    name: string
-    items: LandingDemoItem[]
-}
-
-export type LandingDemos = {
+export type LandingModules = {
     heading: string
     subheading: string
-    categories: LandingDemoCategory[]
+    items: LandingModuleItem[]
 }
 
-export type LandingComponents = {
-    heading: string
-    subheading: string
+export type LandingShowcaseStatus =
+    | 'confirmed'
+    | 'pickedUp'
+    | 'paid'
+    | 'pending'
+    | 'returned'
+    | 'available'
+    | 'onRent'
+    | 'maintenance'
+
+export type LandingShowcaseStat = {
+    label: string
+    value: string
+    hint: string
+}
+
+export type LandingShowcase = {
+    statuses: Record<LandingShowcaseStatus, string>
+    reservations: {
+        eyebrow: string
+        title: string
+        badge: string
+        columns: {
+            reference: string
+            customer: string
+            vehicle: string
+            dates: string
+            status: string
+        }
+        stats: LandingShowcaseStat[]
+        rows: {
+            id: string
+            customer: string
+            vehicle: string
+            dates: string
+            status: LandingShowcaseStatus
+        }[]
+    }
+    fleet: {
+        eyebrow: string
+        title: string
+        badge: string
+        items: {
+            name: string
+            plate: string
+            status: LandingShowcaseStatus
+            rate: string
+            fuel: string
+        }[]
+    }
+    payments: {
+        eyebrow: string
+        title: string
+        badge: string
+        stats: LandingShowcaseStat[]
+        columns: { recent: string; period: string }
+        rows: {
+            id: string
+            customer: string
+            amount: string
+            method: string
+            status: LandingShowcaseStatus
+        }[]
+    }
+    reports: {
+        eyebrow: string
+        title: string
+        badge: string
+        stats: LandingShowcaseStat[]
+        chart: { title: string; trend: string }
+        months: string[]
+    }
 }
 
 export type LandingCta = {
     title: string
     subtitle: string
-    purchaseLabel: string
-    purchaseHref: string
-    logoSrc: string
+    ctaLabel: string
+    ctaHref: string
 }
 
 export type LandingFooter = {
@@ -102,11 +163,10 @@ export type LandingPageContent = {
     hero: LandingHero
     bento: LandingBento
     tech: LandingTech
-    demos: LandingDemos
-    components: LandingComponents
+    modules: LandingModules
+    showcase: LandingShowcase
     cta: LandingCta
     footer: LandingFooter
 }
 
 export type Mode = 'light' | 'dark' | 'system'
-export type Framework = 'vite' | 'next'

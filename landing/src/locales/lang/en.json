@@ -1,0 +1,359 @@
+{
+    "landing": {
+        "nav": {
+            "items": [
+                { "title": "Features", "value": "features", "anchor": "features" },
+                { "title": "Modules", "value": "modules", "anchor": "modules" },
+                { "title": "Why us", "value": "why", "anchor": "why" },
+                { "title": "Contact", "value": "contact", "anchor": "cta" }
+            ]
+        },
+        "hero": {
+            "headingLines": [
+                "The complete platform",
+                "for car rental agencies."
+            ],
+            "subtext": "Reservations, fleet, customers, contracts, payments and reports — connected in one system your whole team can rely on.",
+            "primaryCta": { "label": "Book a demo", "href": "#cta" },
+            "secondaryCta": { "label": "Explore modules", "href": "#modules" },
+            "tabs": [
+                {
+                    "value": "reservations",
+                    "label": "Reservations",
+                    "description": "bookings & contracts"
+                },
+                {
+                    "value": "fleet",
+                    "label": "Fleet",
+                    "description": "vehicles & availability"
+                },
+                {
+                    "value": "payments",
+                    "label": "Payments",
+                    "description": "invoices & revenue"
+                },
+                {
+                    "value": "reports",
+                    "label": "Reports",
+                    "description": "performance insights"
+                }
+            ]
+        },
+        "bento": {
+            "heading": {
+                "primary": "Built for the way rental agencies work.",
+                "secondary": "Every tool your team needs to run daily operations — without the spreadsheets."
+            },
+            "cards": {
+                "ai": {
+                    "title": "Automate the busywork",
+                    "description": "Automatic reminders for pickups, returns, insurance renewals and overdue payments."
+                },
+                "theming": {
+                    "title": "Your brand, built in",
+                    "description": "Customize colors, documents and customer portals to match your agency."
+                },
+                "docs": {
+                    "title": "Contracts in seconds",
+                    "description": "Generate rental agreements, invoices and handover reports automatically.",
+                    "floatingTags": [
+                        { "label": "Rental agreement" },
+                        { "label": "Invoice" },
+                        { "label": "Damage report" },
+                        { "label": "Handover checklist" }
+                    ]
+                },
+                "i18n": {
+                    "title": "Ready for every customer",
+                    "description": "Built-in internationalization with full RTL support for your team and customers.",
+                    "locales": [
+                        {
+                            "flag": "/img/countries/US.png",
+                            "text": "Your vehicle is ready for pickup.",
+                            "code": "US"
+                        },
+                        {
+                            "flag": "/img/countries/CN.png",
+                            "text": "您的车辆已准备好提车。",
+                            "code": "CN"
+                        },
+                        {
+                            "flag": "/img/countries/ES.png",
+                            "text": "Su vehículo está listo para recoger.",
+                            "code": "ES"
+                        },
+                        {
+                            "flag": "/img/countries/SA.png",
+                            "text": "سيارتك جاهزة للاستلام.",
+                            "code": "SA"
+                        }
+                    ]
+                },
+                "responsive": {
+                    "title": "Your agency in your pocket",
+                    "description": "Manage bookings, check availability and approve payments from any device."
+                }
+            }
+        },
+        "tech": {
+            "heading": {
+                "primary": "A reliable foundation, built to scale.",
+                "secondary": "Modern, secure and fast — with role-based access, audit trails and multi-language support."
+            },
+            "stack": [
+                { "id": "react", "image": "react.png", "title": "React" },
+                {
+                    "id": "typescript",
+                    "image": "typescript.png",
+                    "title": "TypeScript"
+                },
+                {
+                    "id": "tailwind",
+                    "image": "tailwind.png",
+                    "title": "TailwindCSS"
+                },
+                { "id": "vite", "image": "vite.png", "title": "Vite" },
+                { "id": "zustand", "image": "zustand.png", "title": "Zustand" },
+                {
+                    "id": "react-hook-form",
+                    "image": "react-hook-form.png",
+                    "title": "React Hook Form"
+                },
+                {
+                    "id": "tanstack",
+                    "image": "tanstack.png",
+                    "title": "TanStack Table"
+                },
+                {
+                    "id": "i18next",
+                    "image": "i18next.svg",
+                    "title": "React i18next"
+                },
+                { "id": "motion", "image": "motion.png", "title": "Motion" },
+                {
+                    "id": "react-router",
+                    "image": "react-router.svg",
+                    "title": "React Router"
+                }
+            ]
+        },
+        "modules": {
+            "heading": "One system for every part of your agency.",
+            "subheading": "Replace spreadsheets and disconnected tools with a single source of truth.",
+            "items": [
+                {
+                    "id": "reservations",
+                    "title": "Reservations",
+                    "description": "Create, modify and track bookings with real-time vehicle availability.",
+                    "icon": "calendar"
+                },
+                {
+                    "id": "fleet",
+                    "title": "Fleet",
+                    "description": "Manage vehicles, plates, insurance, maintenance and documents.",
+                    "icon": "car"
+                },
+                {
+                    "id": "customers",
+                    "title": "Customers",
+                    "description": "Keep customer profiles, licenses and rental history in one place.",
+                    "icon": "users"
+                },
+                {
+                    "id": "contracts",
+                    "title": "Contracts",
+                    "description": "Generate, sign and archive rental agreements automatically.",
+                    "icon": "contract"
+                },
+                {
+                    "id": "payments",
+                    "title": "Payments",
+                    "description": "Track deposits, payments, refunds and outstanding balances.",
+                    "icon": "payments"
+                },
+                {
+                    "id": "invoices",
+                    "title": "Invoices",
+                    "description": "Issue invoices in multiple currencies and export for accounting.",
+                    "icon": "invoice"
+                },
+                {
+                    "id": "reports",
+                    "title": "Reports",
+                    "description": "Revenue, occupancy and fleet performance at a glance.",
+                    "icon": "reports"
+                },
+                {
+                    "id": "team",
+                    "title": "Team & roles",
+                    "description": "Role-based access for owners, managers, agents and finance.",
+                    "icon": "team"
+                }
+            ]
+        },
+        "showcase": {
+            "statuses": {
+                "confirmed": "Confirmed",
+                "pickedUp": "Picked up",
+                "paid": "Paid",
+                "pending": "Pending",
+                "returned": "Returned",
+                "available": "Available",
+                "onRent": "On rent",
+                "maintenance": "Maintenance"
+            },
+            "reservations": {
+                "eyebrow": "Reservations",
+                "title": "This week",
+                "badge": "24 active",
+                "columns": {
+                    "reference": "Reference",
+                    "customer": "Customer",
+                    "vehicle": "Vehicle",
+                    "dates": "Dates",
+                    "status": "Status"
+                },
+                "stats": [
+                    { "label": "Available", "value": "18", "hint": "vehicles ready" },
+                    { "label": "On rent", "value": "9", "hint": "+3 today" },
+                    { "label": "Pickups today", "value": "5", "hint": "2 due now" }
+                ],
+                "rows": [
+                    {
+                        "id": "RSV-1042",
+                        "customer": "Sara Mansouri",
+                        "vehicle": "Dacia Duster",
+                        "dates": "12 Oct – 18 Oct",
+                        "status": "confirmed"
+                    },
+                    {
+                        "id": "RSV-1041",
+                        "customer": "Youssef El Amrani",
+                        "vehicle": "Renault Clio",
+                        "dates": "11 Oct – 15 Oct",
+                        "status": "pickedUp"
+                    },
+                    {
+                        "id": "RSV-1040",
+                        "customer": "Lina Haddad",
+                        "vehicle": "Peugeot 208",
+                        "dates": "10 Oct – 14 Oct",
+                        "status": "paid"
+                    },
+                    {
+                        "id": "RSV-1039",
+                        "customer": "Omar Benali",
+                        "vehicle": "Hyundai Tucson",
+                        "dates": "09 Oct – 20 Oct",
+                        "status": "pending"
+                    },
+                    {
+                        "id": "RSV-1038",
+                        "customer": "Emma Laurent",
+                        "vehicle": "Toyota Yaris",
+                        "dates": "08 Oct – 12 Oct",
+                        "status": "returned"
+                    }
+                ]
+            },
+            "fleet": {
+                "eyebrow": "Fleet",
+                "title": "Vehicles",
+                "badge": "32 total",
+                "items": [
+                    {
+                        "name": "Dacia Duster",
+                        "plate": "12345-A-6",
+                        "status": "available",
+                        "rate": "450 MAD",
+                        "fuel": "Diesel"
+                    },
+                    {
+                        "name": "Renault Clio",
+                        "plate": "88421-B-3",
+                        "status": "onRent",
+                        "rate": "320 MAD",
+                        "fuel": "Petrol"
+                    },
+                    {
+                        "name": "Hyundai Tucson",
+                        "plate": "55710-C-1",
+                        "status": "available",
+                        "rate": "650 MAD",
+                        "fuel": "Hybrid"
+                    },
+                    {
+                        "name": "Toyota Yaris",
+                        "plate": "90233-D-8",
+                        "status": "maintenance",
+                        "rate": "300 MAD",
+                        "fuel": "Petrol"
+                    }
+                ]
+            },
+            "payments": {
+                "eyebrow": "Payments",
+                "title": "Revenue this month",
+                "badge": "+18.4%",
+                "stats": [
+                    { "label": "Collected", "value": "128,450", "hint": "MAD" },
+                    { "label": "Outstanding", "value": "14,300", "hint": "MAD" },
+                    { "label": "Avg. rental", "value": "2,140", "hint": "MAD" }
+                ],
+                "columns": { "recent": "Recent payments", "period": "This week" },
+                "rows": [
+                    {
+                        "id": "INV-2041",
+                        "customer": "Sara Mansouri",
+                        "amount": "2,700 MAD",
+                        "method": "Card",
+                        "status": "paid"
+                    },
+                    {
+                        "id": "INV-2040",
+                        "customer": "Youssef El Amrani",
+                        "amount": "1,280 MAD",
+                        "method": "Cash",
+                        "status": "paid"
+                    },
+                    {
+                        "id": "INV-2039",
+                        "customer": "Lina Haddad",
+                        "amount": "3,900 MAD",
+                        "method": "Transfer",
+                        "status": "pending"
+                    },
+                    {
+                        "id": "INV-2038",
+                        "customer": "Omar Benali",
+                        "amount": "4,550 MAD",
+                        "method": "Card",
+                        "status": "pending"
+                    }
+                ]
+            },
+            "reports": {
+                "eyebrow": "Reports",
+                "title": "Fleet performance",
+                "badge": "Last 6 months",
+                "stats": [
+                    { "label": "Revenue", "value": "412,900", "hint": "+22.1%" },
+                    { "label": "Occupancy", "value": "78%", "hint": "+6.4%" },
+                    { "label": "Utilization", "value": "84%", "hint": "+3.2%" }
+                ],
+                "chart": { "title": "Monthly revenue", "trend": "Trending up" },
+                "months": ["May", "Jun", "Jul", "Aug", "Sep", "Oct"]
+            }
+        },
+        "cta": {
+            "title": "Ready to modernize",
+            "subtitle": "your rental business?",
+            "ctaLabel": "Book a demo",
+            "ctaHref": "mailto:hello@doublevdrive.com"
+        },
+        "footer": {
+            "copyright": "© 2026 Double V Drive. All rights reserved.",
+            "brandText": "DOUBLE V DRIVE"
+        }
+    }
+}

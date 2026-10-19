@@ -1,4 +1,5 @@
 import Button from '@/components/ui/Button'
+import BrandLogo from './BrandLogo'
 import type { LandingCta } from '../types'
 
 const DashedVLine = () => (
@@ -47,13 +48,9 @@ const CallToAction = ({ content }: { content: LandingCta }) => (
             <div className="py-10 z-10">
                 <div className="flex items-center justify-center text-center">
                     <div className="max-w-[450px] mx-auto py-20 z-10">
-                        <img
-                            src={content.logoSrc}
-                            alt="Logo"
-                            width={58}
-                            height={58}
-                            className="mx-auto mb-4 max-w-[58px]"
-                        />
+                        <div className="flex justify-center mb-6">
+                            <BrandLogo iconSize={26} />
+                        </div>
                         <div className="bg-white dark:bg-gray-900">
                             <h3 className="max-w-200 leading-snug flex flex-col text-center">
                                 <span>{content.title}</span>
@@ -64,12 +61,12 @@ const CallToAction = ({ content }: { content: LandingCta }) => (
                             <div className="flex justify-center gap-2 mt-6">
                                 <Button
                                     asElement="a"
-                                    href={content.purchaseHref}
+                                    href={content.ctaHref}
                                     target="_blank"
                                     rel="noreferrer"
                                     variant="subtle"
                                 >
-                                    {content.purchaseLabel}
+                                    {content.ctaLabel}
                                 </Button>
                             </div>
                         </div>

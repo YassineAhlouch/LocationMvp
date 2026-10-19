@@ -8,7 +8,10 @@ const TechFeature = ({
     content: LandingTech
 }) => {
     return (
-        <section className="border-t border-gray-200 dark:border-gray-700">
+        <section
+            id="why"
+            className="border-t border-gray-200 dark:border-gray-700"
+        >
             <div className="max-w-7xl mx-auto border-r border-l border-gray-200 dark:border-gray-700">
                 <div className="grid grid-cols-12 py-24">
                     <div className="col-span-1" />

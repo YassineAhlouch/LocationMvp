@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react'
-import { Link } from 'react-router'
 import {
     motion,
     AnimatePresence,
@@ -8,19 +7,27 @@ import {
 } from 'motion/react'
 import { TbMenu2 } from 'react-icons/tb'
 import NavList from './NavList'
+import BrandLogo from './BrandLogo'
+import LanguageSelector from './LanguageSelector'
 import Drawer from '@/components/ui/Drawer'
 import classNames from '@/utils/classNames'
 import type { Tab } from './NavList'
 import type { Mode } from '../types'
+import type { Direction } from '@/@types/theme'
 
 type NavigationProps = {
     toggleMode: () => void
     mode: Mode
     navMenu: Tab[]
-    extra?: React.ReactNode
+    direction?: Direction
 }
 
-const Navigation = ({ toggleMode, mode, navMenu, extra }: NavigationProps) => {
+const Navigation = ({
+    toggleMode,
+    mode,
+    navMenu,
+    direction = 'ltr',
+}: NavigationProps) => {
     const ref = useRef<HTMLDivElement>(null)
     const { scrollY } = useScroll({
         target: ref,
@@ -45,13 +52,13 @@ const Navigation = ({ toggleMode, mode, navMenu, extra }: NavigationProps) => {
                     className="hidden lg:flex w-full items-center justify-between"
                 >
                     <div className="flex items-center gap-4">
-                        <NavbarLogo mode={mode} />
+                        <BrandLogo />
                     </div>
                     <div className="flex-1 flex justify-center">
                         <NavList tabs={navMenu} />
                     </div>
                     <div className="flex items-center gap-2">
-                        {extra}
+                        <LanguageSelector />
                         <ThemeToggle mode={mode} toggleMode={toggleMode} />
                     </div>
                 </NavBody>
@@ -67,9 +74,9 @@ const Navigation = ({ toggleMode, mode, navMenu, extra }: NavigationProps) => {
                     >
                         <TbMenu2 size={24} />
                     </button>
-                    <NavbarLogo mode={mode} />
+                    <BrandLogo />
                     <div className="flex items-center gap-1">
-                        {extra}
+                        <LanguageSelector />
                         <ThemeToggle mode={mode} toggleMode={toggleMode} />
                     </div>
                 </MobileNav>
@@ -79,7 +86,7 @@ const Navigation = ({ toggleMode, mode, navMenu, extra }: NavigationProps) => {
                     isOpen={isDrawerOpen}
                     onClose={() => setIsDrawerOpen(false)}
                     width={250}
-                    placement="left"
+                    placement={direction === 'rtl' ? 'right' : 'left'}
                 >
                     <div className="flex flex-col gap-4">
                         <NavList
@@ -171,27 +178,6 @@ const MobileNav = ({
     >
         {children}
     </motion.div>
-)
-
-const NavbarLogo = ({ mode }: { mode: Mode }) => (
-    <Link to="/landing">
-        {mode === 'light' && (
-            <img
-                src="/img/logo/logo-light-full.svg"
-                width={117}
-                height={30}
-                alt="logo"
-            />
-        )}
-        {mode === 'dark' && (
-            <img
-                src="/img/logo/logo-dark-full.svg"
-                width={117}
-                height={30}
-                alt="logo"
-            />
-        )}
-    </Link>
 )
 
 const SunIcon = () => (

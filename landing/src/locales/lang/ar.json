@@ -1,0 +1,385 @@
+{
+    "landing": {
+        "nav": {
+            "items": [
+                {
+                    "title": "المميزات",
+                    "value": "features",
+                    "anchor": "features"
+                },
+                { "title": "الوحدات", "value": "modules", "anchor": "modules" },
+                { "title": "لماذا نحن", "value": "why", "anchor": "why" },
+                { "title": "اتصل بنا", "value": "contact", "anchor": "cta" }
+            ]
+        },
+        "hero": {
+            "headingLines": ["المنصة الكاملة", "لشركات تأجير السيارات."],
+            "subtext": "الحجوزات والأسطول والعملاء والعقود والمدفوعات والتقارير — في نظام واحد يمكن لعملك الاعتماد عليه.",
+            "primaryCta": { "label": "احجز عرضاً توضيحياً", "href": "#cta" },
+            "secondaryCta": { "label": "استكشف الوحدات", "href": "#modules" },
+            "tabs": [
+                {
+                    "value": "reservations",
+                    "label": "الحجوزات",
+                    "description": "الحجوزات والعقود"
+                },
+                {
+                    "value": "fleet",
+                    "label": "الأسطول",
+                    "description": "المركبات والتوفر"
+                },
+                {
+                    "value": "payments",
+                    "label": "المدفوعات",
+                    "description": "الفواتير والإيرادات"
+                },
+                {
+                    "value": "reports",
+                    "label": "التقارير",
+                    "description": "تحليل الأداء"
+                }
+            ]
+        },
+        "bento": {
+            "heading": {
+                "primary": "مصمم لطريقة عمل شركات التأجير.",
+                "secondary": "كل الأدوات التي يحتاجها فريقك يومياً — بدون جداول بيانات."
+            },
+            "cards": {
+                "ai": {
+                    "title": "أتمتة الأعمال المتكررة",
+                    "description": "تذكيرات تلقائية للاستلام والإرجاع وتجديد التأمين والمدفوعات المتأخرة."
+                },
+                "theming": {
+                    "title": "هويتك داخل النظام",
+                    "description": "خصّص الألوان والمستندات وبوابة العملاء بما يناسب شركتك."
+                },
+                "docs": {
+                    "title": "عقود في ثوانٍ",
+                    "description": "أنشئ عقود التأجير والفواتير وتقارير التسليم تلقائياً.",
+                    "floatingTags": [
+                        { "label": "عقد تأجير" },
+                        { "label": "فاتورة" },
+                        { "label": "تقرير أضرار" },
+                        { "label": "قائمة تسليم" }
+                    ]
+                },
+                "i18n": {
+                    "title": "جاهز لكل عميل",
+                    "description": "دعم مدمج لتعدد اللغات مع دعم كامل للاتجاه من اليمين إلى اليسار.",
+                    "locales": [
+                        {
+                            "flag": "/img/countries/US.png",
+                            "text": "سيارتك جاهزة للاستلام.",
+                            "code": "US"
+                        },
+                        {
+                            "flag": "/img/countries/CN.png",
+                            "text": "您的车辆已准备好提车。",
+                            "code": "CN"
+                        },
+                        {
+                            "flag": "/img/countries/ES.png",
+                            "text": "Su vehículo está listo para recoger.",
+                            "code": "ES"
+                        },
+                        {
+                            "flag": "/img/countries/SA.png",
+                            "text": "سيارتك جاهزة للاستلام.",
+                            "code": "SA"
+                        }
+                    ]
+                },
+                "responsive": {
+                    "title": "شركتك في جيبك",
+                    "description": "أدر الحجوزات وتوفر المركبات والموافقات من أي جهاز."
+                }
+            }
+        },
+        "tech": {
+            "heading": {
+                "primary": "أساس موثوق مصمم للتوسع.",
+                "secondary": "حديث وآمن وسريع — مع صلاحيات حسب الدور وسجل تدقيق ودعم تعدد اللغات."
+            },
+            "stack": [
+                { "id": "react", "image": "react.png", "title": "React" },
+                {
+                    "id": "typescript",
+                    "image": "typescript.png",
+                    "title": "TypeScript"
+                },
+                {
+                    "id": "tailwind",
+                    "image": "tailwind.png",
+                    "title": "TailwindCSS"
+                },
+                { "id": "vite", "image": "vite.png", "title": "Vite" },
+                { "id": "zustand", "image": "zustand.png", "title": "Zustand" },
+                {
+                    "id": "react-hook-form",
+                    "image": "react-hook-form.png",
+                    "title": "React Hook Form"
+                },
+                {
+                    "id": "tanstack",
+                    "image": "tanstack.png",
+                    "title": "TanStack Table"
+                },
+                {
+                    "id": "i18next",
+                    "image": "i18next.svg",
+                    "title": "React i18next"
+                },
+                { "id": "motion", "image": "motion.png", "title": "Motion" },
+                {
+                    "id": "react-router",
+                    "image": "react-router.svg",
+                    "title": "React Router"
+                }
+            ]
+        },
+        "modules": {
+            "heading": "نظام واحد لكل أجزاء شركتك.",
+            "subheading": "استبدل جداول البيانات والأدوات المتفرقة بمصدر حقيقة واحد.",
+            "items": [
+                {
+                    "id": "reservations",
+                    "title": "الحجوزات",
+                    "description": "أنشئ وعدّل وتابع الحجوزات مع توفر المركبات لحظياً.",
+                    "icon": "calendar"
+                },
+                {
+                    "id": "fleet",
+                    "title": "الأسطول",
+                    "description": "إدارة المركبات واللوحات والتأمين والصيانة والوثائق.",
+                    "icon": "car"
+                },
+                {
+                    "id": "customers",
+                    "title": "العملاء",
+                    "description": "احتفظ بملفات العملاء ورخصهم وسجل تأجيرهم في مكان واحد.",
+                    "icon": "users"
+                },
+                {
+                    "id": "contracts",
+                    "title": "العقود",
+                    "description": "أنشئ وقّع وأرشف عقود التأجير تلقائياً.",
+                    "icon": "contract"
+                },
+                {
+                    "id": "payments",
+                    "title": "المدفوعات",
+                    "description": "تابع الوديعات والمدفوعات والاستردادات والأرصدة المستحقة.",
+                    "icon": "payments"
+                },
+                {
+                    "id": "invoices",
+                    "title": "الفواتير",
+                    "description": "أصدر فواتير بعملات متعددة وصدّرها للمحاسبة.",
+                    "icon": "invoice"
+                },
+                {
+                    "id": "reports",
+                    "title": "التقارير",
+                    "description": "الإيرادات ونسبة الإشغال وأداء الأسطول في لمحة.",
+                    "icon": "reports"
+                },
+                {
+                    "id": "team",
+                    "title": "الفريق والأدوار",
+                    "description": "صلاحيات حسب الدور للمديرين والمشرفين والوكلاء والمالية.",
+                    "icon": "team"
+                }
+            ]
+        },
+        "showcase": {
+            "statuses": {
+                "confirmed": "مؤكد",
+                "pickedUp": "تم التسليم",
+                "paid": "مدفوع",
+                "pending": "قيد الانتظار",
+                "returned": "مُسترجع",
+                "available": "متوفر",
+                "onRent": "مؤجر",
+                "maintenance": "في الصيانة"
+            },
+            "reservations": {
+                "eyebrow": "الحجوزات",
+                "title": "هذا الأسبوع",
+                "badge": "24 نشط",
+                "columns": {
+                    "reference": "المرجع",
+                    "customer": "العميل",
+                    "vehicle": "المركبة",
+                    "dates": "التواريخ",
+                    "status": "الحالة"
+                },
+                "stats": [
+                    { "label": "متوفر", "value": "18", "hint": "مركبة جاهزة" },
+                    { "label": "مؤجر", "value": "9", "hint": "+3 اليوم" },
+                    { "label": "استلام اليوم", "value": "5", "hint": "2 قريباً" }
+                ],
+                "rows": [
+                    {
+                        "id": "RSV-1042",
+                        "customer": "Sara Mansouri",
+                        "vehicle": "Dacia Duster",
+                        "dates": "12 أكتوبر – 18 أكتوبر",
+                        "status": "confirmed"
+                    },
+                    {
+                        "id": "RSV-1041",
+                        "customer": "Youssef El Amrani",
+                        "vehicle": "Renault Clio",
+                        "dates": "11 أكتوبر – 15 أكتوبر",
+                        "status": "pickedUp"
+                    },
+                    {
+                        "id": "RSV-1040",
+                        "customer": "Lina Haddad",
+                        "vehicle": "Peugeot 208",
+                        "dates": "10 أكتوبر – 14 أكتوبر",
+                        "status": "paid"
+                    },
+                    {
+                        "id": "RSV-1039",
+                        "customer": "Omar Benali",
+                        "vehicle": "Hyundai Tucson",
+                        "dates": "09 أكتوبر – 20 أكتوبر",
+                        "status": "pending"
+                    },
+                    {
+                        "id": "RSV-1038",
+                        "customer": "Emma Laurent",
+                        "vehicle": "Toyota Yaris",
+                        "dates": "08 أكتوبر – 12 أكتوبر",
+                        "status": "returned"
+                    }
+                ]
+            },
+            "fleet": {
+                "eyebrow": "الأسطول",
+                "title": "المركبات",
+                "badge": "32 إجمالاً",
+                "items": [
+                    {
+                        "name": "Dacia Duster",
+                        "plate": "12345-A-6",
+                        "status": "available",
+                        "rate": "450 درهم",
+                        "fuel": "ديزل"
+                    },
+                    {
+                        "name": "Renault Clio",
+                        "plate": "88421-B-3",
+                        "status": "onRent",
+                        "rate": "320 درهم",
+                        "fuel": "بنزين"
+                    },
+                    {
+                        "name": "Hyundai Tucson",
+                        "plate": "55710-C-1",
+                        "status": "available",
+                        "rate": "650 درهم",
+                        "fuel": "هجين"
+                    },
+                    {
+                        "name": "Toyota Yaris",
+                        "plate": "90233-D-8",
+                        "status": "maintenance",
+                        "rate": "300 درهم",
+                        "fuel": "بنزين"
+                    }
+                ]
+            },
+            "payments": {
+                "eyebrow": "المدفوعات",
+                "title": "إيرادات هذا الشهر",
+                "badge": "+18.4%",
+                "stats": [
+                    { "label": "المحصّل", "value": "128,450", "hint": "درهم" },
+                    { "label": "المستحق", "value": "14,300", "hint": "درهم" },
+                    { "label": "متوسط الإيجار", "value": "2,140", "hint": "درهم" }
+                ],
+                "columns": {
+                    "recent": "المدفوعات الأخيرة",
+                    "period": "هذا الأسبوع"
+                },
+                "rows": [
+                    {
+                        "id": "INV-2041",
+                        "customer": "Sara Mansouri",
+                        "amount": "2,700 درهم",
+                        "method": "بطاقة",
+                        "status": "paid"
+                    },
+                    {
+                        "id": "INV-2040",
+                        "customer": "Youssef El Amrani",
+                        "amount": "1,280 درهم",
+                        "method": "نقداً",
+                        "status": "paid"
+                    },
+                    {
+                        "id": "INV-2039",
+                        "customer": "Lina Haddad",
+                        "amount": "3,900 درهم",
+                        "method": "تحويل",
+                        "status": "pending"
+                    },
+                    {
+                        "id": "INV-2038",
+                        "customer": "Omar Benali",
+                        "amount": "4,550 درهم",
+                        "method": "بطاقة",
+                        "status": "pending"
+                    }
+                ]
+            },
+            "reports": {
+                "eyebrow": "التقارير",
+                "title": "أداء الأسطول",
+                "badge": "آخر 6 أشهر",
+                "stats": [
+                    {
+                        "label": "الإيرادات",
+                        "value": "412,900",
+                        "hint": "+22.1%"
+                    },
+                    {
+                        "label": "نسبة الإشغال",
+                        "value": "78%",
+                        "hint": "+6.4%"
+                    },
+                    {
+                        "label": "نسبة الاستغلال",
+                        "value": "84%",
+                        "hint": "+3.2%"
+                    }
+                ],
+                "chart": {
+                    "title": "الإيرادات الشهرية",
+                    "trend": "في اتجاه صاعد"
+                },
+                "months": [
+                    "مايو",
+                    "يونيو",
+                    "يوليو",
+                    "أغسطس",
+                    "سبتمبر",
+                    "أكتوبر"
+                ]
+            }
+        },
+        "cta": {
+            "title": "هل أنت مستعد للتحديث",
+            "subtitle": "أعمال تأجير السيارات؟",
+            "ctaLabel": "احجز عرضاً توضيحياً",
+            "ctaHref": "mailto:hello@doublevdrive.com"
+        },
+        "footer": {
+            "copyright": "© 2026 Double V Drive. جميع الحقوق محفوظة.",
+            "brandText": "DOUBLE V DRIVE"
+        }
+    }
+}

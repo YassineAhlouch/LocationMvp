@@ -1,29 +1,24 @@
 import { useState } from 'react'
 import Button from '@/components/ui/Button'
-import ComponentsShowcase from './ComponentsShowcase'
-import VersatileLayoutShowcase from './VersatileLayoutShowcase'
 import { motion, AnimatePresence } from 'motion/react'
 import HeroTab from './HeroTab'
-import useDemoUrl from '../hooks/useDemoUrl'
+import ProductShowcase from './ProductShowcase'
 import { LiChevronLeft, LiChevronRight } from '@/icons'
-import type { LandingHero } from '../types'
-import type { Mode, Framework } from '../types'
+import type { LandingHero, LandingShowcase } from '../types'
+
+const externalProps = (href: string) =>
+    href.startsWith('http')
+        ? { target: '_blank', rel: 'noreferrer' }
+        : {}
 
 const HeroContent = ({
-    mode,
-    onThemeChange,
-    themeSchema,
-    framework,
     content,
+    showcase,
 }: {
-    mode: Mode
-    onThemeChange: (theme: string) => void
-    themeSchema: string
-    framework: Framework
     content: LandingHero
+    showcase: LandingShowcase
 }) => {
     const [selectedTab, setSelectedTab] = useState(content.tabs[0].value)
-    const url = useDemoUrl(framework)
 
     const currentIndex = content.tabs.findIndex(
         (tab) => tab.value === selectedTab,
@@ -78,17 +73,15 @@ const HeroContent = ({
                     <motion.div className="flex items-center gap-2 justify-center mt-6 relative z-10">
                         <Button
                             asElement="a"
-                            href={url}
-                            target="_blank"
-                            rel="noreferrer"
+                            href={content.primaryCta.href}
+                            {...externalProps(content.primaryCta.href)}
                         >
-                            {content.primaryCta}
+                            {content.primaryCta.label}
                         </Button>
                         <Button
                             asElement="a"
                             href={content.secondaryCta.href}
-                            target="_blank"
-                            rel="noreferrer"
+                            {...externalProps(content.secondaryCta.href)}
                             variant="solid"
                         >
                             {content.secondaryCta.label}
@@ -134,7 +127,7 @@ const HeroContent = ({
                                     <div className="hidden md:flex flex-row items-center justify-between border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 lg:divide-x divide-gray-200 dark:divide-gray-700">
                                         {content.tabs.map((tab) => (
                                             <HeroTab
-                                                key={tab.label}
+                                                key={tab.value}
                                                 label={tab.label}
                                                 value={tab.value}
                                                 description={tab.description}
@@ -161,108 +154,31 @@ const HeroContent = ({
                             </div>
                             <div className="bg-white dark:bg-black dark:border-gray-700 border border-gray-200 rounded-lg h-58 md:h-100 lg:h-145 xl:h-175 overflow-hidden">
                                 <AnimatePresence mode="wait">
-                                    {selectedTab === 'production-apps' && (
-                                        <motion.div
-                                            key="production-apps"
-                                            initial={{
-                                                opacity: 0,
-                                                y: 5,
-                                                scale: 0.97,
-                                            }}
-                                            animate={{
-                                                opacity: 1,
-                                                y: 0,
-                                                scale: 1,
-                                            }}
-                                            exit={{
-                                                opacity: 0,
-                                                y: 5,
-                                                scale: 0.97,
-                                            }}
-                                            transition={{ duration: 0.25 }}
-                                        >
-                                            {mode === 'light' && (
-                                                <img
-                                                    className="rounded-lg"
-                                                    src="/img/landing/production-ready-light.webp"
-                                                    alt="Eyris production apps"
-                                                />
-                                            )}
-                                            {mode === 'dark' && (
-                                                <img
-                                                    className="rounded-lg"
-                                                    src="/img/landing/production-ready-dark.webp"
-                                                    alt="Eyris production apps"
-                                                />
-                                            )}
-                                        </motion.div>
-                                    )}
-                                    {selectedTab === 'components-blocks' && (
-                                        <motion.div
-                                            key="components-blocks"
-                                            initial={{
-                                                opacity: 0,
-                                                y: 5,
-                                                scale: 0.95,
-                                            }}
-                                            animate={{
-                                                opacity: 1,
-                                                y: 0,
-                                                scale: 1,
-                                            }}
-                                            exit={{
-                                                opacity: 0,
-                                                y: 5,
-                                                scale: 0.95,
-                                            }}
-                                            transition={{ duration: 0.25 }}
-                                        >
-                                            <ComponentsShowcase
-                                                onThemeChange={onThemeChange}
-                                                themeSchema={themeSchema}
-                                                mode={mode}
-                                            />
-                                        </motion.div>
-                                    )}
-                                    {selectedTab === 'ai-ready-mcp' && (
-                                        <motion.div
-                                            key="ai-ready-mcp"
-                                            initial={{
-                                                opacity: 0,
-                                                y: 5,
-                                                scale: 0.95,
-                                            }}
-                                            animate={{
-                                                opacity: 1,
-                                                y: 0,
-                                                scale: 1,
-                                            }}
-                                            exit={{
-                                                opacity: 0,
-                                                y: 5,
-                                                scale: 0.95,
-                                            }}
-                                            transition={{ duration: 0.25 }}
-                                        >
-                                            {mode === 'light' && (
-                                                <img
-                                                    className="rounded-lg"
-                                                    src="/img/landing/ai-ready-light.webp"
-                                                    alt="Eyris AI ready"
-                                                />
-                                            )}
-                                            {mode === 'dark' && (
-                                                <img
-                                                    className="rounded-lg"
-                                                    src="/img/landing/ai-ready-dark.webp"
-                                                    alt="Eyris AI ready"
-                                                />
-                                            )}
-                                        </motion.div>
-                                    )}
-                                    {selectedTab === 'versatile-layouts' && (
-                                        <VersatileLayoutShowcase mode={mode} />
-                                    )}
+                                    <motion.div
+                                        key={currentTab.value}
+                                        initial={{
+                                            opacity: 0,
+                                            y: 5,
+                                            scale: 0.99,
+                                        }}
+                                        animate={{
+                                            opacity: 1,
+                                            y: 0,
+                                            scale: 1,
+                                        }}
+                                        exit={{
+                                            opacity: 0,
+                                            y: 5,
+                                            scale: 0.99,
+                                        }}
+                                        transition={{ duration: 0.25 }}
+                                        className="h-full"
+                                    >
+                                        <ProductShowcase
+                                            tab={currentTab.value}
+                                            content={showcase}
+                                        />
+                                    </motion.div>
                                 </AnimatePresence>
                             </div>
                             <div className="absolute inset-x-0 bottom-0 h-20 md:h-40 w-full bg-linear-to-b from-transparent via-white to-white dark:via-gray-900/50 dark:to-gray-900 scale-[1.1] pointer-events-none z-10" />
