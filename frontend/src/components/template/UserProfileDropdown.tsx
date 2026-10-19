@@ -2,7 +2,7 @@ import Badge from '@/components/ui/Badge'
 import Avatar from '@/components/ui/Avatar'
 import Dropdown from '@/components/ui/Dropdown'
 import { useSessionUser } from '@/store/authStore'
-import { LiUserCircle, LiSetting4, LiActivity, LiUser, LiLogout } from '@/icons'
+import { LiSetting4, LiActivity, LiUser, LiLogout } from '@/icons'
 import { Link } from 'react-router'
 import { useAuth } from '@/auth'
 import type { Placement } from '@floating-ui/react'
@@ -24,18 +24,13 @@ const dropdownItemList: Array<{
     icon: JSX.Element
 }> = [
     {
-        label: 'Profile',
-        path: '/apps/accounts/settings/profile',
-        icon: <LiUserCircle />,
-    },
-    {
         label: 'Account Setting',
         path: '/apps/accounts/settings/profile',
         icon: <LiSetting4 />,
     },
     {
         label: 'Activity Log',
-        path: '/apps/accounts/activity',
+        path: '/apps/journal-activite',
         icon: <LiActivity />,
     },
 ]

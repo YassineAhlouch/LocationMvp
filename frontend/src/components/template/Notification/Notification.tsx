@@ -173,7 +173,7 @@ const Notification = ({ className }: { className?: string }) => {
 
     const handleViewAllActivity = () => {
         setIsOpen(false)
-        navigate('/apps/accounts/activity')
+        navigate('/apps/journal-activite')
     }
 
     return (
