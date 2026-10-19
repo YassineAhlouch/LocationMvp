@@ -16,7 +16,7 @@ import {
 } from 'react-icons/lu'
 import { apiGetCarOverview } from '@/services/LocationService'
 import {
-    MAD,
+    money,
     expenseStatusTone,
     formatDate,
     formatDateTime,
@@ -150,21 +150,21 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
                 />
                 <KpiCard
                     label="Revenue (paid)"
-                    value={MAD(stats.revenue.paid)}
-                    hint={`${MAD(stats.revenue.pending)} pending`}
+                    value={money(stats.revenue.paid)}
+                    hint={`${money(stats.revenue.pending)} pending`}
                     tone="success"
                     Icon={LuWallet}
                 />
                 <KpiCard
                     label="Expenses (paid)"
-                    value={MAD(stats.expenses.paid)}
-                    hint={`${stats.expenses.overdue_count} overdue · ${MAD(stats.expenses.pending)} pending`}
+                    value={money(stats.expenses.paid)}
+                    hint={`${stats.expenses.overdue_count} overdue · ${money(stats.expenses.pending)} pending`}
                     tone="warning"
                     Icon={LuArrowRightLeft}
                 />
                 <KpiCard
                     label="Net margin"
-                    value={MAD(stats.net)}
+                    value={money(stats.net)}
                     hint={`${stats.reservations.booked_days} days booked`}
                     tone={stats.net >= 0 ? 'success' : 'error'}
                     Icon={LuTrendingUp}
@@ -203,7 +203,7 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
                         },
                     ]}
                     tooltipContentConfig={{
-                        valueFormatter: (value: number) => MAD(value),
+                        valueFormatter: (value: number) => money(value),
                     }}
                 />
             </Card>
@@ -271,7 +271,7 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
                                             </Td>
                                             <Td className="text-right">
                                                 <span className="whitespace-nowrap font-semibold dark:text-gray-100">
-                                                    {MAD(
+                                                    {money(
                                                         reservation.total_amount,
                                                     )}
                                                 </span>
@@ -344,7 +344,7 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
                                             </Td>
                                             <Td className="text-right">
                                                 <span className="whitespace-nowrap font-semibold dark:text-gray-100">
-                                                    {MAD(expense.amount)}
+                                                    {money(expense.amount)}
                                                 </span>
                                             </Td>
                                         </Tr>
@@ -379,7 +379,7 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
                                         </span>
                                     </span>
                                     <span className="font-semibold dark:text-gray-100">
-                                        {MAD(item.amount)}
+                                        {money(item.amount)}
                                     </span>
                                 </div>
                                 <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">

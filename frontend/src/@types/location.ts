@@ -547,6 +547,15 @@ export type InvoiceTemplate = {
     is_active: boolean
 }
 
+/** A unit an agency prices and invoices in (App\Models\Currency). */
+export type Currency = {
+    id: number
+    code: string
+    name: string
+    symbol: string
+    decimals: number
+}
+
 /** Agency letterhead + mileage policy (mirrors App\Http\Resources\AgencyResource). */
 export type Agency = {
     id: number
@@ -562,6 +571,7 @@ export type Agency = {
     daily_mileage_allowance: number
     extra_mileage_fee_per_km: number
     invoice_template: InvoiceTemplate
+    currency: Currency | null
 }
 
 /**

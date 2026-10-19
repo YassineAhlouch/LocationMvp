@@ -12,7 +12,7 @@ import {
     apiCreateCarFinancing,
     apiUpdateCarFinancing,
 } from '@/services/LocationService'
-import { apiErrorMessage, MAD } from './shared'
+import { apiErrorMessage, money, currencyCode } from './shared'
 import type { CarFinancing, CarFinancingPayload } from '@/@types/location'
 
 type CarFinancingDialogProps = {
@@ -172,7 +172,7 @@ const CarFinancingDialog = ({
                     />
                 </FormItem>
                 <FormItem
-                    label="Purchase price (MAD)"
+                    label={`Purchase price (${currencyCode()})`}
                     invalid={Boolean(errors.purchase_price)}
                     errorMessage={errors.purchase_price?.message}
                 >
@@ -185,7 +185,7 @@ const CarFinancingDialog = ({
                     />
                 </FormItem>
                 <FormItem
-                    label="Down payment (MAD)"
+                    label={`Down payment (${currencyCode()})`}
                     invalid={Boolean(errors.down_payment)}
                     errorMessage={errors.down_payment?.message}
                 >
@@ -198,7 +198,7 @@ const CarFinancingDialog = ({
                     />
                 </FormItem>
                 <FormItem
-                    label="Financed amount (MAD)"
+                    label={`Financed amount (${currencyCode()})`}
                     invalid={Boolean(errors.financed_amount)}
                     errorMessage={errors.financed_amount?.message}
                 >
@@ -215,11 +215,11 @@ const CarFinancingDialog = ({
                         )}
                     />
                     <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        Leave blank to finance {MAD(derivedFinanced)}
+                        Leave blank to finance {money(derivedFinanced)}
                     </p>
                 </FormItem>
                 <FormItem
-                    label="Installment amount (MAD)"
+                    label={`Installment amount (${currencyCode()})`}
                     invalid={Boolean(errors.installment_amount)}
                     errorMessage={errors.installment_amount?.message}
                 >

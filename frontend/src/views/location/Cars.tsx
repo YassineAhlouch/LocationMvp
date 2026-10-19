@@ -47,7 +47,7 @@ import type { Car, CarStatus, DashboardSummary } from '@/@types/location'
 import CarForm from './forms/CarForm'
 import StatCards from './StatCards'
 import useTranslation from '@/utils/hooks/useTranslation'
-import { MAD, carStatusOptions, carStatusTone, tagToneClass } from './shared'
+import { money, carStatusOptions, carStatusTone, tagToneClass } from './shared'
 
 type CarStatusOption = { value: string; label: string }
 
@@ -188,7 +188,7 @@ const CarCard = ({
                         </p>
                     </div>
                     <span className="heading-text whitespace-nowrap font-semibold">
-                        {MAD(car.daily_price)}
+                        {money(car.daily_price)}
                         <span className="text-xs font-normal text-gray-500 dark:text-gray-400">
                             {' '}
                             {t('cars.perDay', '/ day')}
@@ -540,7 +540,7 @@ const Cars = () => {
                 accessorKey: 'daily_price',
                 cell: (props) => (
                     <span className="font-medium heading-text">
-                        {MAD(props.row.original.daily_price)}
+                        {money(props.row.original.daily_price)}
                     </span>
                 ),
             },

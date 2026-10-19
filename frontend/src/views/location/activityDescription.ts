@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import type { ActivityLog } from '@/@types/location'
-import { MAD } from './shared'
+import { money } from './shared'
 import type { Translator } from './shared'
 
 /**
@@ -236,7 +236,7 @@ const formatValue = (
     }
 
     if (AMOUNT_FIELDS.has(field) && raw.trim() !== '' && !Number.isNaN(Number(raw))) {
-        return MAD(Number(raw))
+        return money(Number(raw))
     }
 
     return raw

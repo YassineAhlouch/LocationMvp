@@ -50,7 +50,9 @@
             "rapportsEncaissement": "Rapport encaissement",
             "rapportsEncaissementDesc": "Encaissement, en attente et remboursements",
             "activiteJournal": "Journal d'activité",
-            "activiteJournalDesc": "Historique des actions du personnel"
+            "activiteJournalDesc": "Historique des actions du personnel",
+            "parametresDevise": "Devise",
+            "parametresDeviseDesc": "Choisir la devise d'affichage des montants"
         },
         "uiComponents": "UI Components",
         "uiComponentsCommon": {
@@ -400,9 +402,9 @@
             "days": "jours",
             "ratesTitle": "Tarifs",
             "ratesDesc": "Tarif journalier, remise et acompte.",
-            "dailyRateMad": "Tarif journalier (MAD)",
-            "discountMad": "Remise (MAD)",
-            "depositMad": "Acompte (MAD)",
+            "dailyRateMad": "Tarif journalier",
+            "discountMad": "Remise",
+            "depositMad": "Acompte",
             "extrasTitle": "Extras",
             "extrasDesc": "Équipements ou services optionnels ajoutés à la location.",
             "extrasHint": "Extras : un nom, un prix unitaire et un type de tarification fixe ou quotidien (les extras quotidiens sont multipliés par le nombre de jours de location).",
@@ -414,7 +416,7 @@
             "description": "Description",
             "pricingType": "Type de tarification",
             "quantity": "Quantité",
-            "unitPriceMad": "Prix unitaire (MAD)",
+            "unitPriceMad": "Prix unitaire",
             "totalPrice": "Prix total",
             "extraDailyCalc": "= {{unit}} × {{qty}} × {{days}} jours",
             "perDay": "/jour",
@@ -433,7 +435,7 @@
             "noPayment": "Aucun paiement enregistré pour le moment.",
             "paymentNumber": "Paiement {{number}}",
             "paymentDate": "Date de paiement",
-            "amountPaidMad": "Montant payé (MAD)",
+            "amountPaidMad": "Montant payé",
             "paymentMethod": "Mode de paiement",
             "selectMethod": "Sélectionner le mode",
             "paymentStatus": "Statut du paiement",
@@ -454,7 +456,7 @@
             "updatedSuccess": "Réservation mise à jour avec succès !",
             "createdSuccess": "Réservation créée avec succès !",
             "noPaymentPermission": "Vous n'avez pas la permission d'enregistrer des paiements",
-            "amountMad": "Montant (MAD)",
+            "amountMad": "Montant",
             "paymentNotRecorded": "Le paiement n'a pas pu être enregistré",
             "somethingWentWrong": "Une erreur est survenue",
             "extendedStatus": "Prolongée",
@@ -495,7 +497,7 @@
         "csv": {
             "pickup": "Départ",
             "return": "Retour",
-            "totalMad": "Total (MAD)"
+            "totalMad": "Total"
         },
         "statusHint": {
             "created": "Créée",
@@ -621,12 +623,12 @@
             "vin": "VIN",
             "year": "Année",
             "color": "Couleur",
-            "dailyPrice": "Prix journalier (MAD)",
+            "dailyPrice": "Prix journalier",
             "transmission": "Transmission",
             "fuelType": "Type de carburant",
             "seats": "Places",
             "doors": "Portes",
-            "purchasePrice": "Prix d'achat (MAD)",
+            "purchasePrice": "Prix d'achat",
             "initialMileage": "Kilométrage initial",
             "currentMileage": "Kilométrage actuel",
             "fuelLevel": "Niveau de carburant (%)",
@@ -812,7 +814,7 @@
             "car": "Véhicule",
             "type": "Type",
             "title": "Titre",
-            "amount": "Montant (MAD)",
+            "amount": "Montant",
             "vendor": "Fournisseur",
             "status": "Statut",
             "startDate": "Date de début",
@@ -1157,6 +1159,19 @@
             "updated": "Modèle de facture mis à jour",
             "updateFailed": "Impossible de mettre à jour le modèle de facture",
             "loadFailed": "Impossible de charger les modèles de facture"
+        },
+        "currency": {
+            "title": "Devise",
+            "description": "Choisissez la devise d'affichage des montants pour votre agence. Le catalogue est géré par la plateforme.",
+            "label": "Devise",
+            "placeholder": "Sélectionner une devise",
+            "current": "Devise actuelle",
+            "updated": "Devise mise à jour",
+            "updateFailed": "Impossible de mettre à jour la devise",
+            "loadFailed": "Impossible de charger les devises",
+            "accessRestricted": "Accès restreint",
+            "accessRestrictedDescription": "Seuls les administrateurs peuvent modifier la devise de l'agence.",
+            "noCurrencies": "Aucune devise disponible."
         }
     },
     "activity": {
@@ -1389,7 +1404,8 @@
             "lender": "Prêteur",
             "installment_number": "N° d'échéance",
             "recipients": "Destinataires",
-            "invoice_template_id": "Modèle de facture"
+            "invoice_template_id": "Modèle de facture",
+            "currency": "Devise"
         }
     }
 }

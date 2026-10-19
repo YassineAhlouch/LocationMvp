@@ -7,7 +7,7 @@ import DataTable from '@/components/shared/DataTable'
 import { LuSearch } from 'react-icons/lu'
 import { apiGetExpenses } from '@/services/LocationService'
 import {
-    MAD,
+    money,
     expenseStatusTone,
     expenseTypeOptions,
     formatDate,
@@ -142,7 +142,7 @@ const CarExpenses = ({ carId }: CarExpensesProps) => {
                 accessorKey: 'amount',
                 cell: (props) => (
                     <span className="whitespace-nowrap font-semibold dark:text-gray-100">
-                        {MAD(props.row.original.amount)}
+                        {money(props.row.original.amount)}
                     </span>
                 ),
             },

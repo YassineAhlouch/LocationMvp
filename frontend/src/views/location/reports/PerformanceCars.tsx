@@ -9,7 +9,7 @@ import { colors } from '@/constants/colors.constant'
 import classNames from '@/utils/classNames'
 import { apiGetCarReports } from '@/services/LocationService'
 import { LiBarChartUp, LiCar, LiReceipt, LiWalletMoney } from '@/icons'
-import { MAD } from '../shared'
+import { money } from '../shared'
 import useTranslation from '@/utils/hooks/useTranslation'
 import { ReportEmpty, ReportHeader, ReportMetrics } from './shared'
 import { resolveReportRange } from './shared'
@@ -155,7 +155,7 @@ const PerformanceCars = () => {
                                 width: 48,
                             }}
                             tooltipContentConfig={{
-                                valueFormatter: (value: number) => MAD(value),
+                                valueFormatter: (value: number) => money(value),
                                 nameFormatter: () =>
                                     t('reports.cars.metricMargin', 'Margin'),
                             }}
@@ -242,10 +242,10 @@ const PerformanceCars = () => {
                                         </div>
                                     </Td>
                                     <Td className="heading-text">
-                                        {MAD(car.revenue)}
+                                        {money(car.revenue)}
                                     </Td>
                                     <Td className="heading-text">
-                                        {MAD(car.expenses)}
+                                        {money(car.expenses)}
                                     </Td>
                                     <Td>
                                         <span
@@ -256,7 +256,7 @@ const PerformanceCars = () => {
                                                     : 'text-error',
                                             )}
                                         >
-                                            {MAD(car.margin)}
+                                            {money(car.margin)}
                                         </span>
                                     </Td>
                                     <Td className="heading-text">

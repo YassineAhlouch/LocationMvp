@@ -33,7 +33,7 @@ import {
 } from '@/services/LocationService'
 import { isVerbGranted } from './PermissionChecklist'
 import CarFinancingDialog from './CarFinancingDialog'
-import { MAD, apiErrorMessage, formatDate, tagToneClass } from './shared'
+import { money, currencyCode, apiErrorMessage, formatDate, tagToneClass } from './shared'
 import type {
     CarInstallment,
     CarStatistics as CarStatisticsData,
@@ -494,13 +494,13 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                     metrics={[
                         {
                             label: 'Revenue (paid)',
-                            value: MAD(kpis.total_revenue),
+                            value: money(kpis.total_revenue),
                             hint: `${kpis.payback_percent.toFixed(0)}% of purchase paid back`,
                         },
                         {
                             label: 'Operating profit',
-                            value: MAD(kpis.operating_profit),
-                            hint: `${MAD(kpis.profit_per_day)} / day`,
+                            value: money(kpis.operating_profit),
+                            hint: `${money(kpis.profit_per_day)} / day`,
                         },
                     ]}
                 />
@@ -511,13 +511,13 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                     metrics={[
                         {
                             label: 'Net cash position',
-                            value: MAD(kpis.net_cash_position),
+                            value: money(kpis.net_cash_position),
                             hint: `${kpis.days_in_service} days in service`,
                         },
                         {
                             label: 'Installments paid',
-                            value: MAD(kpis.installments_paid),
-                            hint: `${MAD(kpis.down_payment)} down payment`,
+                            value: money(kpis.installments_paid),
+                            hint: `${money(kpis.down_payment)} down payment`,
                         },
                     ]}
                 />
@@ -626,10 +626,10 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                 <span>
                                     {financing.installments_paid_count} of{' '}
                                     {financing.installments_count} paid ·{' '}
-                                    {MAD(financing.installments_paid_amount)}
+                                    {money(financing.installments_paid_amount)}
                                 </span>
                                 <span>
-                                    {MAD(
+                                    {money(
                                         financing.installments_remaining_amount,
                                     )}{' '}
                                     remaining
@@ -657,11 +657,11 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                             />
                             <div className="flex flex-wrap items-center justify-between gap-1 text-xs text-gray-500 dark:text-gray-400">
                                 <span>
-                                    {MAD(kpis.total_revenue)} of{' '}
-                                    {MAD(kpis.purchase_price)}
+                                    {money(kpis.total_revenue)} of{' '}
+                                    {money(kpis.purchase_price)}
                                 </span>
                                 <span>
-                                    {MAD(kpis.remaining_to_payback)} to go
+                                    {money(kpis.remaining_to_payback)} to go
                                 </span>
                             </div>
                         </div>
@@ -688,7 +688,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                 </p>
                                 <p className="text-sm font-medium heading-text">
                                     {financing.next_installment
-                                        ? `${MAD(financing.next_installment.amount)} · ${formatDate(financing.next_installment.due_date)}`
+                                        ? `${money(financing.next_installment.amount)} · ${formatDate(financing.next_installment.due_date)}`
                                         : 'Fully paid'}
                                 </p>
                             </div>
@@ -740,7 +740,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                 <div className="space-y-4">
                     <div className="flex flex-wrap items-baseline gap-x-6 gap-y-1">
                         <div className="flex items-baseline gap-2">
-                            <h3>{MAD(periodRevenue)}</h3>
+                            <h3>{money(periodRevenue)}</h3>
                             <span className="text-sm text-gray-500 dark:text-gray-400">
                                 revenue this period
                             </span>
@@ -749,7 +749,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                             <span
                                 className={`text-lg font-semibold ${periodNet >= 0 ? 'text-success' : 'text-error'}`}
                             >
-                                {MAD(periodNet)}
+                                {money(periodNet)}
                             </span>
                             <span className="text-sm text-gray-500 dark:text-gray-400">
                                 net cash
@@ -778,7 +778,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                             },
                         ]}
                         tooltipContentConfig={{
-                            valueFormatter: (value: number) => MAD(value),
+                            valueFormatter: (value: number) => money(value),
                         }}
                     >
                         <Line
@@ -813,7 +813,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                         0,
                     )}
                     totalLabel="Total expenses"
-                    formatValue={(value) => MAD(value)}
+                    formatValue={(value) => money(value)}
                 />
             </div>
 
@@ -863,7 +863,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                         </Td>
                                         <Td className="text-right">
                                             <span className="font-semibold dark:text-gray-100">
-                                                {MAD(installment.amount)}
+                                                {money(installment.amount)}
                                             </span>
                                         </Td>
                                         <Td className="text-right">
@@ -881,7 +881,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                                             : 'text-success'
                                                     }`}
                                                 >
-                                                    {MAD(
+                                                    {money(
                                                         installment.paid_amount,
                                                     )}
                                                 </span>
@@ -964,13 +964,13 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                 </h5>
                 <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
                     {payTarget
-                        ? `#${payTarget.installment_number} · ${MAD(payTarget.amount)} scheduled · due ${formatDate(payTarget.due_date)}`
+                        ? `#${payTarget.installment_number} · ${money(payTarget.amount)} scheduled · due ${formatDate(payTarget.due_date)}`
                         : ''}
                 </p>
                 <div className="space-y-4">
                     <div>
                         <label className="mb-1 block text-sm font-medium">
-                            Paid amount (MAD)
+                            Paid amount ({currencyCode()})
                         </label>
                         <Input
                             type="number"
@@ -984,7 +984,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                             Number(payAmount) < payTarget.amount && (
                                 <p className="mt-1 text-xs text-warning">
                                     Less than the scheduled{' '}
-                                    {MAD(payTarget.amount)} — the difference
+                                    {money(payTarget.amount)} — the difference
                                     still counts as unpaid financing.
                                 </p>
                             )}

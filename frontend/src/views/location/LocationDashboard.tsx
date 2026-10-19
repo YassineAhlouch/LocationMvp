@@ -25,7 +25,7 @@ import {
     apiGetDashboardTimeline,
     apiGetCarReports,
 } from '@/services/LocationService'
-import { MAD } from './shared'
+import { money } from './shared'
 import useTranslation from '@/utils/hooks/useTranslation'
 import type { CarReport, DashboardSummary, DashboardTimeline } from '@/@types/location'
 import type { ReactNode } from 'react'
@@ -275,7 +275,7 @@ const RevenueExpenses = ({
                         <div className="">
                             <span>{t('dashboard.totalRevenue')}</span>
                             <div className="flex items-center gap-2">
-                                <h4>{MAD(totalRevenue)}</h4>
+                                <h4>{money(totalRevenue)}</h4>
                                 {comparisonEnabled && (
                                     <GrowShrinkTag
                                         value={revenueChange}
@@ -333,7 +333,7 @@ const RevenueExpenses = ({
                         tickFormatter: (value: number) => compactMAD(value),
                     }}
                     tooltipContentConfig={{
-                        valueFormatter: (value: number) => MAD(value),
+                        valueFormatter: (value: number) => money(value),
                         nameFormatter: (name: string) => {
                             if (name === 'revenue') {
                                 return t('dashboard.revenue', 'Revenue')
@@ -478,7 +478,7 @@ const AvgRevenuePerRental = ({
                 <h5>{t('dashboard.avgRevenueRental')}</h5>
             </div>
             <div className="flex items-center gap-2">
-                <h4>{MAD(avgRevenue)}</h4>
+                <h4>{money(avgRevenue)}</h4>
                 {comparisonEnabled && (
                     <GrowShrinkTag value={change} suffix="%" />
                 )}
@@ -507,7 +507,7 @@ const AvgRevenuePerRental = ({
                         width: 40,
                     }}
                     tooltipContentConfig={{
-                        valueFormatter: (value: number) => MAD(value),
+                        valueFormatter: (value: number) => money(value),
                         nameFormatter: () => t('dashboard.monthlyRevenue'),
                     }}
                 />
@@ -744,10 +744,10 @@ const TopVehicles = ({ vehicles }: TopVehiclesProps) => {
                                     </div>
                                 </Td>
                                 <Td className="heading-text">
-                                    {MAD(vehicle.revenue)}
+                                    {money(vehicle.revenue)}
                                 </Td>
                                 <Td className="heading-text">
-                                    {MAD(vehicle.expenses)}
+                                    {money(vehicle.expenses)}
                                 </Td>
                                 <Td>
                                     <span
@@ -758,7 +758,7 @@ const TopVehicles = ({ vehicles }: TopVehiclesProps) => {
                                                 : 'text-error',
                                         )}
                                     >
-                                        {MAD(vehicle.margin)}
+                                        {money(vehicle.margin)}
                                     </span>
                                 </Td>
                                 <Td className="heading-text">
@@ -1202,14 +1202,14 @@ const LocationDashboard = () => {
                             value={summary?.net ?? 0}
                             change={netRevenueChange}
                             icon={<LiWalletMoney />}
-                            formatter={MAD}
+                            formatter={money}
                         />
                         <MetricCard
                             title={t('dashboard.expenses', 'Expenses')}
                             value={summary?.expenses.total ?? 0}
                             change={expensesChange}
                             icon={<LiReceipt />}
-                            formatter={MAD}
+                            formatter={money}
                         />
                         <MetricCard
                             title={t('dashboard.reservations', 'Reservations')}

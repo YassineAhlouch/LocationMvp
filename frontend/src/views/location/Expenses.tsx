@@ -31,7 +31,8 @@ import {
 } from '@/services/LocationService'
 import type { Expense, ExpensePayload, ExpenseType } from '@/@types/location'
 import {
-    MAD,
+    money,
+    currencyCode,
     expenseStatusTone,
     expenseTypeOptions,
     expenseStatusOptions,
@@ -337,7 +338,7 @@ const ExpenseFormDialog = ({
                         />
                     </FormItem>
                     <FormItem
-                        label={t('expenses.form.amount', 'Amount (MAD)')}
+                        label={`${t('expenses.form.amount', 'Amount')} (${currencyCode()})`}
                         invalid={Boolean(errors.amount)}
                         errorMessage={errors.amount?.message}
                     >
@@ -553,7 +554,7 @@ const Expenses = () => {
                 accessorKey: 'amount',
                 cell: (props) => (
                     <span className="font-semibold dark:text-gray-100">
-                        {MAD(props.row.original.amount)}
+                        {money(props.row.original.amount)}
                     </span>
                 ),
             },

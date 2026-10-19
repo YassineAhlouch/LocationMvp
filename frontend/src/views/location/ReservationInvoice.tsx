@@ -24,7 +24,7 @@ const txt = (value: string | number | null | undefined): string =>
         ? EMPTY
         : String(value)
 
-/** Plain amount used next to the "DH" suffix printed on the document. */
+/** Plain amount printed next to the agency's currency suffix on the document. */
 const amount = (value: number | null | undefined): string =>
     value === null || value === undefined
         ? EMPTY
@@ -323,6 +323,9 @@ const ReservationInvoice = () => {
     const brandRest = brandParts.slice(1).join(' ')
     const footerAddress = agency?.address?.trim() ?? ''
 
+    // The printed unit suffix ("DH" by default) follows the agency currency.
+    const currencySymbol = agency?.currency?.symbol || 'DH'
+
     // ── Vehicle ─────────────────────────────────────────────────────────
     const marque = txt(car?.brand)
     const immatriculation =
@@ -359,7 +362,9 @@ const ReservationInvoice = () => {
     const prixJour = amount(reservation.daily_rate)
     const nbJours = txt(reservation.rental_days)
     const kmAdditionnel =
-        mileage.extra_fee > 0 ? `${amount(mileage.extra_fee)} DH` : EMPTY
+        mileage.extra_fee > 0
+            ? `${amount(mileage.extra_fee)} ${currencySymbol}`
+            : EMPTY
 
     // ── Financials ──────────────────────────────────────────────────────
     const netLocation = amount(reservation.subtotal)
@@ -594,7 +599,9 @@ const ReservationInvoice = () => {
                                     </div>
                                     <div className="dotted-row">
                                         <span className="line-lbl">
-                                            Kilométrage additionnel (1dh / km)
+                                            Kilométrage additionnel (
+                                            {mileage.fee_per_km} {currencySymbol}{' '}
+                                            / km)
                                         </span>
                                         <div className="dotted-fill">
                                             {kmAdditionnel}
@@ -610,7 +617,9 @@ const ReservationInvoice = () => {
                                         <div className="dotted-fill">
                                             {netLocation}
                                         </div>
-                                        <span className="dotted-dh">DH</span>
+                                        <span className="dotted-dh">
+                                            {currencySymbol}
+                                        </span>
                                     </div>
                                     <div className="dotted-row">
                                         <span className="line-lbl">
@@ -619,14 +628,18 @@ const ReservationInvoice = () => {
                                         <div className="dotted-fill">
                                             {fraisLivraison}
                                         </div>
-                                        <span className="dotted-dh">DH</span>
+                                        <span className="dotted-dh">
+                                            {currencySymbol}
+                                        </span>
                                     </div>
                                     <div className="dotted-row">
                                         <span className="line-lbl">
                                             TVA 20%
                                         </span>
                                         <div className="dotted-fill">{tva}</div>
-                                        <span className="dotted-dh">DH</span>
+                                        <span className="dotted-dh">
+                                            {currencySymbol}
+                                        </span>
                                     </div>
                                     <div className="dotted-row">
                                         <span className="line-lbl">
@@ -635,7 +648,9 @@ const ReservationInvoice = () => {
                                         <div className="dotted-fill">
                                             {caution}
                                         </div>
-                                        <span className="dotted-dh">DH</span>
+                                        <span className="dotted-dh">
+                                            {currencySymbol}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -668,7 +683,9 @@ const ReservationInvoice = () => {
                                         <div className="total-fill">
                                             {total}
                                         </div>
-                                        <span className="total-dh">DH</span>
+                                        <span className="total-dh">
+                                            {currencySymbol}
+                                        </span>
                                     </div>
                                     <div className="total-row">
                                         <span className="total-lbl">

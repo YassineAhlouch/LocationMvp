@@ -8,6 +8,7 @@ use App\Models\Car;
 use App\Models\CarCategory;
 use App\Models\CarModel;
 use App\Models\Client;
+use App\Models\Currency;
 use App\Models\Payment;
 use App\Models\Reservation;
 use App\Models\Role;
@@ -123,6 +124,25 @@ class ReservationContractTest extends TestCase
             ->assertJsonPath('mileage.extra_fee', 450)
             ->assertJsonPath('mileage.daily_allowance', 250)
             ->assertJsonPath('mileage.fee_per_km', 1);
+    }
+
+    public function test_contract_carries_the_agency_currency_for_the_printed_document(): void
+    {
+        $euro = Currency::factory()->create([
+            'code' => 'EUR',
+            'name' => 'Euro',
+            'symbol' => '€',
+        ]);
+        $this->agency->update(['currency_id' => $euro->id]);
+
+        $actor = $this->actor(['reservations.view']);
+        $reservation = $this->reservation();
+
+        $this->actingAs($actor, 'sanctum')
+            ->getJson("/api/v1/reservations/{$reservation->id}/contract")
+            ->assertOk()
+            ->assertJsonPath('agency.currency.code', 'EUR')
+            ->assertJsonPath('agency.currency.symbol', '€');
     }
 
     public function test_mileage_distance_is_null_while_the_car_is_still_out(): void

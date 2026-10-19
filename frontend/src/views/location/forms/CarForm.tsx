@@ -33,6 +33,7 @@ import type {
 import {
     carStatusOptions,
     carStatusTone,
+    currencyCode,
     tagToneClass,
     transmissionOptions,
     fuelOptions,
@@ -557,7 +558,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         )}
                     />
                 </FormItem>
-                <FormItem label={t('cars.form.dailyPrice', 'Daily price (MAD)')}>
+                <FormItem label={`${t('cars.form.dailyPrice', 'Daily price')} (${currencyCode()})`}>
                     <Controller
                         name="daily_price"
                         control={control}
@@ -625,7 +626,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                         )}
                     />
                 </FormItem>
-                <FormItem label={t('cars.form.purchasePrice', 'Purchase price (MAD)')}>
+                <FormItem label={`${t('cars.form.purchasePrice', 'Purchase price')} (${currencyCode()})`}>
                     <Controller
                         name="purchase_price"
                         control={control}

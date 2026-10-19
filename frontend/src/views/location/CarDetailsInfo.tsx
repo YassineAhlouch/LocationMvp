@@ -5,7 +5,7 @@ import Tag from '@/components/ui/Tag'
 import Button from '@/components/ui/Button'
 import { NumericFormat } from 'react-number-format'
 import { LiCar, LiEdit2 } from '@/icons'
-import { MAD, carStatusTone, formatDate, tagToneClass } from './shared'
+import { money, carStatusTone, formatDate, tagToneClass } from './shared'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 import type { Car } from '@/@types/location'
 
@@ -107,11 +107,11 @@ const CarDetailsInfo = ({ car }: CarDetailsInfoProps) => {
 
                 <div className="mt-2 border-t border-gray-200 pt-2 dark:border-gray-700">
                     <InfoRow label="Daily price">
-                        {MAD(car.daily_price)}
+                        {money(car.daily_price)}
                     </InfoRow>
                     <InfoRow label="Purchase price">
                         {car.purchase_price != null
-                            ? MAD(car.purchase_price)
+                            ? money(car.purchase_price)
                             : '—'}
                     </InfoRow>
                 </div>

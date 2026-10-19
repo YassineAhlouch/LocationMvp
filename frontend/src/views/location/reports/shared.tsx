@@ -6,7 +6,7 @@ import Dropdown from '@/components/ui/Dropdown'
 import StatisticCard from '@/components/shared/StatisticCard'
 import classNames from '@/utils/classNames'
 import { LiChevronDown } from '@/icons'
-import { MAD } from '../shared'
+import { money } from '../shared'
 import useTranslation from '@/utils/hooks/useTranslation'
 import type { ReactNode } from 'react'
 
@@ -148,7 +148,7 @@ export const ReportMetrics = ({ items, loading }: ReportMetricsProps) => (
                         <h4>
                             {loading
                                 ? '--'
-                                : (item.formatter ?? MAD)(item.value)}
+                                : (item.formatter ?? money)(item.value)}
                         </h4>
                     </div>
                 </div>

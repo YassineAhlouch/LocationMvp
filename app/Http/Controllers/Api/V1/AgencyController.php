@@ -21,6 +21,6 @@ class AgencyController extends Controller
 
         abort_if($agency === null, 404, 'No agency is associated with this account.');
 
-        return response()->json((new AgencyResource($agency->load('invoiceTemplate')))->resolve());
+        return response()->json((new AgencyResource($agency->load(['invoiceTemplate', 'currency'])))->resolve());
     }
 }

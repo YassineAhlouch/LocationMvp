@@ -30,7 +30,7 @@ import {
 import type { Payment, PaymentOverview } from '@/@types/location'
 import useTranslation from '@/utils/hooks/useTranslation'
 import {
-    MAD,
+    money,
     apiErrorMessage,
     formatDate,
     paymentMethodOptions,
@@ -328,7 +328,7 @@ const Payments = () => {
                 accessorKey: 'amount',
                 cell: (props) => (
                     <span className="text-nowrap font-semibold dark:text-gray-100">
-                        {MAD(props.row.original.amount)}
+                        {money(props.row.original.amount)}
                     </span>
                 ),
             },
@@ -460,7 +460,7 @@ const Payments = () => {
                             <div>
                                 <p>{item.title}</p>
                                 <h4>
-                                    {overviewLoading ? '--' : MAD(item.value)}
+                                    {overviewLoading ? '--' : money(item.value)}
                                 </h4>
                             </div>
                         </div>
@@ -560,7 +560,7 @@ const Payments = () => {
                 </h5>
                 <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
                     {refundTarget
-                        ? `${MAD(refundTarget.amount)} · ${
+                        ? `${money(refundTarget.amount)} · ${
                               refundTarget.reference ??
                               t(
                                   'payments.refundDialog.noReference',

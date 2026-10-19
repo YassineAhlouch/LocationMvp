@@ -50,7 +50,8 @@ import ClientForm from './forms/ClientForm'
 import CarInspection from './CarInspection'
 import type { CarInspectionHandle } from './CarInspection'
 import {
-    MAD,
+    money,
+    currencyCode,
     formatDateTime,
     reservationStatusTone,
     paymentStatusTone,
@@ -125,7 +126,7 @@ const csvHeaders = (t: Translator) => [
     { label: t('reservations.csv.pickup', 'Pickup'), key: 'pickup_datetime' },
     { label: t('reservations.csv.return', 'Return'), key: 'expected_return_datetime' },
     { label: t('reservations.table.created', 'Created'), key: 'created_at' },
-    { label: t('reservations.csv.totalMad', 'Total (MAD)'), key: 'total_amount' },
+    { label: `${t('reservations.csv.totalMad', 'Total')} (${currencyCode()})`, key: 'total_amount' },
 ]
 
 type ReservationCardStyle = { bg: string; icon: ReactNode; label: string }
@@ -668,7 +669,7 @@ const ExpandableReservationDetails = ({
                                 </span>
                                 <span>·</span>
                                 <span className="heading-text font-medium">
-                                    {MAD(reservation.daily_rate)}/day ×{' '}
+                                    {money(reservation.daily_rate)}/day ×{' '}
                                     {reservation.rental_days} days
                                 </span>
                             </div>
@@ -741,7 +742,7 @@ const ExpandableReservationDetails = ({
                             <div className="flex justify-between items-center">
                                 <span className="font-medium">{t('reservations.subtotal', 'Subtotal')}</span>
                                 <span className="font-medium heading-text">
-                                    {MAD(reservation.subtotal)}
+                                    {money(reservation.subtotal)}
                                 </span>
                             </div>
                             {extras.length > 0 && (
@@ -754,7 +755,7 @@ const ExpandableReservationDetails = ({
                                         )}
                                     </span>
                                     <span className="font-medium heading-text">
-                                        {MAD(extrasTotal)}
+                                        {money(extrasTotal)}
                                     </span>
                                 </div>
                             )}
@@ -764,20 +765,20 @@ const ExpandableReservationDetails = ({
                                         {t('reservations.discount', 'Discount')}
                                     </span>
                                     <span className="font-medium heading-text">
-                                        -{MAD(reservation.discount_amount)}
+                                        -{money(reservation.discount_amount)}
                                     </span>
                                 </div>
                             )}
                             <div className="flex justify-between items-center">
                                 <span className="font-medium">{t('reservations.tax', 'Tax')}</span>
                                 <span className="font-medium heading-text">
-                                    {MAD(reservation.tax_amount)}
+                                    {money(reservation.tax_amount)}
                                 </span>
                             </div>
                             <div className="flex justify-between items-center">
                                 <span className="font-medium">{t('reservations.deposit', 'Deposit')}</span>
                                 <span className="font-medium heading-text">
-                                    {MAD(reservation.deposit_amount)}
+                                    {money(reservation.deposit_amount)}
                                 </span>
                             </div>
                             <div className="border-t border-gray-200 dark:border-gray-600 pt-3">
@@ -786,7 +787,7 @@ const ExpandableReservationDetails = ({
                                         {t('reservations.total', 'Total')}
                                     </span>
                                     <span className="text-base font-bold heading-text">
-                                        {MAD(reservation.total_amount)}
+                                        {money(reservation.total_amount)}
                                     </span>
                                 </div>
                             </div>
@@ -1076,7 +1077,7 @@ const Reservations = () => {
                 accessorKey: 'total_amount',
                 cell: (props) => (
                     <span className="font-semibold heading-text text-nowrap">
-                        {MAD(props.row.original.total_amount)}
+                        {money(props.row.original.total_amount)}
                     </span>
                 ),
             },
@@ -1696,7 +1697,7 @@ const Reservations = () => {
                                         <div>
                                             <div className="flex flex-col gap-2">
                                                 <h6>
-                                                    {MAD(
+                                                    {money(
                                                         reservation.total_amount,
                                                     )}
                                                 </h6>

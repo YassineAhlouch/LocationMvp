@@ -50,7 +50,9 @@
             "rapportsEncaissement": "أداء التحصيل",
             "rapportsEncaissementDesc": "المبالغ المحصلة والمعلقة والمستردة",
             "activiteJournal": "سجل الأنشطة",
-            "activiteJournalDesc": "سجل تدقيق إجراءات الموظفين"
+            "activiteJournalDesc": "سجل تدقيق إجراءات الموظفين",
+            "parametresDevise": "العملة",
+            "parametresDeviseDesc": "اختيار العملة التي تُعرض بها المبالغ"
         },
         "uiComponents": "مكونات الواجهة",
         "uiComponentsCommon": {
@@ -400,9 +402,9 @@
             "days": "أيام",
             "ratesTitle": "التسعير",
             "ratesDesc": "السعر اليومي والخصم والعربون.",
-            "dailyRateMad": "السعر اليومي (درهم)",
-            "discountMad": "الخصم (درهم)",
-            "depositMad": "العربون (درهم)",
+            "dailyRateMad": "السعر اليومي",
+            "discountMad": "الخصم",
+            "depositMad": "العربون",
             "extrasTitle": "خدمات إضافية",
             "extrasDesc": "معدات أو خدمات اختيارية مضافة إلى الإيجار.",
             "extrasHint": "الخدمات الإضافية: اسم وسعر وحدة ونوع تسعير ثابت أو يومي (تُضرب الخدمات اليومية بعدد أيام الإيجار).",
@@ -414,7 +416,7 @@
             "description": "الوصف",
             "pricingType": "نوع التسعير",
             "quantity": "الكمية",
-            "unitPriceMad": "سعر الوحدة (درهم)",
+            "unitPriceMad": "سعر الوحدة",
             "totalPrice": "السعر الإجمالي",
             "extraDailyCalc": "= {{unit}} × {{qty}} × {{days}} يوم",
             "perDay": "/اليوم",
@@ -433,7 +435,7 @@
             "noPayment": "لم يتم تسجيل أي دفعة بعد.",
             "paymentNumber": "الدفعة {{number}}",
             "paymentDate": "تاريخ الدفع",
-            "amountPaidMad": "المبلغ المدفوع (درهم)",
+            "amountPaidMad": "المبلغ المدفوع",
             "paymentMethod": "طريقة الدفع",
             "selectMethod": "اختر الطريقة",
             "paymentStatus": "حالة الدفع",
@@ -454,7 +456,7 @@
             "updatedSuccess": "تم تحديث الحجز بنجاح!",
             "createdSuccess": "تم إنشاء الحجز بنجاح!",
             "noPaymentPermission": "ليست لديك صلاحية تسجيل المدفوعات",
-            "amountMad": "المبلغ (درهم)",
+            "amountMad": "المبلغ",
             "paymentNotRecorded": "تعذّر تسجيل الدفع",
             "somethingWentWrong": "حدث خطأ ما",
             "extendedStatus": "مُمدَّدة",
@@ -495,7 +497,7 @@
         "csv": {
             "pickup": "الاستلام",
             "return": "الإرجاع",
-            "totalMad": "الإجمالي (درهم)"
+            "totalMad": "الإجمالي"
         },
         "statusHint": {
             "created": "تم الإنشاء",
@@ -621,12 +623,12 @@
             "vin": "رقم الهيكل (VIN)",
             "year": "السنة",
             "color": "اللون",
-            "dailyPrice": "السعر اليومي (درهم)",
+            "dailyPrice": "السعر اليومي",
             "transmission": "ناقل الحركة",
             "fuelType": "نوع الوقود",
             "seats": "المقاعد",
             "doors": "الأبواب",
-            "purchasePrice": "سعر الشراء (درهم)",
+            "purchasePrice": "سعر الشراء",
             "initialMileage": "المسافة الأولية",
             "currentMileage": "المسافة الحالية",
             "fuelLevel": "مستوى الوقود (%)",
@@ -812,7 +814,7 @@
             "car": "السيارة",
             "type": "النوع",
             "title": "العنوان",
-            "amount": "المبلغ (درهم)",
+            "amount": "المبلغ",
             "vendor": "المورد",
             "status": "الحالة",
             "startDate": "تاريخ البدء",
@@ -1157,6 +1159,19 @@
             "updated": "تم تحديث قالب الفاتورة",
             "updateFailed": "تعذّر تحديث قالب الفاتورة",
             "loadFailed": "تعذّر تحميل قوالب الفاتورة"
+        },
+        "currency": {
+            "title": "العملة",
+            "description": "اختر العملة التي تُعرض بها جميع المبالغ في وكالتك. تتم إدارة القائمة من طرف المنصة.",
+            "label": "العملة",
+            "placeholder": "اختر عملة",
+            "current": "العملة الحالية",
+            "updated": "تم تحديث العملة",
+            "updateFailed": "تعذّر تحديث العملة",
+            "loadFailed": "تعذّر تحميل العملات",
+            "accessRestricted": "الوصول مقيّد",
+            "accessRestrictedDescription": "يمكن للمسؤولين فقط تغيير عملة الوكالة.",
+            "noCurrencies": "لا توجد عملات متاحة."
         }
     },
     "activity": {
@@ -1389,7 +1404,8 @@
             "lender": "المُقرِض",
             "installment_number": "رقم القسط",
             "recipients": "المستلمون",
-            "invoice_template_id": "قالب الفاتورة"
+            "invoice_template_id": "قالب الفاتورة",
+            "currency": "العملة"
         }
     }
 }

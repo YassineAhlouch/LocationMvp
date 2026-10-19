@@ -50,7 +50,9 @@
             "rapportsEncaissement": "Collection performance",
             "rapportsEncaissementDesc": "Cash collected, pending and refunds",
             "activiteJournal": "Activity log",
-            "activiteJournalDesc": "Audit trail of staff actions"
+            "activiteJournalDesc": "Audit trail of staff actions",
+            "parametresDevise": "Currency",
+            "parametresDeviseDesc": "Choose the currency amounts are shown in"
         },
         "uiComponents": "UI Components",
         "uiComponentsCommon": {
@@ -400,9 +402,9 @@
             "days": "days",
             "ratesTitle": "Rates",
             "ratesDesc": "Daily rate, discount and deposit.",
-            "dailyRateMad": "Daily rate (MAD)",
-            "discountMad": "Discount (MAD)",
-            "depositMad": "Deposit (MAD)",
+            "dailyRateMad": "Daily rate",
+            "discountMad": "Discount",
+            "depositMad": "Deposit",
             "extrasTitle": "Extras",
             "extrasDesc": "Optional equipment or services added to the rental.",
             "extrasHint": "Extras: a name, unit price and either a fixed or daily pricing type (daily extras multiply by the rental days).",
@@ -414,7 +416,7 @@
             "description": "Description",
             "pricingType": "Pricing type",
             "quantity": "Quantity",
-            "unitPriceMad": "Unit price (MAD)",
+            "unitPriceMad": "Unit price",
             "totalPrice": "Total price",
             "extraDailyCalc": "= {{unit}} × {{qty}} × {{days}} days",
             "perDay": "/day",
@@ -433,7 +435,7 @@
             "noPayment": "No payment recorded yet.",
             "paymentNumber": "Payment {{number}}",
             "paymentDate": "Payment date",
-            "amountPaidMad": "Amount paid (MAD)",
+            "amountPaidMad": "Amount paid",
             "paymentMethod": "Payment method",
             "selectMethod": "Select method",
             "paymentStatus": "Payment status",
@@ -454,7 +456,7 @@
             "updatedSuccess": "Reservation updated successfully!",
             "createdSuccess": "Reservation created successfully!",
             "noPaymentPermission": "You don't have permission to record payments",
-            "amountMad": "Amount (MAD)",
+            "amountMad": "Amount",
             "paymentNotRecorded": "Payment could not be recorded",
             "somethingWentWrong": "Something went wrong",
             "extendedStatus": "Extended",
@@ -495,7 +497,7 @@
         "csv": {
             "pickup": "Pickup",
             "return": "Return",
-            "totalMad": "Total (MAD)"
+            "totalMad": "Total"
         },
         "statusHint": {
             "created": "Created",
@@ -621,12 +623,12 @@
             "vin": "VIN",
             "year": "Year",
             "color": "Color",
-            "dailyPrice": "Daily price (MAD)",
+            "dailyPrice": "Daily price",
             "transmission": "Transmission",
             "fuelType": "Fuel type",
             "seats": "Seats",
             "doors": "Doors",
-            "purchasePrice": "Purchase price (MAD)",
+            "purchasePrice": "Purchase price",
             "initialMileage": "Initial mileage",
             "currentMileage": "Current mileage",
             "fuelLevel": "Fuel level (%)",
@@ -812,7 +814,7 @@
             "car": "Car",
             "type": "Type",
             "title": "Title",
-            "amount": "Amount (MAD)",
+            "amount": "Amount",
             "vendor": "Vendor",
             "status": "Status",
             "startDate": "Start date",
@@ -1157,6 +1159,19 @@
             "updated": "Invoice template updated",
             "updateFailed": "Could not update invoice template",
             "loadFailed": "Could not load invoice templates"
+        },
+        "currency": {
+            "title": "Currency",
+            "description": "Choose the currency every amount is shown in for your agency. The catalog is managed by the platform.",
+            "label": "Currency",
+            "placeholder": "Select a currency",
+            "current": "Current currency",
+            "updated": "Currency updated",
+            "updateFailed": "Could not update currency",
+            "loadFailed": "Could not load currencies",
+            "accessRestricted": "Access restricted",
+            "accessRestrictedDescription": "Only administrators can change the agency currency.",
+            "noCurrencies": "No currencies available."
         }
     },
     "activity": {
@@ -1389,7 +1404,8 @@
             "lender": "Lender",
             "installment_number": "Installment number",
             "recipients": "Recipients",
-            "invoice_template_id": "Invoice template"
+            "invoice_template_id": "Invoice template",
+            "currency": "Currency"
         }
     }
 }

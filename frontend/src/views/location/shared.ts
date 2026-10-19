@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import formatCurrency from '@/utils/formatCurrency'
+import { useCurrencyStore } from '@/store/currencyStore'
 import type { useTranslation } from '@/utils/hooks/useTranslation'
 import type {
     CarStatus,
@@ -16,9 +17,15 @@ import type {
     PaymentStatus,
 } from '@/@types/location'
 
-/** Format a MAD amount like the rest of the dashboard. */
-export const MAD = (value: number | null | undefined) =>
-    formatCurrency(Number(value ?? 0), 'MAD', 'fr-MA', 2)
+/** Format an amount in the agency's active currency (see currencyStore). */
+export const money = (value: number | null | undefined) => {
+    const { code, decimals } = useCurrencyStore.getState().currency
+
+    return formatCurrency(Number(value ?? 0), code, 'fr-MA', decimals)
+}
+
+/** The active currency code, for field labels like "Amount (EUR)". */
+export const currencyCode = () => useCurrencyStore.getState().currency.code
 
 export const formatDateTime = (value?: string | null) =>
     value ? dayjs(value).format('DD/MM/YYYY HH:mm') : '—'

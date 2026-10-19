@@ -19,6 +19,7 @@ import type {
     Client,
     ClientPayload,
     ClientReport,
+    Currency,
     DashboardSummary,
     DashboardTimeline,
     Expense,
@@ -310,6 +311,21 @@ export const apiUpdateAgencyTemplate = (
         url: `/v1/agencies/${agencyId}`,
         method: 'patch',
         data: { invoice_template_id: invoiceTemplateId },
+    })
+
+// ---- Settings: agency currency (admin only) ------------------------------
+
+export const apiGetCurrencies = () =>
+    ApiService.fetchDataWithAxios<Currency[]>({
+        url: '/v1/currencies',
+        method: 'get',
+    })
+
+export const apiUpdateAgencyCurrency = (currencyId: number) =>
+    ApiService.fetchDataWithAxios<Agency>({
+        url: '/v1/settings/currency',
+        method: 'patch',
+        data: { currency_id: currencyId },
     })
 
 export const apiCreateReservation = (data: ReservationPayload) =>

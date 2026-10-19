@@ -7,6 +7,9 @@ function formatCurrency(
     const options: Intl.NumberFormatOptions = {
         style: 'currency',
         currency,
+        // Prefer the short symbol ("$", "£", "€"): the long form disambiguates
+        // across locales ("$US", "£GB") which reads as noise on an invoice.
+        currencyDisplay: 'narrowSymbol',
     }
 
     if (typeof decimals === 'number') {

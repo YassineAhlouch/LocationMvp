@@ -11,7 +11,7 @@ import { LiEdit2 } from '@/icons'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 import { apiGetReservations } from '@/services/LocationService'
 import {
-    MAD,
+    money,
     formatDateTime,
     paymentStatusTone,
     reservationStatusOptions,
@@ -146,7 +146,7 @@ const CarReservations = ({ carId }: CarReservationsProps) => {
                 accessorKey: 'total_amount',
                 cell: (props) => (
                     <span className="whitespace-nowrap font-semibold dark:text-gray-100">
-                        {MAD(props.row.original.total_amount)}
+                        {money(props.row.original.total_amount)}
                     </span>
                 ),
             },

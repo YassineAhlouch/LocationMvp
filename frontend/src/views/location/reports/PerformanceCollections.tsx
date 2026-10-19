@@ -9,7 +9,7 @@ import { LineChart } from '@/components/shared/Chart'
 import { colors } from '@/constants/colors.constant'
 import { apiGetPaymentsOverview } from '@/services/LocationService'
 import { LiClock, LiRefresh, LiStatusUp, LiWalletMoney } from '@/icons'
-import { MAD, tagToneClass } from '../shared'
+import { money, tagToneClass } from '../shared'
 import useTranslation from '@/utils/hooks/useTranslation'
 import type { TagTone } from '../shared'
 import { ReportEmpty, ReportHeader, ReportMetrics } from './shared'
@@ -172,7 +172,7 @@ const PerformanceCollections = () => {
                                 width: 48,
                             }}
                             tooltipContentConfig={{
-                                valueFormatter: (value: number) => MAD(value),
+                                valueFormatter: (value: number) => money(value),
                                 nameFormatter: (name: string) => {
                                     if (name === 'paid') {
                                         return t(
@@ -272,7 +272,7 @@ const PerformanceCollections = () => {
                                         {row.count.toLocaleString()}
                                     </Td>
                                     <Td className="heading-text">
-                                        {MAD(row.amount)}
+                                        {money(row.amount)}
                                     </Td>
                                 </Tr>
                             ))}
@@ -295,7 +295,7 @@ const PerformanceCollections = () => {
                                     ).toLocaleString()}
                                 </Td>
                                 <Td className="heading-text">
-                                    {MAD(overview?.totals.net ?? 0)}
+                                    {money(overview?.totals.net ?? 0)}
                                 </Td>
                             </Tr>
                         </TBody>

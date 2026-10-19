@@ -26,13 +26,13 @@ const number = (value: number | null | undefined): string =>
         ? EMPTY
         : Number(value).toLocaleString('fr-FR')
 
-const amount = (value: number | null | undefined): string =>
+const amount = (value: number | null | undefined, currency: string): string =>
     value === null || value === undefined
         ? EMPTY
         : `${Number(value).toLocaleString('fr-FR', {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
-          })} DH`
+          })} ${currency}`
 
 const date = (value: string | null | undefined): string =>
     value ? dayjs(value).format('DD/MM/YYYY') : EMPTY
@@ -79,24 +79,24 @@ const SectionBar = ({ children }: { children: string }) => (
     </tr>
 )
 
-const ATLAS_FR_CONDITIONS = [
+const atlasFrConditions = (currency: string) => [
     "Le locataire doit être titulaire d'un permis de conduire depuis plus de deux ans.",
     'Une caution est exigée du locataire lors de la location.',
     "Le locataire s'engage à restituer le véhicule dans le même état et au moment fixés dans le présent contrat.",
     'En cas de dommage ou de rayure sur le véhicule, son montant est directement déduit du montant de la caution.',
-    'En cas de perte des documents ou de la clé du véhicule, le locataire paie une pénalité de 2000 DH.',
+    `En cas de perte des documents ou de la clé du véhicule, le locataire paie une pénalité de 2000 ${currency}.`,
     "Le locataire n'a pas le droit de réparer le véhicule sans l'autorisation de la société, quelle que soit la nature de la panne.",
     "Il est interdit au locataire de signer le constat à l'amiable avant la présence de l'expert.",
     "Il est interdit au locataire d'entrer à Melilla ; il assume l'entière responsabilité en cas de tentative.",
     "Il est interdit au locataire de laisser conduire le véhicule par d'autres personnes dont les noms ne figurent pas dans le présent contrat.",
 ]
 
-const ATLAS_AR_CONDITIONS = [
+const atlasArConditions = (currency: string) => [
     'يجب على المكتري أن يتوفر على رخصة السياقة أكثر من سنتين.',
     'عند الكراء يشترط على المكتري دفع ضمانة.',
     'يلتزم المكتري بإرجاع السيارة في نفس الحالة والوقت المحددين في هذه العقدة.',
     'في حالة حدوث عطب أو خدش للسيارة، تخصم قيمته مباشرة من مبلغ الضمانة.',
-    'في حالة ضياع أوراق أو مفتاح السيارة، يؤدي المكتري غرامة تقدر بـ 2000 درهم.',
+    `في حالة ضياع أوراق أو مفتاح السيارة، يؤدي المكتري غرامة تقدر بـ 2000 ${currency}.`,
     'لا يحق للمكتري إصلاح السيارة دون اذن الشركة كيفما كان نوع العطب.',
     'يمنع على المكتري إمضاء المعاينة الودية قبل حضور الخبير.',
     'يمنع على المكتري دخول مليلية ويتحمل المسؤولية كاملة من حاول القيام بذلك.',
@@ -114,6 +114,8 @@ const ContractAtlas = ({ contract }: { contract: ReservationContract }) => {
     } = contract
 
     const agencyName = (agency?.name ?? '').trim()
+    // Unit suffix printed next to monetary amounts; follows the agency currency.
+    const currencySymbol = agency?.currency?.symbol || 'DH'
     const vehicleName = [txt(car?.brand), txt(car?.model)]
         .filter(Boolean)
         .join(' ')
@@ -354,16 +356,19 @@ const ContractAtlas = ({ contract }: { contract: ReservationContract }) => {
                     />
                     <tr className="red-row">
                         <td className="fr-label">
-                            Frais km supp. ({mileage.fee_per_km} DH/km)
+                            Frais km supp. ({mileage.fee_per_km} {currencySymbol}
+                            /km)
                         </td>
-                        <td className="value">{amount(mileage.extra_fee)}</td>
+                        <td className="value">
+                            {amount(mileage.extra_fee, currencySymbol)}
+                        </td>
                         <td className="ar" lang="ar" dir="rtl">
                             رسوم الكيلومترات الإضافية
                         </td>
                     </tr>
                     <MainRow
                         label="Montant Total"
-                        value={amount(reservation.total_amount)}
+                        value={amount(reservation.total_amount, currencySymbol)}
                         ar="المبلغ الإجمالي"
                     />
                 </tbody>
@@ -373,13 +378,13 @@ const ContractAtlas = ({ contract }: { contract: ReservationContract }) => {
             <div className="cond-box">
                 <div className="cond-col left">
                     <div className="cond-title">CONDITIONS GÉNÉRALES</div>
-                    {ATLAS_FR_CONDITIONS.map((line) => (
+                    {atlasFrConditions(currencySymbol).map((line) => (
                         <p key={line}>* {line}</p>
                     ))}
                 </div>
                 <div className="cond-col right" lang="ar" dir="rtl">
                     <div className="cond-title">شــروط عـامـــة</div>
-                    {ATLAS_AR_CONDITIONS.map((line) => (
+                    {atlasArConditions(currencySymbol).map((line) => (
                         <p key={line}>* {line}</p>
                     ))}
                 </div>

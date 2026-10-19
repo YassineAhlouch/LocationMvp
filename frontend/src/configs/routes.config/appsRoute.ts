@@ -196,6 +196,17 @@ const appsRoute: Routes = [
 
     // ===== PARAMETRES =====
     {
+        key: 'gestion.parametres.devise',
+        path: `${APPS_PREFIX_PATH}/parametres/devise`,
+        component: lazy(() => import('@/views/location/ParametrageDevise')),
+        authority: [ADMIN],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'contained',
+            footer: false,
+        },
+    },
+    {
         key: 'gestion.parametres.factures',
         path: `${APPS_PREFIX_PATH}/parametres/factures`,
         component: lazy(

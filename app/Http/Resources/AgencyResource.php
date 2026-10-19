@@ -33,6 +33,15 @@ class AgencyResource extends JsonResource
             'invoice_template' => $this->invoiceTemplate
                 ? new InvoiceTemplateResource($this->invoiceTemplate)
                 : null,
+            // The unit every amount is displayed in. Null until the platform
+            // assigns one; the app then falls back to its default.
+            'currency' => $this->currency === null ? null : [
+                'id' => $this->currency->id,
+                'code' => $this->currency->code,
+                'name' => $this->currency->name,
+                'symbol' => $this->currency->symbol,
+                'decimals' => $this->currency->decimals,
+            ],
         ];
     }
 }

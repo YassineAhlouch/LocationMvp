@@ -8,7 +8,7 @@ import { BarChart } from '@/components/shared/Chart'
 import { colors } from '@/constants/colors.constant'
 import { apiGetClientReports } from '@/services/LocationService'
 import { LiCalendar, LiMoney, LiProfiles, LiWalletMoney } from '@/icons'
-import { MAD, clientStatusTone, formatDate, tagToneClass } from '../shared'
+import { money, clientStatusTone, formatDate, tagToneClass } from '../shared'
 import useTranslation from '@/utils/hooks/useTranslation'
 import { ReportEmpty, ReportHeader, ReportMetrics } from './shared'
 import { resolveReportRange } from './shared'
@@ -155,7 +155,7 @@ const PerformanceClients = () => {
                                 width: 48,
                             }}
                             tooltipContentConfig={{
-                                valueFormatter: (value: number) => MAD(value),
+                                valueFormatter: (value: number) => money(value),
                                 nameFormatter: () =>
                                     t('reports.clients.metricRevenue', 'Revenue'),
                             }}
@@ -249,10 +249,10 @@ const PerformanceClients = () => {
                                         {client.reservations}
                                     </Td>
                                     <Td className="heading-text">
-                                        {MAD(client.revenue)}
+                                        {money(client.revenue)}
                                     </Td>
                                     <Td className="heading-text">
-                                        {MAD(client.average_spend)}
+                                        {money(client.average_spend)}
                                     </Td>
                                     <Td className="text-gray-600 dark:text-gray-300">
                                         {formatDate(client.last_rental)}

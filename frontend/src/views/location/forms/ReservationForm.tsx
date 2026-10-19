@@ -47,7 +47,8 @@ import type {
 import ClientForm from './ClientForm'
 import useTranslation from '@/utils/hooks/useTranslation'
 import {
-    MAD,
+    money,
+    currencyCode,
     formatDateTime,
     apiErrorMessage,
     reservationStatusTone,
@@ -1963,7 +1964,7 @@ const ReservationForm = ({
                         )}
                     >
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <FormItem label={t('reservations.form.dailyRateMad', 'Daily rate (MAD)')}>
+                <FormItem label={`${t('reservations.form.dailyRateMad', 'Daily rate')} (${currencyCode()})`}>
                     <Controller
                         name="daily_rate"
                         control={control}
@@ -1977,7 +1978,7 @@ const ReservationForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label={t('reservations.form.discountMad', 'Discount (MAD)')}>
+                <FormItem label={`${t('reservations.form.discountMad', 'Discount')} (${currencyCode()})`}>
                     <Controller
                         name="discount_amount"
                         control={control}
@@ -1991,7 +1992,7 @@ const ReservationForm = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label={t('reservations.form.depositMad', 'Deposit (MAD)')}>
+                <FormItem label={`${t('reservations.form.depositMad', 'Deposit')} (${currencyCode()})`}>
                     <Controller
                         name="deposit_amount"
                         control={control}
@@ -2133,7 +2134,7 @@ const ReservationForm = ({
                                             />
                                         </FormItem>
                                         <FormItem
-                                            label={t('reservations.form.unitPriceMad', 'Unit price (MAD)')}
+                                            label={`${t('reservations.form.unitPriceMad', 'Unit price')} (${currencyCode()})`}
                                             invalid={Boolean(
                                                 errors.extras?.[index]
                                                     ?.unit_price,
@@ -2174,7 +2175,7 @@ const ReservationForm = ({
                                                 return (
                                                     <div className="pt-0 leading-10">
                                                         <span className="text-sm font-semibold dark:text-gray-100">
-                                                            {MAD(total)}
+                                                            {money(total)}
                                                         </span>
                                                         {row?.pricing_type ===
                                                             'daily' && (
@@ -2184,7 +2185,7 @@ const ReservationForm = ({
                                                                           'reservations.form.extraDailyCalc',
                                                                           '= {{unit}} × {{qty}} × {{days}} days',
                                                                           {
-                                                                              unit: MAD(
+                                                                              unit: money(
                                                                                   Number(
                                                                                       row.unit_price,
                                                                                   ),
@@ -2249,7 +2250,7 @@ const ReservationForm = ({
                                 {t('reservations.form.dailyRate', 'Daily rate')}
                             </dt>
                             <dd className="text-gray-700 dark:text-gray-200">
-                                {MAD(effectiveDailyRate())} × {rentalDays}
+                                {money(effectiveDailyRate())} × {rentalDays}
                             </dd>
                         </div>
                         <div className="flex items-center justify-between">
@@ -2257,7 +2258,7 @@ const ReservationForm = ({
                                 {t('reservations.form.extrasLabel', 'Extras')}
                             </dt>
                             <dd className="text-gray-700 dark:text-gray-200">
-                                {MAD(extrasTotal)}
+                                {money(extrasTotal)}
                             </dd>
                         </div>
                         <div className="flex items-center justify-between">
@@ -2266,7 +2267,7 @@ const ReservationForm = ({
                             </dt>
                             <dd className="text-gray-700 dark:text-gray-200">
                                 −
-                                {MAD(
+                                {money(
                                     quote
                                         ? quote.duration_discount
                                         : 0,
@@ -2278,7 +2279,7 @@ const ReservationForm = ({
                                 {t('reservations.form.discount', 'Discount')}
                             </dt>
                             <dd className="text-gray-700 dark:text-gray-200">
-                                −{MAD(Number(tripValues.discount_amount) || 0)}
+                                −{money(Number(tripValues.discount_amount) || 0)}
                             </dd>
                         </div>
                         <div className="flex items-center justify-between">
@@ -2290,7 +2291,7 @@ const ReservationForm = ({
                                 })}
                             </dt>
                             <dd className="text-gray-700 dark:text-gray-200">
-                                {MAD(effectiveTax)}
+                                {money(effectiveTax)}
                             </dd>
                         </div>
                         <div className="flex items-center justify-between border-t border-gray-200 pt-2.5 dark:border-gray-700">
@@ -2298,7 +2299,7 @@ const ReservationForm = ({
                                 {t('reservations.form.totalToPay', 'Total to pay')}
                             </dt>
                             <dd className="text-base font-semibold text-gray-800 dark:text-gray-100">
-                                {MAD(effectiveTotal)}
+                                {money(effectiveTotal)}
                                 {quoteFetching && (
                                     <span className="ml-2 text-xs font-normal text-gray-400">
                                         {t('reservations.form.updating', 'updating…')}
@@ -2359,7 +2360,7 @@ const ReservationForm = ({
                                             />
                                         </FormItem>
                                         <FormItem
-                                            label={t('reservations.form.amountPaidMad', 'Amount paid (MAD)')}
+                                            label={`${t('reservations.form.amountPaidMad', 'Amount paid')} (${currencyCode()})`}
                                             invalid={Boolean(
                                                 errors.payments?.[index]
                                                     ?.amount,
@@ -2482,9 +2483,9 @@ const ReservationForm = ({
                                 {t('reservations.form.generatedStatus', 'Generated payment status')}
                             </p>
                             <p className="mt-0.5 text-sm text-gray-400 dark:text-gray-500">
-                                {MAD(createPaidSum)} paid of{' '}
+                                {money(createPaidSum)} paid of{' '}
                                 {effectiveTotal > 0
-                                    ? MAD(effectiveTotal)
+                                    ? money(effectiveTotal)
                                     : '—'}
                                 {quoteFetching && ' · calculating…'}
                             </p>
@@ -2535,8 +2536,8 @@ const ReservationForm = ({
                     ) : (
                         <>
                             <p className="mb-2 flex flex-wrap items-center gap-2 text-xs text-gray-400 dark:text-gray-500">
-                                Paid {MAD(paidSum)} of{' '}
-                                {MAD(editTotal)}
+                                Paid {money(paidSum)} of{' '}
+                                {money(editTotal)}
                                 {quoteFetching && ' · calculating…'}
                                 <Tag
                                     className={`capitalize ${tagToneClass[
@@ -2554,7 +2555,7 @@ const ReservationForm = ({
                                     >
                                         <span className="dark:text-gray-200">
                                             <span className="font-semibold">
-                                                {MAD(payment.amount)}
+                                                {money(payment.amount)}
                                             </span>{' '}
                                             · {formatDateTime(payment.payment_date)}
                                             · {payment.method}
@@ -2609,7 +2610,7 @@ const ReservationForm = ({
                                     />
                                 </FormItem>
                                 <FormItem
-                                    label={t('reservations.form.amountMad', 'Amount (MAD)')}
+                                    label={`${t('reservations.form.amountMad', 'Amount')} (${currencyCode()})`}
                                     invalid={Boolean(
                                         addPaymentErrors.amount,
                                     )}

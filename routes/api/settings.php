@@ -22,4 +22,10 @@ Route::middleware('permission:settings.manage')->group(function () {
 
     Route::patch('agencies/{agency}', [SettingsController::class, 'updateAgencyTemplate'])
         ->name('agencies.update-template');
+
+    Route::get('currencies', [SettingsController::class, 'currencies'])
+        ->name('settings.currencies');
+
+    Route::patch('settings/currency', [SettingsController::class, 'updateCurrency'])
+        ->name('settings.currency.update');
 });
