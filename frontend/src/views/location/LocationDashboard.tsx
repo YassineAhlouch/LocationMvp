@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Container from '@/components/shared/Container'
 import Card from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
-import Dropdown from '@/components/ui/Dropdown'
 import Switcher from '@/components/ui/Switcher'
 import Skeleton from '@/components/ui/Skeleton'
 import Table from '@/components/ui/Table'
@@ -18,8 +16,8 @@ import classNames from '@/utils/classNames'
 import useResponsive from '@/utils/hooks/useResponsive'
 import useDirection from '@/utils/hooks/useDirection'
 import dayjs from 'dayjs'
-import quarterOfYear from 'dayjs/plugin/quarterOfYear'
 import { useSessionUser } from '@/store/authStore'
+import MonthPicker from '@/components/shared/MonthPicker'
 import {
     apiGetDashboardSummary,
     apiGetDashboardTimeline,
@@ -30,7 +28,6 @@ import useTranslation from '@/utils/hooks/useTranslation'
 import type { CarReport, DashboardSummary, DashboardTimeline } from '@/@types/location'
 import type { ReactNode } from 'react'
 import {
-    LiChevronDown,
     LiWalletMoney,
     LiReceipt,
     LiCalendar,
@@ -38,114 +35,27 @@ import {
     LiCar,
 } from '@/icons'
 
-dayjs.extend(quarterOfYear)
-
 const { Tr, Th, Td, THead, TBody } = Table
 
-type TimeRange = 'thisWeek' | 'thisMonth' | 'thisQuarter' | 'thisYear'
-type ComparisonPeriod =
-    | 'lastWeek'
-    | 'lastMonth'
-    | 'lastQuarter'
-    | 'lastYear'
+type DateRange = { start: Date; end: Date }
 
-const timeRangeOptions = (t: any): { key: TimeRange; label: string }[] => [
-    { key: 'thisWeek', label: t('dashboard.thisWeek') },
-    { key: 'thisMonth', label: t('dashboard.thisMonth') },
-    { key: 'thisQuarter', label: t('dashboard.thisQuarter') },
-    { key: 'thisYear', label: t('dashboard.thisYear') },
-]
+/** The selected month plus the month before it, for period-over-period comparison. */
+const getMonthRanges = (
+    month: Date,
+): { current: DateRange; comparison: DateRange } => {
+    const selected = dayjs(month)
+    const previous = selected.subtract(1, 'month')
 
-const getComparisonPeriodForTimeRange = (
-    timeRange: TimeRange,
-): ComparisonPeriod => {
-    switch (timeRange) {
-        case 'thisWeek':
-            return 'lastWeek'
-        case 'thisMonth':
-            return 'lastMonth'
-        case 'thisQuarter':
-            return 'lastQuarter'
-        case 'thisYear':
-            return 'lastYear'
+    return {
+        current: {
+            start: selected.startOf('month').toDate(),
+            end: selected.endOf('month').toDate(),
+        },
+        comparison: {
+            start: previous.startOf('month').toDate(),
+            end: previous.endOf('month').toDate(),
+        },
     }
-}
-
-const getDateRanges = (
-    timeRange: TimeRange,
-    comparisonPeriod: ComparisonPeriod,
-) => {
-    const now = dayjs()
-    let current: { start: Date; end: Date }
-    let comparison: { start: Date; end: Date }
-
-    switch (timeRange) {
-        case 'thisWeek':
-            current = {
-                start: now.startOf('week').toDate(),
-                end: now.endOf('week').toDate(),
-            }
-            break
-        case 'thisMonth':
-            current = {
-                start: now.startOf('month').toDate(),
-                end: now.endOf('month').toDate(),
-            }
-            break
-        case 'thisQuarter':
-            current = {
-                start: now.startOf('quarter').toDate(),
-                end: now.endOf('quarter').toDate(),
-            }
-            break
-        case 'thisYear':
-            current = {
-                start: now.startOf('year').toDate(),
-                end: now.endOf('year').toDate(),
-            }
-            break
-    }
-
-    switch (comparisonPeriod) {
-        case 'lastWeek':
-            comparison = {
-                start: now
-                    .subtract(1, 'week')
-                    .startOf('week')
-                    .toDate(),
-                end: now.subtract(1, 'week').endOf('week').toDate(),
-            }
-            break
-        case 'lastMonth':
-            comparison = {
-                start: now
-                    .subtract(1, 'month')
-                    .startOf('month')
-                    .toDate(),
-                end: now.subtract(1, 'month').endOf('month').toDate(),
-            }
-            break
-        case 'lastQuarter':
-            comparison = {
-                start: now
-                    .subtract(1, 'quarter')
-                    .startOf('quarter')
-                    .toDate(),
-                end: now
-                    .subtract(1, 'quarter')
-                    .endOf('quarter')
-                    .toDate(),
-            }
-            break
-        case 'lastYear':
-            comparison = {
-                start: now.subtract(1, 'year').startOf('year').toDate(),
-                end: now.subtract(1, 'year').endOf('year').toDate(),
-            }
-            break
-    }
-
-    return { current, comparison }
 }
 
 const toDateString = (date: Date) => dayjs(date).format('YYYY-MM-DD')
@@ -780,18 +690,18 @@ const TopVehicles = ({ vehicles }: TopVehiclesProps) => {
 type DashboardHeaderProps = {
     userName?: string
     currentDate: Date
-    timeRange: TimeRange
+    month: Date
     comparisonEnabled: boolean
-    onTimeRangeChange: (range: TimeRange) => void
+    onMonthChange: (month: Date) => void
     onComparisonChange: (enabled: boolean) => void
 }
 
 const DashboardHeader = ({
     userName,
     currentDate,
-    timeRange,
+    month,
     comparisonEnabled,
-    onTimeRangeChange,
+    onMonthChange,
     onComparisonChange,
 }: DashboardHeaderProps) => {
     const formattedDate = useMemo(
@@ -802,14 +712,6 @@ const DashboardHeader = ({
     const displayName = userName || 'User'
 
     const { t } = useTranslation()
-
-    const currentTimeRangeLabel =
-        timeRangeOptions(t).find((opt) => opt.key === timeRange)?.label ||
-        t('dashboard.thisMonth')
-
-    const handleTimeRangeSelect = (eventKey: string) => {
-        onTimeRangeChange(eventKey as TimeRange)
-    }
 
     return (
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4 space-y-4 lg:space-y-0 py-2.5">
@@ -827,28 +729,7 @@ const DashboardHeader = ({
                 </div>
                 <div className="flex items-center gap-2">
                     <span className="heading-text">{t('dashboard.timeRange', 'Time Range')}:</span>
-                    <Dropdown
-                        activeKey={timeRange}
-                        renderTitle={
-                            <Button
-                                icon={<LiChevronDown className="text-sm" />}
-                                iconAlignment="end"
-                            >
-                                {currentTimeRangeLabel}
-                            </Button>
-                        }
-                        placement="bottom-end"
-                    >
-                        {timeRangeOptions(t).map((option) => (
-                            <Dropdown.Item
-                                key={option.key}
-                                eventKey={option.key}
-                                onSelect={handleTimeRangeSelect}
-                            >
-                                {option.label}
-                            </Dropdown.Item>
-                        ))}
-                    </Dropdown>
+                    <MonthPicker value={month} onChange={onMonthChange} />
                 </div>
             </div>
         </div>
@@ -1059,13 +940,8 @@ const LocationDashboard = () => {
     const { windowWidth } = useResponsive()
     const { t } = useTranslation()
 
-    const [timeRange, setTimeRange] = useState<TimeRange>('thisMonth')
+    const [month, setMonth] = useState(() => dayjs().startOf('month').toDate())
     const [comparisonEnabled, setComparisonEnabled] = useState(true)
-
-    const comparisonPeriod = useMemo(
-        () => getComparisonPeriodForTimeRange(timeRange),
-        [timeRange],
-    )
 
     const [summary, setSummary] = useState<DashboardSummary | null>(null)
     const [prevSummary, setPrevSummary] = useState<DashboardSummary | null>(
@@ -1078,10 +954,7 @@ const LocationDashboard = () => {
     const fetchDashboard = useCallback(async () => {
         setLoading(true)
 
-        const { current, comparison } = getDateRanges(
-            timeRange,
-            comparisonPeriod,
-        )
+        const { current, comparison } = getMonthRanges(month)
 
         try {
             const [summaryRes, prevRes, timelineRes, carsRes] =
@@ -1113,7 +986,7 @@ const LocationDashboard = () => {
         } finally {
             setLoading(false)
         }
-    }, [timeRange, comparisonPeriod, comparisonEnabled])
+    }, [month, comparisonEnabled])
 
     useEffect(() => {
         fetchDashboard()
@@ -1190,9 +1063,9 @@ const LocationDashboard = () => {
                 <DashboardHeader
                     userName={displayName}
                     currentDate={new Date()}
-                    timeRange={timeRange}
+                    month={month}
                     comparisonEnabled={comparisonEnabled}
-                    onTimeRangeChange={setTimeRange}
+                    onMonthChange={setMonth}
                     onComparisonChange={setComparisonEnabled}
                 />
                 <div className="space-y-4">

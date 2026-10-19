@@ -11,9 +11,10 @@ import { LiCalendar, LiMoney, LiProfiles, LiWalletMoney } from '@/icons'
 import { money, clientStatusTone, formatDate, tagToneClass } from '../shared'
 import useTranslation from '@/utils/hooks/useTranslation'
 import { ReportEmpty, ReportHeader, ReportMetrics } from './shared'
-import { resolveReportRange } from './shared'
-import type { ReportMetric, ReportRange } from './shared'
+import { resolveMonthRange } from './shared'
+import type { ReportMetric } from './shared'
 import type { ClientReport } from '@/@types/location'
+import dayjs from 'dayjs'
 const { Tr, Th, Td, THead, TBody } = Table
 
 const compactMAD = (value: number) => {
@@ -28,11 +29,11 @@ const compactMAD = (value: number) => {
 
 const PerformanceClients = () => {
     const { t } = useTranslation()
-    const [range, setRange] = useState<ReportRange>('thisMonth')
+    const [month, setMonth] = useState(() => dayjs().startOf('month').toDate())
     const [clients, setClients] = useState<ClientReport[]>([])
     const [loading, setLoading] = useState(true)
 
-    const period = useMemo(() => resolveReportRange(range), [range])
+    const period = useMemo(() => resolveMonthRange(month), [month])
 
     const fetchReports = useCallback(() => {
         setLoading(true)
@@ -113,8 +114,8 @@ const PerformanceClients = () => {
                     'reports.clients.description',
                     'Your best clients ranked by revenue over the period',
                 )}
-                range={range}
-                onRangeChange={setRange}
+                month={month}
+                onMonthChange={setMonth}
             />
 
             <ReportMetrics items={metrics} loading={loading} />

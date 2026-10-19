@@ -19,6 +19,7 @@ import Collapsible from '@/components/ui/Collapsible'
 import Tooltip from '@/components/ui/Tooltip'
 import DebouceInput from '@/components/shared/DebouceInput'
 import DataTable from '@/components/shared/DataTable'
+import MonthPicker from '@/components/shared/MonthPicker'
 import type { ColumnDef } from '@tanstack/react-table'
 import { Form, FormItem } from '@/components/ui/Form'
 import { Notification } from '@/components/ui/Notification'
@@ -88,12 +89,6 @@ import {
 } from '@/icons'
 
 const { TabNav, TabList } = Tabs
-
-const rangeOptions = (t: Translator) => [
-    { value: '30', label: t('reservations.last30Days', 'Last 30 days') },
-    { value: '60', label: t('reservations.last60Days', 'Last 60 days') },
-    { value: '90', label: t('reservations.last90Days', 'Last 90 days') },
-]
 
 const pageSizeOption = (t: Translator) => [
     { value: 10, label: `10 ${t('reservations.perPage', '/ page')}` },
@@ -889,7 +884,7 @@ const Reservations = () => {
     const [q, setQ] = useState('')
     const [statusFilter, setStatusFilter] = useState('')
     const [paymentStatusFilter, setPaymentStatusFilter] = useState('')
-    const [range, setRange] = useState('30')
+    const [month, setMonth] = useState(() => dayjs().startOf('month').toDate())
     const [sortBy, setSortBy] = useState('')
     const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
     const [expandedId, setExpandedId] = useState<number | null>(null)
@@ -914,9 +909,8 @@ const Reservations = () => {
         const params: Record<string, unknown> = {
             page: pageIndex,
             per_page: pageSize,
-            pickup_from: dayjs()
-                .subtract(Number(range), 'day')
-                .format('YYYY-MM-DD'),
+            pickup_from: dayjs(month).startOf('month').format('YYYY-MM-DD'),
+            pickup_to: dayjs(month).endOf('month').format('YYYY-MM-DD'),
         }
         if (q.trim()) {
             params.q = q.trim()
@@ -947,7 +941,7 @@ const Reservations = () => {
         q,
         statusFilter,
         paymentStatusFilter,
-        range,
+        month,
         sortBy,
         sortDir,
     ])
@@ -959,13 +953,13 @@ const Reservations = () => {
     useEffect(() => {
         setSummaryLoading(true)
         apiGetDashboardSummary({
-            from: dayjs().subtract(Number(range), 'day').format('YYYY-MM-DD'),
-            to: dayjs().format('YYYY-MM-DD'),
+            from: dayjs(month).startOf('month').format('YYYY-MM-DD'),
+            to: dayjs(month).endOf('month').format('YYYY-MM-DD'),
         })
             .then(setSummary)
             .catch(() => setSummary(null))
             .finally(() => setSummaryLoading(false))
-    }, [range])
+    }, [month])
 
     const handleConfirm = useCallback(
         async (reservation: Reservation) => {
@@ -1298,38 +1292,13 @@ const Reservations = () => {
                 <div className="flex items-center justify-between gap-4">
                     <h4>{t('reservations.reservations', 'Reservations')}</h4>
                     <div className="flex items-center gap-2">
-                        <Dropdown
-                            placement="bottom-end"
-                            menuClass="min-w-[180px]"
-                            renderTitle={
-                                <Button>
-                                    {larger.sm
-                                        ? rangeOptions(t).find(
-                                              (option) =>
-                                                  option.value === range,
-                                          )?.label
-                                        : `${range}d`}
-                                </Button>
-                            }
-                        >
-                            {rangeOptions(t).map((option) => (
-                                <Dropdown.Item
-                                    key={option.value}
-                                    onClick={() => {
-                                        setRange(option.value)
-                                        setPageIndex(1)
-                                    }}
-                                    active={range === option.value}
-                                >
-                                    <span className="flex items-center justify-between w-full">
-                                        <span>{option.label}</span>
-                                        {range === option.value && (
-                                            <LiTickCircle />
-                                        )}
-                                    </span>
-                                </Dropdown.Item>
-                            ))}
-                        </Dropdown>
+                        <MonthPicker
+                            value={month}
+                            onChange={(value) => {
+                                setMonth(value)
+                                setPageIndex(1)
+                            }}
+                        />
                         <CSVLink
                             filename="reservations.csv"
                             data={csvData}

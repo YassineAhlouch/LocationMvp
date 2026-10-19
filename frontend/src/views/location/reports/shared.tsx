@@ -1,118 +1,46 @@
 import dayjs from 'dayjs'
-import quarterOfYear from 'dayjs/plugin/quarterOfYear'
 import Avatar from '@/components/ui/Avatar'
-import Button from '@/components/ui/Button'
-import Dropdown from '@/components/ui/Dropdown'
 import StatisticCard from '@/components/shared/StatisticCard'
+import MonthPicker from '@/components/shared/MonthPicker'
 import classNames from '@/utils/classNames'
-import { LiChevronDown } from '@/icons'
 import { money } from '../shared'
-import useTranslation from '@/utils/hooks/useTranslation'
 import type { ReactNode } from 'react'
 
-dayjs.extend(quarterOfYear)
-
-export type ReportRange =
-    'thisWeek' | 'thisMonth' | 'thisQuarter' | 'thisYear'
-
-export const reportRangeOptions: { key: ReportRange; label: string }[] = [
-    { key: 'thisWeek', label: 'This Week' },
-    { key: 'thisMonth', label: 'This Month' },
-    { key: 'thisQuarter', label: 'This Quarter' },
-    { key: 'thisYear', label: 'This Year' },
-]
-
-/** Resolve a named range to the from/to strings the reports API expects. */
-export const resolveReportRange = (
-    range: ReportRange,
-): { from: string; to: string } => {
-    const now = dayjs()
-
-    switch (range) {
-        case 'thisWeek':
-            return {
-                from: now.startOf('week').format('YYYY-MM-DD'),
-                to: now.endOf('week').format('YYYY-MM-DD'),
-            }
-        case 'thisQuarter':
-            return {
-                from: now.startOf('quarter').format('YYYY-MM-DD'),
-                to: now.endOf('quarter').format('YYYY-MM-DD'),
-            }
-        case 'thisYear':
-            return {
-                from: now.startOf('year').format('YYYY-MM-DD'),
-                to: now.endOf('year').format('YYYY-MM-DD'),
-            }
-        case 'thisMonth':
-        default:
-            return {
-                from: now.startOf('month').format('YYYY-MM-DD'),
-                to: now.endOf('month').format('YYYY-MM-DD'),
-            }
-    }
-}
+/** Resolve the selected month to the from/to strings the reports API expects. */
+export const resolveMonthRange = (
+    month: Date,
+): { from: string; to: string } => ({
+    from: dayjs(month).startOf('month').format('YYYY-MM-DD'),
+    to: dayjs(month).endOf('month').format('YYYY-MM-DD'),
+})
 
 type ReportHeaderProps = {
     title: string
     description: string
-    range: ReportRange
-    onRangeChange: (range: ReportRange) => void
+    month: Date
+    onMonthChange: (month: Date) => void
     actions?: ReactNode
 }
 
-/** Title + description on the left, named period picker on the right. */
+/** Title + description on the left, month picker on the right. */
 export const ReportHeader = ({
     title,
     description,
-    range,
-    onRangeChange,
+    month,
+    onMonthChange,
     actions,
-}: ReportHeaderProps) => {
-    const { t } = useTranslation()
-    const currentOption = reportRangeOptions.find(
-        (option) => option.key === range,
-    )
-    const currentLabel = currentOption
-        ? t(`reports.range.${currentOption.key}`, currentOption.label)
-        : t('reports.range.thisMonth', 'This Month')
-
-    return (
-        <div className="flex flex-col gap-4 mb-6 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-                <h4>{title}</h4>
-                <p>{description}</p>
-            </div>
-            <div className="flex flex-wrap items-center gap-3">
-                {actions}
-                <Dropdown
-                    activeKey={range}
-                    renderTitle={
-                        <Button
-                            icon={<LiChevronDown className="text-sm" />}
-                            iconAlignment="end"
-                        >
-                            {currentLabel}
-                        </Button>
-                    }
-                    placement="bottom-end"
-                >
-                    {reportRangeOptions.map((option) => (
-                        <Dropdown.Item
-                            key={option.key}
-                            eventKey={option.key}
-                            onSelect={(eventKey) =>
-                                onRangeChange(eventKey as ReportRange)
-                            }
-                        >
-                            {t(`reports.range.${option.key}`, option.label)}
-                        </Dropdown.Item>
-                    ))}
-                </Dropdown>
-            </div>
+}: ReportHeaderProps) => (
+    <div className="flex flex-col gap-4 mb-6 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+            <h4>{title}</h4>
+            <p>{description}</p>
         </div>
-    )
-}
+        <div className="flex flex-wrap items-center gap-3">
+            {actions}
+            <MonthPicker value={month} onChange={onMonthChange} />
+        </div>
+    </div>
+)
 
 export type ReportMetric = {
     key: string

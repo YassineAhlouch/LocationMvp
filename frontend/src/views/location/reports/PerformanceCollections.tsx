@@ -13,19 +13,19 @@ import { money, tagToneClass } from '../shared'
 import useTranslation from '@/utils/hooks/useTranslation'
 import type { TagTone } from '../shared'
 import { ReportEmpty, ReportHeader, ReportMetrics } from './shared'
-import { resolveReportRange } from './shared'
-import type { ReportMetric, ReportRange } from './shared'
+import { resolveMonthRange } from './shared'
+import type { ReportMetric } from './shared'
 import type { PaymentOverview } from '@/@types/location'
 
 const { Tr, Th, Td, THead, TBody } = Table
 
 const PerformanceCollections = () => {
     const { t } = useTranslation()
-    const [range, setRange] = useState<ReportRange>('thisMonth')
+    const [month, setMonth] = useState(() => dayjs().startOf('month').toDate())
     const [overview, setOverview] = useState<PaymentOverview | null>(null)
     const [loading, setLoading] = useState(true)
 
-    const period = useMemo(() => resolveReportRange(range), [range])
+    const period = useMemo(() => resolveMonthRange(month), [month])
 
     const fetchReport = useCallback(() => {
         setLoading(true)
@@ -125,8 +125,8 @@ const PerformanceCollections = () => {
                     'reports.collections.description',
                     'Cash collected, still pending and refunded over the period',
                 )}
-                range={range}
-                onRangeChange={setRange}
+                month={month}
+                onMonthChange={setMonth}
             />
 
             <ReportMetrics items={metrics} loading={loading} />

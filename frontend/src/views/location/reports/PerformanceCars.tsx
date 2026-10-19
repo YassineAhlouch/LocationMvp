@@ -12,9 +12,10 @@ import { LiBarChartUp, LiCar, LiReceipt, LiWalletMoney } from '@/icons'
 import { money } from '../shared'
 import useTranslation from '@/utils/hooks/useTranslation'
 import { ReportEmpty, ReportHeader, ReportMetrics } from './shared'
-import { resolveReportRange } from './shared'
-import type { ReportMetric, ReportRange } from './shared'
+import { resolveMonthRange } from './shared'
+import type { ReportMetric } from './shared'
 import type { CarReport } from '@/@types/location'
+import dayjs from 'dayjs'
 
 const { Tr, Th, Td, THead, TBody } = Table
 
@@ -30,11 +31,11 @@ const compactMAD = (value: number) => {
 
 const PerformanceCars = () => {
     const { t } = useTranslation()
-    const [range, setRange] = useState<ReportRange>('thisMonth')
+    const [month, setMonth] = useState(() => dayjs().startOf('month').toDate())
     const [cars, setCars] = useState<CarReport[]>([])
     const [loading, setLoading] = useState(true)
 
-    const period = useMemo(() => resolveReportRange(range), [range])
+    const period = useMemo(() => resolveMonthRange(month), [month])
 
     const fetchReports = useCallback(() => {
         setLoading(true)
@@ -113,8 +114,8 @@ const PerformanceCars = () => {
                     'reports.cars.description',
                     'Revenue, expenses and margin for every car on hire',
                 )}
-                range={range}
-                onRangeChange={setRange}
+                month={month}
+                onMonthChange={setMonth}
             />
 
             <ReportMetrics items={metrics} loading={loading} />
