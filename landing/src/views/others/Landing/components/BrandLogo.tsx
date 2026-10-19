@@ -1,32 +1,23 @@
-import { TbCarSuv } from 'react-icons/tb'
 import classNames from '@/utils/classNames'
 
 const BrandLogo = ({
     className,
-    iconSize = 22,
-    textClassName,
+    imgClassName,
 }: {
     className?: string
-    iconSize?: number
-    textClassName?: string
+    imgClassName?: string
 }) => (
-    <span
-        className={classNames(
-            'inline-flex items-center gap-2 text-gray-900 dark:text-white',
-            className,
-        )}
-    >
-        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white">
-            <TbCarSuv size={iconSize} />
-        </span>
-        <span
-            className={classNames(
-                'text-lg font-semibold tracking-tight',
-                textClassName,
-            )}
-        >
-            Double V Drive
-        </span>
+    <span className={classNames('inline-flex items-center', className)}>
+        <img
+            src="/img/logo/logo-light-full.svg"
+            alt="Double V Drive"
+            className={classNames('h-8 w-auto dark:hidden', imgClassName)}
+        />
+        <img
+            src="/img/logo/logo-dark-full.svg"
+            alt="Double V Drive"
+            className={classNames('hidden h-8 w-auto dark:block', imgClassName)}
+        />
     </span>
 )
 

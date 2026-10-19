@@ -49,7 +49,7 @@ const CallToAction = ({ content }: { content: LandingCta }) => (
                 <div className="flex items-center justify-center text-center">
                     <div className="max-w-[450px] mx-auto py-20 z-10">
                         <div className="flex justify-center mb-6">
-                            <BrandLogo iconSize={26} />
+                            <BrandLogo />
                         </div>
                         <div className="bg-white dark:bg-gray-900">
                             <h3 className="max-w-200 leading-snug flex flex-col text-center">
