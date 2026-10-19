@@ -1,33 +1,34 @@
 import dayjs from 'dayjs'
 import Avatar from '@/components/ui/Avatar'
 import StatisticCard from '@/components/shared/StatisticCard'
-import MonthPicker from '@/components/shared/MonthPicker'
+import PeriodPicker from '@/components/shared/PeriodPicker'
 import classNames from '@/utils/classNames'
 import { money } from '../shared'
+import type { DateRange } from '@/components/shared/PeriodPicker'
 import type { ReactNode } from 'react'
 
-/** Resolve the selected month to the from/to strings the reports API expects. */
-export const resolveMonthRange = (
-    month: Date,
+/** Resolve the selected period to the from/to strings the reports API expects. */
+export const rangeToQuery = (
+    range: DateRange,
 ): { from: string; to: string } => ({
-    from: dayjs(month).startOf('month').format('YYYY-MM-DD'),
-    to: dayjs(month).endOf('month').format('YYYY-MM-DD'),
+    from: dayjs(range.from).format('YYYY-MM-DD'),
+    to: dayjs(range.to).format('YYYY-MM-DD'),
 })
 
 type ReportHeaderProps = {
     title: string
     description: string
-    month: Date
-    onMonthChange: (month: Date) => void
+    range: DateRange
+    onRangeChange: (range: DateRange) => void
     actions?: ReactNode
 }
 
-/** Title + description on the left, month picker on the right. */
+/** Title + description on the left, period picker on the right. */
 export const ReportHeader = ({
     title,
     description,
-    month,
-    onMonthChange,
+    range,
+    onRangeChange,
     actions,
 }: ReportHeaderProps) => (
     <div className="flex flex-col gap-4 mb-6 lg:flex-row lg:items-center lg:justify-between">
@@ -37,7 +38,7 @@ export const ReportHeader = ({
         </div>
         <div className="flex flex-wrap items-center gap-3">
             {actions}
-            <MonthPicker value={month} onChange={onMonthChange} />
+            <PeriodPicker value={range} onChange={onRangeChange} />
         </div>
     </div>
 )

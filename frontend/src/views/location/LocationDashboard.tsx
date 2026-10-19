@@ -17,7 +17,11 @@ import useResponsive from '@/utils/hooks/useResponsive'
 import useDirection from '@/utils/hooks/useDirection'
 import dayjs from 'dayjs'
 import { useSessionUser } from '@/store/authStore'
-import MonthPicker from '@/components/shared/MonthPicker'
+import PeriodPicker, {
+    currentMonthRange,
+    previousPeriod,
+} from '@/components/shared/PeriodPicker'
+import type { DateRange } from '@/components/shared/PeriodPicker'
 import {
     apiGetDashboardSummary,
     apiGetDashboardTimeline,
@@ -36,27 +40,6 @@ import {
 } from '@/icons'
 
 const { Tr, Th, Td, THead, TBody } = Table
-
-type DateRange = { start: Date; end: Date }
-
-/** The selected month plus the month before it, for period-over-period comparison. */
-const getMonthRanges = (
-    month: Date,
-): { current: DateRange; comparison: DateRange } => {
-    const selected = dayjs(month)
-    const previous = selected.subtract(1, 'month')
-
-    return {
-        current: {
-            start: selected.startOf('month').toDate(),
-            end: selected.endOf('month').toDate(),
-        },
-        comparison: {
-            start: previous.startOf('month').toDate(),
-            end: previous.endOf('month').toDate(),
-        },
-    }
-}
 
 const toDateString = (date: Date) => dayjs(date).format('YYYY-MM-DD')
 
@@ -690,18 +673,18 @@ const TopVehicles = ({ vehicles }: TopVehiclesProps) => {
 type DashboardHeaderProps = {
     userName?: string
     currentDate: Date
-    month: Date
+    range: DateRange
     comparisonEnabled: boolean
-    onMonthChange: (month: Date) => void
+    onRangeChange: (range: DateRange) => void
     onComparisonChange: (enabled: boolean) => void
 }
 
 const DashboardHeader = ({
     userName,
     currentDate,
-    month,
+    range,
     comparisonEnabled,
-    onMonthChange,
+    onRangeChange,
     onComparisonChange,
 }: DashboardHeaderProps) => {
     const formattedDate = useMemo(
@@ -727,10 +710,7 @@ const DashboardHeader = ({
                         onChange={(checked) => onComparisonChange(checked)}
                     />
                 </div>
-                <div className="flex items-center gap-2">
-                    <span className="heading-text">{t('dashboard.timeRange', 'Time Range')}:</span>
-                    <MonthPicker value={month} onChange={onMonthChange} />
-                </div>
+                <PeriodPicker value={range} onChange={onRangeChange} />
             </div>
         </div>
     )
@@ -940,7 +920,7 @@ const LocationDashboard = () => {
     const { windowWidth } = useResponsive()
     const { t } = useTranslation()
 
-    const [month, setMonth] = useState(() => dayjs().startOf('month').toDate())
+    const [range, setRange] = useState<DateRange>(currentMonthRange)
     const [comparisonEnabled, setComparisonEnabled] = useState(true)
 
     const [summary, setSummary] = useState<DashboardSummary | null>(null)
@@ -954,25 +934,25 @@ const LocationDashboard = () => {
     const fetchDashboard = useCallback(async () => {
         setLoading(true)
 
-        const { current, comparison } = getMonthRanges(month)
+        const comparison = previousPeriod(range)
 
         try {
             const [summaryRes, prevRes, timelineRes, carsRes] =
                 await Promise.all([
                     apiGetDashboardSummary({
-                        from: toDateString(current.start),
-                        to: toDateString(current.end),
+                        from: toDateString(range.from),
+                        to: toDateString(range.to),
                     }),
                     comparisonEnabled
                         ? apiGetDashboardSummary({
-                              from: toDateString(comparison.start),
-                              to: toDateString(comparison.end),
+                              from: toDateString(comparison.from),
+                              to: toDateString(comparison.to),
                           })
                         : Promise.resolve(null),
                     apiGetDashboardTimeline({ months: 12 }).catch(() => null),
                     apiGetCarReports({
-                        from: toDateString(current.start),
-                        to: toDateString(current.end),
+                        from: toDateString(range.from),
+                        to: toDateString(range.to),
                     }).catch(() => []),
                 ])
 
@@ -986,7 +966,7 @@ const LocationDashboard = () => {
         } finally {
             setLoading(false)
         }
-    }, [month, comparisonEnabled])
+    }, [range, comparisonEnabled])
 
     useEffect(() => {
         fetchDashboard()
@@ -1063,9 +1043,9 @@ const LocationDashboard = () => {
                 <DashboardHeader
                     userName={displayName}
                     currentDate={new Date()}
-                    month={month}
+                    range={range}
                     comparisonEnabled={comparisonEnabled}
-                    onMonthChange={setMonth}
+                    onRangeChange={setRange}
                     onComparisonChange={setComparisonEnabled}
                 />
                 <div className="space-y-4">

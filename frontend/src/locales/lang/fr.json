@@ -266,6 +266,13 @@
         "save": "Enregistrer",
         "close": "Fermer"
     },
+    "period": {
+        "today": "Aujourd'hui",
+        "thisWeek": "Cette semaine",
+        "thisMonth": "Ce mois-ci",
+        "thisQuarter": "Ce trimestre",
+        "thisYear": "Cette année"
+    },
     "reservations": {
         "reservations": "Réservations",
         "newReservation": "Nouvelle réservation",

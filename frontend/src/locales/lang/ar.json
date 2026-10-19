@@ -266,6 +266,13 @@
         "save": "حفظ",
         "close": "إغلاق"
     },
+    "period": {
+        "today": "اليوم",
+        "thisWeek": "هذا الأسبوع",
+        "thisMonth": "هذا الشهر",
+        "thisQuarter": "هذا الربع",
+        "thisYear": "هذه السنة"
+    },
     "reservations": {
         "reservations": "الحجوزات",
         "newReservation": "حجز جديد",

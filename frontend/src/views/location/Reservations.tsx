@@ -19,7 +19,10 @@ import Collapsible from '@/components/ui/Collapsible'
 import Tooltip from '@/components/ui/Tooltip'
 import DebouceInput from '@/components/shared/DebouceInput'
 import DataTable from '@/components/shared/DataTable'
-import MonthPicker from '@/components/shared/MonthPicker'
+import PeriodPicker, {
+    currentMonthRange,
+} from '@/components/shared/PeriodPicker'
+import type { DateRange } from '@/components/shared/PeriodPicker'
 import type { ColumnDef } from '@tanstack/react-table'
 import { Form, FormItem } from '@/components/ui/Form'
 import { Notification } from '@/components/ui/Notification'
@@ -884,7 +887,7 @@ const Reservations = () => {
     const [q, setQ] = useState('')
     const [statusFilter, setStatusFilter] = useState('')
     const [paymentStatusFilter, setPaymentStatusFilter] = useState('')
-    const [month, setMonth] = useState(() => dayjs().startOf('month').toDate())
+    const [range, setRange] = useState<DateRange>(currentMonthRange)
     const [sortBy, setSortBy] = useState('')
     const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
     const [expandedId, setExpandedId] = useState<number | null>(null)
@@ -909,8 +912,8 @@ const Reservations = () => {
         const params: Record<string, unknown> = {
             page: pageIndex,
             per_page: pageSize,
-            pickup_from: dayjs(month).startOf('month').format('YYYY-MM-DD'),
-            pickup_to: dayjs(month).endOf('month').format('YYYY-MM-DD'),
+            pickup_from: dayjs(range.from).format('YYYY-MM-DD'),
+            pickup_to: dayjs(range.to).format('YYYY-MM-DD'),
         }
         if (q.trim()) {
             params.q = q.trim()
@@ -941,7 +944,7 @@ const Reservations = () => {
         q,
         statusFilter,
         paymentStatusFilter,
-        month,
+        range,
         sortBy,
         sortDir,
     ])
@@ -953,13 +956,13 @@ const Reservations = () => {
     useEffect(() => {
         setSummaryLoading(true)
         apiGetDashboardSummary({
-            from: dayjs(month).startOf('month').format('YYYY-MM-DD'),
-            to: dayjs(month).endOf('month').format('YYYY-MM-DD'),
+            from: dayjs(range.from).format('YYYY-MM-DD'),
+            to: dayjs(range.to).format('YYYY-MM-DD'),
         })
             .then(setSummary)
             .catch(() => setSummary(null))
             .finally(() => setSummaryLoading(false))
-    }, [month])
+    }, [range])
 
     const handleConfirm = useCallback(
         async (reservation: Reservation) => {
@@ -1292,10 +1295,10 @@ const Reservations = () => {
                 <div className="flex items-center justify-between gap-4">
                     <h4>{t('reservations.reservations', 'Reservations')}</h4>
                     <div className="flex items-center gap-2">
-                        <MonthPicker
-                            value={month}
+                        <PeriodPicker
+                            value={range}
                             onChange={(value) => {
-                                setMonth(value)
+                                setRange(value)
                                 setPageIndex(1)
                             }}
                         />
