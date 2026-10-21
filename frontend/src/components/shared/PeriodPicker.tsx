@@ -212,8 +212,8 @@ const PeriodPicker = ({
                         {...getFloatingProps()}
                     >
                         <div className="picker-panel">
-                            <div className="flex">
-                                <div className="flex w-36 shrink-0 flex-col gap-1 border-e border-gray-200 p-2 dark:border-gray-700">
+                            <div className="flex flex-col sm:flex-row">
+                                <div className="flex shrink-0 gap-1 overflow-x-auto border-gray-200 p-2 sm:w-36 sm:flex-col sm:overflow-visible sm:border-e dark:border-gray-700">
                                     {PRESETS.map((preset) => (
                                         <Button
                                             key={preset.key}
@@ -224,7 +224,7 @@ const PeriodPicker = ({
                                                     ? 'solid'
                                                     : 'ghost'
                                             }
-                                            className="justify-start"
+                                            className="shrink-0 justify-start whitespace-nowrap sm:shrink"
                                             onClick={() =>
                                                 handlePreset(preset.key)
                                             }

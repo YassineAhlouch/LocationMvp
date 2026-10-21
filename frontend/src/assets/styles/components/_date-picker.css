@@ -51,7 +51,7 @@
   }
 
   .picker {
-    @apply z-40;
+    @apply z-40 max-w-[calc(100vw-1.5rem)];
   }
 
   .picker-panel {
