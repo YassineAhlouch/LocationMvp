@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import Container from '@/components/shared/Container'
 import Card from '@/components/ui/Card'
-import Switcher from '@/components/ui/Switcher'
 import Skeleton from '@/components/ui/Skeleton'
 import Table from '@/components/ui/Table'
 import StatisticCard from '@/components/shared/StatisticCard'
@@ -92,7 +91,6 @@ type MetricCardProps = {
     icon?: ReactNode
     color?: string
     formatter?: (value: number) => string
-    comparisonEnabled?: boolean
     /** Free-form detail line; replaces the period comparison when given. */
     hint?: ReactNode
     /** Drill-down page for this card; turns the card into a link. */
@@ -106,7 +104,6 @@ const MetricCard = ({
     icon,
     color = 'text-primary',
     formatter,
-    comparisonEnabled = true,
     hint,
     to,
 }: MetricCardProps) => {
@@ -127,19 +124,17 @@ const MetricCard = ({
                         {hint}
                     </div>
                 ) : (
-                    comparisonEnabled && (
-                        <div className="mt-1 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-                            <GrowShrinkTag
-                                value={change}
-                                suffix="%"
-                                showIcon={true}
-                                className="border-0 bg-transparent px-0 py-0 font-semibold"
-                            />
-                            <span>
-                                {t('dashboard.vsLastPeriod', 'vs last period')}
-                            </span>
-                        </div>
-                    )
+                    <div className="mt-1 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                        <GrowShrinkTag
+                            value={change}
+                            suffix="%"
+                            showIcon={true}
+                            className="border-0 bg-transparent px-0 py-0 font-semibold"
+                        />
+                        <span>
+                            {t('dashboard.vsLastPeriod', 'vs last period')}
+                        </span>
+                    </div>
                 )}
             </div>
             {icon && (
@@ -168,7 +163,6 @@ type RevenueExpensesProps = {
     reservations: number
     revenueChange: number
     reservationsChange: number
-    comparisonEnabled: boolean
     timeline: DashboardTimeline | null
 }
 
@@ -177,7 +171,6 @@ const RevenueExpenses = ({
     reservations,
     revenueChange,
     reservationsChange,
-    comparisonEnabled,
     timeline,
 }: RevenueExpensesProps) => {
     const [direction] = useDirection()
@@ -202,13 +195,11 @@ const RevenueExpenses = ({
                             <span>{t('dashboard.totalRevenue')}</span>
                             <div className="flex items-center gap-2">
                                 <h4>{money(totalRevenue)}</h4>
-                                {comparisonEnabled && (
-                                    <GrowShrinkTag
-                                        value={revenueChange}
-                                        suffix="%"
-                                        showIcon={true}
-                                    />
-                                )}
+                                <GrowShrinkTag
+                                    value={revenueChange}
+                                    suffix="%"
+                                    showIcon={true}
+                                />
                             </div>
                         </div>
                         <Divider
@@ -219,13 +210,11 @@ const RevenueExpenses = ({
                             <span>{t('dashboard.totalReservations')}</span>
                             <div className="flex items-center gap-2">
                                 <h4>{formatNumber(reservations)}</h4>
-                                {comparisonEnabled && (
-                                    <GrowShrinkTag
-                                        value={reservationsChange}
-                                        suffix="%"
-                                        showIcon={true}
-                                    />
-                                )}
+                                <GrowShrinkTag
+                                    value={reservationsChange}
+                                    suffix="%"
+                                    showIcon={true}
+                                />
                             </div>
                         </div>
                     </div>
@@ -378,7 +367,6 @@ type AvgRevenuePerRentalProps = {
     avgRevenue: number
     reservations: number
     change: number
-    comparisonEnabled: boolean
     timeline: DashboardTimeline | null
 }
 
@@ -386,7 +374,6 @@ const AvgRevenuePerRental = ({
     avgRevenue,
     reservations,
     change,
-    comparisonEnabled,
     timeline,
 }: AvgRevenuePerRentalProps) => {
     const { t } = useTranslation()
@@ -405,9 +392,7 @@ const AvgRevenuePerRental = ({
             </div>
             <div className="flex items-center gap-2">
                 <h4>{money(avgRevenue)}</h4>
-                {comparisonEnabled && (
-                    <GrowShrinkTag value={change} suffix="%" />
-                )}
+                <GrowShrinkTag value={change} suffix="%" />
             </div>
             <div className="mt-1">
                 {formatNumber(reservations)} {t('dashboard.reservationsInPeriod', { count: reservations })}
@@ -707,27 +692,21 @@ type DashboardHeaderProps = {
     userName?: string
     currentDate: Date
     range: DateRange
-    comparisonEnabled: boolean
     onRangeChange: (range: DateRange) => void
-    onComparisonChange: (enabled: boolean) => void
 }
 
 const DashboardHeader = ({
     userName,
     currentDate,
     range,
-    comparisonEnabled,
     onRangeChange,
-    onComparisonChange,
 }: DashboardHeaderProps) => {
-    const formattedDate = useMemo(
-        () => formatDate(currentDate, 'dddd, DD MMMM YYYY'),
-        [currentDate],
-    )
+    const { t, i18n } = useTranslation()
+    const lang = typeof i18n === 'object' ? i18n.language : String(i18n)
+    const formattedDate = formatDate(currentDate, 'dddd, DD MMMM YYYY')
+    void lang
 
     const displayName = userName || 'User'
-
-    const { t } = useTranslation()
 
     return (
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4 space-y-4 lg:space-y-0 py-2.5">
@@ -736,13 +715,6 @@ const DashboardHeader = ({
                 <p className="mt-1">{formattedDate}</p>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                <div className="flex items-center gap-2">
-                    <span className="heading-text">{t('common.comparison')}:</span>
-                    <Switcher
-                        checked={comparisonEnabled}
-                        onChange={(checked) => onComparisonChange(checked)}
-                    />
-                </div>
                 <PeriodPicker value={range} onChange={onRangeChange} />
             </div>
         </div>
@@ -942,7 +914,6 @@ const LocationDashboard = () => {
     const { t } = useTranslation()
 
     const [range, setRange] = useState<DateRange>(currentMonthRange)
-    const [comparisonEnabled, setComparisonEnabled] = useState(true)
 
     const [summary, setSummary] = useState<DashboardSummary | null>(null)
     const [prevSummary, setPrevSummary] = useState<DashboardSummary | null>(
@@ -964,12 +935,10 @@ const LocationDashboard = () => {
                         from: toDateString(range.from),
                         to: toDateString(range.to),
                     }),
-                    comparisonEnabled
-                        ? apiGetDashboardSummary({
-                              from: toDateString(comparison.from),
-                              to: toDateString(comparison.to),
-                          })
-                        : Promise.resolve(null),
+                    apiGetDashboardSummary({
+                        from: toDateString(comparison.from),
+                        to: toDateString(comparison.to),
+                    }),
                     apiGetDashboardTimeline({ months: 12 }).catch(() => null),
                     apiGetCarReports({
                         from: toDateString(range.from),
@@ -987,7 +956,7 @@ const LocationDashboard = () => {
         } finally {
             setLoading(false)
         }
-    }, [range, comparisonEnabled])
+    }, [range])
 
     useEffect(() => {
         fetchDashboard()
@@ -1073,9 +1042,7 @@ const LocationDashboard = () => {
                     userName={displayName}
                     currentDate={new Date()}
                     range={range}
-                    comparisonEnabled={comparisonEnabled}
                     onRangeChange={setRange}
-                    onComparisonChange={setComparisonEnabled}
                 />
                 <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1168,7 +1135,6 @@ const LocationDashboard = () => {
                             change={newClientsChange}
                             icon={<LiUserAdd />}
                             color="text-teal-600 dark:text-teal-400"
-                            comparisonEnabled={comparisonEnabled}
                             to={kpiPath('new-clients')}
                         />
                     </div>
@@ -1181,7 +1147,6 @@ const LocationDashboard = () => {
                                 }
                                 revenueChange={netRevenueChange}
                                 reservationsChange={reservationsChange}
-                                comparisonEnabled={comparisonEnabled}
                                 timeline={timeline}
                             />
                         </div>
@@ -1198,7 +1163,6 @@ const LocationDashboard = () => {
                                         summary?.reservations.total ?? 0
                                     }
                                     change={avgRevenueChange}
-                                    comparisonEnabled={comparisonEnabled}
                                     timeline={timeline}
                                 />
                             )}
@@ -1213,7 +1177,6 @@ const LocationDashboard = () => {
                                         summary?.reservations.total ?? 0
                                     }
                                     change={avgRevenueChange}
-                                    comparisonEnabled={comparisonEnabled}
                                     timeline={timeline}
                                 />
                             )}
