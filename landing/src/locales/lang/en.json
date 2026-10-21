@@ -2,10 +2,36 @@
     "landing": {
         "nav": {
             "items": [
-                { "title": "Features", "value": "features", "anchor": "features" },
-                { "title": "Modules", "value": "modules", "anchor": "modules" },
-                { "title": "Why us", "value": "why", "anchor": "why" },
-                { "title": "Contact", "value": "contact", "anchor": "cta" }
+                {
+                    "title": "Features",
+                    "value": "features",
+                    "anchor": "features"
+                },
+                {
+                    "title": "Modules",
+                    "value": "modules",
+                    "anchor": "modules"
+                },
+                {
+                    "title": "Pricing",
+                    "value": "pricing",
+                    "anchor": "pricing"
+                },
+                {
+                    "title": "FAQ",
+                    "value": "faq",
+                    "anchor": "faq"
+                },
+                {
+                    "title": "Why us",
+                    "value": "why",
+                    "anchor": "why"
+                },
+                {
+                    "title": "Contact",
+                    "value": "contact",
+                    "anchor": "cta"
+                }
             ]
         },
         "hero": {
@@ -344,6 +370,138 @@
                 "chart": { "title": "Monthly revenue", "trend": "Trending up" },
                 "months": ["May", "Jun", "Jul", "Aug", "Sep", "Oct"]
             }
+        },
+        "pricing": {
+            "eyebrow": "Pricing",
+            "heading": "Simple pricing for your rental agency.",
+            "subheading": "One plan, every module included. Pick the billing period that suits you — launch pricing is up to 50% off for a limited time.",
+            "promo": "Launch offer — up to 50% off",
+            "features": [
+                "Unlimited reservations & rental contracts",
+                "Fleet, maintenance & document management",
+                "Customer profiles & rental history",
+                "Invoicing, deposits & payment tracking",
+                "Reports, analytics & exports",
+                "Team accounts with role-based access",
+                "English, French & Arabic with RTL",
+                "Free updates & email support"
+            ],
+            "plans": [
+                {
+                    "id": "monthly",
+                    "name": "Monthly",
+                    "description": "Total flexibility, cancel anytime.",
+                    "price": "50",
+                    "originalPrice": "100",
+                    "period": "/ month",
+                    "note": "Billed every month",
+                    "saving": "50% off",
+                    "badge": "",
+                    "highlighted": false,
+                    "ctaLabel": "Choose plan"
+                },
+                {
+                    "id": "semiannual",
+                    "name": "6 months",
+                    "description": "Cover a full season at half price.",
+                    "price": "300",
+                    "originalPrice": "600",
+                    "period": "/ 6 months",
+                    "note": "50 MAD per month",
+                    "saving": "50% off",
+                    "badge": "Best value",
+                    "highlighted": false,
+                    "ctaLabel": "Choose plan"
+                },
+                {
+                    "id": "annual",
+                    "name": "Annual",
+                    "description": "Best value for agencies that are growing.",
+                    "price": "600",
+                    "originalPrice": "1,000",
+                    "period": "/ 6 months",
+                    "note": "50 MAD per month",
+                    "saving": "40% off",
+                    "badge": "Popular",
+                    "highlighted": false,
+                    "ctaLabel": "Choose plan"
+                }
+            ],
+            "note": "All prices are in Moroccan dirham (MAD). No setup fees, no hidden costs.",
+            "footnote": "Do you have several branches or a large fleet? Contact us for a custom plan."
+        },
+        "faq": {
+            "eyebrow": "FAQ",
+            "heading": "Frequently asked questions",
+            "subheading": "Everything you need to know before getting started. Still curious? Book a demo and we will answer live.",
+            "categories": [
+                {
+                    "id": "subscription",
+                    "title": "Subscription details",
+                    "questions": [
+                        {
+                            "question": "What is included in the subscription?",
+                            "answer": "Every plan includes the full platform: reservations, fleet, customers, contracts, payments, invoices, reports, team roles and multi-language support. There are no hidden modules."
+                        },
+                        {
+                            "question": "Do I need to install anything?",
+                            "answer": "No. Double V Drive runs in your browser on desktop, tablet and phone, and your data is stored securely in the cloud."
+                        },
+                        {
+                            "question": "Can I change my billing period later?",
+                            "answer": "Yes. You can move from monthly to 6 months or annual at any time. The remaining balance is applied to your new period."
+                        },
+                        {
+                            "question": "Is there a free trial?",
+                            "answer": "Yes, we offer a 14-day free trial so you can test the platform with your own fleet before subscribing."
+                        },
+                        {
+                            "question": "Can I cancel at any time?",
+                            "answer": "Yes. Monthly subscriptions can be cancelled whenever you want and stay active until the end of the paid period."
+                        }
+                    ]
+                },
+                {
+                    "id": "billing",
+                    "title": "Billing and payments",
+                    "questions": [
+                        {
+                            "question": "Which payment methods do you accept?",
+                            "answer": "We accept credit and debit cards, bank transfers and cash payments at our office. An invoice is generated automatically for every payment."
+                        },
+                        {
+                            "question": "What currency are the prices in?",
+                            "answer": "All prices are in Moroccan dirham (MAD) and exclude local taxes where applicable."
+                        },
+                        {
+                            "question": "Do you offer refunds?",
+                            "answer": "Monthly plans are non-refundable. For 6-month and annual plans, contact us within 14 days of payment for a prorated refund."
+                        },
+                        {
+                            "question": "How do I get an invoice?",
+                            "answer": "Every payment produces a downloadable invoice in your billing section, ready to hand to your accountant."
+                        }
+                    ]
+                },
+                {
+                    "id": "other",
+                    "title": "Other",
+                    "questions": [
+                        {
+                            "question": "Does it work in Arabic?",
+                            "answer": "Yes. The platform is available in English, French and Arabic, with full right-to-left support."
+                        },
+                        {
+                            "question": "Can several team members use it?",
+                            "answer": "Yes. Invite your team and assign roles such as owner, manager, agent or finance."
+                        },
+                        {
+                            "question": "How do I contact support?",
+                            "answer": "Email us at support@doublevdrive.com, or book a demo and we will walk you through the setup."
+                        }
+                    ]
+                }
+            ]
         },
         "cta": {
             "title": "Ready to modernize",

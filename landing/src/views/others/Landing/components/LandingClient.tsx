@@ -5,6 +5,8 @@ import HeroContent from './HeroContent'
 import BentoFeature from './BentoFeature'
 import TechFeature from './TechFeature'
 import Modules from './Modules'
+import Pricing from './Pricing'
+import Faq from './Faq'
 import CallToAction from './CallToAction'
 import Footer from './Footer'
 import type { Tab } from './NavList'
@@ -55,6 +57,8 @@ export default function LandingClient({ content }: Props) {
             />
             <TechFeature stackList={content.tech.stack} content={content.tech} />
             <Modules content={content.modules} />
+            <Pricing content={content.pricing} />
+            <Faq content={content.faq} />
             <CallToAction content={content.cta} />
             <Footer content={content.footer} />
         </main>

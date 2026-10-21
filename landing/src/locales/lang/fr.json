@@ -7,9 +7,31 @@
                     "value": "features",
                     "anchor": "features"
                 },
-                { "title": "Modules", "value": "modules", "anchor": "modules" },
-                { "title": "Pourquoi nous", "value": "why", "anchor": "why" },
-                { "title": "Contact", "value": "contact", "anchor": "cta" }
+                {
+                    "title": "Modules",
+                    "value": "modules",
+                    "anchor": "modules"
+                },
+                {
+                    "title": "Tarifs",
+                    "value": "pricing",
+                    "anchor": "pricing"
+                },
+                {
+                    "title": "FAQ",
+                    "value": "faq",
+                    "anchor": "faq"
+                },
+                {
+                    "title": "Pourquoi nous",
+                    "value": "why",
+                    "anchor": "why"
+                },
+                {
+                    "title": "Contact",
+                    "value": "contact",
+                    "anchor": "cta"
+                }
             ]
         },
         "hero": {
@@ -389,6 +411,138 @@
                     "Oct"
                 ]
             }
+        },
+        "pricing": {
+            "eyebrow": "Tarifs",
+            "heading": "Des tarifs simples pour votre agence de location.",
+            "subheading": "Une seule offre, tous les modules inclus. Choisissez la période de facturation qui vous convient — tarifs de lancement jusqu'à -50 % pour une durée limitée.",
+            "promo": "Offre de lancement — jusqu'à -50 %",
+            "features": [
+                "Réservations et contrats de location illimités",
+                "Gestion de la flotte, de la maintenance et des documents",
+                "Fiches clients et historique de location",
+                "Facturation, cautions et suivi des paiements",
+                "Rapports, analyses et exports",
+                "Comptes équipe avec accès par rôle",
+                "Anglais, français et arabe avec RTL",
+                "Mises à jour et support par email"
+            ],
+            "plans": [
+                {
+                    "id": "monthly",
+                    "name": "Mensuel",
+                    "description": "Une flexibilité totale, résiliable à tout moment.",
+                    "price": "50",
+                    "originalPrice": "100",
+                    "period": "/ mois",
+                    "note": "Facturé chaque mois",
+                    "saving": "-50 %",
+                    "badge": "",
+                    "highlighted": false,
+                    "ctaLabel": "Choisir cette offre"
+                },
+                {
+                    "id": "semiannual",
+                    "name": "6 mois",
+                    "description": "Couvrez toute une saison à moitié prix.",
+                    "price": "300",
+                    "originalPrice": "600",
+                    "period": "/ 6 mois",
+                    "note": "50 MAD par mois",
+                    "saving": "-50 %",
+                    "badge": "Best value",
+                    "highlighted": false,
+                    "ctaLabel": "Choisir cette offre"
+                },
+                {
+                    "id": "annual",
+                    "name": "Annuel",
+                    "description": "Le meilleur rapport qualité-prix pour les agences en croissance.",
+                    "price": "600",
+                    "originalPrice": "1 000",
+                    "period": "/ an",
+                    "note": "50 MAD par mois",
+                    "saving": "-40 %",
+                    "badge": "Meilleure offre",
+                    "highlighted": true,
+                    "ctaLabel": "Choisir cette offre"
+                }
+            ],
+            "note": "Tous les prix sont en dirham marocain (MAD). Sans frais d'installation ni coûts cachés.",
+            "footnote": "Plusieurs agences ou une flotte importante ? Contactez-nous pour une offre sur mesure."
+        },
+        "faq": {
+            "eyebrow": "FAQ",
+            "heading": "Questions fréquentes",
+            "subheading": "Tout ce qu’il faut savoir avant de commencer. Une autre question ? Réservez une démo, nous répondrons en direct.",
+            "categories": [
+                {
+                    "id": "subscription",
+                    "title": "Détails de l'abonnement",
+                    "questions": [
+                        {
+                            "question": "Que comprend l'abonnement ?",
+                            "answer": "Chaque offre inclut toute la plateforme : réservations, flotte, clients, contrats, paiements, factures, rapports, rôles d'équipe et support multilingue. Aucun module caché."
+                        },
+                        {
+                            "question": "Faut-il installer quelque chose ?",
+                            "answer": "Non. Double V Drive fonctionne dans votre navigateur sur ordinateur, tablette et téléphone, et vos données sont stockées en toute sécurité dans le cloud."
+                        },
+                        {
+                            "question": "Puis-je changer de période de facturation plus tard ?",
+                            "answer": "Oui. Vous pouvez passer du mensuel au 6 mois ou à l’annuel à tout moment. Le solde restant est appliqué à votre nouvelle période."
+                        },
+                        {
+                            "question": "Existe-t-il un essai gratuit ?",
+                            "answer": "Oui, nous offrons 14 jours d’essai gratuit pour tester la plateforme avec votre propre flotte avant de vous abonner."
+                        },
+                        {
+                            "question": "Puis-je résilier à tout moment ?",
+                            "answer": "Oui. Les abonnements mensuels peuvent être résiliés quand vous le souhaitez et restent actifs jusqu’à la fin de la période payée."
+                        }
+                    ]
+                },
+                {
+                    "id": "billing",
+                    "title": "Facturation et paiements",
+                    "questions": [
+                        {
+                            "question": "Quels moyens de paiement acceptez-vous ?",
+                            "answer": "Nous acceptons les cartes bancaires, les virements et les paiements en espèces à notre bureau. Une facture est générée automatiquement pour chaque paiement."
+                        },
+                        {
+                            "question": "En quelle devise sont les prix ?",
+                            "answer": "Tous les prix sont en dirham marocain (MAD) et hors taxes locales le cas échéant."
+                        },
+                        {
+                            "question": "Proposez-vous des remboursements ?",
+                            "answer": "Les offres mensuelles ne sont pas remboursables. Pour les offres 6 mois et annuelles, contactez-nous dans les 14 jours suivant le paiement pour un remboursement au prorata."
+                        },
+                        {
+                            "question": "Comment obtenir une facture ?",
+                            "answer": "Chaque paiement génère une facture téléchargeable dans votre espace facturation, prête pour votre comptable."
+                        }
+                    ]
+                },
+                {
+                    "id": "other",
+                    "title": "Autre",
+                    "questions": [
+                        {
+                            "question": "Est-ce compatible avec l’arabe ?",
+                            "answer": "Oui. La plateforme est disponible en anglais, en français et en arabe, avec une prise en charge complète de l’écriture de droite à gauche."
+                        },
+                        {
+                            "question": "Plusieurs membres de l’équipe peuvent-ils l’utiliser ?",
+                            "answer": "Oui. Invitez votre équipe et attribuez des rôles : propriétaire, manager, agent ou finance."
+                        },
+                        {
+                            "question": "Comment contacter le support ?",
+                            "answer": "Écrivez-nous à support@doublevdrive.com ou réservez une démo et nous vous guiderons dans la configuration."
+                        }
+                    ]
+                }
+            ]
         },
         "cta": {
             "title": "Prêt à moderniser",

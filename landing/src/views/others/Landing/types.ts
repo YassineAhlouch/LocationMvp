@@ -142,6 +142,49 @@ export type LandingShowcase = {
     }
 }
 
+export type LandingPricingPlan = {
+    id: string
+    name: string
+    description: string
+    price: string
+    originalPrice: string
+    period: string
+    note: string
+    saving: string
+    badge: string
+    highlighted: boolean
+    ctaLabel: string
+}
+
+export type LandingPricing = {
+    eyebrow: string
+    heading: string
+    subheading: string
+    promo: string
+    features: string[]
+    plans: LandingPricingPlan[]
+    note: string
+    footnote: string
+}
+
+export type LandingFaqQuestion = {
+    question: string
+    answer: string
+}
+
+export type LandingFaqCategory = {
+    id: string
+    title: string
+    questions: LandingFaqQuestion[]
+}
+
+export type LandingFaq = {
+    eyebrow: string
+    heading: string
+    subheading: string
+    categories: LandingFaqCategory[]
+}
+
 export type LandingCta = {
     title: string
     subtitle: string
@@ -165,6 +208,8 @@ export type LandingPageContent = {
     tech: LandingTech
     modules: LandingModules
     showcase: LandingShowcase
+    pricing: LandingPricing
+    faq: LandingFaq
     cta: LandingCta
     footer: LandingFooter
 }
