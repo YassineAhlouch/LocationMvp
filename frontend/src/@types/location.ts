@@ -689,6 +689,14 @@ export type DashboardSummary = {
         currently_rented: number
     }
     occupancy: { booked_days: number; available_days: number; rate: number }
+    outstanding: { amount: number; reservations: number }
+    today: { pickups: number; returns: number }
+    attention: {
+        total: number
+        maintenance: number
+        service_overdue: number
+    }
+    new_clients: number
 }
 
 export type DashboardTimeline = {

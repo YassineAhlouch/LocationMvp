@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\CarStatus;
 use App\Enums\ExpenseStatus;
 use App\Enums\ExpenseType;
 use App\Enums\PaymentMethod;
@@ -69,6 +70,23 @@ class DashboardReportingTest extends TestCase
             'agency_id' => $this->agency->id,
             'car_id' => $car->id,
             'primary_client_id' => $this->client()->id,
+            'pickup_datetime' => $pickup,
+            'expected_return_datetime' => $pickup->copy()->addDays(3),
+        ], $overrides));
+    }
+
+    /**
+     * A booking for an existing client — no implicit client is created, so
+     * tests can assert on the new-client counter without surprises.
+     */
+    private function booking(Car $car, Client $client, array $overrides = []): Reservation
+    {
+        $pickup = now()->addDay()->setTime(9, 0);
+
+        return Reservation::factory()->create(array_merge([
+            'agency_id' => $this->agency->id,
+            'car_id' => $car->id,
+            'primary_client_id' => $client->id,
             'pickup_datetime' => $pickup,
             'expected_return_datetime' => $pickup->copy()->addDays(3),
         ], $overrides));
@@ -274,6 +292,103 @@ class DashboardReportingTest extends TestCase
         $this->assertSame(3, $data['occupancy']['booked_days']);
         $this->assertSame(6, $data['occupancy']['available_days']);
         $this->assertEqualsWithDelta(0.5, $data['occupancy']['rate'], 0.0001);
+    }
+
+    public function test_summary_exposes_outstanding_today_attention_and_new_clients(): void
+    {
+        $actor = $this->actor(['dashboard.view']);
+
+        $car = $this->car();
+        $client = Client::factory()->create(['agency_id' => $this->agency->id]);
+        Client::factory()->create([
+            'agency_id' => $this->agency->id,
+            'created_at' => now()->subMonth(),
+        ]);
+
+        // --- Outstanding payments ------------------------------------------
+        // 900 owed, 400 paid → 500 still due.
+        $this->payment($this->booking($car, $client, ['total_amount' => 900]), ['amount' => 400]);
+        // Fully settled → no balance.
+        $this->payment($this->booking($car, $client, ['total_amount' => 500]), ['amount' => 500]);
+        // Pending money is not paid money → the whole 700 is still due.
+        $this->payment($this->booking($car, $client, ['total_amount' => 700]), [
+            'amount' => 700,
+            'status' => PaymentRecordStatus::Pending,
+        ]);
+        // A cancelled hire owes nothing.
+        $this->payment($this->booking($car, $client, [
+            'total_amount' => 800,
+            'status' => ReservationStatus::Cancelled,
+        ]), ['amount' => 100]);
+
+        // --- Today's handovers ----------------------------------------------
+        // Priced at zero so they only exercise the handover counters.
+        $this->booking($car, $client, [
+            'status' => ReservationStatus::Confirmed,
+            'total_amount' => 0,
+            'pickup_datetime' => today()->setTime(9, 0),
+            'expected_return_datetime' => today()->addDay()->setTime(9, 0),
+        ]);
+        $this->booking($car, $client, [
+            'status' => ReservationStatus::Confirmed,
+            'total_amount' => 0,
+            'pickup_datetime' => today()->subDay()->setTime(9, 0),
+            'expected_return_datetime' => today()->setTime(9, 0),
+        ]);
+        // Cancelled and no-show handovers never happen.
+        $this->booking($car, $client, [
+            'status' => ReservationStatus::Cancelled,
+            'total_amount' => 0,
+            'pickup_datetime' => today()->setTime(10, 0),
+            'expected_return_datetime' => today()->setTime(10, 0),
+        ]);
+        $this->booking($car, $client, [
+            'status' => ReservationStatus::NoShow,
+            'total_amount' => 0,
+            'pickup_datetime' => today()->setTime(11, 0),
+            'expected_return_datetime' => today()->setTime(11, 0),
+        ]);
+
+        // --- Fleet requiring attention --------------------------------------
+        $this->car(['status' => CarStatus::Maintenance]);
+        $this->car(['current_mileage' => 120000, 'next_service_mileage' => 100000]);
+        $this->car(['current_mileage' => 50000, 'next_service_mileage' => 100000]);
+
+        // --- Another agency must never leak into any of the counters --------
+        $foreignAgency = Agency::factory()->create();
+        $foreignCar = Car::factory()->create([
+            'agency_id' => $foreignAgency,
+            'status' => CarStatus::Maintenance,
+        ]);
+        Client::factory()->create(['agency_id' => $foreignAgency]);
+        Reservation::factory()->create([
+            'agency_id' => $foreignAgency,
+            'car_id' => $foreignCar->id,
+            'primary_client_id' => Client::factory()->create(['agency_id' => $foreignAgency])->id,
+            'status' => ReservationStatus::Confirmed,
+            'total_amount' => 5000,
+            'pickup_datetime' => today()->setTime(9, 0),
+            'expected_return_datetime' => today()->setTime(9, 0),
+        ]);
+
+        $data = $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/dashboard/summary?from='.today()->startOfMonth()->toDateString().'&to='.today()->toDateString())
+            ->assertOk()
+            ->json();
+
+        // 500 + 700 still owed across two reservations.
+        $this->assertEqualsWithDelta(1200, $data['outstanding']['amount'], 0.01);
+        $this->assertSame(2, $data['outstanding']['reservations']);
+
+        $this->assertSame(1, $data['today']['pickups']);
+        $this->assertSame(1, $data['today']['returns']);
+
+        $this->assertSame(2, $data['attention']['total']);
+        $this->assertSame(1, $data['attention']['maintenance']);
+        $this->assertSame(1, $data['attention']['service_overdue']);
+
+        // Only the client created inside the period counts.
+        $this->assertSame(1, $data['new_clients']);
     }
 
     public function test_timeline_buckets_by_month_and_zero_fills(): void
