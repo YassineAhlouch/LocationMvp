@@ -18,6 +18,17 @@ const appsRoute: Routes = [
             footer: false,
         },
     },
+    {
+        key: 'gestion.dashboard.kpi',
+        path: `${APPS_PREFIX_PATH}/dashboard/kpi/:metric`,
+        component: lazy(() => import('@/views/location/kpi/KpiDetailPage')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'gutterless',
+            footer: false,
+        },
+    },
 
     // ===== RESERVATIONS =====
     {

@@ -1196,15 +1196,7 @@ final class ReportingService
      */
     private function dailyPaymentTrend(CarbonInterface $from, CarbonInterface $to): array
     {
-        $labels = [];
-        $cursor = $from->copy()->startOfDay();
-        $end = $to->copy()->startOfDay();
-
-        while ($cursor->lte($end)) {
-            $labels[] = $cursor->format('Y-m-d');
-            $cursor->addDay();
-        }
-
+        $labels = $this->dateLabels($from, $to);
         $index = array_flip($labels);
         $series = [
             'paid' => array_fill(0, count($labels), 0.0),
@@ -1318,18 +1310,19 @@ final class ReportingService
             ->get(['car_id', 'pickup_datetime', 'expected_return_datetime']);
 
         foreach ($reservations as $reservation) {
-            $occupiedStart = $reservation->pickup_datetime->copy()->startOfDay();
-            $occupiedEnd = $reservation->expected_return_datetime->copy()->startOfDay()->subDay();
+            $nights = $this->occupiedNights(
+                $reservation->pickup_datetime,
+                $reservation->expected_return_datetime,
+                $from,
+                $to,
+            );
 
-            $overlapStart = $occupiedStart->copy()->max($from);
-            $overlapEnd = $occupiedEnd->copy()->min($to);
-
-            if ($overlapEnd->lt($overlapStart)) {
+            if ($nights === null) {
                 continue;
             }
 
             $days[$reservation->car_id] = ($days[$reservation->car_id] ?? 0)
-                + $overlapStart->diffInDays($overlapEnd) + 1;
+                + $nights[0]->diffInDays($nights[1]) + 1;
         }
 
         return collect($days);

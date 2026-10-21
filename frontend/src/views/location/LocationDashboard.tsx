@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router'
 import Container from '@/components/shared/Container'
 import Card from '@/components/ui/Card'
 import Switcher from '@/components/ui/Switcher'
@@ -29,6 +30,7 @@ import {
 } from '@/services/LocationService'
 import { money } from './shared'
 import useTranslation from '@/utils/hooks/useTranslation'
+import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 import type { CarReport, DashboardSummary, DashboardTimeline } from '@/@types/location'
 import type { ReactNode } from 'react'
 import {
@@ -37,9 +39,16 @@ import {
     LiCalendar,
     LiBarChartUp,
     LiCar,
+    LiMoney,
+    LiRepeat,
+    LiAlertTriangle,
+    LiUserAdd,
 } from '@/icons'
 
 const { Tr, Th, Td, THead, TBody } = Table
+
+/** Drill-down page behind one card; the slug is the backend's KpiMetric. */
+const kpiPath = (metric: string) => `${APPS_PREFIX_PATH}/dashboard/kpi/${metric}`
 
 const toDateString = (date: Date) => dayjs(date).format('YYYY-MM-DD')
 
@@ -81,8 +90,13 @@ type MetricCardProps = {
     value: number | string
     change: number
     icon?: ReactNode
+    color?: string
     formatter?: (value: number) => string
     comparisonEnabled?: boolean
+    /** Free-form detail line; replaces the period comparison when given. */
+    hint?: ReactNode
+    /** Drill-down page for this card; turns the card into a link. */
+    to?: string
 }
 
 const MetricCard = ({
@@ -90,8 +104,11 @@ const MetricCard = ({
     value,
     change,
     icon,
+    color = 'text-primary',
     formatter,
     comparisonEnabled = true,
+    hint,
+    to,
 }: MetricCardProps) => {
     const { t } = useTranslation()
     const formatValue = (val: number | string): string => {
@@ -100,33 +117,49 @@ const MetricCard = ({
         return formatNumber(val)
     }
 
-    return (
-        <StatisticCard
-            inset
-            footer={
-                comparisonEnabled && (
-                    <div className="flex items-center justify-between gap-2 py-0.5 px-2">
-                        <GrowShrinkTag
-                            value={change}
-                            suffix="%"
-                            showIcon={true}
-                            className="bg-transparent px-0 font-semibold"
-                        />
-                        <span>{t('dashboard.vsLastPeriod', 'vs last period')}</span>
+    const body = (
+        <div className="flex items-center justify-between gap-4">
+            <div>
+                <div className="font-medium heading-text">{title}</div>
+                <h4 className="mt-2">{formatValue(value)}</h4>
+                {hint ? (
+                    <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        {hint}
                     </div>
-                )
-            }
-        >
-            <div className="flex items-center gap-4">
-                <IconFrame>
-                    <span className="text-xl heading-text">{icon}</span>
-                </IconFrame>
+                ) : (
+                    comparisonEnabled && (
+                        <div className="mt-1 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                            <GrowShrinkTag
+                                value={change}
+                                suffix="%"
+                                showIcon={true}
+                                className="border-0 bg-transparent px-0 py-0 font-semibold"
+                            />
+                            <span>
+                                {t('dashboard.vsLastPeriod', 'vs last period')}
+                            </span>
+                        </div>
+                    )
+                )}
             </div>
-            <div className="mt-4">
-                <p>{title}</p>
-                <h4>{formatValue(value)}</h4>
-            </div>
-        </StatisticCard>
+            {icon && (
+                <span className={classNames('shrink-0 text-3xl', color)}>
+                    {icon}
+                </span>
+            )}
+        </div>
+    )
+
+    if (!to) {
+        return <StatisticCard>{body}</StatisticCard>
+    }
+
+    return (
+        <Link to={to} className="block h-full">
+            <StatisticCard className="h-full cursor-pointer transition-shadow hover:shadow-md">
+                {body}
+            </StatisticCard>
+        </Link>
     )
 }
 
@@ -718,25 +751,13 @@ const DashboardHeader = ({
 
 const MetricCardSkeleton = () => {
     return (
-        <StatisticCard
-            inset
-            footer={
-                <div className="flex items-center justify-between gap-2 py-1.5">
-                    <Skeleton height={12} width={60} />
-                    <span>
-                        <Skeleton height={12} width={60} />
-                    </span>
+        <StatisticCard>
+            <div className="flex items-center justify-between gap-4">
+                <div className="space-y-2">
+                    <Skeleton height={12} width={80} />
+                    <Skeleton height={24} width={120} />
                 </div>
-            }
-        >
-            <div className="flex items-center gap-4">
-                <div className="h-10 w-10 flex items-center justify-center rounded-lg text-xl border border-gray-200 dark:border-gray-700 heading-text">
-                    <Skeleton height={16} width={16} />
-                </div>
-            </div>
-            <div className="mt-8 space-y-2">
-                <Skeleton height={12} width={80} />
-                <Skeleton height={12} width={160} />
+                <Skeleton variant="circle" height={30} width={30} />
             </div>
         </StatisticCard>
     )
@@ -1015,6 +1036,14 @@ const LocationDashboard = () => {
         [summary, prevSummary],
     )
 
+    const newClientsChange = useMemo(
+        () =>
+            summary && prevSummary
+                ? pctChange(summary.new_clients, prevSummary.new_clients)
+                : 0,
+        [summary, prevSummary],
+    )
+
     const avgRevenue = useMemo(() => {
         if (!summary) return 0
         const reservations = summary.reservations.total
@@ -1055,26 +1084,92 @@ const LocationDashboard = () => {
                             value={summary?.net ?? 0}
                             change={netRevenueChange}
                             icon={<LiWalletMoney />}
+                            color="text-indigo-600 dark:text-indigo-400"
                             formatter={money}
+                            to={kpiPath('net-revenue')}
                         />
                         <MetricCard
                             title={t('dashboard.expenses', 'Expenses')}
                             value={summary?.expenses.total ?? 0}
                             change={expensesChange}
                             icon={<LiReceipt />}
+                            color="text-orange-600 dark:text-orange-400"
                             formatter={money}
+                            to={kpiPath('expenses')}
                         />
                         <MetricCard
                             title={t('dashboard.reservations', 'Reservations')}
                             value={summary?.reservations.total ?? 0}
                             change={reservationsChange}
                             icon={<LiCalendar />}
+                            color="text-sky-600 dark:text-sky-400"
+                            to={kpiPath('reservations')}
                         />
                         <MetricCard
                             title={t('dashboard.occupancy', 'Occupancy')}
                             value={`${Math.round((summary?.occupancy.rate ?? 0) * 100)}%`}
                             change={occupancyChange}
                             icon={<LiBarChartUp />}
+                            color="text-emerald-600 dark:text-emerald-400"
+                            to={kpiPath('occupancy')}
+                        />
+                        <MetricCard
+                            title={t(
+                                'dashboard.outstandingPayments',
+                                'Outstanding Payments',
+                            )}
+                            value={summary?.outstanding.amount ?? 0}
+                            change={0}
+                            icon={<LiMoney />}
+                            color="text-rose-600 dark:text-rose-400"
+                            formatter={money}
+                            to={kpiPath('outstanding')}
+                            hint={t('dashboard.outstandingReservations', {
+                                count: summary?.outstanding.reservations ?? 0,
+                            })}
+                        />
+                        <MetricCard
+                            title={t(
+                                'dashboard.todayPickupsReturns',
+                                "Today's Pickups & Returns",
+                            )}
+                            value={
+                                (summary?.today.pickups ?? 0) +
+                                (summary?.today.returns ?? 0)
+                            }
+                            change={0}
+                            icon={<LiRepeat />}
+                            color="text-violet-600 dark:text-violet-400"
+                            to={kpiPath('today')}
+                            hint={t('dashboard.pickupsReturnsSplit', {
+                                pickups: summary?.today.pickups ?? 0,
+                                returns: summary?.today.returns ?? 0,
+                            })}
+                        />
+                        <MetricCard
+                            title={t(
+                                'dashboard.fleetAttention',
+                                'Fleet Requiring Attention',
+                            )}
+                            value={summary?.attention.total ?? 0}
+                            change={0}
+                            icon={<LiAlertTriangle />}
+                            color="text-amber-600 dark:text-amber-400"
+                            to={kpiPath('fleet-attention')}
+                            hint={t('dashboard.maintenanceServiceSplit', {
+                                maintenance:
+                                    summary?.attention.maintenance ?? 0,
+                                service: summary?.attention.service_overdue ?? 0,
+                            })}
+                        />
+                        <MetricCard
+                            title={t('dashboard.newCustomers', 'New Customers')}
+                            value={summary?.new_clients ?? 0}
+                            change={newClientsChange}
+                            icon={<LiUserAdd />}
+                            color="text-teal-600 dark:text-teal-400"
+                            comparisonEnabled={comparisonEnabled}
+                            to={kpiPath('new-clients')}
                         />
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">

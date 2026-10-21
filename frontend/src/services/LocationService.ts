@@ -24,6 +24,8 @@ import type {
     Currency,
     DashboardSummary,
     DashboardTimeline,
+    KpiDetail,
+    KpiMetricKey,
     Expense,
     ExpensePayload,
     Extra,
@@ -68,6 +70,17 @@ export const apiGetDashboardSummary = (params?: {
 export const apiGetDashboardTimeline = (params?: { months?: number }) =>
     ApiService.fetchDataWithAxios<DashboardTimeline>({
         url: '/v1/reports/timeline',
+        method: 'get',
+        params,
+    })
+
+/** Drill-down behind one dashboard card: headline, segments, series, records. */
+export const apiGetKpiDetail = (
+    metric: KpiMetricKey,
+    params?: { from?: string; to?: string },
+) =>
+    ApiService.fetchDataWithAxios<KpiDetail>({
+        url: `/v1/dashboard/kpi/${metric}`,
         method: 'get',
         params,
     })

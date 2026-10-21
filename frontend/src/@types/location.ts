@@ -705,6 +705,188 @@ export type DashboardTimeline = {
     expenses: number[]
 }
 
+// ---- Dashboard KPI drill-downs -------------------------------------------
+
+/**
+ * Slugs of the dashboard cards and of their drill-down pages. Mirrored by
+ * the backend's App\Enums\KpiMetric — change both together.
+ */
+export type KpiMetricKey =
+    | 'net-revenue'
+    | 'expenses'
+    | 'reservations'
+    | 'occupancy'
+    | 'outstanding'
+    | 'today'
+    | 'fleet-attention'
+    | 'new-clients'
+
+/** The segments behind a KPI: by method, type, booking status, source… */
+export type KpiSegment = { key: string; value: number; count?: number }
+
+/** A zero-filled day-by-day series (counts, not amounts). */
+export type KpiSeries = { labels: string[]; count: number[] }
+
+export type KpiPaymentRow = {
+    id: number
+    payment_date: string
+    amount: number
+    method: PaymentMethod | null
+    status: PaymentRecordStatus
+    reservation_number: string | null
+    client: string | null
+}
+
+export type KpiExpenseRow = {
+    id: number
+    title: string | null
+    type: ExpenseType | null
+    status: ExpenseStatus | null
+    amount: number
+    due_date: string | null
+    paid_date: string | null
+    period_date: string | null
+    car: string | null
+}
+
+export type KpiReservationRow = {
+    id: number
+    reservation_number: string | null
+    status: ReservationStatus | null
+    payment_status: PaymentStatus | null
+    pickup_datetime: string | null
+    expected_return_datetime: string | null
+    total_amount: number
+    car: string | null
+    client: string | null
+}
+
+export type KpiOutstandingRow = KpiReservationRow & {
+    paid_amount: number
+    due_amount: number
+}
+
+export type KpiHandoverRow = KpiReservationRow & { kind: 'pickup' | 'return' }
+
+export type KpiFleetRow = CarReport & {
+    available_days: number
+    utilization: number
+}
+
+export type KpiAttentionRow = {
+    car_id: number
+    registration_number: string
+    brand: string | null
+    model: string | null
+    year: number | null
+    daily_price: number
+    status: CarStatus | null
+    in_maintenance: boolean
+    service_overdue: boolean
+    current_mileage: number | null
+    next_service_mileage: number | null
+    service_gap: number
+    last_maintenance_at: string | null
+}
+
+export type KpiClientRow = {
+    id: number
+    full_name: string | null
+    phone: string | null
+    email: string | null
+    city: string | null
+    source: ClientSource | null
+    status: ClientStatus | null
+    is_active: boolean
+    reservations_count: number
+    created_at: string | null
+}
+
+/** Fields every drill-down payload shares. */
+type KpiPayload<M extends KpiMetricKey, H> = {
+    metric: M
+    period: { from: string; to: string }
+    headline: H
+    breakdown: KpiSegment[]
+    rows_total: number
+}
+
+export type NetRevenueKpi = KpiPayload<
+    'net-revenue',
+    { value: number; paid: number; pending: number; refunded: number }
+> & {
+    trend: { labels: string[]; paid: number[]; pending: number[]; refunded: number[] }
+    rows: KpiPaymentRow[]
+}
+
+export type ExpensesKpi = KpiPayload<
+    'expenses',
+    { value: number; paid: number; pending: number; overdue_count: number }
+> & {
+    trend: { labels: string[]; paid: number[]; pending: number[] }
+    rows: KpiExpenseRow[]
+}
+
+export type ReservationsKpi = KpiPayload<
+    'reservations',
+    { value: number; currently_active: number }
+> & {
+    trend: KpiSeries
+    rows: KpiReservationRow[]
+}
+
+export type OccupancyKpi = KpiPayload<
+    'occupancy',
+    {
+        value: number
+        booked_days: number
+        available_days: number
+        total_cars: number
+    }
+> & {
+    trend: KpiSeries
+    rows: KpiFleetRow[]
+}
+
+export type OutstandingKpi = KpiPayload<
+    'outstanding',
+    { value: number; reservations: number }
+> & {
+    rows: KpiOutstandingRow[]
+}
+
+export type TodayKpi = KpiPayload<
+    'today',
+    { value: number; pickups: number; returns: number }
+> & {
+    rows: KpiHandoverRow[]
+}
+
+export type FleetAttentionKpi = KpiPayload<
+    'fleet-attention',
+    { value: number; maintenance: number; service_overdue: number }
+> & {
+    rows: KpiAttentionRow[]
+}
+
+export type NewClientsKpi = KpiPayload<'new-clients', { value: number }> & {
+    trend: KpiSeries
+    rows: KpiClientRow[]
+}
+
+export type KpiDetail =
+    | NetRevenueKpi
+    | ExpensesKpi
+    | ReservationsKpi
+    | OccupancyKpi
+    | OutstandingKpi
+    | TodayKpi
+    | FleetAttentionKpi
+    | NewClientsKpi
+
+/** The payload behind one card, narrowed to its metric. */
+export type KpiDetailOf<K extends KpiMetricKey> = Extract<KpiDetail, { metric: K }>
+
 export type CarReport = {
     car_id: number
     registration_number: string

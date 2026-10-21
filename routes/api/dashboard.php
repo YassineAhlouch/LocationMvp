@@ -15,3 +15,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('dashboard/summary', [DashboardController::class, 'summary'])
     ->middleware('permission:dashboard.view')
     ->name('dashboard.summary');
+
+/*
+| Drill-down behind one card: the headline the card shows, the segments and
+| series that explain it, and the records underneath. Same permission as the
+| dashboard itself — whoever may see the card may open it. An unknown slug is
+| rejected by KpiDetailRequest with the usual 422.
+*/
+Route::get('dashboard/kpi/{metric}', [DashboardController::class, 'kpi'])
+    ->middleware('permission:dashboard.view')
+    ->name('dashboard.kpi');
