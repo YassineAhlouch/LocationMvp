@@ -16,6 +16,11 @@ import classNames from '@/utils/classNames'
 import useResponsive from '@/utils/hooks/useResponsive'
 import useDirection from '@/utils/hooks/useDirection'
 import dayjs from 'dayjs'
+import 'dayjs/locale/fr'
+import 'dayjs/locale/ar'
+import 'dayjs/locale/es'
+import 'dayjs/locale/zh'
+import 'dayjs/locale/en'
 import { useSessionUser } from '@/store/authStore'
 import PeriodPicker, {
     currentMonthRange,
@@ -707,27 +712,40 @@ const DashboardHeader = ({
     const [tick, setTick] = useState(0)
     const i18nObj = typeof i18n === 'object' ? i18n : null
 
+    const formattedLang = useMemo(
+        () => currentLang.replace(/-([a-z])/g, (g: string) => g[1].toUpperCase()),
+        [currentLang],
+    )
+
     /**
      * dayjs locale loads asynchronously after a language change, so the
-     * date can render in the previous locale. Re-format when the UI
-     * language changes or i18n/days locale updates.
+     * date can render in the previous locale. Apply the locale immediately
+     * and re-format when it changes.
      */
     useEffect(() => {
+        if (formattedLang) {
+            dayjs.locale(formattedLang)
+        }
         setTick((v) => v + 1)
-    }, [currentLang])
+    }, [formattedLang])
 
     useEffect(() => {
-        const handler = () => setTick((v) => v + 1)
+        const handler = () => {
+            if (formattedLang) {
+                dayjs.locale(formattedLang)
+            }
+            setTick((v) => v + 1)
+        }
         i18nObj?.on?.('languageChanged', handler)
         return () => {
             i18nObj?.off?.('languageChanged', handler)
         }
-    }, [i18nObj])
+    }, [i18nObj, formattedLang])
 
     const formattedDate = useMemo(
         () => formatDate(currentDate, 'dddd, DD MMMM YYYY'),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [currentDate, currentLang, i18nObj?.language, tick],
+        [currentDate, formattedLang, tick],
     )
 
     const displayName = userName || 'User'
