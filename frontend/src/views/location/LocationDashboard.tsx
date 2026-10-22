@@ -702,24 +702,32 @@ const DashboardHeader = ({
     range,
     onRangeChange,
 }: DashboardHeaderProps) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const currentLang = useLocaleStore((state) => state.currentLang)
     const [tick, setTick] = useState(0)
+    const i18nObj = typeof i18n === 'object' ? i18n : null
 
     /**
-     * dayjs loads locale files asynchronously in the store/hook, so the
-     * active dayjs locale lags a tick behind the selected UI language.
-     * Re-format once the locale is actually swapped so the date updates
-     * instantly without requiring a second language change.
+     * dayjs locale loads asynchronously after a language change, so the
+     * date can render in the previous locale. Re-format when the UI
+     * language changes or i18n/days locale updates.
      */
     useEffect(() => {
         setTick((v) => v + 1)
     }, [currentLang])
 
+    useEffect(() => {
+        const handler = () => setTick((v) => v + 1)
+        i18nObj?.on?.('languageChanged', handler)
+        return () => {
+            i18nObj?.off?.('languageChanged', handler)
+        }
+    }, [i18nObj])
+
     const formattedDate = useMemo(
         () => formatDate(currentDate, 'dddd, DD MMMM YYYY'),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [currentDate, currentLang, tick],
+        [currentDate, currentLang, i18nObj?.language, tick],
     )
 
     const displayName = userName || 'User'
