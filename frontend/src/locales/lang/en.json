@@ -260,6 +260,7 @@
         "maintenanceServiceSplit": "{{maintenance}} in maintenance · {{service}} overdue for service",
         "newCustomers": "New Customers",
         "occupancyRate": "Occupancy Rate",
+        "reservations": "Reservations",
         "reservationsInPeriod": "{{count}} reservations in period",
         "active": "Active",
         "reserved": "Reserved",

@@ -28,6 +28,7 @@ import {
     apiGetCarReports,
 } from '@/services/LocationService'
 import { money } from './shared'
+import { useLocaleStore } from '@/store/localeStore'
 import useTranslation from '@/utils/hooks/useTranslation'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 import type { CarReport, DashboardSummary, DashboardTimeline } from '@/@types/location'
@@ -701,10 +702,19 @@ const DashboardHeader = ({
     range,
     onRangeChange,
 }: DashboardHeaderProps) => {
-    const { t, i18n } = useTranslation()
-    const lang = typeof i18n === 'object' ? i18n.language : String(i18n)
-    const formattedDate = formatDate(currentDate, 'dddd, DD MMMM YYYY')
-    void lang
+    const { t } = useTranslation()
+    const currentLang = useLocaleStore((state) => state.currentLang)
+
+    /**
+     * `currentLang` is a dependency on purpose: dayjs swaps its locale when
+     * the app language changes, so the date has to be rebuilt or it would
+     * keep rendering the previous language's day/month names.
+     */
+    const formattedDate = useMemo(
+        () => formatDate(currentDate, 'dddd, DD MMMM YYYY'),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [currentDate, currentLang],
+    )
 
     const displayName = userName || 'User'
 
