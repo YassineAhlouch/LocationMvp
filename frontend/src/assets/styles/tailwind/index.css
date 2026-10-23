@@ -118,4 +118,8 @@
     .heading-text {
         @apply text-gray-900 dark:text-gray-100;
     }
+
+    .logo-colored {
+        filter: brightness(0) saturate(100%) invert(28%) sepia(95%) saturate(1352%) hue-rotate(213deg) brightness(97%) contrast(97%);
+    }
 }
