@@ -39,26 +39,26 @@ const Logo = (props: LogoProps) => {
 
     const useColored = Boolean(themeSchema && themeSchema !== 'default' && themeSchema !== '')
 
+    if (useColored && normalizedMode === 'dark' && type === 'streamline') {
+        return (
+            <div
+                className={classNames('logo', className)}
+                style={{
+                    ...style,
+                    width: logoWidth,
+                }}
+            >
+                <img
+                    className={classNames(imgClass)}
+                    src={logoSrc}
+                    alt={`${APP_NAME} logo`}
+                    style={{ color: 'var(--primary)' }}
+                />
+            </div>
+        )
+    }
+
     if (useColored) {
-        const isDarkLogo = normalizedMode === 'dark' && (type === 'streamline' || logoSrc.includes('logo-dark'))
-        if (isDarkLogo) {
-            return (
-                <div
-                    className={classNames('logo', className)}
-                    style={{
-                        ...style,
-                        width: logoWidth,
-                    }}
-                >
-                    <img
-                        className={classNames(imgClass)}
-                        src={logoSrc}
-                        alt={`${APP_NAME} logo`}
-                        style={{ color: 'var(--primary)' }}
-                    />
-                </div>
-            )
-        }
         return (
             <div
                 className={classNames('logo', className)}
