@@ -39,7 +39,7 @@ const Logo = (props: LogoProps) => {
 
     const useColored = Boolean(themeSchema && themeSchema !== 'default' && themeSchema !== '')
 
-    if (useColored && normalizedMode === 'dark' && type === 'streamline') {
+    if (useColored && type === 'streamline') {
         return (
             <div
                 className={classNames('logo', className)}
