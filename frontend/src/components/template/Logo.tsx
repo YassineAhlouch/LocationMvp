@@ -39,7 +39,39 @@ const Logo = (props: LogoProps) => {
 
     const useColored = Boolean(themeSchema && themeSchema !== 'default' && themeSchema !== '')
 
-    if (useColored && type === 'streamline') {
+    if (type === 'streamline') {
+        if (useColored) {
+            return (
+                <div
+                    className={classNames('logo flex items-center justify-center', className)}
+                    style={{
+                        ...style,
+                        width: logoWidth,
+                        height: '32px',
+                    }}
+                >
+                    <div
+                        className={classNames(imgClass)}
+                        style={{
+                            width: '32px',
+                            height: '32px',
+                            backgroundColor: 'var(--primary)',
+                            borderRadius: '8px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <img
+                            src={logoSrc}
+                            alt={`${APP_NAME} logo`}
+                            style={{ width: '32px', height: '32px' }}
+                        />
+                    </div>
+                </div>
+            )
+        }
+
         return (
             <div
                 className={classNames('logo flex items-center justify-center', className)}
@@ -84,9 +116,8 @@ const Logo = (props: LogoProps) => {
                     className={classNames(imgClass)}
                     style={{
                         width: '100%',
-                        height: type === 'streamline' ? '32px' : 'auto',
-                        minHeight: type === 'streamline' ? '32px' : '32px',
-                        aspectRatio: type === 'streamline' ? '1 / 1' : undefined,
+                        height: 'auto',
+                        minHeight: '32px',
                         backgroundColor: 'var(--primary)',
                         WebkitMaskImage: `url(${logoSrc})`,
                         maskImage: `url(${logoSrc})`,
@@ -94,8 +125,8 @@ const Logo = (props: LogoProps) => {
                         maskSize: 'contain',
                         WebkitMaskRepeat: 'no-repeat',
                         maskRepeat: 'no-repeat',
-                        WebkitMaskPosition: type === 'streamline' ? 'center' : 'left center',
-                        maskPosition: type === 'streamline' ? 'center' : 'left center',
+                        WebkitMaskPosition: 'left center',
+                        maskPosition: 'left center',
                     }}
                     aria-label={`${APP_NAME} logo`}
                 />
