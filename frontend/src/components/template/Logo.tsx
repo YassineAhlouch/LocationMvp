@@ -107,7 +107,7 @@ const Logo = (props: LogoProps) => {
         if (normalizedMode === 'dark' && type === 'full') {
             return (
                 <div
-                    className={classNames('logo', className)}
+                    className={classNames('logo flex items-center', className)}
                     style={{
                         ...style,
                         width: logoWidth,
@@ -118,17 +118,26 @@ const Logo = (props: LogoProps) => {
                             display: 'inline-flex',
                             alignItems: 'center',
                             height: '40px',
-                            backgroundColor: 'var(--primary)',
-                            borderRadius: '10px',
-                            padding: '0 12px',
-                            gap: '10px',
                         }}
                     >
-                        <img
-                            src={logoSrc}
-                            alt={`${APP_NAME} logo`}
-                            style={{ height: '32px' }}
-                        />
+                        <div
+                            style={{
+                                width: '40px',
+                                height: '40px',
+                                backgroundColor: 'var(--primary)',
+                                borderRadius: '10px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexShrink: 0,
+                            }}
+                        >
+                            <img
+                                src={logoSrc}
+                                alt={`${APP_NAME} logo`}
+                                style={{ height: '40px', width: '40px', color: 'var(--primary)' }}
+                            />
+                        </div>
                     </div>
                 </div>
             )
