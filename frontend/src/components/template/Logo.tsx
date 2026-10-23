@@ -42,18 +42,31 @@ const Logo = (props: LogoProps) => {
     if (useColored && type === 'streamline') {
         return (
             <div
-                className={classNames('logo', className)}
+                className={classNames('logo flex items-center justify-center', className)}
                 style={{
                     ...style,
                     width: logoWidth,
+                    height: '32px',
                 }}
             >
-                <img
+                <div
                     className={classNames(imgClass)}
-                    src={logoSrc}
-                    alt={`${APP_NAME} logo`}
-                    style={{ color: 'var(--primary)' }}
-                />
+                    style={{
+                        width: '32px',
+                        height: '32px',
+                        backgroundColor: 'var(--primary)',
+                        borderRadius: '8px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <img
+                        src={logoSrc}
+                        alt={`${APP_NAME} logo`}
+                        style={{ width: '32px', height: '32px' }}
+                    />
+                </div>
             </div>
         )
     }
