@@ -236,7 +236,11 @@ final class ReportingService
         $bookedDaysByCar = $this->bookedDaysPerCar($from, $to);
 
         return Car::query()
-            ->with(['brand:id,name', 'model:id,name'])
+            ->with([
+                'brand:id,name',
+                'model:id,name',
+                'images:id,car_id,image,is_primary,sort_order',
+            ])
             ->get()
             ->map(function (Car $car) use ($revenueByCar, $expensesByCar, $bookedDaysByCar): array {
                 $revenue = $revenueByCar->get($car->id, 0.0);
@@ -247,6 +251,8 @@ final class ReportingService
                     'registration_number' => $car->registration_number,
                     'brand' => $car->brand?->name,
                     'model' => $car->model?->name,
+                    'image' => $car->images->firstWhere('is_primary', true)?->image
+                        ?? $car->images->first()?->image,
                     'revenue' => $revenue,
                     'expenses' => $expenses,
                     'margin' => round($revenue - $expenses, 2),

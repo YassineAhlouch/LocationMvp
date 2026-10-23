@@ -241,7 +241,12 @@
         "available": "Available",
         "margin": "Margin",
         "bookedDays": "Booked Days",
+        "availableDays": "Available days",
+        "totalDays": "Total days",
         "fleetByStatus": "Fleet by Status",
+        "fleetSummary": "{{total}} cars · {{rented}} rented now",
+        "fleetOfFleet": "of the fleet",
+        "fleetCars": "Cars",
         "totalCars": "Total Cars",
         "rentedNow": "Rented now",
         "monthlyRevenue": "Monthly revenue",
@@ -261,7 +266,7 @@
         "newCustomers": "New Customers",
         "occupancyRate": "Occupancy Rate",
         "reservations": "Reservations",
-        "reservationsInPeriod": "{{count}} reservations in period",
+        "reservationsInPeriod": "{{value}} reservations in period",
         "active": "Active",
         "reserved": "Reserved",
         "no_show": "No Show",
@@ -1098,6 +1103,15 @@
         }
     },
     "reports": {
+        "history": {
+            "details": "Details",
+            "title": "Reservation history",
+            "clientSubtitle": "All reservations for this client",
+            "carSubtitle": "All reservations for this vehicle",
+            "count": "Reservations: {{count}}",
+            "truncated": "Showing the latest {{shown}} of {{total}} reservations",
+            "noReservations": "No reservations found"
+        },
         "range": {
             "thisWeek": "This Week",
             "thisMonth": "This Month",

@@ -3,15 +3,17 @@ import Container from '@/components/shared/Container'
 import Card from '@/components/ui/Card'
 import Table from '@/components/ui/Table'
 import Tag from '@/components/ui/Tag'
+import Button from '@/components/ui/Button'
 import Skeleton from '@/components/ui/Skeleton'
 import { BarChart } from '@/components/shared/Chart'
 import { colors } from '@/constants/colors.constant'
 import { apiGetClientReports } from '@/services/LocationService'
-import { LiCalendar, LiMoney, LiProfiles, LiWalletMoney } from '@/icons'
+import { LiCalendar, LiEye, LiMoney, LiProfiles, LiWalletMoney } from '@/icons'
 import { money, clientStatusTone, formatDate, tagToneClass } from '../shared'
 import useTranslation from '@/utils/hooks/useTranslation'
 import { ReportEmpty, ReportHeader, ReportMetrics } from './shared'
 import { rangeToQuery } from './shared'
+import ReservationHistoryDrawer from './ReservationHistoryDrawer'
 import type { ReportMetric } from './shared'
 import type { ClientReport } from '@/@types/location'
 import { currentMonthRange } from '@/components/shared/PeriodPicker'
@@ -33,6 +35,9 @@ const PerformanceClients = () => {
     const [range, setRange] = useState<DateRange>(currentMonthRange)
     const [clients, setClients] = useState<ClientReport[]>([])
     const [loading, setLoading] = useState(true)
+    const [historyClient, setHistoryClient] = useState<ClientReport | null>(
+        null,
+    )
 
     const period = useMemo(() => rangeToQuery(range), [range])
 
@@ -187,12 +192,15 @@ const PerformanceClients = () => {
                                 <Th>{t('reports.clients.columns.revenue', 'Revenue')}</Th>
                                 <Th>{t('reports.clients.columns.average', 'Avg / rental')}</Th>
                                 <Th>{t('reports.clients.columns.lastRental', 'Last rental')}</Th>
+                                <Th className="text-right">
+                                    {t('reports.history.details', 'Details')}
+                                </Th>
                             </Tr>
                         </THead>
                         <TBody>
                             {Array.from({ length: 5 }).map((_, index) => (
                                 <Tr key={index}>
-                                    {Array.from({ length: 6 }).map(
+                                    {Array.from({ length: 7 }).map(
                                         (__, cellIndex) => (
                                             <Td key={cellIndex}>
                                                 <Skeleton
@@ -216,6 +224,9 @@ const PerformanceClients = () => {
                                 <Th>{t('reports.clients.columns.revenue', 'Revenue')}</Th>
                                 <Th>{t('reports.clients.columns.average', 'Avg / rental')}</Th>
                                 <Th>{t('reports.clients.columns.lastRental', 'Last rental')}</Th>
+                                <Th className="text-right">
+                                    {t('reports.history.details', 'Details')}
+                                </Th>
                             </Tr>
                         </THead>
                         <TBody>
@@ -259,6 +270,26 @@ const PerformanceClients = () => {
                                     <Td className="text-gray-600 dark:text-gray-300">
                                         {formatDate(client.last_rental)}
                                     </Td>
+                                    <Td className="text-right">
+                                        <Button
+                                            size="sm"
+                                            variant="link"
+                                            className="inline-flex items-center gap-1 px-2"
+                                            title={t(
+                                                'reports.history.details',
+                                                'Details',
+                                            )}
+                                            onClick={() =>
+                                                setHistoryClient(client)
+                                            }
+                                        >
+                                            <LiEye className="text-base" />
+                                            {t(
+                                                'reports.history.details',
+                                                'Details',
+                                            )}
+                                        </Button>
+                                    </Td>
                                 </Tr>
                             ))}
                         </TBody>
@@ -272,6 +303,20 @@ const PerformanceClients = () => {
                     />
                 )}
             </Card>
+
+            <ReservationHistoryDrawer
+                isOpen={Boolean(historyClient)}
+                onClose={() => setHistoryClient(null)}
+                clientId={historyClient?.client_id}
+                title={
+                    historyClient?.full_name ??
+                    t('reports.history.title', 'Reservation history')
+                }
+                subtitle={t(
+                    'reports.history.clientSubtitle',
+                    'All reservations for this client',
+                )}
+            />
         </Container>
     )
 }

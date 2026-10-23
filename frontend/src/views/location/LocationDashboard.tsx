@@ -5,9 +5,12 @@ import Card from '@/components/ui/Card'
 import Skeleton from '@/components/ui/Skeleton'
 import Table from '@/components/ui/Table'
 import StatisticCard from '@/components/shared/StatisticCard'
-import IconFrame from '@/components/shared/IconFrame'
+import Avatar from '@/components/ui/Avatar'
 import GrowShrinkTag from '@/components/shared/GrowShrinkTag'
 import Divider from '@/components/shared/Divider'
+import Progress from '@/components/ui/Progress'
+import { TbSum } from 'react-icons/tb'
+import { Rectangle } from 'recharts'
 import { LineChart, BarChart, PieChart } from '@/components/shared/Chart'
 import { colors } from '@/constants/colors.constant'
 import formatNumber from '@/utils/formatNumber'
@@ -93,12 +96,9 @@ const compactMAD = (value: number) => {
 type MetricCardProps = {
     title: string
     value: number | string
-    change: number
     icon?: ReactNode
     color?: string
     formatter?: (value: number) => string
-    /** Free-form detail line; replaces the period comparison when given. */
-    hint?: ReactNode
     /** Drill-down page for this card; turns the card into a link. */
     to?: string
 }
@@ -106,60 +106,54 @@ type MetricCardProps = {
 const MetricCard = ({
     title,
     value,
-    change,
     icon,
     color = 'text-primary',
     formatter,
-    hint,
     to,
 }: MetricCardProps) => {
-    const { t } = useTranslation()
     const formatValue = (val: number | string): string => {
         if (typeof val === 'string') return val
         if (formatter) return formatter(val)
         return formatNumber(val)
     }
 
-    const body = (
-        <div className="flex items-center justify-between gap-4">
-            <div>
-                <div className="font-medium heading-text">{title}</div>
-                <h4 className="mt-2">{formatValue(value)}</h4>
-                {hint ? (
-                    <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        {hint}
+    const card = (
+        <StatisticCard
+            className={classNames(
+                'h-full pb-2',
+                to && 'cursor-pointer transition-shadow hover:shadow-md',
+            )}
+        >
+            <div className="flex h-full items-start justify-between gap-3">
+                <div className="min-w-0">
+                    <div className="line-clamp-2 text-sm font-medium leading-5 heading-text">
+                        {title}
                     </div>
-                ) : (
-                    <div className="mt-1 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-                        <GrowShrinkTag
-                            value={change}
-                            suffix="%"
-                            showIcon={true}
-                            className="border-0 bg-transparent px-0 py-0 font-semibold"
-                        />
-                        <span>
-                            {t('dashboard.vsLastPeriod', 'vs last period')}
-                        </span>
-                    </div>
+                    <h4 className="mt-1 truncate text-lg sm:text-xl">
+                        {formatValue(value)}
+                    </h4>
+                </div>
+                {icon && (
+                    <span
+                        className={classNames(
+                            'shrink-0 text-2xl sm:text-3xl',
+                            color,
+                        )}
+                    >
+                        {icon}
+                    </span>
                 )}
             </div>
-            {icon && (
-                <span className={classNames('shrink-0 text-3xl', color)}>
-                    {icon}
-                </span>
-            )}
-        </div>
+        </StatisticCard>
     )
 
     if (!to) {
-        return <StatisticCard>{body}</StatisticCard>
+        return card
     }
 
     return (
         <Link to={to} className="block h-full">
-            <StatisticCard className="h-full cursor-pointer transition-shadow hover:shadow-md">
-                {body}
-            </StatisticCard>
+            {card}
         </Link>
     )
 }
@@ -369,6 +363,24 @@ const ReservationsByStatus = ({ byStatus }: ReservationsByStatusProps) => {
     )
 }
 
+type BarShapeProps = {
+    x?: number
+    y?: number
+    width?: number
+    height?: number
+}
+
+const RevenueBar = ({ x = 0, y = 0, width = 0, height = 0 }: BarShapeProps) => (
+    <Rectangle
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        fill={colors.blue.chart}
+        radius={[4, 4, 0, 0]}
+    />
+)
+
 type AvgRevenuePerRentalProps = {
     avgRevenue: number
     reservations: number
@@ -385,10 +397,14 @@ const AvgRevenuePerRental = ({
     const { t } = useTranslation()
     const chartData = useMemo(() => {
         if (!timeline) return []
-        return timeline.months.map((month, index) => ({
-            label: dayjs(`${month}-01`).format('MMM YY'),
-            value: timeline.revenue[index] ?? 0,
-        }))
+        return timeline.months.map((month, index) => {
+            const date = dayjs(`${month}-01`)
+            return {
+                label: date.format('MMM'),
+                fullLabel: date.format('MMM YY'),
+                value: timeline.revenue[index] ?? 0,
+            }
+        })
     }, [timeline])
 
     return (
@@ -401,31 +417,72 @@ const AvgRevenuePerRental = ({
                 <GrowShrinkTag value={change} suffix="%" />
             </div>
             <div className="mt-1">
-                {formatNumber(reservations)} {t('dashboard.reservationsInPeriod', { count: reservations })}
+                {t('dashboard.reservationsInPeriod', {
+                    value: formatNumber(reservations),
+                })}
             </div>
             <div className="mt-4 lg:mt-14 xl:mt-4 flex-1">
                 <BarChart
                     data={chartData}
-                    height={250}
+                    height={280}
                     barConfig={[
                         {
                             dataKey: 'value',
-                            fill: colors.blue.chart,
                             barSize: 10,
-                            radius: [2, 2, 0, 0] as [number, number, number, number],
+                            shape: RevenueBar as unknown as undefined,
                         },
                     ]}
                     xAxisConfig={{
                         dataKey: 'label',
+                        interval: 'preserveStartEnd',
+                        minTickGap: 16,
                     }}
                     yAxisConfig={{
                         hide: false,
                         tickFormatter: (value: number) => compactMAD(value),
                         width: 40,
+                        tickMargin: 4,
                     }}
                     tooltipContentConfig={{
-                        valueFormatter: (value: number) => money(value),
-                        nameFormatter: () => t('dashboard.monthlyRevenue'),
+                        customContent: (props) => {
+                            const { payload } = props
+                            if (!payload || !payload.length) return null
+
+                            const point = payload[0].payload
+                            const value = point.value ?? 0
+
+                            return (
+                                <div className="border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 min-w-[8rem] rounded-lg border shadow-xl">
+                                    <div className="px-2.5 py-1.5">
+                                        <div className="heading-text font-medium">
+                                            {point.fullLabel ?? point.label}
+                                        </div>
+                                        <div className="grid gap-1.5 mt-1.5">
+                                            <div className="flex w-full items-center gap-2">
+                                                <div
+                                                    className="shrink-0 rounded-[2px] h-2.5 w-2.5"
+                                                    style={{
+                                                        backgroundColor:
+                                                            colors.blue.chart,
+                                                    }}
+                                                />
+                                                <div className="flex flex-1 justify-between items-center gap-x-3">
+                                                    <span className="heading-text font-mono font-medium tabular-nums text-xs">
+                                                        {t(
+                                                            'dashboard.revenue',
+                                                            'Revenue',
+                                                        )}
+                                                    </span>
+                                                    <span className="heading-text font-mono font-medium tabular-nums text-xs">
+                                                        {money(value)}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        },
                     }}
                 />
             </div>
@@ -439,88 +496,136 @@ type FleetByStatusProps = {
     rented: number
 }
 
+/**
+ * Fleet split by status, using the Acquisition Channel card's visual
+ * language: a dominant share, a segmented bar, a legend and a small table.
+ */
 const FleetByStatus = ({ byStatus, totalCars, rented }: FleetByStatusProps) => {
     const { t } = useTranslation()
-    const chartData = useMemo(() => {
-        if (!byStatus) return []
-        return Object.entries(byStatus).map(([status, value]) => ({
+
+    const segments = useMemo(() => {
+        const entries = Object.entries(byStatus ?? {})
+            .filter(([, value]) => value > 0)
+            .sort((a, b) => b[1] - a[1])
+
+        const total = entries.reduce((sum, [, value]) => sum + value, 0)
+
+        return entries.map(([status, value]) => ({
+            key: status,
             label: t(`dashboard.${status}`) || status,
             value,
             color: statusChartColor(status),
+            share: total > 0 ? (value / total) * 100 : 0,
         }))
     }, [byStatus, t])
 
-    return (
-        <Card>
-            <div className="flex items-center gap-2 mb-4">
-                <h5>{t('dashboard.fleetByStatus', 'Fleet by Status')}</h5>
-            </div>
-            <div className="flex items-center gap-2 sm:gap-8 mb-4">
-                <div>
-                    <p className="mb-1">{t('dashboard.totalCars', 'Total Cars')}</p>
-                    <div className="flex items-center gap-2">
-                        <h4>{formatNumber(totalCars)}</h4>
-                    </div>
-                </div>
-                <Divider orientation="vertical" className="h-12" />
-                <div>
-                    <p className="mb-1">{t('dashboard.rentedNow', 'Rented now')}</p>
-                    <div className="flex items-center gap-2">
-                        <h4>{formatNumber(rented)}</h4>
-                    </div>
-                </div>
-            </div>
+    const top = segments[0]
 
-            <div>
-                <BarChart
-                    data={chartData}
-                    height={220}
-                    barConfig={[
-                        {
-                            dataKey: 'value',
-                            fill: colors.cyan.chart,
-                            barSize: 18,
-                            radius: [2, 2, 0, 0] as [number, number, number, number],
-                        },
-                    ]}
-                    xAxisConfig={{
-                        dataKey: 'label',
-                        axisLine: false,
-                        tickLine: false,
-                        tick: false,
-                    }}
-                    yAxisConfig={{
-                        axisLine: false,
-                        tickLine: false,
-                        tick: false,
-                    }}
-                    cartesianGridConfig={{
-                        strokeDasharray: '3 3',
-                        horizontal: true,
-                        vertical: false,
-                    }}
-                />
-            </div>
-            <div className="space-y-2">
-                {chartData.map((status) => (
-                    <div
-                        key={status.label}
-                        className="flex items-center justify-between"
-                    >
-                        <span className="flex items-center gap-2 capitalize">
-                            <span
-                                className="w-2 h-2 rounded-full"
-                                style={{
-                                    backgroundColor: status.color,
-                                }}
-                            />
-                            {status.label}
-                        </span>
-                        <span className="heading-text font-medium">
-                            {status.value.toLocaleString()}
+    return (
+        <Card className="h-full" bodyClass="flex h-full flex-col">
+            <div className="flex h-full flex-col gap-4">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h5>{t('dashboard.fleetByStatus', 'Fleet by Status')}</h5>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                        {t('dashboard.fleetSummary', {
+                            total: formatNumber(totalCars),
+                            rented: formatNumber(rented),
+                            defaultValue: '{{total}} cars · {{rented}} rented now',
+                        })}
+                    </span>
+                </div>
+                <div className="pt-2">
+                    <div className="flex flex-wrap items-baseline gap-2">
+                        <h4>{top ? `${Math.round(top.share)}%` : '—'}</h4>
+                        <span className="text-sm text-gray-500 dark:text-gray-400">
+                            {t('dashboard.fleetOfFleet', 'of the fleet')}
                         </span>
                     </div>
-                ))}
+                    <p className="mt-1 truncate text-sm font-medium capitalize heading-text">
+                        {top?.label ?? t('dashboard.noData', 'No data available')}
+                    </p>
+                </div>
+
+                {segments.length > 0 ? (
+                    <>
+                        <div className="space-y-2">
+                            <div className="flex h-8 w-full gap-0.5">
+                                {segments.map((segment) => (
+                                    <div
+                                        key={segment.key}
+                                        style={{
+                                            width: `${segment.share}%`,
+                                            backgroundColor: segment.color,
+                                        }}
+                                        className="h-full rounded-sm"
+                                    />
+                                ))}
+                            </div>
+                            <div className="flex flex-wrap gap-x-4 gap-y-2">
+                                {segments.map((segment) => (
+                                    <span
+                                        key={segment.key}
+                                        className="flex items-center gap-2 text-sm capitalize"
+                                    >
+                                        <span
+                                            className="h-3 w-3 rounded-full"
+                                            style={{
+                                                backgroundColor: segment.color,
+                                            }}
+                                        />
+                                        {segment.label}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="mt-auto pt-4">
+                            <Table compact overflow={false} hoverable={false}>
+                                <THead>
+                                    <Tr className="bg-transparent">
+                                        <Th>{t('dashboard.status', 'Status')}</Th>
+                                        <Th className="text-right">
+                                            {t('dashboard.fleetCars', 'Cars')}
+                                        </Th>
+                                        <Th className="text-right">
+                                            {t('dashboard.share', 'Share')}
+                                        </Th>
+                                    </Tr>
+                                </THead>
+                                <TBody>
+                                    {segments.map((segment) => (
+                                        <Tr key={segment.key}>
+                                            <Td>
+                                                <div className="flex items-center gap-2 capitalize">
+                                                    <span
+                                                        className="h-2.5 w-2.5 rounded-full"
+                                                        style={{
+                                                            backgroundColor:
+                                                                segment.color,
+                                                        }}
+                                                    />
+                                                    <span className="font-medium">
+                                                        {segment.label}
+                                                    </span>
+                                                </div>
+                                            </Td>
+                                            <Td className="text-right">
+                                                {formatNumber(segment.value)}
+                                            </Td>
+                                            <Td className="text-right">
+                                                {segment.share.toFixed(1)}%
+                                            </Td>
+                                        </Tr>
+                                    ))}
+                                </TBody>
+                            </Table>
+                        </div>
+                    </>
+                ) : (
+                    <div className="flex items-center justify-center py-8 text-sm text-gray-400">
+                        {t('dashboard.noData', 'No data available')}
+                    </div>
+                )}
             </div>
         </Card>
     )
@@ -532,79 +637,73 @@ type OccupancyProps = {
     rate: number
 }
 
+const occupancyStroke = (rate: number) => {
+    if (rate >= 0.75) return 'stroke-success'
+    if (rate >= 0.5) return 'stroke-warning'
+    return 'stroke-error'
+}
+
 const Occupancy = ({ bookedDays, availableDays, rate }: OccupancyProps) => {
     const { t } = useTranslation()
-    const chartData = useMemo(
-        () => [
-            { label: t('dashboard.booked'), value: bookedDays },
-            { label: t('dashboard.available'), value: availableDays },
-        ],
-        [bookedDays, availableDays, t],
-    )
+    const percent = Math.round(rate * 100)
+    const totalDays = bookedDays + availableDays
 
     return (
-        <Card>
-            <div className="mb-4">
+        <Card className="h-full" bodyClass="flex h-full flex-col">
+            <div className="mb-2">
                 <h5>{t('dashboard.occupancy', 'Occupancy')}</h5>
             </div>
-            <div className="flex items-center gap-2 sm:gap-8 mb-4">
-                <div>
-                    <p className="mb-1">{t('dashboard.occupancyRate', 'Occupancy Rate')}</p>
-                    <div className="flex items-center gap-2">
-                        <h4>{Math.round(rate * 100)}%</h4>
-                    </div>
-                </div>
-                <Divider orientation="vertical" className="h-12" />
-                <div>
-                    <p className="mb-1">{t('dashboard.bookedDays')}</p>
-                    <div className="flex items-center gap-2">
-                        <h4>{formatNumber(bookedDays)}</h4>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <BarChart
-                    data={chartData}
-                    height={200}
-                    barConfig={[
-                        {
-                            dataKey: 'value',
-                            fill: colors.emerald.chart,
-                            barSize: 20,
-                            radius: [2, 2, 0, 0] as [number, number, number, number],
-                        },
-                    ]}
-                    xAxisConfig={{
-                        dataKey: 'label',
-                        axisLine: false,
-                        tickLine: false,
-                    }}
-                    yAxisConfig={{
-                        axisLine: false,
-                        tickLine: false,
-                    }}
-                    cartesianGridConfig={{
-                        strokeDasharray: '3 3',
-                        horizontal: false,
-                        vertical: false,
-                    }}
+            <div className="flex flex-1 items-center justify-center py-8">
+                <Progress
+                    className="flex justify-center"
+                    variant="circle"
+                    percent={percent}
+                    width={200}
+                    gapDegree={120}
+                    gapPosition="bottom"
+                    strokeClass={occupancyStroke(rate)}
+                    customInfo={
+                        <div className="text-center">
+                            <h3>{percent}%</h3>
+                            <span>
+                                {t(
+                                    'dashboard.occupancyRate',
+                                    'Occupancy Rate',
+                                )}
+                            </span>
+                        </div>
+                    }
                 />
             </div>
-            <div className="flex items-center justify-center gap-4 mt-4">
-                <div className="flex items-center gap-2">
-                    <div
-                        className="w-3 h-3 rounded-full"
-                        style={{ backgroundColor: colors.emerald.chart }}
-                    />
-                    <span className="text-sm">{t('dashboard.booked')}</span>
+            <div className="-mt-14 divide-y divide-gray-200 dark:divide-gray-700">
+                <div className="flex items-center justify-between py-2">
+                    <div className="flex items-center gap-2 heading-text">
+                        <LiCalendar className="text-lg" />
+                        <span>{t('dashboard.bookedDays', 'Booked days')}</span>
+                    </div>
+                    <span className="font-semibold heading-text">
+                        {formatNumber(bookedDays)}
+                    </span>
                 </div>
-                <div className="flex items-center gap-2">
-                    <div
-                        className="w-3 h-3 rounded-full"
-                        style={{ backgroundColor: colors.gray.chart }}
-                    />
-                    <span className="text-sm">{t('dashboard.available')}</span>
+                <div className="flex items-center justify-between py-2">
+                    <div className="flex items-center gap-2 heading-text">
+                        <LiCar className="text-lg" />
+                        <span>
+                            {t('dashboard.availableDays', 'Available days')}
+                        </span>
+                    </div>
+                    <span className="font-semibold heading-text">
+                        {formatNumber(availableDays)}
+                    </span>
+                </div>
+                <div className="flex items-center justify-between py-2">
+                    <div className="flex items-center gap-2 heading-text">
+                        <TbSum className="text-lg" />
+                        <span>{t('dashboard.totalDays', 'Total days')}</span>
+                    </div>
+                    <span className="font-semibold heading-text">
+                        {formatNumber(totalDays)}
+                    </span>
                 </div>
             </div>
         </Card>
@@ -637,14 +736,20 @@ const TopVehicles = ({ vehicles }: TopVehiclesProps) => {
                         {vehicles.map((vehicle) => (
                             <Tr key={vehicle.car_id}>
                                 <Td>
-                                    <div className="flex items-center gap-2">
-                                        <IconFrame size={32}>
-                                            <span className="heading-text text-lg">
-                                                <LiCar />
-                                            </span>
-                                        </IconFrame>
+                                    <Link
+                                        to={`${APPS_PREFIX_PATH}/vehicules/${vehicle.car_id}/overview`}
+                                        className="group flex items-center gap-2"
+                                    >
+                                        <Avatar
+                                            shape="round"
+                                            size={35}
+                                            className="vehicle-avatar shrink-0"
+                                            src={vehicle.image ?? undefined}
+                                            icon={<LiCar />}
+                                            alt={vehicle.registration_number}
+                                        />
                                         <div>
-                                            <span className="font-medium heading-text">
+                                            <span className="font-medium heading-text group-hover:text-primary">
                                                 {
                                                     vehicle.registration_number
                                                 }
@@ -658,7 +763,7 @@ const TopVehicles = ({ vehicles }: TopVehiclesProps) => {
                                                 </div>
                                             )}
                                         </div>
-                                    </div>
+                                    </Link>
                                 </Td>
                                 <Td className="heading-text">
                                     {money(vehicle.revenue)}
@@ -765,8 +870,8 @@ const DashboardHeader = ({
 
 const MetricCardSkeleton = () => {
     return (
-        <StatisticCard>
-            <div className="flex items-center justify-between gap-4">
+        <StatisticCard className="h-full">
+            <div className="flex h-full items-center justify-between gap-4">
                 <div className="space-y-2">
                     <Skeleton height={12} width={80} />
                     <Skeleton height={24} width={120} />
@@ -789,8 +894,8 @@ const LocationDashboardLoaders = () => {
             <Container>
                 <DashboardHeaderSkeleton />
                 <div className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {Array.from({ length: 4 }).map((_, index) => (
+                    <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                        {Array.from({ length: 8 }).map((_, index) => (
                             <MetricCardSkeleton key={index} />
                         ))}
                     </div>
@@ -1014,17 +1119,6 @@ const LocationDashboard = () => {
         [summary, prevSummary],
     )
 
-    const expensesChange = useMemo(
-        () =>
-            summary && prevSummary
-                ? pctChange(
-                      summary.expenses.total,
-                      prevSummary.expenses.total,
-                  )
-                : 0,
-        [summary, prevSummary],
-    )
-
     const reservationsChange = useMemo(
         () =>
             summary && prevSummary
@@ -1032,25 +1126,6 @@ const LocationDashboard = () => {
                       summary.reservations.total,
                       prevSummary.reservations.total,
                   )
-                : 0,
-        [summary, prevSummary],
-    )
-
-    const occupancyChange = useMemo(
-        () =>
-            summary && prevSummary
-                ? pctChange(
-                      summary.occupancy.rate,
-                      prevSummary.occupancy.rate,
-                  )
-                : 0,
-        [summary, prevSummary],
-    )
-
-    const newClientsChange = useMemo(
-        () =>
-            summary && prevSummary
-                ? pctChange(summary.new_clients, prevSummary.new_clients)
                 : 0,
         [summary, prevSummary],
     )
@@ -1087,11 +1162,10 @@ const LocationDashboard = () => {
                     onRangeChange={setRange}
                 />
                 <div className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         <MetricCard
                             title={t('dashboard.netRevenue', 'Net Revenue')}
                             value={summary?.net ?? 0}
-                            change={netRevenueChange}
                             icon={<LiWalletMoney />}
                             color="text-indigo-600 dark:text-indigo-400"
                             formatter={money}
@@ -1100,7 +1174,6 @@ const LocationDashboard = () => {
                         <MetricCard
                             title={t('dashboard.expenses', 'Expenses')}
                             value={summary?.expenses.total ?? 0}
-                            change={expensesChange}
                             icon={<LiReceipt />}
                             color="text-orange-600 dark:text-orange-400"
                             formatter={money}
@@ -1109,7 +1182,6 @@ const LocationDashboard = () => {
                         <MetricCard
                             title={t('dashboard.reservations', 'Reservations')}
                             value={summary?.reservations.total ?? 0}
-                            change={reservationsChange}
                             icon={<LiCalendar />}
                             color="text-sky-600 dark:text-sky-400"
                             to={kpiPath('reservations')}
@@ -1117,7 +1189,6 @@ const LocationDashboard = () => {
                         <MetricCard
                             title={t('dashboard.occupancy', 'Occupancy')}
                             value={`${Math.round((summary?.occupancy.rate ?? 0) * 100)}%`}
-                            change={occupancyChange}
                             icon={<LiBarChartUp />}
                             color="text-emerald-600 dark:text-emerald-400"
                             to={kpiPath('occupancy')}
@@ -1128,14 +1199,10 @@ const LocationDashboard = () => {
                                 'Outstanding Payments',
                             )}
                             value={summary?.outstanding.amount ?? 0}
-                            change={0}
                             icon={<LiMoney />}
                             color="text-rose-600 dark:text-rose-400"
                             formatter={money}
                             to={kpiPath('outstanding')}
-                            hint={t('dashboard.outstandingReservations', {
-                                count: summary?.outstanding.reservations ?? 0,
-                            })}
                         />
                         <MetricCard
                             title={t(
@@ -1146,14 +1213,9 @@ const LocationDashboard = () => {
                                 (summary?.today.pickups ?? 0) +
                                 (summary?.today.returns ?? 0)
                             }
-                            change={0}
                             icon={<LiRepeat />}
                             color="text-violet-600 dark:text-violet-400"
                             to={kpiPath('today')}
-                            hint={t('dashboard.pickupsReturnsSplit', {
-                                pickups: summary?.today.pickups ?? 0,
-                                returns: summary?.today.returns ?? 0,
-                            })}
                         />
                         <MetricCard
                             title={t(
@@ -1161,20 +1223,13 @@ const LocationDashboard = () => {
                                 'Fleet Requiring Attention',
                             )}
                             value={summary?.attention.total ?? 0}
-                            change={0}
                             icon={<LiAlertTriangle />}
                             color="text-amber-600 dark:text-amber-400"
                             to={kpiPath('fleet-attention')}
-                            hint={t('dashboard.maintenanceServiceSplit', {
-                                maintenance:
-                                    summary?.attention.maintenance ?? 0,
-                                service: summary?.attention.service_overdue ?? 0,
-                            })}
                         />
                         <MetricCard
                             title={t('dashboard.newCustomers', 'New Customers')}
                             value={summary?.new_clients ?? 0}
-                            change={newClientsChange}
                             icon={<LiUserAdd />}
                             color="text-teal-600 dark:text-teal-400"
                             to={kpiPath('new-clients')}

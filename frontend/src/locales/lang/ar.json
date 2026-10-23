@@ -241,7 +241,12 @@
         "available": "متاح",
         "margin": "الهامش",
         "bookedDays": "أيام محجوزة",
+        "availableDays": "أيام متاحة",
+        "totalDays": "إجمالي الأيام",
         "fleetByStatus": "الأسطول حسب الحالة",
+        "fleetSummary": "{{total}} مركبات · {{rented}} مؤجرة",
+        "fleetOfFleet": "من الأسطول",
+        "fleetCars": "المركبات",
         "totalCars": "إجمالي المركبات",
         "rentedNow": "مؤجرة حالياً",
         "monthlyRevenue": "الإيرادات الشهرية",
@@ -261,7 +266,7 @@
         "newCustomers": "عملاء جدد",
         "occupancyRate": "معدل الإشغال",
         "reservations": "الحجوزات",
-        "reservationsInPeriod": "{{count}} حجوزات في الفترة",
+        "reservationsInPeriod": "{{value}} حجوزات في الفترة",
         "active": "نشط",
         "reserved": "محجوز",
         "no_show": "لم يحضر",
@@ -1098,6 +1103,15 @@
         }
     },
     "reports": {
+        "history": {
+            "details": "التفاصيل",
+            "title": "سجل الحجوزات",
+            "clientSubtitle": "جميع حجوزات هذا العميل",
+            "carSubtitle": "جميع حجوزات هذه المركبة",
+            "count": "الحجوزات: {{count}}",
+            "truncated": "عرض أحدث {{shown}} من أصل {{total}} حجزًا",
+            "noReservations": "لم يتم العثور على حجوزات"
+        },
         "range": {
             "thisWeek": "هذا الأسبوع",
             "thisMonth": "هذا الشهر",

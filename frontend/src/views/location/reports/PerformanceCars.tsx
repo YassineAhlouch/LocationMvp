@@ -2,17 +2,25 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import Container from '@/components/shared/Container'
 import Card from '@/components/ui/Card'
 import Table from '@/components/ui/Table'
+import Button from '@/components/ui/Button'
 import Skeleton from '@/components/ui/Skeleton'
 import IconFrame from '@/components/shared/IconFrame'
 import { BarChart } from '@/components/shared/Chart'
 import { colors } from '@/constants/colors.constant'
 import classNames from '@/utils/classNames'
 import { apiGetCarReports } from '@/services/LocationService'
-import { LiBarChartUp, LiCar, LiReceipt, LiWalletMoney } from '@/icons'
+import {
+    LiBarChartUp,
+    LiCar,
+    LiEye,
+    LiReceipt,
+    LiWalletMoney,
+} from '@/icons'
 import { money } from '../shared'
 import useTranslation from '@/utils/hooks/useTranslation'
 import { ReportEmpty, ReportHeader, ReportMetrics } from './shared'
 import { rangeToQuery } from './shared'
+import ReservationHistoryDrawer from './ReservationHistoryDrawer'
 import type { ReportMetric } from './shared'
 import type { CarReport } from '@/@types/location'
 import { currentMonthRange } from '@/components/shared/PeriodPicker'
@@ -35,6 +43,7 @@ const PerformanceCars = () => {
     const [range, setRange] = useState<DateRange>(currentMonthRange)
     const [cars, setCars] = useState<CarReport[]>([])
     const [loading, setLoading] = useState(true)
+    const [historyCar, setHistoryCar] = useState<CarReport | null>(null)
 
     const period = useMemo(() => rangeToQuery(range), [range])
 
@@ -186,12 +195,15 @@ const PerformanceCars = () => {
                                 <Th>{t('reports.cars.columns.expenses', 'Expenses')}</Th>
                                 <Th>{t('reports.cars.columns.margin', 'Margin')}</Th>
                                 <Th>{t('reports.cars.columns.bookedDays', 'Booked days')}</Th>
+                                <Th className="text-right">
+                                    {t('reports.history.details', 'Details')}
+                                </Th>
                             </Tr>
                         </THead>
                         <TBody>
                             {Array.from({ length: 5 }).map((_, index) => (
                                 <Tr key={index}>
-                                    {Array.from({ length: 5 }).map(
+                                    {Array.from({ length: 6 }).map(
                                         (__, cellIndex) => (
                                             <Td key={cellIndex}>
                                                 <Skeleton
@@ -214,6 +226,9 @@ const PerformanceCars = () => {
                                 <Th>{t('reports.cars.columns.expenses', 'Expenses')}</Th>
                                 <Th>{t('reports.cars.columns.margin', 'Margin')}</Th>
                                 <Th>{t('reports.cars.columns.bookedDays', 'Booked days')}</Th>
+                                <Th className="text-right">
+                                    {t('reports.history.details', 'Details')}
+                                </Th>
                             </Tr>
                         </THead>
                         <TBody>
@@ -264,6 +279,26 @@ const PerformanceCars = () => {
                                     <Td className="heading-text">
                                         {car.booked_days}
                                     </Td>
+                                    <Td className="text-right">
+                                        <Button
+                                            size="sm"
+                                            variant="link"
+                                            className="inline-flex items-center gap-1 px-2"
+                                            title={t(
+                                                'reports.history.details',
+                                                'Details',
+                                            )}
+                                            onClick={() =>
+                                                setHistoryCar(car)
+                                            }
+                                        >
+                                            <LiEye className="text-base" />
+                                            {t(
+                                                'reports.history.details',
+                                                'Details',
+                                            )}
+                                        </Button>
+                                    </Td>
                                 </Tr>
                             ))}
                         </TBody>
@@ -277,6 +312,20 @@ const PerformanceCars = () => {
                     />
                 )}
             </Card>
+
+            <ReservationHistoryDrawer
+                isOpen={Boolean(historyCar)}
+                onClose={() => setHistoryCar(null)}
+                carId={historyCar?.car_id}
+                title={
+                    historyCar?.registration_number ??
+                    t('reports.history.title', 'Reservation history')
+                }
+                subtitle={t(
+                    'reports.history.carSubtitle',
+                    'All reservations for this vehicle',
+                )}
+            />
         </Container>
     )
 }

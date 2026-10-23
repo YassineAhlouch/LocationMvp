@@ -892,6 +892,7 @@ export type CarReport = {
     registration_number: string
     brand: string | null
     model: string | null
+    image: string | null
     revenue: number
     expenses: number
     margin: number
