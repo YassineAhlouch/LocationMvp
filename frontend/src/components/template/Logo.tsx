@@ -113,32 +113,12 @@ const Logo = (props: LogoProps) => {
                         width: logoWidth,
                     }}
                 >
-                    <div
-                        style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            height: '40px',
-                        }}
-                    >
-                        <div
-                            style={{
-                                width: '40px',
-                                height: '40px',
-                                backgroundColor: 'var(--primary)',
-                                borderRadius: '10px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                flexShrink: 0,
-                            }}
-                        >
-                            <img
-                                src={logoSrc}
-                                alt={`${APP_NAME} logo`}
-                                style={{ height: '40px', width: '40px', color: 'var(--primary)' }}
-                            />
-                        </div>
-                    </div>
+                    <img
+                        className={classNames(imgClass)}
+                        src={logoSrc}
+                        alt={`${APP_NAME} logo`}
+                        style={{ color: 'var(--primary)' }}
+                    />
                 </div>
             )
         }
