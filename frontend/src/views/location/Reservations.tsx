@@ -30,6 +30,7 @@ import { toast } from '@/components/ui/toast'
 import { CSVLink } from 'react-csv'
 import classNames from '@/utils/classNames'
 import useResponsive from '@/utils/hooks/useResponsive'
+import usePermissions from '@/utils/hooks/usePermissions'
 import dayjs from 'dayjs'
 import {
     apiGetReservations,
@@ -629,6 +630,7 @@ const ExpandableReservationDetails = ({
     onInvoice,
 }: ExpandableReservationDetailsProps) => {
     const { t } = useTranslation()
+    const { can } = usePermissions()
     const extras = reservation.extras ?? []
     const extrasTotal = extras.reduce(
         (sum, extra) => sum + extra.total_price,
@@ -793,66 +795,86 @@ const ExpandableReservationDetails = ({
                     </div>
 
                     <div className="flex justify-end gap-2 border-t border-gray-200 dark:border-gray-600 pt-4">
-                        {['pending', 'reserved'].includes(
-                            reservation.status,
-                        ) && (
-                            <Button
-                                size="sm"
-                                variant="solid"
-                                onClick={() => onConfirm(reservation)}
-                            >
-                                {t('reservations.actions.confirm', 'Confirm')}
-                            </Button>
-                        )}
-                        {['confirmed', 'reserved'].includes(
-                            reservation.status,
-                        ) && (
-                            <Button
-                                size="sm"
-                                variant="ghost"
-                                className="text-success hover:bg-success-subtle"
-                                onClick={() => onActivate(reservation)}
-                            >
-                                {t('reservations.actions.activate', 'Activate')}
-                            </Button>
-                        )}
-                        {reservation.status === 'active' && (
-                            <Button
-                                size="sm"
-                                variant="ghost"
-                                className="text-primary hover:bg-primary-subtle"
-                                onClick={() => onComplete(reservation)}
-                            >
-                                {t('reservations.actions.complete', 'Complete')}
-                            </Button>
-                        )}
-                        {['pending', 'confirmed', 'reserved'].includes(
-                            reservation.status,
-                        ) && (
-                            <Button
-                                size="sm"
-                                variant="ghost"
-                                className="text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                onClick={() => onNoShow(reservation)}
-                            >
-                                {t('reservations.actions.noShow', 'No show')}
-                            </Button>
-                        )}
-                        {[
-                            'pending',
-                            'confirmed',
-                            'reserved',
-                            'active',
-                        ].includes(reservation.status) && (
-                            <Button
-                                size="sm"
-                                variant="ghost"
-                                className="text-error hover:bg-error-subtle"
-                                onClick={() => onCancel(reservation)}
-                            >
-                                {t('reservations.actions.cancel', 'Cancel')}
-                            </Button>
-                        )}
+                        {can('reservations.confirm') &&
+                            ['pending', 'reserved'].includes(
+                                reservation.status,
+                            ) && (
+                                <Button
+                                    size="sm"
+                                    variant="solid"
+                                    onClick={() => onConfirm(reservation)}
+                                >
+                                    {t(
+                                        'reservations.actions.confirm',
+                                        'Confirm',
+                                    )}
+                                </Button>
+                            )}
+                        {can('reservations.activate') &&
+                            ['confirmed', 'reserved'].includes(
+                                reservation.status,
+                            ) && (
+                                <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    className="text-success hover:bg-success-subtle"
+                                    onClick={() => onActivate(reservation)}
+                                >
+                                    {t(
+                                        'reservations.actions.activate',
+                                        'Activate',
+                                    )}
+                                </Button>
+                            )}
+                        {can('reservations.complete') &&
+                            reservation.status === 'active' && (
+                                <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    className="text-primary hover:bg-primary-subtle"
+                                    onClick={() => onComplete(reservation)}
+                                >
+                                    {t(
+                                        'reservations.actions.complete',
+                                        'Complete',
+                                    )}
+                                </Button>
+                            )}
+                        {can('reservations.update') &&
+                            ['pending', 'confirmed', 'reserved'].includes(
+                                reservation.status,
+                            ) && (
+                                <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    className="text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    onClick={() => onNoShow(reservation)}
+                                >
+                                    {t(
+                                        'reservations.actions.noShow',
+                                        'No show',
+                                    )}
+                                </Button>
+                            )}
+                        {can('reservations.cancel') &&
+                            [
+                                'pending',
+                                'confirmed',
+                                'reserved',
+                                'active',
+                            ].includes(reservation.status) && (
+                                <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    className="text-error hover:bg-error-subtle"
+                                    onClick={() => onCancel(reservation)}
+                                >
+                                    {t(
+                                        'reservations.actions.cancel',
+                                        'Cancel',
+                                    )}
+                                </Button>
+                            )}
                         <Button
                             size="sm"
                             variant="ghost"
@@ -861,13 +883,15 @@ const ExpandableReservationDetails = ({
                         >
                             {t('reservations.actions.invoice', 'Invoice')}
                         </Button>
-                        <Button
-                            size="sm"
-                            variant="subtle"
-                            onClick={() => onEdit(reservation)}
-                        >
-                            {t('reservations.actions.edit', 'Edit')}
-                        </Button>
+                        {can('reservations.update') && (
+                            <Button
+                                size="sm"
+                                variant="subtle"
+                                onClick={() => onEdit(reservation)}
+                            >
+                                {t('reservations.actions.edit', 'Edit')}
+                            </Button>
+                        )}
                     </div>
                 </div>
             </Collapsible.Content>
@@ -877,6 +901,7 @@ const ExpandableReservationDetails = ({
 
 const Reservations = () => {
     const { t } = useTranslation()
+    const { can } = usePermissions()
     const navigate = useNavigate()
 
     const [reservations, setReservations] = useState<Reservation[]>([])
@@ -1120,7 +1145,8 @@ const Reservations = () => {
                     const status = reservation.status
                     return (
                         <div className="flex items-center justify-end gap-1">
-                            {['pending', 'reserved'].includes(status) && (
+                            {can('reservations.confirm') &&
+                                ['pending', 'reserved'].includes(status) && (
                                 <Tooltip title={t('reservations.actions.confirm', 'Confirm')} placement="top">
                                     <Button
                                         size="sm"
@@ -1133,7 +1159,8 @@ const Reservations = () => {
                                     />
                                 </Tooltip>
                             )}
-                            {['confirmed', 'reserved'].includes(status) && (
+                            {can('reservations.activate') &&
+                                ['confirmed', 'reserved'].includes(status) && (
                                 <Tooltip title={t('reservations.actions.activate', 'Activate')} placement="top">
                                     <Button
                                         size="sm"
@@ -1147,7 +1174,8 @@ const Reservations = () => {
                                     />
                                 </Tooltip>
                             )}
-                            {status === 'active' && (
+                            {can('reservations.complete') &&
+                                status === 'active' && (
                                 <Tooltip title={t('reservations.actions.complete', 'Complete')} placement="top">
                                     <Button
                                         size="sm"
@@ -1161,9 +1189,10 @@ const Reservations = () => {
                                     />
                                 </Tooltip>
                             )}
-                            {['pending', 'confirmed', 'reserved'].includes(
-                                status,
-                            ) && (
+                            {can('reservations.update') &&
+                                ['pending', 'confirmed', 'reserved'].includes(
+                                    status,
+                                ) && (
                                 <Tooltip title={t('reservations.actions.noShow', 'No show')} placement="top">
                                     <Button
                                         size="sm"
@@ -1177,12 +1206,13 @@ const Reservations = () => {
                                     />
                                 </Tooltip>
                             )}
-                            {[
-                                'pending',
-                                'confirmed',
-                                'reserved',
-                                'active',
-                            ].includes(status) && (
+                            {can('reservations.cancel') &&
+                                [
+                                    'pending',
+                                    'confirmed',
+                                    'reserved',
+                                    'active',
+                                ].includes(status) && (
                                 <Tooltip title={t('reservations.actions.cancel', 'Cancel')} placement="top">
                                     <Button
                                         size="sm"
@@ -1210,25 +1240,27 @@ const Reservations = () => {
                                     }}
                                 />
                             </Tooltip>
-                            <Tooltip title={t('reservations.actions.edit', 'Edit')} placement="top">
-                                <Button
-                                    size="sm"
-                                    variant="ghost"
-                                    icon={<LiEdit />}
-                                    aria-label={t('reservations.actions.edit', 'Edit')}
-                                    onClick={() => {
-                                        navigate(
-                                            `${APPS_PREFIX_PATH}/reservations/${reservation.id}/modifier`,
-                                        )
-                                    }}
-                                />
-                            </Tooltip>
+                            {can('reservations.update') && (
+                                <Tooltip title={t('reservations.actions.edit', 'Edit')} placement="top">
+                                    <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        icon={<LiEdit />}
+                                        aria-label={t('reservations.actions.edit', 'Edit')}
+                                        onClick={() => {
+                                            navigate(
+                                                `${APPS_PREFIX_PATH}/reservations/${reservation.id}/modifier`,
+                                            )
+                                        }}
+                                    />
+                                </Tooltip>
+                            )}
                         </div>
                     )
                 },
             },
         ],
-        [handleConfirm, navigate, t],
+        [can, handleConfirm, navigate, t],
     )
 
     const statCards = useMemo(
@@ -1311,16 +1343,22 @@ const Reservations = () => {
                                 {larger.sm && t('reservations.export', 'Export')}
                             </Button>
                         </CSVLink>
-                        <Button
-                            variant="solid"
-                            icon={<LiAdd />}
-                            onClick={() => {
-                                setEditing(null)
-                                setDialogOpen(true)
-                            }}
-                        >
-                            {larger.sm && t('reservations.newReservation', 'New reservation')}
-                        </Button>
+                        {can('reservations.create') && (
+                            <Button
+                                variant="solid"
+                                icon={<LiAdd />}
+                                onClick={() => {
+                                    setEditing(null)
+                                    setDialogOpen(true)
+                                }}
+                            >
+                                {larger.sm &&
+                                    t(
+                                        'reservations.newReservation',
+                                        'New reservation',
+                                    )}
+                            </Button>
+                        )}
                     </div>
                 </div>
 

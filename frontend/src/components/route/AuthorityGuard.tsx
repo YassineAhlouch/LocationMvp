@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react'
 import { Navigate } from 'react-router'
+import { OTHERS_PREFIX_PATH } from '@/constants/route.constant'
 import useAuthority from '@/utils/hooks/useAuthority'
 
 type AuthorityGuardProps = PropsWithChildren<{
@@ -12,7 +13,15 @@ const AuthorityGuard = (props: AuthorityGuardProps) => {
 
     const roleMatched = useAuthority(userAuthority, authority)
 
-    return <>{roleMatched ? children : <Navigate to="/access-denied" />}</>
+    return (
+        <>
+            {roleMatched ? (
+                children
+            ) : (
+                <Navigate to={`${OTHERS_PREFIX_PATH}/access-denied`} />
+            )}
+        </>
+    )
 }
 
 export default AuthorityGuard

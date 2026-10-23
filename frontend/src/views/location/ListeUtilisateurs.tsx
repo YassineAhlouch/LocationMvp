@@ -30,6 +30,7 @@ import useRandomColor from '@/utils/hooks/useRandomColor'
 import classNames from '@/utils/classNames'
 import acronym from '@/utils/acronym'
 import useTranslation from '@/utils/hooks/useTranslation'
+import usePermissions from '@/utils/hooks/usePermissions'
 import type { Translator } from './shared'
 
 const tabList = (t: Translator) => [
@@ -99,6 +100,7 @@ const UserStatus = ({ active }: { active: boolean }) => {
 
 const ListeUtilisateurs = () => {
     const { t } = useTranslation()
+    const { can } = usePermissions()
     const navigate = useNavigate()
 
     const [currentTab, setCurrentTab] = useState('users')
@@ -113,7 +115,13 @@ const ListeUtilisateurs = () => {
     const [roleFilter, setRoleFilter] = useState('')
     const [selectedRows, setSelectedRows] = useState<StaffUser[]>([])
 
-    const tabs = useMemo(() => tabList(t), [t])
+    const tabs = useMemo(
+        () =>
+            can('roles.view')
+                ? tabList(t)
+                : tabList(t).filter((tab) => tab.value !== 'roles'),
+        [can, t],
+    )
     const roleOptions = useMemo(
         () => [
             { value: '', label: t('users.allRoles', 'All roles') },
@@ -332,36 +340,39 @@ const ListeUtilisateurs = () => {
                 header: '',
                 id: 'action',
                 maxSize: 80,
-                cell: (props) => (
-                    <div className="flex items-center justify-center gap-1">
-                        <Button
-                            size="sm"
-                            variant="link"
-                            className="px-2 hover:text-gray-900 dark:hover:text-gray-100"
-                            role="button"
-                            title={t('users.actions.edit', 'Edit')}
-                            onClick={() => handleEdit(props.row.original)}
-                        >
-                            <LiEdit className="text-base" />
-                        </Button>
-                        <Button
-                            size="sm"
-                            variant="link"
-                            className="px-2 hover:text-error"
-                            role="button"
-                            title={t(
-                                'users.actions.deactivate',
-                                'Deactivate',
-                            )}
-                            onClick={() => setDeactivating(props.row.original)}
-                        >
-                            <LiTrash className="text-base" />
-                        </Button>
-                    </div>
-                ),
+                cell: (props) =>
+                    can('users.update') ? (
+                        <div className="flex items-center justify-center gap-1">
+                            <Button
+                                size="sm"
+                                variant="link"
+                                className="px-2 hover:text-gray-900 dark:hover:text-gray-100"
+                                role="button"
+                                title={t('users.actions.edit', 'Edit')}
+                                onClick={() => handleEdit(props.row.original)}
+                            >
+                                <LiEdit className="text-base" />
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant="link"
+                                className="px-2 hover:text-error"
+                                role="button"
+                                title={t(
+                                    'users.actions.deactivate',
+                                    'Deactivate',
+                                )}
+                                onClick={() =>
+                                    setDeactivating(props.row.original)
+                                }
+                            >
+                                <LiTrash className="text-base" />
+                            </Button>
+                        </div>
+                    ) : null,
             },
         ],
-        [handleEdit, t],
+        [can, handleEdit, t],
     )
 
     return (
@@ -425,23 +436,25 @@ const ListeUtilisateurs = () => {
                                             }}
                                         />
                                     </div>
-                                    <Button
-                                        variant="solid"
-                                        onClick={() =>
-                                            navigate(
-                                                `${APPS_PREFIX_PATH}/utilisateurs/ajouter`,
-                                            )
-                                        }
-                                    >
-                                        {t('users.addUser', 'Add user')}
-                                    </Button>
+                                    {can('users.create') && (
+                                        <Button
+                                            variant="solid"
+                                            onClick={() =>
+                                                navigate(
+                                                    `${APPS_PREFIX_PATH}/utilisateurs/ajouter`,
+                                                )
+                                            }
+                                        >
+                                            {t('users.addUser', 'Add user')}
+                                        </Button>
+                                    )}
                                 </div>
                             </div>
 
                             <div className="mb-4">
                                 <DataTable<StaffUser>
                                     compact
-                                    selectable
+                                    selectable={can('users.update')}
                                     verticalDivider={{
                                         head: true,
                                         body: true,
@@ -474,7 +487,9 @@ const ListeUtilisateurs = () => {
                                 />
                             </div>
 
-                            <ActionBar open={selectedRows.length > 0}>
+                            <ActionBar
+                                open={can('users.update') && selectedRows.length > 0}
+                            >
                                 <div className="flex items-center justify-between">
                                     <span className="font-medium">
                                         <span className="heading-text font-semibold">
@@ -506,7 +521,9 @@ const ListeUtilisateurs = () => {
                         </div>
                     )}
 
-                    {currentTab === 'roles' && <RolesTab />}
+                    {currentTab === 'roles' && can('roles.view') && (
+                        <RolesTab />
+                    )}
                 </div>
             </Container>
 

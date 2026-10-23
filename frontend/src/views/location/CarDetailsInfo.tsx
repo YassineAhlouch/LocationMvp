@@ -7,6 +7,7 @@ import { NumericFormat } from 'react-number-format'
 import { LiCar, LiEdit2 } from '@/icons'
 import { money, carStatusTone, formatDate, tagToneClass } from './shared'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
+import usePermissions from '@/utils/hooks/usePermissions'
 import type { Car } from '@/@types/location'
 
 type CarDetailsInfoProps = {
@@ -26,6 +27,7 @@ const InfoRow = ({ label, children }: { label: string; children: ReactNode }) =>
 
 const CarDetailsInfo = ({ car }: CarDetailsInfoProps) => {
     const navigate = useNavigate()
+    const { can } = usePermissions()
 
     const cover =
         (car.images?.find((img) => img.is_primary) ?? car.images?.[0])?.image ??
@@ -68,18 +70,20 @@ const CarDetailsInfo = ({ car }: CarDetailsInfoProps) => {
                             </Tag>
                         )}
                     </div>
-                    <Button
-                        className="mt-4 w-full"
-                        variant="subtle"
-                        icon={<LiEdit2 />}
-                        onClick={() =>
-                            navigate(
-                                `${APPS_PREFIX_PATH}/vehicules/${car.id}/modifier`,
-                            )
-                        }
-                    >
-                        Edit vehicle
-                    </Button>
+                    {can('fleet.update') && (
+                        <Button
+                            className="mt-4 w-full"
+                            variant="subtle"
+                            icon={<LiEdit2 />}
+                            onClick={() =>
+                                navigate(
+                                    `${APPS_PREFIX_PATH}/vehicules/${car.id}/modifier`,
+                                )
+                            }
+                        >
+                            Edit vehicle
+                        </Button>
+                    )}
                 </div>
 
                 <div className="mt-4 border-t border-gray-200 pt-2 dark:border-gray-700">

@@ -20,5 +20,9 @@ class DatabaseSeeder extends Seeder
             CurrencySeeder::class,
             DemoDataSeeder::class,
         ]);
+
+        if (app()->environment('local')) {
+            $this->call(DashboardTestUserSeeder::class);
+        }
     }
 }

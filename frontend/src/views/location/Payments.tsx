@@ -29,6 +29,7 @@ import {
 } from '@/services/LocationService'
 import type { Payment, PaymentOverview } from '@/@types/location'
 import useTranslation from '@/utils/hooks/useTranslation'
+import usePermissions from '@/utils/hooks/usePermissions'
 import {
     money,
     apiErrorMessage,
@@ -53,6 +54,7 @@ const methodFilterOptions = (t: Translator) => [
 
 const Payments = () => {
     const { t } = useTranslation()
+    const { can } = usePermissions()
 
     const [selectedDate, setSelectedDate] = useState(
         dayjs().format('YYYY-MM-DD'),
@@ -293,7 +295,11 @@ const Payments = () => {
                     }
                     return (
                         <Link
-                            to={`${APPS_PREFIX_PATH}/reservations/${reservation.id}/modifier`}
+                            to={`${APPS_PREFIX_PATH}/reservations/${reservation.id}/${
+                                can('reservations.update')
+                                    ? 'modifier'
+                                    : 'facture'
+                            }`}
                             className="font-semibold text-primary hover:underline"
                         >
                             {reservation.reservation_number}
@@ -363,7 +369,8 @@ const Payments = () => {
                     const busy = busyId === payment.id
                     return (
                         <div className="flex items-center justify-center gap-1">
-                            {payment.status === 'pending' && (
+                            {can('payments.create') &&
+                                payment.status === 'pending' && (
                                 <Button
                                     size="sm"
                                     variant="link"
@@ -378,7 +385,8 @@ const Payments = () => {
                                     <LuCircleCheck className="text-base" />
                                 </Button>
                             )}
-                            {payment.status === 'paid' && (
+                            {can('payments.refund') &&
+                                payment.status === 'paid' && (
                                 <Button
                                     size="sm"
                                     variant="link"
@@ -396,7 +404,8 @@ const Payments = () => {
                                     <LuRotateCcw className="text-base" />
                                 </Button>
                             )}
-                            {payment.status === 'pending' && (
+                            {can('payments.create') &&
+                                payment.status === 'pending' && (
                                 <Button
                                     size="sm"
                                     variant="link"
@@ -416,7 +425,7 @@ const Payments = () => {
                 },
             },
         ],
-        [busyId, handleConfirm, t],
+        [busyId, can, handleConfirm, t],
     )
 
     return (

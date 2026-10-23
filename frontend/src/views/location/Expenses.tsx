@@ -42,6 +42,7 @@ import {
 import type { Translator } from './shared'
 import { LiEdit } from '@/icons'
 import useTranslation from '@/utils/hooks/useTranslation'
+import usePermissions from '@/utils/hooks/usePermissions'
 
 type ExpenseFormValues = {
     car_id?: number
@@ -451,6 +452,7 @@ const ExpenseFormDialog = ({
 
 const Expenses = () => {
     const { t } = useTranslation()
+    const { can } = usePermissions()
     const [expenses, setExpenses] = useState<Expense[]>([])
     const [loading, setLoading] = useState(true)
     const [total, setTotal] = useState(0)
@@ -596,26 +598,27 @@ const Expenses = () => {
             {
                 header: '',
                 id: 'actions',
-                cell: (props) => (
-                    <div className="flex items-center justify-center gap-1">
-                        <Button
-                            size="sm"
-                            variant="link"
-                            className="px-2 hover:text-gray-900 dark:hover:text-gray-100"
-                            role="button"
-                            title={t('expenses.actions.edit', 'Edit')}
-                            onClick={() => {
-                                setEditing(props.row.original)
-                                setDialogOpen(true)
-                            }}
-                        >
-                            <LiEdit className="text-base" />
-                        </Button>
-                    </div>
-                ),
+                cell: (props) =>
+                    can('expenses.update') ? (
+                        <div className="flex items-center justify-center gap-1">
+                            <Button
+                                size="sm"
+                                variant="link"
+                                className="px-2 hover:text-gray-900 dark:hover:text-gray-100"
+                                role="button"
+                                title={t('expenses.actions.edit', 'Edit')}
+                                onClick={() => {
+                                    setEditing(props.row.original)
+                                    setDialogOpen(true)
+                                }}
+                            >
+                                <LiEdit className="text-base" />
+                            </Button>
+                        </div>
+                    ) : null,
             },
         ],
-        [t],
+        [can, t],
     )
 
     return (
@@ -632,15 +635,17 @@ const Expenses = () => {
                                     })}
                                 </p>
                             </div>
-                            <Button
-                                variant="solid"
-                                onClick={() => {
-                                    setEditing(null)
-                                    setDialogOpen(true)
-                                }}
-                            >
-                                {t('expenses.addExpense', 'Add expense')}
-                            </Button>
+                            {can('expenses.create') && (
+                                <Button
+                                    variant="solid"
+                                    onClick={() => {
+                                        setEditing(null)
+                                        setDialogOpen(true)
+                                    }}
+                                >
+                                    {t('expenses.addExpense', 'Add expense')}
+                                </Button>
+                            )}
                         </div>
                     </div>
 

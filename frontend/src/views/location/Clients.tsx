@@ -31,6 +31,7 @@ import useRandomColor from '@/utils/hooks/useRandomColor'
 import classNames from '@/utils/classNames'
 import acronym from '@/utils/acronym'
 import useTranslation from '@/utils/hooks/useTranslation'
+import usePermissions from '@/utils/hooks/usePermissions'
 
 type ClientFormDialogProps = {
     open: boolean
@@ -131,6 +132,7 @@ const ClientName = ({ row }: { row: Client }) => {
 
 const Clients = () => {
     const { t } = useTranslation()
+    const { can } = usePermissions()
     const navigate = useNavigate()
 
     const [clients, setClients] = useState<Client[]>([])
@@ -359,34 +361,38 @@ const Clients = () => {
                 id: 'actions',
                 cell: (props) => (
                     <div className="flex items-center justify-center gap-1">
-                        <Button
-                            size="sm"
-                            variant="link"
-                            className="px-2 hover:text-gray-900 dark:hover:text-gray-100"
-                            role="button"
-                            title={t('clients.actions.edit', 'Edit')}
-                            onClick={() => {
-                                setEditing(props.row.original)
-                                setDialogOpen(true)
-                            }}
-                        >
-                            <LiEdit className="text-base" />
-                        </Button>
-                        <Button
-                            size="sm"
-                            variant="link"
-                            className="px-2 hover:text-error"
-                            role="button"
-                            title={t('clients.actions.delete', 'Delete')}
-                            onClick={() => setDeleting(props.row.original)}
-                        >
-                            <LiTrash className="text-base" />
-                        </Button>
+                        {can('clients.update') && (
+                            <Button
+                                size="sm"
+                                variant="link"
+                                className="px-2 hover:text-gray-900 dark:hover:text-gray-100"
+                                role="button"
+                                title={t('clients.actions.edit', 'Edit')}
+                                onClick={() => {
+                                    setEditing(props.row.original)
+                                    setDialogOpen(true)
+                                }}
+                            >
+                                <LiEdit className="text-base" />
+                            </Button>
+                        )}
+                        {can('clients.delete') && (
+                            <Button
+                                size="sm"
+                                variant="link"
+                                className="px-2 hover:text-error"
+                                role="button"
+                                title={t('clients.actions.delete', 'Delete')}
+                                onClick={() => setDeleting(props.row.original)}
+                            >
+                                <LiTrash className="text-base" />
+                            </Button>
+                        )}
                     </div>
                 ),
             },
         ],
-        [t],
+        [can, t],
     )
 
     return (
@@ -403,16 +409,21 @@ const Clients = () => {
                                     })}
                                 </p>
                             </div>
-                            <Button
-                                variant="solid"
-                                onClick={() =>
-                                    navigate(
-                                        `${APPS_PREFIX_PATH}/clients/ajouter`,
-                                    )
-                                }
-                            >
-                                {t('clients.addClientButton', 'Add client')}
-                            </Button>
+                            {can('clients.create') && (
+                                <Button
+                                    variant="solid"
+                                    onClick={() =>
+                                        navigate(
+                                            `${APPS_PREFIX_PATH}/clients/ajouter`,
+                                        )
+                                    }
+                                >
+                                    {t(
+                                        'clients.addClientButton',
+                                        'Add client',
+                                    )}
+                                </Button>
+                            )}
                         </div>
                     </div>
 
@@ -462,7 +473,7 @@ const Clients = () => {
                     <div className="mb-4">
                         <DataTable<Client>
                             compact
-                            selectable
+                            selectable={can('clients.delete')}
                             verticalDivider={{
                                 head: true,
                                 body: true,
@@ -493,7 +504,7 @@ const Clients = () => {
                 </div>
             </Container>
 
-            <ActionBar open={selectedRows.length > 0}>
+            <ActionBar open={can('clients.delete') && selectedRows.length > 0}>
                 <div className="flex items-center justify-between">
                     <span className="font-medium">
                         <span className="heading-text font-semibold">

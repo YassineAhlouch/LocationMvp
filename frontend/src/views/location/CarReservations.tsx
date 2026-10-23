@@ -9,6 +9,7 @@ import DataTable from '@/components/shared/DataTable'
 import { LuSearch } from 'react-icons/lu'
 import { LiEdit2 } from '@/icons'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
+import usePermissions from '@/utils/hooks/usePermissions'
 import { apiGetReservations } from '@/services/LocationService'
 import {
     money,
@@ -31,6 +32,7 @@ const statusOptions: SelectOption<string>[] = [
 ]
 
 const CarReservations = ({ carId }: CarReservationsProps) => {
+    const { can } = usePermissions()
     const [rows, setRows] = useState<Reservation[]>([])
     const [loading, setLoading] = useState(true)
     const [total, setTotal] = useState(0)
@@ -77,7 +79,9 @@ const CarReservations = ({ carId }: CarReservationsProps) => {
                 accessorKey: 'reservation_number',
                 cell: (props) => (
                     <Link
-                        to={`${APPS_PREFIX_PATH}/reservations/${props.row.original.id}/modifier`}
+                        to={`${APPS_PREFIX_PATH}/reservations/${props.row.original.id}/${
+                            can('reservations.update') ? 'modifier' : 'facture'
+                        }`}
                         className="font-semibold text-primary hover:underline"
                     >
                         {props.row.original.reservation_number}
@@ -156,7 +160,11 @@ const CarReservations = ({ carId }: CarReservationsProps) => {
                 cell: (props) => (
                     <div className="flex items-center justify-end">
                         <Link
-                            to={`${APPS_PREFIX_PATH}/reservations/${props.row.original.id}/modifier`}
+                            to={`${APPS_PREFIX_PATH}/reservations/${props.row.original.id}/${
+                                can('reservations.update')
+                                    ? 'modifier'
+                                    : 'facture'
+                            }`}
                         >
                             <Button
                                 size="sm"
@@ -169,7 +177,7 @@ const CarReservations = ({ carId }: CarReservationsProps) => {
                 ),
             },
         ],
-        [],
+        [can],
     )
 
     return (

@@ -46,6 +46,7 @@ import type {
 } from '@/@types/location'
 import ClientForm from './ClientForm'
 import useTranslation from '@/utils/hooks/useTranslation'
+import usePermissions from '@/utils/hooks/usePermissions'
 import {
     money,
     currencyCode,
@@ -783,6 +784,7 @@ const ReservationForm = ({
     sidebar,
 }: ReservationFormProps) => {
     const { t } = useTranslation()
+    const { can } = usePermissions()
     const isEditing = reservation !== null
     const navigate = useNavigate()
     const [selectedSection, setSelectedSection] = useState(
@@ -1679,16 +1681,18 @@ const ReservationForm = ({
                                     onInputChange={onClientSearch}
                                     filter={({ options }) => options}
                                 />
-                                <Button
-                                    type="button"
-                                    size="sm"
-                                    variant="subtle"
-                                    onClick={() =>
-                                        setClientDialogTarget('primary')
-                                    }
-                                >
-                                    {t('clients.add', 'Add')}
-                                </Button>
+                                {can('clients.create') && (
+                                    <Button
+                                        type="button"
+                                        size="sm"
+                                        variant="subtle"
+                                        onClick={() =>
+                                            setClientDialogTarget('primary')
+                                        }
+                                    >
+                                        {t('clients.add', 'Add')}
+                                    </Button>
+                                )}
                             </div>
                         )}
                     />
@@ -1718,16 +1722,18 @@ const ReservationForm = ({
                                     onInputChange={onClientSearch}
                                     filter={({ options }) => options}
                                 />
-                                <Button
-                                    type="button"
-                                    size="sm"
-                                    variant="subtle"
-                                    onClick={() =>
-                                        setClientDialogTarget('secondary')
-                                    }
-                                >
-                                    {t('clients.add', 'Add')}
-                                </Button>
+                                {can('clients.create') && (
+                                    <Button
+                                        type="button"
+                                        size="sm"
+                                        variant="subtle"
+                                        onClick={() =>
+                                            setClientDialogTarget('secondary')
+                                        }
+                                    >
+                                        {t('clients.add', 'Add')}
+                                    </Button>
+                                )}
                             </div>
                         )}
                     />
@@ -2577,7 +2583,7 @@ const ReservationForm = ({
                             </ul>
                         </>
                     )}
-                    {!showAddPayment ? (
+                    {can('payments.create') && (!showAddPayment ? (
                         <Button
                             type="button"
                             size="sm"
@@ -2728,7 +2734,7 @@ const ReservationForm = ({
                                 </Button>
                             </div>
                         </div>
-                    )}
+                    ))}
                     </FormSectionCard>
                 </>
             )}

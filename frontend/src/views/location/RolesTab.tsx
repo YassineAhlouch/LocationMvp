@@ -24,6 +24,7 @@ import ManagePermissionsDialog from './ManagePermissionsDialog'
 import { getRoleColor, getRoleIcon } from './roleMeta'
 import { apiErrorMessage, tagToneClass } from './shared'
 import useTranslation from '@/utils/hooks/useTranslation'
+import usePermissions from '@/utils/hooks/usePermissions'
 
 /** Member preview handed to UsersAvatarGroup (imgKey='avatar', nameKey='name'). */
 type RoleMember = { name: string; avatar: string }
@@ -46,6 +47,7 @@ const RoleCard = ({
     onManage,
 }: RoleCardProps) => {
     const { t } = useTranslation()
+    const { can } = usePermissions()
     const IconComponent = getRoleIcon(role.icon)
     const color = getRoleColor(role.color)
 
@@ -78,16 +80,17 @@ const RoleCard = ({
                             </Tag>
                         </div>
                     </div>
-                    <Dropdown
-                        placement="bottom-end"
-                        renderTitle={
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                icon={<LuEllipsis className="text-base" />}
-                            />
-                        }
-                    >
+                    {can('roles.manage') && (
+                        <Dropdown
+                            placement="bottom-end"
+                            renderTitle={
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    icon={<LuEllipsis className="text-base" />}
+                                />
+                            }
+                        >
                         <Dropdown.Item
                             eventKey="edit"
                             onClick={() => onEdit(role)}
@@ -128,7 +131,8 @@ const RoleCard = ({
                                       )}
                             </div>
                         </Dropdown.Item>
-                    </Dropdown>
+                        </Dropdown>
+                    )}
                 </div>
                 <p className="mb-3 line-clamp-2 text-sm text-gray-500 dark:text-gray-400">
                     {role.description ??
@@ -136,9 +140,11 @@ const RoleCard = ({
                 </p>
             </div>
             <div className="flex items-center justify-between">
-                <Button variant="subtle" onClick={() => onManage(role)}>
-                    {t('roles.actions.manage', 'Manage')}
-                </Button>
+                {can('roles.manage') && (
+                    <Button variant="subtle" onClick={() => onManage(role)}>
+                        {t('roles.actions.manage', 'Manage')}
+                    </Button>
+                )}
                 {members.length > 0 && (
                     <UsersAvatarGroup
                         users={members}
@@ -163,6 +169,7 @@ const RoleCard = ({
 
 const RolesTab = () => {
     const { t } = useTranslation()
+    const { can } = usePermissions()
     const [roles, setRoles] = useState<Role[]>([])
     const [loading, setLoading] = useState(true)
     const [membersByRole, setMembersByRole] = useState<
@@ -302,13 +309,15 @@ const RolesTab = () => {
                         )}
                     </p>
                 </div>
-                <Button
-                    variant="solid"
-                    icon={<LiAdd className="text-lg" />}
-                    onClick={handleCreate}
-                >
-                    {t('roles.addRole', 'Add New Role')}
-                </Button>
+                {can('roles.manage') && (
+                    <Button
+                        variant="solid"
+                        icon={<LiAdd className="text-lg" />}
+                        onClick={handleCreate}
+                    >
+                        {t('roles.addRole', 'Add New Role')}
+                    </Button>
+                )}
             </div>
 
             {loading ? (

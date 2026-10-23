@@ -8,6 +8,7 @@ import Table from '@/components/ui/Table'
 import Loading from '@/components/shared/Loading'
 import { LineChart } from '@/components/shared/Chart'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
+import usePermissions from '@/utils/hooks/usePermissions'
 import { LiCalendar } from '@/icons'
 import {
     LuArrowRightLeft,
@@ -74,6 +75,7 @@ const EmptyRow = ({ columns, label }: { columns: number; label: string }) => (
 )
 
 const CarOverview = ({ carId }: CarOverviewProps) => {
+    const { can } = usePermissions()
     const [overview, setOverview] = useState<CarOverviewData | null>(null)
     const [loading, setLoading] = useState(true)
     const [failed, setFailed] = useState(false)
@@ -238,7 +240,13 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
                                         <Tr key={reservation.id}>
                                             <Td>
                                                 <Link
-                                                    to={`${APPS_PREFIX_PATH}/reservations/${reservation.id}/modifier`}
+                                                    to={`${APPS_PREFIX_PATH}/reservations/${reservation.id}/${
+                                                        can(
+                                                            'reservations.update',
+                                                        )
+                                                            ? 'modifier'
+                                                            : 'facture'
+                                                    }`}
                                                     className="font-semibold text-primary hover:underline"
                                                 >
                                                     {

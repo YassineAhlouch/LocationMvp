@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import dayjs from 'dayjs'
+import { useNavigate } from 'react-router'
 import classNames from '@/utils/classNames'
 import Container from '@/components/shared/Container'
 import Button from '@/components/ui/Button'
@@ -12,6 +13,8 @@ import Loading from '@/components/shared/Loading'
 import { getColorClasses } from '@/components/shared/FullCalendar/utils'
 import useDirection from '@/utils/hooks/useDirection'
 import useTranslation from '@/utils/hooks/useTranslation'
+import usePermissions from '@/utils/hooks/usePermissions'
+import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 import { LiChevronLeft, LiChevronRight } from '@/icons'
 import ReservationForm from './forms/ReservationForm'
 import {
@@ -64,6 +67,8 @@ const CustomEvent = ({ event, item }: CustomEventProps) => {
 
 const ReservationCalendar = () => {
     const { t } = useTranslation()
+    const { can } = usePermissions()
+    const navigate = useNavigate()
     const [items, setItems] = useState<ReservationCalendarItem[]>([])
     const [loading, setLoading] = useState(true)
     const [dialogOpen, setDialogOpen] = useState(false)
@@ -125,9 +130,18 @@ const ReservationCalendar = () => {
         setDialogOpen(true)
     }
 
-    const handleCellClick = (date: Date) => openCreate(date)
+    const handleCellClick = (date: Date) => {
+        if (can('reservations.create')) {
+            openCreate(date)
+        }
+    }
 
     const handleEventClick = (event: FullCalendarEvent) => {
+        if (!can('reservations.update')) {
+            navigate(`${APPS_PREFIX_PATH}/reservations/${event.id}/facture`)
+            return
+        }
+
         setOpening(true)
         apiGetReservation(Number(event.id))
             .then((reservation) => {
@@ -231,12 +245,17 @@ const ReservationCalendar = () => {
                             ))}
                         </div>
                     </div>
-                    <Button
-                        variant="solid"
-                        onClick={() => openCreate(new Date())}
-                    >
-                        {t('reservations.newReservation', 'New reservation')}
-                    </Button>
+                    {can('reservations.create') && (
+                        <Button
+                            variant="solid"
+                            onClick={() => openCreate(new Date())}
+                        >
+                            {t(
+                                'reservations.newReservation',
+                                'New reservation',
+                            )}
+                        </Button>
+                    )}
                 </div>
 
                 <div className="min-h-0 flex-1 pb-4">
@@ -248,9 +267,17 @@ const ReservationCalendar = () => {
                         <div className="h-full overflow-auto rounded-lg border border-gray-200 dark:border-gray-700">
                             <FullCalendar
                                 events={events}
-                                onCellClick={handleCellClick}
+                                onCellClick={
+                                    can('reservations.create')
+                                        ? handleCellClick
+                                        : undefined
+                                }
                                 onEventClick={handleEventClick}
-                                onChange={handleChange}
+                                onChange={
+                                    can('reservations.update')
+                                        ? handleChange
+                                        : undefined
+                                }
                                 renderEvent={({ event }) => ({
                                     className:
                                         'border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800 bg-gray-50',

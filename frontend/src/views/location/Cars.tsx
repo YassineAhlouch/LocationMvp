@@ -47,6 +47,7 @@ import type { Car, CarStatus, DashboardSummary } from '@/@types/location'
 import CarForm from './forms/CarForm'
 import StatCards from './StatCards'
 import useTranslation from '@/utils/hooks/useTranslation'
+import usePermissions from '@/utils/hooks/usePermissions'
 import { money, carStatusOptions, carStatusTone, tagToneClass } from './shared'
 
 type CarStatusOption = { value: string; label: string }
@@ -95,6 +96,8 @@ const ActionColumn = ({
     onDelete: () => void
 }) => {
     const { t } = useTranslation()
+    const { can } = usePermissions()
+
     return (
         <div className="flex items-center justify-end gap-1">
             <Tooltip title={t('cars.actions.view', 'View details')}>
@@ -105,26 +108,30 @@ const ActionColumn = ({
                     <LiEye className="text-base" />
                 </Link>
             </Tooltip>
-            <Tooltip title={t('cars.actions.edit', 'Edit')}>
-                <Button
-                    className="text-xl cursor-pointer select-none font-medium"
-                    type="button"
-                    onClick={onEdit}
-                    size="sm"
-                    variant="link"
-                    icon={<LiEdit2 className="text-base" />}
-                />
-            </Tooltip>
-            <Tooltip title={t('cars.actions.delete', 'Delete')}>
-                <Button
-                    className="text-xl cursor-pointer select-none font-medium"
-                    type="button"
-                    onClick={onDelete}
-                    size="sm"
-                    variant="link"
-                    icon={<LiTrash className="text-base" />}
-                />
-            </Tooltip>
+            {can('fleet.update') && (
+                <Tooltip title={t('cars.actions.edit', 'Edit')}>
+                    <Button
+                        className="text-xl cursor-pointer select-none font-medium"
+                        type="button"
+                        onClick={onEdit}
+                        size="sm"
+                        variant="link"
+                        icon={<LiEdit2 className="text-base" />}
+                    />
+                </Tooltip>
+            )}
+            {can('fleet.delete') && (
+                <Tooltip title={t('cars.actions.delete', 'Delete')}>
+                    <Button
+                        className="text-xl cursor-pointer select-none font-medium"
+                        type="button"
+                        onClick={onDelete}
+                        size="sm"
+                        variant="link"
+                        icon={<LiTrash className="text-base" />}
+                    />
+                </Tooltip>
+            )}
         </div>
     )
 }
@@ -336,6 +343,7 @@ const StatusFilter = ({
 
 const Cars = () => {
     const { t } = useTranslation()
+    const { can } = usePermissions()
     const [cars, setCars] = useState<Car[]>([])
     const [loading, setLoading] = useState(true)
     const [summary, setSummary] = useState<DashboardSummary | null>(null)
@@ -680,16 +688,18 @@ const Cars = () => {
                 <div className="space-y-4">
                     <div className="flex items-center justify-between gap-4">
                         <h4>{t('cars.title', 'Cars')}</h4>
-                        <Button
-                            variant="subtle"
-                            icon={<LuPlus />}
-                            onClick={() => {
-                                setEditing(null)
-                                setDialogOpen(true)
-                            }}
-                        >
-                            {t('cars.addCar', 'Add Car')}
-                        </Button>
+                        {can('fleet.create') && (
+                            <Button
+                                variant="subtle"
+                                icon={<LuPlus />}
+                                onClick={() => {
+                                    setEditing(null)
+                                    setDialogOpen(true)
+                                }}
+                            >
+                                {t('cars.addCar', 'Add Car')}
+                            </Button>
+                        )}
                     </div>
 
                     <StatCards items={statCards} loading={summaryLoading} />
@@ -746,7 +756,7 @@ const Cars = () => {
 
                     {viewMode === 'table' ? (
                         <DataTable<Car>
-                            selectable
+                            selectable={can('fleet.delete')}
                             className="table-vehicles rounded-xs border border-gray-300 dark:border-gray-600"
                             columns={columns}
                             data={cars}
@@ -850,7 +860,7 @@ const Cars = () => {
                 </div>
             </Container>
 
-            <ActionBar open={selectedRows.length > 0}>
+            <ActionBar open={can('fleet.delete') && selectedRows.length > 0}>
                 <div className="flex items-center justify-between">
                     <span className="font-medium">
                         <span className="heading-text font-semibold">
