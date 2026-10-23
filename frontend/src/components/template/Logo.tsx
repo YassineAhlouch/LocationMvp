@@ -104,6 +104,35 @@ const Logo = (props: LogoProps) => {
     }
 
     if (useColored) {
+        if (normalizedMode === 'dark' && type === 'full') {
+            return (
+                <div
+                    className={classNames('logo', className)}
+                    style={{
+                        ...style,
+                        width: logoWidth,
+                    }}
+                >
+                    <div
+                        style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            height: '40px',
+                            backgroundColor: 'var(--primary)',
+                            borderRadius: '10px',
+                            padding: '0 12px',
+                            gap: '10px',
+                        }}
+                    >
+                        <img
+                            src={logoSrc}
+                            alt={`${APP_NAME} logo`}
+                            style={{ height: '32px' }}
+                        />
+                    </div>
+                </div>
+            )
+        }
         return (
             <div
                 className={classNames('logo', className)}
