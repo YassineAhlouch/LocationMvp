@@ -56,7 +56,11 @@
             "notifications": "الإشعارات",
             "notificationsDesc": "إعلانات وتنبيهات موجهة إليك",
             "scrumboard": "لوحة كانبان",
-            "scrumboardDesc": "لوحة سحب وإفلات المهام"
+            "scrumboardDesc": "لوحة سحب وإفلات المهام",
+            "tasksGroup": "المهام",
+            "tasksGroupDesc": "إدارة المهام",
+            "tasksList": "قائمة المهام",
+            "tasksListDesc": "قائمة المهام"
         },
         "uiComponents": "مكونات الواجهة",
         "uiComponentsCommon": {

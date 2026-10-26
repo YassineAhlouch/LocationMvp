@@ -56,7 +56,11 @@
             "notifications": "Notifications",
             "notificationsDesc": "Annonces et alertes pour vous",
             "scrumboard": "Tableau Kanban",
-            "scrumboardDesc": "Glisser-déposer les tâches"
+            "scrumboardDesc": "Glisser-déposer les tâches",
+            "tasksGroup": "Tâches",
+            "tasksGroupDesc": "Gestion des tâches",
+            "tasksList": "Liste des tâches",
+            "tasksListDesc": "Liste des tâches"
         },
         "uiComponents": "UI Components",
         "uiComponentsCommon": {

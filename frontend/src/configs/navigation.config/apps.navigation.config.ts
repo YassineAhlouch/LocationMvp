@@ -40,37 +40,55 @@ const appsNavigationConfig: NavigationTree[] = [
                 },
                 subMenu: [],
             },
+            // ===== TASKS =====
             {
-                key: 'gestion.tasks',
-                path: `${APPS_PREFIX_PATH}/tasks`,
+                key: 'gestion.tasksGroup',
+                path: '',
                 title: 'Tasks',
-                translateKey: 'nav.gestion.tasks',
-                icon: 'task',
-                type: NAV_ITEM_TYPE_ITEM,
+                translateKey: 'nav.gestion.tasksGroup',
+                icon: 'gestionTasks',
+                type: NAV_ITEM_TYPE_COLLAPSE,
                 authority: [ADMIN, USER],
                 meta: {
                     description: {
-                        translateKey: 'nav.gestion.tasksDesc',
-                        label: 'Manage tasks',
+                        translateKey: 'nav.gestion.tasksGroupDesc',
+                        label: 'Task management',
                     },
                 },
-                subMenu: [],
-            },
-            {
-                key: 'gestion.scrumboard',
-                path: `${APPS_PREFIX_PATH}/scrumboard`,
-                title: 'Kanban Board',
-                translateKey: 'nav.gestion.scrumboard',
-                icon: 'task',
-                type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
-                meta: {
-                    description: {
-                        translateKey: 'nav.gestion.scrumboardDesc',
-                        label: 'Drag and drop task board',
+                subMenu: [
+                    {
+                        key: 'gestion.tasks',
+                        path: `${APPS_PREFIX_PATH}/tasks`,
+                        title: 'Task list',
+                        translateKey: 'nav.gestion.tasksList',
+                        icon: 'gestionTaskList',
+                        type: NAV_ITEM_TYPE_ITEM,
+                        authority: [ADMIN, USER],
+                        meta: {
+                            description: {
+                                translateKey: 'nav.gestion.tasksDesc',
+                                label: 'Manage tasks',
+                            },
+                        },
+                        subMenu: [],
                     },
-                },
-                subMenu: [],
+                    {
+                        key: 'gestion.scrumboard',
+                        path: `${APPS_PREFIX_PATH}/scrumboard`,
+                        title: 'Kanban Board',
+                        translateKey: 'nav.gestion.scrumboard',
+                        icon: 'gestionKanban',
+                        type: NAV_ITEM_TYPE_ITEM,
+                        authority: [ADMIN, USER],
+                        meta: {
+                            description: {
+                                translateKey: 'nav.gestion.scrumboardDesc',
+                                label: 'Drag and drop task board',
+                            },
+                        },
+                        subMenu: [],
+                    },
+                ],
             },
             // ===== RESERVATIONS =====
             {

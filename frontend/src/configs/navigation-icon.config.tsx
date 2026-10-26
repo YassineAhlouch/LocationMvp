@@ -37,6 +37,8 @@ import {
     LiBarChartUp,
     LiBell,
     LiTask,
+    LiTaskSquare,
+    LiClipboardText,
 } from '@/icons'
 import type { JSX } from 'react'
 
@@ -76,6 +78,9 @@ const navigationIcon: NavigationIcons = {
     gestionReservations: <LiCalendar className={CLASS_NAME} />,
     gestionFinances: <LiMoneys className={CLASS_NAME} />,
     gestionUtilisateurs: <LiUserCircle className={CLASS_NAME} />,
+    gestionTasks: <LiClipboardText className={CLASS_NAME} />,
+    gestionTaskList: <LiTask className={CLASS_NAME} />,
+    gestionKanban: <LiTaskSquare className={CLASS_NAME} />,
     statistiques: <LiBarChartUp className={CLASS_NAME} />,
     gestionRapports: <LiChartSquare className={CLASS_NAME} />,
     activite: <LiActivity className={CLASS_NAME} />,

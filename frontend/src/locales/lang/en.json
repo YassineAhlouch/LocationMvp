@@ -56,7 +56,11 @@
             "notifications": "Notifications",
             "notificationsDesc": "Announcements and alerts for you",
             "scrumboard": "Kanban Board",
-            "scrumboardDesc": "Drag and drop task board"
+            "scrumboardDesc": "Drag and drop task board",
+            "tasksGroup": "Tasks",
+            "tasksGroupDesc": "Task management",
+            "tasksList": "Task list",
+            "tasksListDesc": "List of tasks"
         },
         "uiComponents": "UI Components",
         "uiComponentsCommon": {
