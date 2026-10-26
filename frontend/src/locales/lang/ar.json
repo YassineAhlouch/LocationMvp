@@ -54,7 +54,9 @@
             "parametresDevise": "العملة",
             "parametresDeviseDesc": "اختيار العملة التي تُعرض بها المبالغ",
             "notifications": "الإشعارات",
-            "notificationsDesc": "إعلانات وتنبيهات موجهة إليك"
+            "notificationsDesc": "إعلانات وتنبيهات موجهة إليك",
+            "scrumboard": "لوحة كانبان",
+            "scrumboardDesc": "لوحة سحب وإفلات المهام"
         },
         "uiComponents": "مكونات الواجهة",
         "uiComponentsCommon": {
@@ -231,7 +233,7 @@
         "activeCars": "مركبات نشطة",
         "plate": "لوحة الترخيص",
         "model": "الموديل",
-        "reservations": "Reservations",
+        "reservations": "الحجوزات",
         "netRevenue": "صافي الإيرادات",
         "car": "Car",
         "total": "Total",
@@ -265,7 +267,6 @@
         "maintenanceServiceSplit": "{{maintenance}} في الصيانة · {{service}} متأخرة عن الصيانة",
         "newCustomers": "عملاء جدد",
         "occupancyRate": "معدل الإشغال",
-        "reservations": "الحجوزات",
         "reservationsInPeriod": "{{value}} حجوزات في الفترة",
         "active": "نشط",
         "reserved": "محجوز",

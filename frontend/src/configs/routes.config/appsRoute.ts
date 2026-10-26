@@ -29,6 +29,28 @@ const appsRoute: Routes = [
             footer: false,
         },
     },
+    {
+        key: 'gestion.tasks',
+        path: `${APPS_PREFIX_PATH}/tasks`,
+        component: lazy(() => import('@/views/location/Tasks')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'contained',
+            footer: false,
+        },
+    },
+    {
+        key: 'gestion.scrumboard',
+        path: `${APPS_PREFIX_PATH}/scrumboard`,
+        component: lazy(() => import('@/views/location/Scrumboard')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'contained',
+            footer: false,
+        },
+    },
 
     // ===== RESERVATIONS =====
     {
@@ -443,17 +465,6 @@ const appsRoute: Routes = [
         },
     },
     {
-        key: 'apps.projects.timeline',
-        path: `${APPS_PREFIX_PATH}/projects/timeline`,
-        component: lazy(() => import('@/views/apps/projects/Timeline')),
-        authority: [ADMIN, USER],
-        access: 'protected',
-        meta: {
-            pageContainerType: 'gutterless',
-            footer: false,
-        },
-    },
-    {
         key: 'apps.projects.tasks',
         path: `${APPS_PREFIX_PATH}/projects/tasks`,
         component: lazy(() => import('@/views/apps/projects/Tasks')),
@@ -471,6 +482,7 @@ const appsRoute: Routes = [
         authority: [ADMIN, USER],
         access: 'protected',
         meta: {
+            pageContainerType: 'gutterless',
             footer: false,
         },
     },

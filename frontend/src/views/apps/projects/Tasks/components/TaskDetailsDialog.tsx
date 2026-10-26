@@ -4,6 +4,7 @@ import TaskDetails from '@/components/view/TaskDetails'
 import { priorityMap, tagsMap } from '../utils'
 import { useTasksStore } from '../store/tasksStore'
 import useTasksData from '../hooks/useTasksData'
+import { apiCreateTask } from '@/services/TaskService'
 import sleep from '@/utils/sleep'
 import { LuX } from 'react-icons/lu'
 import type { Task } from '../types'
@@ -13,7 +14,7 @@ const TaskDetailsDialog = () => {
     const taskDialog = useTasksStore((state) => state.taskDialog)
     const setTaskDialog = useTasksStore((state) => state.setTaskDialog)
 
-    const { projectMeta } = useTasksData()
+    const { projectMeta, mutate } = useTasksData()
 
     const handleClose = async () => {
         setTaskDialog({
@@ -39,9 +40,26 @@ const TaskDetailsDialog = () => {
         >,
         setIsSaving: Dispatch<SetStateAction<boolean>>,
     ) => {
-        console.log('payload', payload)
         setIsSaving(true)
-        await sleep(500)
+        try {
+            if (taskDialog.id === 'new') {
+                const userIds = payload.members?.map((m) => Number(m.id)) || []
+                await apiCreateTask({
+                    subject: payload.subject,
+                    description: payload.description,
+                    priority: payload.priority,
+                    tags: payload.tags,
+                    due_date: payload.dueDate,
+                    column_id: 'todo',
+                    visibility: userIds.length > 0 ? 'private' : 'shared',
+                    user_ids: userIds.length > 0 ? userIds : undefined,
+                })
+                mutate()
+            }
+        } catch (e) {
+            console.error(e)
+        }
+        await sleep(300)
         handleClose()
         setIsSaving(false)
     }
@@ -55,7 +73,7 @@ const TaskDetailsDialog = () => {
             className="p-0"
         >
             <TaskDetails
-                taskId={taskDialog.id}
+                taskId={taskDialog.id === 'new' ? undefined : taskDialog.id}
                 cornerContent={
                     <Button
                         size="sm"

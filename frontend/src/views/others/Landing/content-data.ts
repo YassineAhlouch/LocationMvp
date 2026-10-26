@@ -300,7 +300,7 @@ export const landingPageContent: LandingPageContent = {
                     {
                         id: 'projectTimeline',
                         name: 'Timeline',
-                        path: '/apps/projects/timeline',
+                        path: '/apps/projects/tasks',
                     },
                     {
                         id: 'projectTasks',

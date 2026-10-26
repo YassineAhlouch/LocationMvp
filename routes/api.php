@@ -49,6 +49,7 @@ Route::prefix('v1')
         require __DIR__.'/api/dashboard.php';
         require __DIR__.'/api/reports.php';
         require __DIR__.'/api/notifications.php';
+        require __DIR__.'/api/tasks.php';
     });
 
 /*

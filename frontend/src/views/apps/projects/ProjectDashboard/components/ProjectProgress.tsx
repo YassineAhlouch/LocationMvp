@@ -36,7 +36,7 @@ const ProjectProgress = ({ data, className }: ProgressCardProps) => {
                         </div>
                         <Button
                             variant="default"
-                            onClick={() => navigate('/apps/projects/timeline')}
+                            onClick={() => navigate('/apps/projects/scrumboard')}
                         >
                             View details
                         </Button>

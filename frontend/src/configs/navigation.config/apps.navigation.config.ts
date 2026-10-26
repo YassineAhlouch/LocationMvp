@@ -40,6 +40,38 @@ const appsNavigationConfig: NavigationTree[] = [
                 },
                 subMenu: [],
             },
+            {
+                key: 'gestion.tasks',
+                path: `${APPS_PREFIX_PATH}/tasks`,
+                title: 'Tasks',
+                translateKey: 'nav.gestion.tasks',
+                icon: 'task',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                meta: {
+                    description: {
+                        translateKey: 'nav.gestion.tasksDesc',
+                        label: 'Manage tasks',
+                    },
+                },
+                subMenu: [],
+            },
+            {
+                key: 'gestion.scrumboard',
+                path: `${APPS_PREFIX_PATH}/scrumboard`,
+                title: 'Kanban Board',
+                translateKey: 'nav.gestion.scrumboard',
+                icon: 'task',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                meta: {
+                    description: {
+                        translateKey: 'nav.gestion.scrumboardDesc',
+                        label: 'Drag and drop task board',
+                    },
+                },
+                subMenu: [],
+            },
             // ===== RESERVATIONS =====
             {
                 key: 'gestion.reservations',

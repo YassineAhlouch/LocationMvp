@@ -13,7 +13,7 @@ import Divider from '@/components/shared/Divider'
 import UsersAvatarGroup from '@/components/shared/UsersAvatarGroup'
 import EmptyState from '@/components/shared/EmptyState'
 import RichTextEditor from '@/components/shared/RichTextEditor'
-import { apiGetProjectTask } from '@/services/ProjectService'
+import { apiGetTask } from '@/services/TaskService'
 import PrioritySelector from './components/PrioritySelector'
 import DuedateSelector from './components/DueDateSelector'
 import AssigneeSelector from './components/AssigneeSelector'
@@ -93,6 +93,8 @@ export interface Task {
 type TaskDetailsProps = {
     taskId?: string
     cornerContent?: ReactNode
+    /** Hide the comments / subtasks / attachments tabs (not persisted). */
+    hideTabs?: boolean
     priorityList: Record<string, { color: string }>
     assigneeList: Array<{
         id: string
@@ -153,6 +155,7 @@ const SelectorWraper = ({
 const TaskDetails = ({
     taskId,
     cornerContent,
+    hideTabs = false,
     onCancel,
     onSave,
     priorityList,
@@ -163,7 +166,7 @@ const TaskDetails = ({
         [`/api/project/tasks/${taskId}`, { id: taskId }],
         ([, params]) => {
             if (taskId) {
-                return apiGetProjectTask<Task, { id?: string }>(params)
+                return apiGetTask<Task, { id: string }>({ id: taskId })
             }
         },
         {
@@ -557,8 +560,9 @@ const TaskDetails = ({
                                 </Card>
                             )}
                         </div>
-                        <div>
-                            <Tabs defaultValue="comments">
+                        {!hideTabs && (
+                            <div>
+                                <Tabs defaultValue="comments">
                                 <Tabs.TabList className="px-4">
                                     <Tabs.TabNav value="comments">
                                         Comments
@@ -822,7 +826,8 @@ const TaskDetails = ({
                                     </div>
                                 </Scroll.FlexSize>
                             </Tabs>
-                        </div>
+                            </div>
+                        )}
                         <div className="flex justify-end items-center gap-2 px-4">
                             <Button onClick={onCancel}>Cancel</Button>
                             <Button

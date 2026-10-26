@@ -54,7 +54,9 @@
             "parametresDevise": "Currency",
             "parametresDeviseDesc": "Choose the currency amounts are shown in",
             "notifications": "Notifications",
-            "notificationsDesc": "Announcements and alerts for you"
+            "notificationsDesc": "Announcements and alerts for you",
+            "scrumboard": "Kanban Board",
+            "scrumboardDesc": "Drag and drop task board"
         },
         "uiComponents": "UI Components",
         "uiComponentsCommon": {
@@ -265,7 +267,6 @@
         "maintenanceServiceSplit": "{{maintenance}} in maintenance · {{service}} overdue for service",
         "newCustomers": "New Customers",
         "occupancyRate": "Occupancy Rate",
-        "reservations": "Reservations",
         "reservationsInPeriod": "{{value}} reservations in period",
         "active": "Active",
         "reserved": "Reserved",

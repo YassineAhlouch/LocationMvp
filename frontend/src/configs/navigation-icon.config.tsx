@@ -36,6 +36,7 @@ import {
     LiMoneys,
     LiBarChartUp,
     LiBell,
+    LiTask,
 } from '@/icons'
 import type { JSX } from 'react'
 

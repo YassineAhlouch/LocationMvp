@@ -3,9 +3,13 @@ import ProjectTab from '@/components/view/ProjectTab'
 import ShareProjectDialog from '@/components/view/ShareProjectDialog'
 import useTasksData from '../hooks/useTasksData'
 import { permissionRoleMap } from '../utils'
+import Button from '@/components/ui/Button'
+import { useTasksStore } from '../store/tasksStore'
+import { LiAdd } from '@/icons'
 
 const TasksHeader = () => {
     const { projectMeta, setProjectMeta } = useTasksData()
+    const setTaskDialog = useTasksStore((state) => state.setTaskDialog)
 
     return (
         <div className="pt-4 px-4 border-b border-gray-200 dark:border-gray-800">
@@ -20,6 +24,14 @@ const TasksHeader = () => {
                             <UsersAvatarGroup
                                 users={projectMeta.participantMembers}
                             />
+                            <Button
+                                variant="solid"
+                                size="sm"
+                                icon={<LiAdd />}
+                                onClick={() => setTaskDialog({ open: true, id: 'new' })}
+                            >
+                                Add Task
+                            </Button>
                             <ShareProjectDialog
                                 data={projectMeta}
                                 setData={setProjectMeta}

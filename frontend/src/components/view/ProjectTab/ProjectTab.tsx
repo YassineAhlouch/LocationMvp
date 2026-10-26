@@ -15,7 +15,7 @@ const ProjectTab = ({ children, tabListClass, className }: ProjectTabProps) => {
     const currentPath = location.pathname.split('/').pop()
 
     const handleTabChange = (value: string) => {
-        navigate(`/apps/projects/${value}`)
+        navigate(`/apps/${value}`)
     }
 
     return (
@@ -27,7 +27,6 @@ const ProjectTab = ({ children, tabListClass, className }: ProjectTabProps) => {
             tabList={[
                 { label: 'Kanban', value: 'scrumboard' },
                 { label: 'Task', value: 'tasks' },
-                { label: 'Timeline', value: 'timeline' },
             ]}
         >
             {children}

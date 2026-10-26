@@ -54,7 +54,9 @@
             "parametresDevise": "Devise",
             "parametresDeviseDesc": "Choisir la devise d'affichage des montants",
             "notifications": "Notifications",
-            "notificationsDesc": "Annonces et alertes pour vous"
+            "notificationsDesc": "Annonces et alertes pour vous",
+            "scrumboard": "Tableau Kanban",
+            "scrumboardDesc": "Glisser-déposer les tâches"
         },
         "uiComponents": "UI Components",
         "uiComponentsCommon": {
@@ -231,7 +233,7 @@
         "activeCars": "Véhicules actifs",
         "plate": "Immatriculation",
         "model": "Modèle",
-        "reservations": "Reservations",
+        "reservations": "Réservations",
         "netRevenue": "Revenu net",
         "car": "Car",
         "total": "Total",
@@ -265,7 +267,6 @@
         "maintenanceServiceSplit": "{{maintenance}} en maintenance · {{service}} révision en retard",
         "newCustomers": "Nouveaux clients",
         "occupancyRate": "Taux d'occupation",
-        "reservations": "Réservations",
         "reservationsInPeriod": "{{value}} réservations sur la période",
         "active": "Actif",
         "reserved": "Réservé",
