@@ -37,6 +37,8 @@ import type {
     PaymentRecordPayload,
     PermissionModule,
     PricingQuote,
+    QrCode,
+    QrCodePayload,
     Reservation,
     ReservationCalendarItem,
     ReservationChange,
@@ -156,6 +158,40 @@ export const apiUploadCarImage = (file: File) => {
         data: formData,
     })
 }
+
+// ---- QR codes (printed posters for the public landing) --------------------
+
+export const apiGetQrCodes = () =>
+    ApiService.fetchDataWithAxios<QrCode[]>({
+        url: '/v1/qr-codes',
+        method: 'get',
+    })
+
+export const apiGetQrCode = (id: number) =>
+    ApiService.fetchDataWithAxios<QrCode>({
+        url: `/v1/qr-codes/${id}`,
+        method: 'get',
+    })
+
+export const apiCreateQrCode = (data: QrCodePayload) =>
+    ApiService.fetchDataWithAxios<QrCode>({
+        url: '/v1/qr-codes',
+        method: 'post',
+        data,
+    })
+
+export const apiUpdateQrCode = (id: number, data: Partial<QrCodePayload>) =>
+    ApiService.fetchDataWithAxios<QrCode>({
+        url: `/v1/qr-codes/${id}`,
+        method: 'patch',
+        data,
+    })
+
+export const apiDeleteQrCode = (id: number) =>
+    ApiService.fetchDataWithAxios<{ message: string }>({
+        url: `/v1/qr-codes/${id}`,
+        method: 'delete',
+    })
 
 // ---- Car financing & profitability ---------------------------------------
 

@@ -211,6 +211,56 @@ const appsNavigationConfig: NavigationTree[] = [
                     },
                 ],
             },
+            // ===== QR CODES =====
+            {
+                key: 'gestion.qr',
+                path: '',
+                title: 'QR codes',
+                translateKey: 'nav.gestion.qr',
+                icon: 'gestionQrCodes',
+                type: NAV_ITEM_TYPE_COLLAPSE,
+                authority: [ADMIN, USER],
+                meta: {
+                    description: {
+                        translateKey: 'nav.gestion.qrDesc',
+                        label: 'QR posters for the public landing',
+                    },
+                },
+                subMenu: [
+                    {
+                        key: 'gestion.qr.create',
+                        path: `${APPS_PREFIX_PATH}/qr/create`,
+                        title: 'New QR',
+                        translateKey: 'nav.gestion.qrCreate',
+                        icon: 'gestionQrCodes',
+                        type: NAV_ITEM_TYPE_ITEM,
+                        authority: [ADMIN, USER],
+                        meta: {
+                            description: {
+                                translateKey: 'nav.gestion.qrCreateDesc',
+                                label: 'Create a QR poster',
+                            },
+                        },
+                        subMenu: [],
+                    },
+                    {
+                        key: 'gestion.qr.liste',
+                        path: `${APPS_PREFIX_PATH}/qr`,
+                        title: 'QR codes list',
+                        translateKey: 'nav.gestion.qrListe',
+                        icon: 'gestionQrCodes',
+                        type: NAV_ITEM_TYPE_ITEM,
+                        authority: [ADMIN, USER],
+                        meta: {
+                            description: {
+                                translateKey: 'nav.gestion.qrListeDesc',
+                                label: 'Listing QR posters',
+                            },
+                        },
+                        subMenu: [],
+                    },
+                ],
+            },
             // ===== CLIENTS =====
             {
                 key: 'gestion.clients',

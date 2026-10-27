@@ -6,6 +6,7 @@ use App\Enums\CarStatus;
 use App\Enums\FuelType;
 use App\Enums\TransmissionType;
 use App\Models\Concerns\BelongsToAgency;
+use App\Support\Slugs\UniqueSlug;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -46,6 +47,23 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Car extends Model
 {
     use BelongsToAgency, HasFactory, SoftDeletes;
+
+    protected static function booted(): void
+    {
+        /**
+         * The slug is the public identity printed inside QR code links:
+         * derived once from the plate at creation and never regenerated —
+         * posters already handed out would break otherwise.
+         */
+        static::creating(function (self $car): void {
+            if ($car->getAttribute('slug') === null) {
+                $car->setAttribute(
+                    'slug',
+                    UniqueSlug::make($car, (string) $car->registration_number),
+                );
+            }
+        });
+    }
 
     protected function casts(): array
     {

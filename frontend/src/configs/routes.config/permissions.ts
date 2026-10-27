@@ -13,6 +13,7 @@ const routePermissions: Record<string, string | string[]> = {
     'gestion.reservations.facture': 'reservations.view',
     'gestion.vehicules.modifier': 'fleet.update',
     'gestion.vehicules.details': 'fleet.view',
+    'gestion.qr.modifier': 'fleet.update',
 }
 
 export default routePermissions

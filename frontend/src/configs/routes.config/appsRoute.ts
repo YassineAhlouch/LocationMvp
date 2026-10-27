@@ -154,6 +154,39 @@ const appsRoute: Routes = [
             footer: false,
         },
     },
+    {
+        key: 'gestion.qr.liste',
+        path: `${APPS_PREFIX_PATH}/qr`,
+        component: lazy(() => import('@/views/location/QrCodes/QrList')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'contained',
+            footer: false,
+        },
+    },
+    {
+        key: 'gestion.qr.create',
+        path: `${APPS_PREFIX_PATH}/qr/create`,
+        component: lazy(() => import('@/views/location/QrCodes/QrEditor')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'gutterless',
+            footer: false,
+        },
+    },
+    {
+        key: 'gestion.qr.modifier',
+        path: `${APPS_PREFIX_PATH}/qr/:id/modifier`,
+        component: lazy(() => import('@/views/location/QrCodes/QrEditor')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'gutterless',
+            footer: false,
+        },
+    },
 
     // ===== CLIENTS =====
     {

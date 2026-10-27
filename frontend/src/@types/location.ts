@@ -146,6 +146,7 @@ export type CarImage = {
 
 export type Car = {
     id: number
+    slug: string | null
     registration_number: string
     vin: string | null
     brand: { id: number; name: string } | null
@@ -204,6 +205,35 @@ export type CarPayload = {
     is_active?: boolean
     notes?: string | null
     images?: { image: string; is_primary?: boolean; sort_order?: number }[]
+}
+
+/**
+ * One printed poster for the public landing. Its slug is derived from the
+ * human name and encoded inside the QR as /r/{slug}; the picker summary in
+ * `cars` carries every vehicle's own slug (QR links are slug-based, ids
+ * never reach the public URL).
+ */
+export type QrCodeCar = {
+    id: number
+    slug: string | null
+    registration_number: string
+    brand: string | null
+    model: string | null
+    daily_price: number | null
+}
+
+export type QrCode = {
+    id: number
+    name: string
+    slug: string
+    cars: QrCodeCar[]
+    created_at?: string | null
+    updated_at?: string | null
+}
+
+export type QrCodePayload = {
+    name: string
+    car_ids: number[]
 }
 
 /**

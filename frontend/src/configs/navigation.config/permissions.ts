@@ -18,6 +18,10 @@ const navigationPermissions: Record<string, string | string[]> = {
     'gestion.vehicules.ajouter': 'fleet.create',
     'gestion.vehicules.liste': 'fleet.view',
 
+    // QR posters.
+    'gestion.qr.create': 'fleet.create',
+    'gestion.qr.liste': 'fleet.view',
+
     // Clients.
     'gestion.clients.ajouter': 'clients.create',
     'gestion.clients.liste': 'clients.view',
