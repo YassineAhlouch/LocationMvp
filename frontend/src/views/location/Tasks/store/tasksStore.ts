@@ -1,4 +1,8 @@
 import { create } from 'zustand'
+import {
+    currentMonthRange,
+    type DateRange,
+} from '@/components/shared/PeriodPicker'
 import type { Member } from '../types'
 
 type TaskDialogState = {
@@ -10,12 +14,14 @@ export type TasksState = {
     allMembers: Member[]
     taskDialog: TaskDialogState
     addTaskDialogOpen: boolean
+    dateRange: DateRange
 }
 
 type TasksAction = {
     setAllMembers: (members: Member[]) => void
     setTaskDialog: (payload: TaskDialogState) => void
     setAddTaskDialogOpen: (open: boolean) => void
+    setDateRange: (payload: DateRange) => void
 }
 
 const initialState: TasksState = {
@@ -25,6 +31,7 @@ const initialState: TasksState = {
         id: '',
     },
     addTaskDialogOpen: false,
+    dateRange: currentMonthRange(),
 }
 
 export const useTasksStore = create<TasksState & TasksAction>((set) => ({
@@ -32,4 +39,5 @@ export const useTasksStore = create<TasksState & TasksAction>((set) => ({
     setAllMembers: (members) => set({ allMembers: members }),
     setTaskDialog: (payload) => set({ taskDialog: payload }),
     setAddTaskDialogOpen: (open) => set({ addTaskDialogOpen: open }),
+    setDateRange: (payload) => set({ dateRange: payload }),
 }))

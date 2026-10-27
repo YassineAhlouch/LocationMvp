@@ -1,11 +1,14 @@
 import UsersAvatarGroup from '@/components/shared/UsersAvatarGroup'
+import PeriodPicker from '@/components/shared/PeriodPicker'
 import ProjectTab from '@/components/view/ProjectTab'
-import ShareProjectDialog from '@/components/view/ShareProjectDialog'
 import useTasksData from '../hooks/useTasksData'
-import { permissionRoleMap } from '../utils'
+import { useTasksStore } from '../store/tasksStore'
 
 const TasksHeader = () => {
-    const { projectMeta, setProjectMeta } = useTasksData()
+    const { projectMeta } = useTasksData()
+
+    const dateRange = useTasksStore((state) => state.dateRange)
+    const setDateRange = useTasksStore((state) => state.setDateRange)
 
     return (
         <div className="pt-4 px-4 border-b border-gray-200 dark:border-gray-800">
@@ -20,10 +23,9 @@ const TasksHeader = () => {
                             <UsersAvatarGroup
                                 users={projectMeta.participantMembers}
                             />
-                            <ShareProjectDialog
-                                data={projectMeta}
-                                setData={setProjectMeta}
-                                permissionRoleMap={permissionRoleMap}
+                            <PeriodPicker
+                                value={dateRange}
+                                onChange={setDateRange}
                             />
                         </div>
                     </div>

@@ -4,6 +4,8 @@ import BoardContainer from './BoardContainer'
 import useScrumboardData from '../hooks/useScrumboardData'
 import { useScrumboardStore } from '../store/scrumboardStore'
 import { apiUpdateTask } from '@/services/TaskService'
+import dayjs from 'dayjs'
+import type { Task } from '../types'
 
 const Board = () => {
     const { columns, tasks, setTasks, mutate } = useScrumboardData()
@@ -22,6 +24,24 @@ const Board = () => {
     const displayedColumns = useScrumboardStore(
         (state) => state.displayedColumns,
     )
+    const dateRange = useScrumboardStore((state) => state.dateRange)
+
+    /** Task passes the date filter: undated tasks always show. */
+    const isWithinRange = (task: Task) => {
+        if (!dateRange) {
+            return true
+        }
+        if (!task.dueDate) {
+            return true
+        }
+        const due = dayjs(task.dueDate)
+        const from = dayjs(dateRange.from).startOf('day')
+        const to = dayjs(dateRange.to).endOf('day')
+        return (
+            (due.isAfter(from) || due.isSame(from)) &&
+            (due.isBefore(to) || due.isSame(to))
+        )
+    }
 
     /**
      * Move a ticket into another column (drag & drop). Persisted immediately
@@ -74,7 +94,8 @@ const Board = () => {
                                 task.columnId === col.id &&
                                 task.subject
                                     .toLocaleLowerCase()
-                                    .includes(query.toLowerCase()),
+                                    .includes(query.toLowerCase()) &&
+                                isWithinRange(task),
                         )}
                         onAddTask={handleAddTask}
                         onEditColumn={handleConfigColumn}

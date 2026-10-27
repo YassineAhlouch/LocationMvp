@@ -3,16 +3,15 @@ import Button from '@/components/ui/Button'
 import DebouceInput from '@/components/shared/DebouceInput'
 import PopoverFilter from '@/components/shared/PopoverFilter'
 import UsersAvatarGroup from '@/components/shared/UsersAvatarGroup'
+import PeriodPicker from '@/components/shared/PeriodPicker'
 import ProjectTab from '@/components/view/ProjectTab'
-import ShareProjectDialog from '@/components/view/ShareProjectDialog'
 import { useScrumboardStore } from '../store/scrumboardStore'
 import useResponsive from '@/utils/hooks/useResponsive'
 import useScrumboard from '../hooks/useScrumboardData'
-import { permissionRoleMap } from '../utils'
 import { LiSearch, LiSetting4, LiAdd } from '@/icons'
 
 const ScrumboardHeader = () => {
-    const { projectMeta, setProjectMeta, columns } = useScrumboard()
+    const { projectMeta, columns } = useScrumboard()
 
     const { larger, smaller } = useResponsive()
 
@@ -24,6 +23,8 @@ const ScrumboardHeader = () => {
         (state) => state.displayedColumns,
     )
     const setColumnDialog = useScrumboardStore((state) => state.setColumnDialog)
+    const dateRange = useScrumboardStore((state) => state.dateRange)
+    const setDateRange = useScrumboardStore((state) => state.setDateRange)
 
     const columnOptions = useMemo(
         () => columns.map((col) => ({ label: col.name, value: col.id })),
@@ -76,10 +77,9 @@ const ScrumboardHeader = () => {
                             <UsersAvatarGroup
                                 users={projectMeta.participantMembers}
                             />
-                            <ShareProjectDialog
-                                data={projectMeta}
-                                setData={setProjectMeta}
-                                permissionRoleMap={permissionRoleMap}
+                            <PeriodPicker
+                                value={dateRange}
+                                onChange={setDateRange}
                             />
                         </div>
                     </div>

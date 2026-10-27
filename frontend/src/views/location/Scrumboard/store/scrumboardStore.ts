@@ -1,4 +1,8 @@
 import { create } from 'zustand'
+import {
+    currentMonthRange,
+    type DateRange,
+} from '@/components/shared/PeriodPicker'
 
 type ColumnDialogState = {
     open: boolean
@@ -13,6 +17,7 @@ export type ScrumboardState = {
     columnDialog: ColumnDialogState
     query: string
     displayedColumns: string[]
+    dateRange: DateRange
 }
 
 type ScrumboardAction = {
@@ -24,6 +29,7 @@ type ScrumboardAction = {
     setColumnDialog: (payload: ColumnDialogState) => void
     setQuery: (payload: string) => void
     setDisplayedColumns: (payload: string[]) => void
+    setDateRange: (payload: DateRange) => void
 }
 
 const initialState: ScrumboardState = {
@@ -38,6 +44,7 @@ const initialState: ScrumboardState = {
     },
     query: '',
     displayedColumns: [],
+    dateRange: currentMonthRange(),
 }
 
 export const useScrumboardStore = create<ScrumboardState & ScrumboardAction>(
@@ -54,5 +61,6 @@ export const useScrumboardStore = create<ScrumboardState & ScrumboardAction>(
         setQuery: (payload) => set(() => ({ query: payload })),
         setDisplayedColumns: (payload) =>
             set(() => ({ displayedColumns: payload })),
+        setDateRange: (payload) => set(() => ({ dateRange: payload })),
     }),
 )

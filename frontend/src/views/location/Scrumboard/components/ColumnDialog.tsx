@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import Dialog from '@/components/ui/Dialog'
 import { Form, FormItem } from '@/components/ui/Form'
 import Button from '@/components/ui/Button'
@@ -52,20 +52,31 @@ const ColumnDialog = () => {
         formState: { errors, isSubmitting },
         control,
     } = useForm<FormSchema>({
-        defaultValues: {
-            name:
-                columnDialog.type === 'edit'
-                    ? columns?.find((column) => column.id === selectedColumn)
-                          ?.name
-                    : '',
-            color:
-                columnDialog.type === 'edit'
-                    ? columns?.find((column) => column.id === selectedColumn)
-                          ?.color
-                    : '',
-        },
+        defaultValues: { name: '', color: '' },
         resolver: zodResolver(validationSchema),
     })
+
+    // Prefill the form with the actual column values each time the edit
+    // dialog opens (the dialog stays mounted, so defaultValues alone
+    // would leave the inputs empty).
+    useEffect(() => {
+        if (!columnDialog.open) {
+            return
+        }
+
+        if (columnDialog.type === 'edit') {
+            const column = columns.find(
+                (column) => column.id === selectedColumn,
+            )
+            reset({
+                name: column?.name ?? '',
+                color: column?.color ?? '',
+            })
+        } else {
+            reset({ name: '', color: '' })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [columnDialog.open, columnDialog.type, selectedColumn])
 
     const colorOptions = useMemo(() => {
         return Object.entries(columnColorMap).map(([key]) => ({
