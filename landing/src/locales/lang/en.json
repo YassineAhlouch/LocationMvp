@@ -214,19 +214,19 @@
             ]
         },
         "impactTracking": {
-            "tag": "Sustainable Resources",
-            "heading": "Impact Tracking",
-            "subtext": "Monitor key metrics across operations to uncover trends and drive improvements.",
+            "tag": "Business Performance",
+            "heading": "Performance Tracking",
+            "subtext": "Monitor key metrics across your fleet and reservations to uncover trends and grow your profit.",
             "cards": [
                 {
                     "id": "survey",
-                    "title": "Survey Insights",
-                    "description": "Visualize feedback trends and uncover key patterns in survey results."
+                    "title": "Fleet Utilization",
+                    "description": "See which cars earn the most, spot the ones sitting idle and track your occupancy rate."
                 },
                 {
                     "id": "emissions",
-                    "title": "Emissions Breakdown",
-                    "description": "See where your emissions come from and track reductions across branches."
+                    "title": "Revenue vs Expenses",
+                    "description": "Compare what comes in and what goes out, month by month, for every car and every period."
                 }
             ]
         },

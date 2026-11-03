@@ -1,5 +1,7 @@
 import { motion } from 'motion/react'
+import { useTranslation } from 'react-i18next'
 import type { LandingModules } from '../types'
+import { localeImageSuffix } from './localeImage'
 
 /**
  * Exact port of the Colonia template "features-v1" section.
@@ -8,8 +10,11 @@ import type { LandingModules } from '../types'
  * The markup mirrors the Webflow DOM one-to-one (features-v1 → container →
  * features-v1-wrap → features-v1-top/-bottom) and every style lives in
  * `src/assets/styles/others/_colonia-features.css` (design tokens are shared
- * with the hero port). Card images are the extracted template assets
- * public/img/landing/feature-1..6.avif — byte-identical with the template.
+ * with the hero port). Card images are custom mockups of the real dashboard
+ * cards (public/img/landing/feature-1..6.avif), generated at the same aspect
+ * ratios as the template assets they replace. Localized variants ship as
+ * feature-1..6-fr.avif and feature-1..6-ar.avif (RTL, Noto Sans Arabic) and
+ * are picked below from the active language so the images match the copy.
  */
 
 /* The template sizes its six card images through four variants,
@@ -33,8 +38,15 @@ const rise = (delay: number) => ({
     transition: { duration: 0.7, delay, ease: EASE_OUT },
 })
 
-const Modules = ({ content }: { content: LandingModules }) => (
-    <section id="features" className="features-v1" dir="ltr">
+/* Image suffix per active language — the FR/AR sets render the same card
+   mockups with localized labels (ar ships RTL). */
+const Modules = ({ content }: { content: LandingModules }) => {
+    const { i18n } = useTranslation()
+    const imageSuffix = localeImageSuffix(
+        i18n.resolvedLanguage ?? i18n.language,
+    )
+    return (
+        <section id="features" className="features-v1" dir="ltr">
         <div className="colonia-container">
             <div className="features-v1-wrap">
                 <div className="features-v1-top">
@@ -74,7 +86,7 @@ const Modules = ({ content }: { content: LandingModules }) => (
                                 }`}
                             >
                                 <img
-                                    src={`/img/landing/feature-${index + 1}.avif`}
+                                    src={`/img/landing/feature-${index + 1}${imageSuffix}.avif`}
                                     loading="lazy"
                                     alt={item.title}
                                     className="features-v1-image"
@@ -91,7 +103,8 @@ const Modules = ({ content }: { content: LandingModules }) => (
                 </div>
             </div>
         </div>
-    </section>
-)
+        </section>
+    )
+}
 
 export default Modules

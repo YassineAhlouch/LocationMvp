@@ -1,5 +1,7 @@
 import { motion } from 'motion/react'
+import { useTranslation } from 'react-i18next'
 import type { LandingHero } from '../types'
+import { localeImageBase } from './localeImage'
 
 /**
  * Exact port of the Colonia template hero section.
@@ -25,7 +27,10 @@ const rise = (delay: number, y = 24) => ({
     transition: { duration: 0.7, delay, ease: EASE_OUT },
 })
 
-const HeroContent = ({ content }: { content: LandingHero }) => (
+const HeroContent = ({ content }: { content: LandingHero }) => {
+    const { i18n } = useTranslation()
+    const imageBase = localeImageBase(i18n.resolvedLanguage ?? i18n.language)
+    return (
     <section className="home-hero" dir="ltr">
         <div className="home-hero-bg">
             <div className="home-hero-container">
@@ -127,7 +132,7 @@ const HeroContent = ({ content }: { content: LandingHero }) => (
                         <div className="hero-dashboard-wrap">
                             <motion.img
                                 //src="/img/landing/hero-dashboard.avif"
-                                src="/img/landing/dashboard-preview2.png"
+                                src={`/img/landing/dashboard-preview-${imageBase}.png`}
                                 loading="lazy"
                                 alt="dashboard"
                                 className="hero-dashboard"
@@ -146,6 +151,7 @@ const HeroContent = ({ content }: { content: LandingHero }) => (
             </div>
         </div>
     </section>
-)
+    )
+}
 
 export default HeroContent

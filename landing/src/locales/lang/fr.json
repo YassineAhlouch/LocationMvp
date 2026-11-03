@@ -215,19 +215,19 @@
             ]
         },
         "impactTracking": {
-            "tag": "Ressources durables",
-            "heading": "Suivi d'impact",
-            "subtext": "Surveillez les indicateurs clés de vos opérations pour détecter les tendances et mener des améliorations.",
+            "tag": "Performance de l'agence",
+            "heading": "Suivi de performance",
+            "subtext": "Suivez les indicateurs clés de votre flotte et de vos réservations pour repérer les tendances et augmenter vos profits.",
             "cards": [
                 {
                     "id": "survey",
-                    "title": "Analyse des enquêtes",
-                    "description": "Visualisez les tendances des retours et identifiez les schémas clés de vos enquêtes."
+                    "title": "Taux d'utilisation de la flotte",
+                    "description": "Repérez les voitures les plus rentables, celles qui restent à l'arrêt et suivez votre taux d'occupation."
                 },
                 {
                     "id": "emissions",
-                    "title": "Répartition des émissions",
-                    "description": "Identifiez les sources de vos émissions et suivez vos réductions par succursale."
+                    "title": "Revenus vs Dépenses",
+                    "description": "Comparez ce qui rentre et ce qui sort, mois par mois, pour chaque voiture et chaque période."
                 }
             ]
         },

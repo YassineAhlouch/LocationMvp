@@ -122,12 +122,14 @@
 /* per-card image sizing variants used by the template, in card order:
    1, 2, 1, 3, 4, 4 */
 .features-v1-list-top.features-v1-image-1 {
-    max-width: 265px;
+    /* max-width: 265px; */
+    max-width: 290px;
 }
 
 .features-v1-list-top.features-v1-image-2 {
     margin-top: var(--_responsive---margin--margin-xxsmall);
-    max-width: 225px;
+    /* max-width: 225px; */
+    max-width: 290px;
 }
 
 .features-v1-list-top.features-v1-image-3 {
@@ -135,7 +137,8 @@
 }
 
 .features-v1-list-top.features-v1-image-4 {
-    max-width: 246px;
+    /* max-width: 246px; */
+    max-width: 303px;
 }
 
 .features-v1-list-bottom {
