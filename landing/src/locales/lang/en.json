@@ -3,14 +3,14 @@
         "nav": {
             "items": [
                 {
+                    "title": "Why us",
+                    "value": "why",
+                    "anchor": "why"
+                },
+                {
                     "title": "Features",
                     "value": "features",
                     "anchor": "features"
-                },
-                {
-                    "title": "Modules",
-                    "value": "modules",
-                    "anchor": "modules"
                 },
                 {
                     "title": "Pricing",
@@ -23,495 +23,534 @@
                     "anchor": "faq"
                 },
                 {
-                    "title": "Why us",
-                    "value": "why",
-                    "anchor": "why"
-                },
-                {
                     "title": "Contact",
                     "value": "contact",
-                    "anchor": "cta"
+                    "anchor": "contact"
                 }
             ]
         },
         "hero": {
-            "headingLines": [
-                "The complete platform",
-                "for car rental agencies."
-            ],
-            "subtext": "Reservations, fleet, customers, contracts, payments and reports — connected in one system your whole team can rely on.",
-            "primaryCta": { "label": "Book a demo", "href": "#cta" },
-            "secondaryCta": { "label": "Explore modules", "href": "#modules" },
-            "tabs": [
-                {
-                    "value": "reservations",
-                    "label": "Reservations",
-                    "description": "bookings & contracts"
-                },
-                {
-                    "value": "fleet",
-                    "label": "Fleet",
-                    "description": "vehicles & availability"
-                },
-                {
-                    "value": "payments",
-                    "label": "Payments",
-                    "description": "invoices & revenue"
-                },
-                {
-                    "value": "reports",
-                    "label": "Reports",
-                    "description": "performance insights"
-                }
-            ]
-        },
-        "bento": {
+            "badge": "Trusted by 500+ Rental Agencies",
             "heading": {
-                "primary": "Built for the way rental agencies work.",
-                "secondary": "Every tool your team needs to run daily operations — without the spreadsheets."
-            },
-            "cards": {
-                "ai": {
-                    "title": "Automate the busywork",
-                    "description": "Automatic reminders for pickups, returns, insurance renewals and overdue payments."
+                "top": {
+                    "before": "Run Your",
+                    "after": "Fleet,"
                 },
-                "theming": {
-                    "title": "Your brand, built in",
-                    "description": "Customize colors, documents and customer portals to match your agency."
-                },
-                "docs": {
-                    "title": "Contracts in seconds",
-                    "description": "Generate rental agreements, invoices and handover reports automatically.",
-                    "floatingTags": [
-                        { "label": "Rental agreement" },
-                        { "label": "Invoice" },
-                        { "label": "Damage report" },
-                        { "label": "Handover checklist" }
-                    ]
-                },
-                "i18n": {
-                    "title": "Ready for every customer",
-                    "description": "Built-in internationalization with full RTL support for your team and customers.",
-                    "locales": [
-                        {
-                            "flag": "/img/countries/US.png",
-                            "text": "Your vehicle is ready for pickup.",
-                            "code": "US"
-                        },
-                        {
-                            "flag": "/img/countries/CN.png",
-                            "text": "您的车辆已准备好提车。",
-                            "code": "CN"
-                        },
-                        {
-                            "flag": "/img/countries/ES.png",
-                            "text": "Su vehículo está listo para recoger.",
-                            "code": "ES"
-                        },
-                        {
-                            "flag": "/img/countries/SA.png",
-                            "text": "سيارتك جاهزة للاستلام.",
-                            "code": "SA"
-                        }
-                    ]
-                },
-                "responsive": {
-                    "title": "Your agency in your pocket",
-                    "description": "Manage bookings, check availability and approve payments from any device."
+                "bottom": {
+                    "before": "Grow Your",
+                    "emphasis": "Revenue"
                 }
+            },
+            "subtext": "Track every car, reservation, payment and inspection in one place — then let your team pick up tasks and share QR-coded reservations that actually stick.",
+            "primaryCta": {
+                "label": "Get Started",
+                "href": "#contact"
+            },
+            "secondaryCta": {
+                "label": "View Demo",
+                "href": "#tour"
             }
         },
-        "tech": {
+        "problems": {
             "heading": {
-                "primary": "A reliable foundation, built to scale.",
-                "secondary": "Modern, secure and fast — with role-based access, audit trails and multi-language support."
+                "primary": "Less manual work.",
+                "secondary": "More control over your business."
             },
-            "stack": [
-                { "id": "react", "image": "react.png", "title": "React" },
-                {
-                    "id": "typescript",
-                    "image": "typescript.png",
-                    "title": "TypeScript"
-                },
-                {
-                    "id": "tailwind",
-                    "image": "tailwind.png",
-                    "title": "TailwindCSS"
-                },
-                { "id": "vite", "image": "vite.png", "title": "Vite" },
-                { "id": "zustand", "image": "zustand.png", "title": "Zustand" },
-                {
-                    "id": "react-hook-form",
-                    "image": "react-hook-form.png",
-                    "title": "React Hook Form"
-                },
-                {
-                    "id": "tanstack",
-                    "image": "tanstack.png",
-                    "title": "TanStack Table"
-                },
-                {
-                    "id": "i18next",
-                    "image": "i18next.svg",
-                    "title": "React i18next"
-                },
-                { "id": "motion", "image": "motion.png", "title": "Motion" },
-                {
-                    "id": "react-router",
-                    "image": "react-router.svg",
-                    "title": "React Router"
-                }
-            ]
-        },
-        "modules": {
-            "heading": "One system for every part of your agency.",
-            "subheading": "Replace spreadsheets and disconnected tools with a single source of truth.",
             "items": [
                 {
                     "id": "reservations",
-                    "title": "Reservations",
-                    "description": "Create, modify and track bookings with real-time vehicle availability.",
-                    "icon": "calendar"
-                },
-                {
-                    "id": "fleet",
-                    "title": "Fleet",
-                    "description": "Manage vehicles, plates, insurance, maintenance and documents.",
-                    "icon": "car"
-                },
-                {
-                    "id": "customers",
-                    "title": "Customers",
-                    "description": "Keep customer profiles, licenses and rental history in one place.",
-                    "icon": "users"
+                    "icon": "scattered",
+                    "problemTitle": "Reservations scattered everywhere",
+                    "problemDescription": "Paper books, phone calls, spreadsheets… hard to know who booked which vehicle and when.",
+                    "solutionTitle": "Centralized reservations",
+                    "solutionDescription": "All reservations in one place: customer, vehicle, dates and status, with availability checking."
                 },
                 {
                     "id": "contracts",
-                    "title": "Contracts",
-                    "description": "Generate, sign and archive rental agreements automatically.",
-                    "icon": "contract"
+                    "icon": "admin",
+                    "problemTitle": "Manual admin work",
+                    "problemDescription": "Contracts written by hand, information copied several times, errors piling up.",
+                    "solutionTitle": "Contracts in one click",
+                    "solutionDescription": "Generate a complete rental contract directly from the reservation information."
                 },
                 {
-                    "id": "payments",
-                    "title": "Payments",
-                    "description": "Track deposits, payments, refunds and outstanding balances.",
-                    "icon": "payments"
-                },
-                {
-                    "id": "invoices",
-                    "title": "Invoices",
-                    "description": "Issue invoices in multiple currencies and export for accounting.",
-                    "icon": "invoice"
-                },
-                {
-                    "id": "reports",
-                    "title": "Reports",
-                    "description": "Revenue, occupancy and fleet performance at a glance.",
-                    "icon": "reports"
+                    "id": "profitability",
+                    "icon": "unclear",
+                    "problemTitle": "Profitability hard to measure",
+                    "problemDescription": "Without tracking vehicle expenses, you can't tell what makes money and what costs money.",
+                    "solutionTitle": "Costs and revenue per vehicle",
+                    "solutionDescription": "Track revenue, expenses and margin for each vehicle, and see its performance at a glance."
                 },
                 {
                     "id": "team",
-                    "title": "Team & roles",
-                    "description": "Role-based access for owners, managers, agents and finance.",
-                    "icon": "team"
+                    "icon": "desync",
+                    "problemTitle": "Team out of sync",
+                    "problemDescription": "Who prepares this morning's vehicle? Who called the customer back? Information gets lost between people.",
+                    "solutionTitle": "Organized work in one place",
+                    "solutionDescription": "Distribute the day's tasks on a shared task list and a Kanban board your whole team follows."
+                }
+            ],
+            "tag": "Why us"
+        },
+        
+            "modules": {
+      "tag": "Features",
+      "heading": "Everything You Need to Run Your Rental Agency",
+      "subheading": "Turn bookings, cars and payments into simple, actionable insights.",
+      "items": [
+        {
+          "id": "fleet-snapshot",
+          "title": "Fleet Snapshot",
+          "description": "See which cars are free, rented or in service today and how it compares to last month."
+        },
+        {
+          "id": "revenue-tracker",
+          "title": "Revenue Tracker",
+          "description": "Follow payments, deposits and expenses in real time to keep every car profitable."
+        },
+        {
+          "id": "live-availability",
+          "title": "Live Availability",
+          "description": "Avoid double bookings with a calendar that blocks cars the moment they are reserved."
+        },
+        {
+          "id": "qr-reservation",
+          "title": "QR Reservation Link",
+          "description": "Generate a QR code and a link per car or agency so clients can reserve in seconds."
+        },
+        {
+          "id": "team-tasks",
+          "title": "Team Tasks",
+          "description": "Assign cleaning, deliveries and inspections to your team and track what is done."
+        },
+        {
+          "id": "contracts-inspections",
+          "title": "Contracts & Inspections",
+          "description": "Print contracts, record pickup and return inspections and keep a full history per rental."
+        } ] },
+        "workflow": {
+            "heading": "From reservation to vehicle return, keep every step under control.",
+            "subtext": "A simple flow that follows the real rhythm of your rentals, from the customer's first call to the vehicle's return.",
+            "stepLabel": "Step",
+            "steps": [
+                {
+                    "id": "step1",
+                    "title": "Create the reservation",
+                    "description": "Select the customer and vehicle, enter the dates and pickup location."
+                },
+                {
+                    "id": "step2",
+                    "title": "Check availability",
+                    "description": "The platform checks for date overlaps and calculates the rental price."
+                },
+                {
+                    "id": "step3",
+                    "title": "Confirm the reservation",
+                    "description": "Validate the reservation and prepare the rental contract."
+                },
+                {
+                    "id": "step4",
+                    "title": "Record the pickup",
+                    "description": "Log the mileage, fuel level and vehicle condition at departure."
+                },
+                {
+                    "id": "step5",
+                    "title": "Track payments",
+                    "description": "Collect deposits and payments, and follow the rental period."
+                },
+                {
+                    "id": "step6",
+                    "title": "Close the rental",
+                    "description": "Record the return information and complete the reservation."
+                }
+            ],
+            "tag": "How It Works"
+        },
+        "profitability": {
+            "tag": "Benefits",
+            "heading": "Unlock the True Value of Sustainability",
+            "subtext": "Discover how smarter tracking and reporting can drive impact, efficiency, and trust.",
+            "highlights": [
+                {
+                    "id": "b1",
+                    "title": "Better Decisions",
+                    "description": "Turn complex data into clear insights to guide smarter strategies."
+                },
+                {
+                    "id": "b2",
+                    "title": "Efficiency Gains",
+                    "description": "Save time with automated tracking and simplified reporting."
+                },
+                {
+                    "id": "b3",
+                    "title": "Stronger Compliance",
+                    "description": "Stay aligned with regulations and build transparency with stakeholders."
+                },
+                {
+                    "id": "b4",
+                    "title": "Positive Impact",
+                    "description": "Reduce emissions and strengthen your contribution to the community"
+                },
+                {
+                    "id": "b5",
+                    "title": "Cost Savings",
+                    "description": "Cut unnecessary expenses by identifying waste and optimizing resource use."
+                },
+                {
+                    "id": "b6",
+                    "title": "Team Alignment",
+                    "description": "Bring everyone together around shared sustainability goals in one platform."
+                },
+                {
+                    "id": "b7",
+                    "title": "Future Growth",
+                    "description": "Build a resilient business prepared for evolving environmental challenges."
+                },
+                {
+                    "id": "b8",
+                    "title": "Stronger Reputation",
+                    "description": "Show progress, gain trust, and attract loyal customers and partners."
                 }
             ]
         },
-        "showcase": {
-            "statuses": {
-                "confirmed": "Confirmed",
-                "pickedUp": "Picked up",
-                "paid": "Paid",
-                "pending": "Pending",
-                "returned": "Returned",
-                "available": "Available",
-                "onRent": "On rent",
-                "maintenance": "Maintenance"
-            },
-            "reservations": {
-                "eyebrow": "Reservations",
-                "title": "This week",
-                "badge": "24 active",
-                "columns": {
-                    "reference": "Reference",
-                    "customer": "Customer",
-                    "vehicle": "Vehicle",
-                    "dates": "Dates",
-                    "status": "Status"
+        "impactTracking": {
+            "tag": "Sustainable Resources",
+            "heading": "Impact Tracking",
+            "subtext": "Monitor key metrics across operations to uncover trends and drive improvements.",
+            "cards": [
+                {
+                    "id": "survey",
+                    "title": "Survey Insights",
+                    "description": "Visualize feedback trends and uncover key patterns in survey results."
                 },
-                "stats": [
-                    { "label": "Available", "value": "18", "hint": "vehicles ready" },
-                    { "label": "On rent", "value": "9", "hint": "+3 today" },
-                    { "label": "Pickups today", "value": "5", "hint": "2 due now" }
-                ],
-                "rows": [
-                    {
-                        "id": "RSV-1042",
-                        "customer": "Sara Mansouri",
-                        "vehicle": "Dacia Duster",
-                        "dates": "12 Oct – 18 Oct",
-                        "status": "confirmed"
-                    },
-                    {
-                        "id": "RSV-1041",
-                        "customer": "Youssef El Amrani",
-                        "vehicle": "Renault Clio",
-                        "dates": "11 Oct – 15 Oct",
-                        "status": "pickedUp"
-                    },
-                    {
-                        "id": "RSV-1040",
-                        "customer": "Lina Haddad",
-                        "vehicle": "Peugeot 208",
-                        "dates": "10 Oct – 14 Oct",
-                        "status": "paid"
-                    },
-                    {
-                        "id": "RSV-1039",
-                        "customer": "Omar Benali",
-                        "vehicle": "Hyundai Tucson",
-                        "dates": "09 Oct – 20 Oct",
-                        "status": "pending"
-                    },
-                    {
-                        "id": "RSV-1038",
-                        "customer": "Emma Laurent",
-                        "vehicle": "Toyota Yaris",
-                        "dates": "08 Oct – 12 Oct",
-                        "status": "returned"
-                    }
-                ]
-            },
-            "fleet": {
-                "eyebrow": "Fleet",
-                "title": "Vehicles",
-                "badge": "32 total",
-                "items": [
-                    {
-                        "name": "Dacia Duster",
-                        "plate": "12345-A-6",
-                        "status": "available",
-                        "rate": "450 MAD",
-                        "fuel": "Diesel"
-                    },
-                    {
-                        "name": "Renault Clio",
-                        "plate": "88421-B-3",
-                        "status": "onRent",
-                        "rate": "320 MAD",
-                        "fuel": "Petrol"
-                    },
-                    {
-                        "name": "Hyundai Tucson",
-                        "plate": "55710-C-1",
-                        "status": "available",
-                        "rate": "650 MAD",
-                        "fuel": "Hybrid"
-                    },
-                    {
-                        "name": "Toyota Yaris",
-                        "plate": "90233-D-8",
-                        "status": "maintenance",
-                        "rate": "300 MAD",
-                        "fuel": "Petrol"
-                    }
-                ]
-            },
-            "payments": {
-                "eyebrow": "Payments",
-                "title": "Revenue this month",
-                "badge": "+18.4%",
-                "stats": [
-                    { "label": "Collected", "value": "128,450", "hint": "MAD" },
-                    { "label": "Outstanding", "value": "14,300", "hint": "MAD" },
-                    { "label": "Avg. rental", "value": "2,140", "hint": "MAD" }
-                ],
-                "columns": { "recent": "Recent payments", "period": "This week" },
-                "rows": [
-                    {
-                        "id": "INV-2041",
-                        "customer": "Sara Mansouri",
-                        "amount": "2,700 MAD",
-                        "method": "Card",
-                        "status": "paid"
-                    },
-                    {
-                        "id": "INV-2040",
-                        "customer": "Youssef El Amrani",
-                        "amount": "1,280 MAD",
-                        "method": "Cash",
-                        "status": "paid"
-                    },
-                    {
-                        "id": "INV-2039",
-                        "customer": "Lina Haddad",
-                        "amount": "3,900 MAD",
-                        "method": "Transfer",
-                        "status": "pending"
-                    },
-                    {
-                        "id": "INV-2038",
-                        "customer": "Omar Benali",
-                        "amount": "4,550 MAD",
-                        "method": "Card",
-                        "status": "pending"
-                    }
-                ]
-            },
+                {
+                    "id": "emissions",
+                    "title": "Emissions Breakdown",
+                    "description": "See where your emissions come from and track reductions across branches."
+                }
+            ]
+        },
+        "tasks": {
+            "heading": "Organize your team's work in one place.",
+            "subtext": "Plan daily tasks, distribute responsibilities and track progress with a shared task list and a Kanban board.",
+            "examples": [
+                "Prepare vehicles before pickup",
+                "Follow up on customer requests",
+                "Schedule maintenance",
+                "Track pending administrative tasks"
+            ],
+            "tag": "Team Tasks"
+        },
+        "integration": {
+            "tag": "Integration",
+            "heading": "Seamless Integrations",
+            "subtext": "Connect your favorite tools and platforms effortlessly to streamline your workflow and boost productivity."
+        },
+        "showcase": {
             "reports": {
                 "eyebrow": "Reports",
                 "title": "Fleet performance",
                 "badge": "Last 6 months",
                 "stats": [
-                    { "label": "Revenue", "value": "412,900", "hint": "+22.1%" },
-                    { "label": "Occupancy", "value": "78%", "hint": "+6.4%" },
-                    { "label": "Utilization", "value": "84%", "hint": "+3.2%" }
+                    {
+                        "label": "Revenue",
+                        "value": "412 900",
+                        "hint": "+22.1%"
+                    },
+                    {
+                        "label": "Occupancy",
+                        "value": "78%",
+                        "hint": "+6.4%"
+                    },
+                    {
+                        "label": "Utilization",
+                        "value": "84%",
+                        "hint": "+3.2%"
+                    }
                 ],
-                "chart": { "title": "Monthly revenue", "trend": "Trending up" },
-                "months": ["May", "Jun", "Jul", "Aug", "Sep", "Oct"]
+                "chart": {
+                    "title": "Monthly revenue",
+                    "trend": "Trending up"
+                },
+                "months": [
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct"
+                ]
+            },
+            "vehiclePerformance": {
+                "eyebrow": "Reports",
+                "title": "Top performing vehicles",
+                "columns": {
+                    "vehicle": "Vehicle",
+                    "revenue": "Revenue",
+                    "expenses": "Expenses",
+                    "margin": "Margin",
+                    "bookedDays": "Booked days"
+                },
+                "rows": [
+                    {
+                        "vehicle": "Dacia Duster",
+                        "revenue": "48 200 MAD",
+                        "expenses": "16 400 MAD",
+                        "margin": "31 800 MAD",
+                        "bookedDays": "24 d"
+                    },
+                    {
+                        "vehicle": "Hyundai Tucson",
+                        "revenue": "40 700 MAD",
+                        "expenses": "14 100 MAD",
+                        "margin": "26 600 MAD",
+                        "bookedDays": "17 d"
+                    },
+                    {
+                        "vehicle": "Renault Clio",
+                        "revenue": "31 900 MAD",
+                        "expenses": "9 900 MAD",
+                        "margin": "22 000 MAD",
+                        "bookedDays": "19 d"
+                    }
+                ]
+            },
+            "tasksPreview": {
+                "eyebrow": "Team",
+                "title": "Today's board",
+                "badge": "3 lists",
+                "columns": [
+                    {
+                        "id": "todo",
+                        "title": "To do",
+                        "items": [
+                            {
+                                "id": "t1",
+                                "title": "Prepare the Duster for the 10am pickup"
+                            },
+                            {
+                                "id": "t2",
+                                "title": "Call back customer RSV-1039"
+                            },
+                            {
+                                "id": "t3",
+                                "title": "Follow up on payment RSV-1038"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "doing",
+                        "title": "In progress",
+                        "items": [
+                            {
+                                "id": "t4",
+                                "title": "Rental contract RSV-1042"
+                            },
+                            {
+                                "id": "t5",
+                                "title": "Full cleanup of the Clio"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "done",
+                        "title": "Done",
+                        "items": [
+                            {
+                                "id": "t6",
+                                "title": "Tucson technical inspection"
+                            }
+                        ]
+                    }
+                ]
             }
         },
         "pricing": {
-            "eyebrow": "Pricing",
-            "heading": "Simple pricing for your rental agency.",
-            "subheading": "One plan, every module included. Pick the billing period that suits you — launch pricing is up to 50% off for a limited time.",
-            "promo": "Launch offer — up to 50% off",
-            "features": [
-                "Unlimited reservations & rental contracts",
-                "Fleet, maintenance & document management",
-                "Customer profiles & rental history",
-                "Invoicing, deposits & payment tracking",
-                "Reports, analytics & exports",
-                "Team accounts with role-based access",
-                "English, French & Arabic with RTL",
-                "Free updates & email support"
-            ],
+            "tag": "Flexible Plans",
+            "heading": "Pick Your Perfect Plan",
+            "subtext": "From small teams to global impact, choose a plan that grows with you.",
             "plans": [
                 {
-                    "id": "monthly",
-                    "name": "Monthly",
-                    "description": "Total flexibility, cancel anytime.",
-                    "price": "50",
-                    "originalPrice": "100",
-                    "period": "/ month",
-                    "note": "Billed every month",
-                    "saving": "50% off",
-                    "badge": "",
-                    "highlighted": false,
-                    "ctaLabel": "Choose plan"
+                    "name": "Starter Plan",
+                    "description": "Turn complex data into clear insights to guide smarter strategies.",
+                    "price": "$29",
+                    "features": [
+                        "Up to 3 team members",
+                        "Basic emissions tracking",
+                        "Standard dashboards",
+                        "Email support"
+                    ],
+                    "cta": "Get Starter"
                 },
                 {
-                    "id": "semiannual",
-                    "name": "6 months",
-                    "description": "Cover a full season at half price.",
-                    "price": "300",
-                    "originalPrice": "600",
-                    "period": "/ 6 months",
-                    "note": "50 MAD per month",
-                    "saving": "50% off",
-                    "badge": "Best value",
-                    "highlighted": false,
-                    "ctaLabel": "Choose plan"
+                    "name": "Growth Plan",
+                    "description": "Best for growing companies needing advanced insights and automation.",
+                    "price": "$79",
+                    "features": [
+                        "Up to 10 team members",
+                        "Automated reporting",
+                        "Advanced analytics & dashboards",
+                        "Priority support"
+                    ],
+                    "cta": "Upgrade to Growth",
+                    "dark": true
                 },
                 {
-                    "id": "annual",
-                    "name": "Annual",
-                    "description": "Best value for agencies that are growing.",
-                    "price": "600",
-                    "originalPrice": "1,000",
-                    "period": "/ 6 months",
-                    "note": "50 MAD per month",
-                    "saving": "40% off",
-                    "badge": "Popular",
-                    "highlighted": false,
-                    "ctaLabel": "Choose plan"
-                }
-            ],
-            "note": "All prices are in Moroccan dirham (MAD). No setup fees, no hidden costs.",
-            "footnote": "Do you have several branches or a large fleet? Contact us for a custom plan."
-        },
-        "faq": {
-            "eyebrow": "FAQ",
-            "heading": "Frequently asked questions",
-            "subheading": "Everything you need to know before getting started. Still curious? Book a demo and we will answer live.",
-            "categories": [
-                {
-                    "id": "subscription",
-                    "title": "Subscription details",
-                    "questions": [
-                        {
-                            "question": "What is included in the subscription?",
-                            "answer": "Every plan includes the full platform: reservations, fleet, customers, contracts, payments, invoices, reports, team roles and multi-language support. There are no hidden modules."
-                        },
-                        {
-                            "question": "Do I need to install anything?",
-                            "answer": "No. Double V Drive runs in your browser on desktop, tablet and phone, and your data is stored securely in the cloud."
-                        },
-                        {
-                            "question": "Can I change my billing period later?",
-                            "answer": "Yes. You can move from monthly to 6 months or annual at any time. The remaining balance is applied to your new period."
-                        },
-                        {
-                            "question": "Is there a free trial?",
-                            "answer": "Yes, we offer a 14-day free trial so you can test the platform with your own fleet before subscribing."
-                        },
-                        {
-                            "question": "Can I cancel at any time?",
-                            "answer": "Yes. Monthly subscriptions can be cancelled whenever you want and stay active until the end of the paid period."
-                        }
-                    ]
-                },
-                {
-                    "id": "billing",
-                    "title": "Billing and payments",
-                    "questions": [
-                        {
-                            "question": "Which payment methods do you accept?",
-                            "answer": "We accept credit and debit cards, bank transfers and cash payments at our office. An invoice is generated automatically for every payment."
-                        },
-                        {
-                            "question": "What currency are the prices in?",
-                            "answer": "All prices are in Moroccan dirham (MAD) and exclude local taxes where applicable."
-                        },
-                        {
-                            "question": "Do you offer refunds?",
-                            "answer": "Monthly plans are non-refundable. For 6-month and annual plans, contact us within 14 days of payment for a prorated refund."
-                        },
-                        {
-                            "question": "How do I get an invoice?",
-                            "answer": "Every payment produces a downloadable invoice in your billing section, ready to hand to your accountant."
-                        }
-                    ]
-                },
-                {
-                    "id": "other",
-                    "title": "Other",
-                    "questions": [
-                        {
-                            "question": "Does it work in Arabic?",
-                            "answer": "Yes. The platform is available in English, French and Arabic, with full right-to-left support."
-                        },
-                        {
-                            "question": "Can several team members use it?",
-                            "answer": "Yes. Invite your team and assign roles such as owner, manager, agent or finance."
-                        },
-                        {
-                            "question": "How do I contact support?",
-                            "answer": "Email us at support@doublevdrive.com, or book a demo and we will walk you through the setup."
-                        }
-                    ]
+                    "name": "Impact Plan",
+                    "description": "For organizations ready to lead with full-scale sustainability action.",
+                    "price": "$149",
+                    "features": [
+                        "Unlimited team members",
+                        "Full integrations & API access",
+                        "Custom compliance reports",
+                        "Dedicated success manager"
+                    ],
+                    "cta": "Get Starter"
                 }
             ]
         },
-        "cta": {
-            "title": "Ready to modernize",
-            "subtitle": "your rental business?",
-            "ctaLabel": "Book a demo",
-            "ctaHref": "mailto:hello@doublevdrive.com"
+        "faq": {
+            "heading": "Frequently asked questions",
+            "subheading": "What you need to know before getting started. Another question? Request a demo and we'll answer live.",
+            "questions": [
+                {
+                    "question": "Who is the platform for?",
+                    "answer": "For car rental agencies that want to centralize their reservations, contracts, fleet, customers and finances in a single tool — used by both the owner and counter agents."
+                },
+                {
+                    "question": "Can I manage several vehicles and reservations?",
+                    "answer": "Yes. Add your fleet and follow all your reservations: each vehicle's availability is checked automatically, and date overlaps are detected to avoid double bookings."
+                },
+                {
+                    "question": "Can I generate rental contracts?",
+                    "answer": "Yes. The rental contract is generated from the reservation information: customer, driver, vehicle, dates, rates and deposits."
+                },
+                {
+                    "question": "Can I track vehicle expenses and profitability?",
+                    "answer": "Yes. Record expenses per vehicle (maintenance, insurance, financing installments) and review reports for revenue, margins, booked days and occupancy."
+                },
+                {
+                    "question": "How does booking via QR code work?",
+                    "answer": "You generate a QR code from your dashboard. Customers scan it, open your public booking page and fill in a request with their details and dates. You review and validate each request."
+                },
+                {
+                    "question": "Can I organize my team's tasks?",
+                    "answer": "Yes. Create daily tasks, distribute them and track progress on a shared task list and a Kanban board."
+                },
+                {
+                    "question": "How do I find out about pricing?",
+                    "answer": "The monthly, 6-month and annual plans are presented in the Pricing section. For multiple agencies or a large fleet, request a tailored quote through the contact form."
+                },
+                {
+                    "question": "How do I request a demo?",
+                    "answer": "Fill in the contact form with your agency name and your needs: the Double V Drive team will get back to you to present the platform."
+                }
+            ],
+            "tag": "FAQ",
+            "cta": {
+                "title": "Ready to simplify",
+                "accent": "how you run your agency?",
+                "text": "Tell us about your agency and your needs. Find out how the platform can help you organize your reservations, fleet and daily operations.",
+                "button": "Request a demo"
+            }
+        },
+        "transparency": {
+            "tag": "Full Transparency",
+            "heading": "Data Visibility",
+            "subtext": "Get a clear view of key metrics across your operations — from\nemissions to suppliers — all in one place."
         },
         "footer": {
-            "copyright": "© 2026 Double V Drive. All rights reserved.",
-            "brandText": "DOUBLE V DRIVE"
+            "headingLines": [
+                [
+                    "Make smarter",
+                    "decisions"
+                ],
+                [
+                    "act on",
+                    "your data today."
+                ]
+            ],
+            "subtext": "Simplify complex sustainability challenges with clear insights, automated reporting, and tools designed to drive lasting positive impact.",
+            "cta": "Start Tracking",
+            "copyright": "© 2026 Double V Drive. All rights reserved."
+        },
+        "statistics": {
+    "tag": "Values",
+    "heading": "Built to Keep Every Car Booked and Every Dirham Tracked",
+    "subheading": "doublevdrive gives you everything you need to manage your fleet, act fast, and grow your agency with confidence.",
+    "buttonLabel": "Get Started",
+    "items": [
+        {
+            "id": "double-bookings",
+            "text": "A car is locked the moment it is reserved. Overlapping dates are blocked automatically, so two clients can never get the same car, even when bookings arrive at the same second.",
+            "slots": [
+                { "type": "reel", "variant": "upper", "strip": "6304857600" },
+                {
+                    "type": "text",
+                    "text": "K+",
+                    "size": "h1"
+                }
+            ],
+            "label": "Double Bookings"
+        },
+        {
+            "id": "audit-trail",
+            "text": "Every price, date, status or payment change is recorded with who made it and when. Disputes with clients are settled in seconds, not hours.",
+            "slots": [
+                { "type": "reel", "variant": "upper", "strip": "6304857601" },
+                { "type": "reel", "variant": "lower", "strip": "0304857602" },
+                { "type": "reel", "variant": "upper", "strip": "6304857600" },
+                { "type": "text", "text": "%", "size": "h1" }
+            ],
+            "label": "Changes Tracked"
+        },
+        {
+            "id": "online-booking",
+            "text": "Share a QR code or a link per car or agency. Clients can reserve at any hour, even when your office is closed, and the booking lands straight in your dashboard.",
+            "slots": [
+                { "type": "reel", "variant": "upper", "strip": "6304857602" },
+                { "type": "reel", "variant": "lower", "strip": "4304857602" },
+                { "type": "text", "text": "/", "size": "h1" },
+                { "type": "reel", "variant": "upper", "strip": "6304857607" }
+            ],
+            "label": "Online Reservations"
+        },
+        {
+            "id": "languages",
+            "text": "Run your agency in Arabic, French or English. Your team, your contracts and your clients all work in the language they are most comfortable with.",
+            "slots": [
+                { "type": "reel", "variant": "upper", "strip": "6304857603" }
+            ],
+            "label": "Languages"
+        }
+    ]
+},
+        "testimonials": {
+            "tag": "Trusted Voices",
+            "heading": "Client Stories",
+            "subtext": "Hear how teams streamline workflows and achieve better results with our platform.",
+            "items": [
+                {
+                    "quote": "\"The platform transformed our reporting process completely. We save time, reduce stress, and focus more energy on building effective strategies.\"",
+                    "attribution": "Sarah L., Sustainability Manager at GreenTech"
+                },
+                {
+                    "quote": "\"Finally, we can see data clearly across teams. Collaboration flows better, decisions feel stronger, and our confidence keeps growing daily.\"",
+                    "attribution": "David R., Operations Manager at EcoLogix"
+                },
+                {
+                    "quote": "\"The insights provided are actionable and precise. This platform significantly elevated how we measure, manage, and communicate sustainability progress.\"",
+                    "attribution": "James T., Project Director at NovaWorks"
+                },
+                {
+                    "quote": "\"With this tool, reporting feels effortless and smooth. Our stakeholders trust the numbers more, and internal alignment has never been stronger overall.\"",
+                    "attribution": "Clara M., Head of Strategy at BrightPath Group"
+                },
+                {
+                    "quote": "“Before, compliance drained resources. Now, automation handles complexity with accuracy, freeing us to innovate, grow, and build sustainable impact.”",
+                    "attribution": "Kevin A., Sustainability Lead at UrbanSphere"
+                }
+            ]
         }
     }
 }

@@ -1,0 +1,505 @@
+/**
+ * Exact port of the Colonia template "values" section.
+ * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ *
+ * Layout truth (measured at 1440): the section pads slim (20px) horizontally
+ * around the grey `values-main-bg` panel; the `values-container` (1340px)
+ * adds padding-big (80px) vertically; inside, a 440px sticky left column
+ * (tag / heading / sub-heading / "Learn More" button) sits beside a 618px
+ * right column of four 235px rows. Each row is white, radius-large, padded
+ * 6px/40px, sticky at top:40px so the rows pile up while scrolling, with a
+ * 223px statistic tile on the right. The counters ("5K+", "220K+", "98%",
+ * "99.9%") are STATIC reel strips — `upper` boxes anchor flex-end (showing
+ * the last digit) and `lower` boxes anchor normally (showing the first) —
+ * the template's designer baked the digits; nothing animates them at runtime.
+ * The wide orange glow is `values-bg` (two blurred svg circles) sitting in
+ * `values-bg-wrap` behind everything.
+ *
+ * Design tokens are shared with the other Colonia ports (_colonia-hero.css).
+ * "container" is renamed `colonia-container` (Tailwind owns `.container`).
+ */
+
+/* ===================== Values ===================== */
+.values {
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+}
+
+.values .colonia-container {
+    width: var(--100);
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    max-width: 1340px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: var(--_responsive---padding--padding-big);
+    padding-bottom: var(--_responsive---padding--padding-big);
+}
+
+.values-main-bg {
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    position: relative;
+    /* The template paints the panel grey on the z-index:-1 wrap, which works
+       because its page has no opaque background. The app's main carries a
+       white/dark background, so main-bg anchors the panel colour itself and
+       isolates its stacking: the -1 wrap (orange glow) paints above this
+       background but below the container, rows and tiles — identical result. */
+    background-color: var(--color--grey-light);
+    isolation: isolate;
+}
+
+/* the grey panel + orange glow behind the whole section */
+.values-bg-wrap {
+    z-index: -1;
+    width: var(--100);
+    height: var(--100);
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    background-color: var(--color--grey-light);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    position: absolute;
+    overflow: hidden;
+}
+
+.values .values-bg {
+    width: var(--100);
+    height: var(--100);
+    object-fit: contain;
+}
+
+.values-wrap {
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    justify-content: space-between;
+    align-items: flex-start;
+    display: flex;
+}
+
+.values-left {
+    max-width: var(--100);
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    flex-flow: column;
+    align-items: flex-start;
+    width: 440px;
+    display: flex;
+    position: sticky;
+    top: 40px;
+}
+
+.values-right {
+    max-width: var(--100);
+    grid-column-gap: var(--_spacing---spacing-xsmall);
+    grid-row-gap: var(--_spacing---spacing-xsmall);
+    flex-flow: column;
+    width: 618px;
+    display: flex;
+}
+
+/* ---- sticky stats rows ---- */
+.values-list-wrap {
+    padding: 6px 6px 6px var(--_responsive---padding--padding-xlarge);
+    grid-column-gap: var(--_spacing---spacing-regular);
+    grid-row-gap: var(--_spacing---spacing-regular);
+    border-radius: var(--_responsive---border-radius--border-radius-large);
+    background-color: var(--color--light);
+    align-items: flex-start;
+    display: flex;
+    position: sticky;
+    top: 40px;
+    overflow: hidden;
+}
+
+.values-list-left {
+    z-index: 2;
+    margin-top: var(--_responsive---margin--margin-slim);
+    max-width: 319px;
+    position: relative;
+}
+
+.values-list-left .paragraph-01 {
+    color: var(--color--grey-dark);
+}
+
+.values-list-right {
+    z-index: 3;
+    width: var(--100);
+    border-radius: var(--_responsive---border-radius--border-radius-large);
+    background-color: var(--color--grey-light);
+    justify-content: center;
+    align-items: center;
+    max-width: 223px;
+    height: 223px;
+    display: flex;
+    position: relative;
+}
+
+.values-list-right-wrap {
+    z-index: 2;
+    width: var(--100);
+    height: var(--100);
+    padding: var(--_responsive---padding--padding-slim);
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    border-radius: var(--_responsive---border-radius--border-radius-large);
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+.values-list-bg-1 {
+    z-index: 1;
+    border-radius: var(--_responsive---border-radius--border-radius-large);
+    position: absolute;
+    inset: 0%;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.values-list-hover {
+    z-index: 1;
+    border-radius: var(--_responsive---border-radius--border-radius-large);
+    position: absolute;
+    inset: 0%;
+    box-shadow: 0 0 250px 45px #f95d00;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* Webflow IX2 hover on the row (observed on the live template, ~0.5s ease):
+   the tile dots swap to the warm hover texture, the row-wide orange
+   gradient and the glow fade in, and the row paragraph turns white. */
+.values-list-wrap:hover .values-list-hover,
+.values-list-wrap:hover .values-list-bg {
+    opacity: 1;
+}
+
+.values-list-wrap:hover .values-list-bg-1 {
+    opacity: 0;
+}
+
+.values-list-left .paragraph-01 {
+    transition: color 0.5s ease;
+}
+
+.values-list-wrap:hover .values-list-left .paragraph-01 {
+    color: #fff;
+}
+
+.values-list-bg {
+    z-index: 1;
+    position: absolute;
+    inset: 0%;
+    /* template inlines opacity:0 here; the row-wide gradient stays hidden */
+    opacity: 0;
+}
+
+.values .fit-cover {
+    width: var(--100);
+    height: var(--100);
+    object-fit: cover;
+}
+
+/* ---- counters ---- */
+.statistics-number-wrap {
+    height: 64px;
+    display: flex;
+    overflow: hidden;
+}
+
+.statistics-number-box {
+    flex-flow: column;
+    align-items: center;
+    display: flex;
+}
+
+/* upper boxes pin the digit column to the end: the strip's last digit shows */
+.statistics-number-box.upper {
+    justify-content: flex-end;
+}
+
+/* lower boxes anchor normally (first digit) and render in grey */
+.statistics-number-box.lower {
+    justify-content: normal;
+    color: var(--color--grey-dark);
+}
+
+.statistics-number-box .text-h1 {
+    flex: none;
+}
+
+.values .paragraph-01.values-text {
+    color: var(--color--grey-dark);
+}
+
+/* the "." suffix carries no .text-h1 class in the template; it renders with
+   the same h1 typography but without the letter-spacing and with zero margins */
+.values .statistics-number-wrap h1:not(.text-h1) {
+    font-size: var(--_typography---h1--font-size);
+    line-height: var(--_typography---h1--line-height);
+    font-weight: var(--_typography---h1--font-weight);
+    margin: 0;
+}
+
+/* ===================== Left column bits (tag / heading / button) =====================
+   Same building blocks the hero port scopes — duplicated here for the .values scope. */
+.values .tag-wrap {
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    align-items: center;
+    display: flex;
+}
+
+.values .tag-icon {
+    width: 16px;
+}
+
+.values .teg {
+    font-size: var(--_typography---tag--font-size);
+    line-height: var(--_typography---tag--line-height);
+    font-weight: var(--_typography---tag--font-weight);
+    letter-spacing: var(--_typography---tag--latter-spaces);
+}
+
+.values .text-grey-01 {
+    color: var(--color--grey-dark);
+}
+
+.values .text-grey-02 {
+    color: var(--color--grey-medium);
+}
+
+.values .title-wrap {
+    grid-column-gap: var(--_spacing---spacing-xsmall);
+    grid-row-gap: var(--_spacing---spacing-xsmall);
+    flex-flow: column;
+    display: flex;
+}
+
+.values .text-h3 {
+    font-size: var(--_typography---h3--font-size);
+    line-height: var(--_typography---h3--line-height);
+    font-weight: var(--_typography---h3--font-weight);
+    letter-spacing: var(--_typography---h3--latter-spaces);
+}
+
+.values .paragraph-02 {
+    font-size: var(--_typography---paragraph-02--font-size);
+    line-height: var(--_typography---paragraph-02--line-height);
+    font-weight: var(--_typography---paragraph-02--font-weight);
+    letter-spacing: var(--_typography---paragraph-02--latter-spaces);
+}
+
+.values .text-h1 {
+    font-size: var(--_typography---h1--font-size);
+    line-height: var(--_typography---h1--line-height);
+    font-weight: var(--_typography---h1--font-weight);
+    letter-spacing: var(--_typography---h1--latter-spaces);
+}
+
+.values .paragraph-03 {
+    font-size: var(--_typography---paragraph-03--font-size);
+    line-height: var(--_typography---paragraph-03--line-height);
+    font-weight: var(--_typography---paragraph-03--font-weight);
+    letter-spacing: var(--_typography---paragraph-03--latter-spaces);
+}
+
+.values .paragraph-01 {
+    font-size: var(--_typography---paragraph-01--font-size);
+    line-height: var(--_typography---paragraph-01--line-height);
+    font-weight: var(--_typography---paragraph-01--font-weight);
+    letter-spacing: var(--_typography---paragraph-01--latter-spaces);
+}
+
+/* button-01 (dark) with hover label-roll — same visual as the hero CTA */
+.values .button-01 {
+    grid-column-gap: 6px;
+    grid-row-gap: 6px;
+    border-radius: var(--_responsive---border-radius--border-radius-xsmall);
+    color: var(--color--light);
+    background-image: linear-gradient(0deg, #393939, #313131 46%, #282828);
+    border: 1px solid #000;
+    justify-content: center;
+    align-items: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: flex;
+    box-shadow:
+        inset 0 2px 1px rgba(255, 255, 255, 0.2),
+        inset 0 -2px #000;
+}
+
+.values .button-dot {
+    background-color: var(--color--dark-orange);
+    border-radius: 100px;
+    width: 4px;
+    height: 4px;
+}
+
+/* Webflow hover: label slides up and the duplicate label takes its place,
+   identical to the hero port's interaction. */
+.values .button-text-wrap {
+    position: relative;
+    max-height: 20px;
+    overflow: hidden;
+}
+
+.values .button-text-wrap .paragraph-03 {
+    transition:
+        transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.values .button-text-wrap .paragraph-03:nth-child(2) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(100%);
+}
+
+.values .button-01:hover .button-text-wrap .paragraph-03:nth-child(1) {
+    transform: translateY(-100%);
+}
+
+.values .button-01:hover .button-text-wrap .paragraph-03:nth-child(2) {
+    transform: translateY(0);
+}
+
+/* ===================== Tablet (<= 991px) ===================== */
+@media screen and (max-width: 991px) {
+    .values-wrap {
+        grid-column-gap: var(--_spacing---spacing-xxxlarge);
+        grid-row-gap: var(--_spacing---spacing-xxxlarge);
+        flex-flow: column;
+        align-items: center;
+    }
+
+    .values-left {
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        position: static;
+    }
+
+    .values-list-wrap {
+        justify-content: space-between;
+    }
+
+    .statistics-number-wrap {
+        height: 54px;
+    }
+
+    .values-list-right {
+        max-width: 200px;
+        height: 200px;
+    }
+}
+
+/* ===================== Mobile landscape (<= 767px) ===================== */
+@media screen and (max-width: 767px) {
+    .values-wrap {
+        grid-column-gap: var(--_spacing---spacing-big);
+        grid-row-gap: var(--_spacing---spacing-big);
+    }
+
+    .values-left {
+        grid-column-gap: var(--_spacing---spacing-small);
+        grid-row-gap: var(--_spacing---spacing-small);
+    }
+
+    .values-list-left {
+        max-width: 250px;
+    }
+
+    .statistics-number-wrap {
+        height: 48px;
+    }
+
+    .values-list-right {
+        max-width: 200px;
+        height: 180px;
+    }
+}
+
+/* ===================== Mobile portrait (<= 479px) ===================== */
+@media screen and (max-width: 479px) {
+    .values .heading-wrap.mobile-heading {
+        max-width: 200px;
+    }
+
+    .values-wrap {
+        grid-column-gap: var(--_spacing---spacing-xxbig);
+        grid-row-gap: var(--_spacing---spacing-xxbig);
+    }
+
+    .values-list-wrap {
+        padding: var(--_responsive---padding--padding-tiny);
+        flex-flow: column-reverse;
+        align-items: center;
+        position: static;
+    }
+
+    .values-list-left {
+        margin-top: var(--_responsive---margin--margin-xxsmall);
+    }
+
+    .statistics-number-wrap {
+        height: 36px;
+    }
+
+    .values-list-right {
+        max-width: var(--100);
+        height: 120px;
+    }
+
+    .values-list-bg {
+        z-index: -1;
+    }
+}
+
+/* ===================== Dark mode (app theme toggle) =====================
+   The template is light-only; these follow _colonia.css conventions. */
+.dark .values .text-h3,
+.dark .values .statistics-number-box .text-h1,
+.dark .values .statistics-number-wrap h1:not(.text-h1),
+.dark .values .button-01 {
+    color: #f8f8f8;
+}
+
+.dark .values .text-grey-01,
+.dark .values .statistics-number-box.lower {
+    color: #b3b3b3;
+}
+
+.dark .values .text-grey-02 {
+    color: #a3a3a3;
+}
+
+.dark .values .values-list-wrap {
+    background-color: #2e2e2e;
+}
+
+.dark .values .values-list-right,
+.dark .values .values-bg-wrap {
+    background-color: #232323;
+}
+
+.dark .values .values-main-bg {
+    background-color: #232323;
+}
+
+.dark .values .tag-icon {
+    filter: invert(1);
+    opacity: 0.8;
+}
+
+.dark .values .button-01 {
+    border: 1px solid #0000;
+}

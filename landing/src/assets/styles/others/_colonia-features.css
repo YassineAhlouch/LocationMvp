@@ -1,0 +1,223 @@
+/**
+ * Exact port of the Colonia template "features-v1" section.
+ * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ *
+ * Rules are taken 1:1 from the template stylesheet, scoped under
+ * `.features-v1` so nothing leaks into the rest of the app. Values resolve
+ * through the template's own design tokens, which live in
+ * `_colonia-hero.css` (same file set, imported first) so both sections
+ * share the identical responsive scale.
+ *
+ * "container" is renamed `colonia-container` here: Tailwind ships its own
+ * global `.container` class and the wrapper must not pick up its
+ * breakpoint widths.
+ */
+
+/* ===================== Features (features-v1) ===================== */
+.features-v1 {
+    padding-top: var(--_responsive---padding--padding-big);
+    padding-bottom: var(--_responsive---padding--padding-big);
+}
+
+.features-v1 .colonia-container {
+    width: var(--100);
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.features-v1-top {
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    text-align: center;
+    flex-flow: column;
+    max-width: 536px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+}
+
+.features-v1 .tag-wrap {
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.features-v1 .tag-icon {
+    width: 16px;
+}
+
+.features-v1 .teg {
+    font-size: var(--_typography---tag--font-size);
+    line-height: var(--_typography---tag--line-height);
+    font-weight: var(--_typography---tag--font-weight);
+    letter-spacing: var(--_typography---tag--latter-spaces);
+}
+
+.features-v1 .text-grey-01 {
+    color: var(--color--grey-dark);
+}
+
+.features-v1 .text-grey-02 {
+    color: var(--color--grey-medium);
+}
+
+.title-wrap {
+    grid-column-gap: var(--_spacing---spacing-xsmall);
+    grid-row-gap: var(--_spacing---spacing-xsmall);
+    flex-flow: column;
+    display: flex;
+}
+
+.features-v1 .text-h3 {
+    font-size: var(--_typography---h3--font-size);
+    line-height: var(--_typography---h3--line-height);
+    font-weight: var(--_typography---h3--font-weight);
+    letter-spacing: var(--_typography---h3--latter-spaces);
+}
+
+.features-v1 .paragraph-02 {
+    font-size: var(--_typography---paragraph-02--font-size);
+    line-height: var(--_typography---paragraph-02--line-height);
+    font-weight: var(--_typography---paragraph-02--font-weight);
+    letter-spacing: var(--_typography---paragraph-02--latter-spaces);
+}
+
+.features-v1 .paragraph-03 {
+    font-size: var(--_typography---paragraph-03--font-size);
+    line-height: var(--_typography---paragraph-03--line-height);
+    font-weight: var(--_typography---paragraph-03--font-weight);
+    letter-spacing: var(--_typography---paragraph-03--latter-spaces);
+}
+
+.features-v1-bottom {
+    margin-top: var(--_responsive---margin--margin-medium-rare);
+    grid-column-gap: var(--_spacing---spacing-xxsmall);
+    grid-row-gap: var(--_spacing---spacing-xxsmall);
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-columns: 1fr;
+    max-width: 1122px;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+}
+
+.features-v1-list {
+    padding: var(--_responsive---padding--padding-large) var(--_responsive---padding--padding-tiny) var(--_responsive---padding--padding-tiny);
+    grid-column-gap: var(--_spacing---spacing-medium-rare);
+    grid-row-gap: var(--_spacing---spacing-medium-rare);
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    background-color: var(--color--grey-light);
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+}
+
+/* per-card image sizing variants used by the template, in card order:
+   1, 2, 1, 3, 4, 4 */
+.features-v1-list-top.features-v1-image-1 {
+    max-width: 265px;
+}
+
+.features-v1-list-top.features-v1-image-2 {
+    margin-top: var(--_responsive---margin--margin-xxsmall);
+    max-width: 225px;
+}
+
+.features-v1-list-top.features-v1-image-3 {
+    max-width: 330px;
+}
+
+.features-v1-list-top.features-v1-image-4 {
+    max-width: 246px;
+}
+
+.features-v1-list-bottom {
+    padding: var(--_responsive---padding--padding-xsmall);
+    grid-column-gap: 4px;
+    grid-row-gap: 4px;
+    border-radius: var(--_responsive---border-radius--border-radius-medium);
+    background-color: var(--color--light);
+    text-align: center;
+    flex-flow: column;
+    align-items: center;
+    display: flex;
+}
+
+.features-v1 .features-v1-image {
+    width: var(--100);
+    object-fit: cover;
+}
+
+/* ===================== Tablet (<= 991px) ===================== */
+@media screen and (max-width: 991px) {
+    .features-v1-bottom {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* ===================== Mobile landscape (<= 767px) ===================== */
+@media screen and (max-width: 767px) {
+    .features-v1-top {
+        grid-column-gap: var(--_spacing---spacing-small);
+        grid-row-gap: var(--_spacing---spacing-small);
+    }
+
+    .features-v1-bottom {
+        grid-template-columns: 1fr;
+    }
+
+    .features-v1-list {
+        max-width: 85%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* ===================== Mobile portrait (<= 479px) ===================== */
+@media screen and (max-width: 479px) {
+    .features-v1 .paragraph-03.text-grey-01 {
+        font-size: var(--_typography---paragraph-03--font-size);
+    }
+
+    .features-v1-list {
+        max-width: var(--100);
+        position: sticky;
+        top: 10px;
+    }
+}
+
+/* ===================== Dark mode (app theme toggle) =====================
+   The template is light-only; these keep the section readable with the
+   app's dark theme, following _colonia.css conventions. */
+.dark .features-v1 .text-h3,
+.dark .features-v1 .features-v1-list-bottom .paragraph-02 {
+    color: #f8f8f8;
+}
+
+.dark .features-v1 .text-grey-01 {
+    color: #b3b3b3;
+}
+
+.dark .features-v1 .text-grey-02 {
+    color: #a3a3a3;
+}
+
+.dark .features-v1 .features-v1-list {
+    background-color: #232323;
+}
+
+.dark .features-v1 .features-v1-list-bottom {
+    background-color: #2e2e2e;
+}
+
+.dark .features-v1 .tag-icon {
+    filter: invert(1);
+    opacity: 0.8;
+}

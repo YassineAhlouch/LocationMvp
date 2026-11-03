@@ -25,6 +25,28 @@ export type ReservationStatus =
     | 'cancelled'
     | 'no_show'
 export type PaymentStatus = 'unpaid' | 'partial' | 'paid'
+export type LandingReservationStatus = 'new' | 'contacted' | 'converted' | 'rejected'
+
+export type LandingReservation = {
+    id: number
+    status: LandingReservationStatus
+    full_name: string
+    phone: string
+    email: string | null
+    message: string | null
+    pickup_datetime: string | null
+    expected_return_datetime: string | null
+    created_at: string
+    car: {
+        id: number
+        slug: string | null
+        registration_number: string
+        brand: string | null
+        model: string | null
+        cover_image: string | null
+    } | null
+}
+
 export type ClientStatus = 'normal' | 'vip' | 'blacklist'
 export type ClientSource =
     'facebook' | 'whatsapp' | 'referral' | 'phone' | 'walk_in' | 'other'

@@ -9,6 +9,8 @@
             "reservationsDesc": "Reservations management",
             "reservationsListe": "Reservations list",
             "reservationsListeDesc": "Listing reservations",
+            "reservationsQr": "Reservation QR codes",
+            "reservationsQrDesc": "Requests received via the QR landing",
             "reservationsCalendrier": "Calendar",
             "reservationsCalendrierDesc": "Reservations calendar",
             "vehicules": "Vehicles",
@@ -1721,6 +1723,49 @@
             "trend": "Signups, day by day",
             "trendHint": "Clients created on each day of the window, by their registration date.",
             "rows": "Clients who signed up"
+        }
+    },
+    "landingReservations": {
+        "title": "QR reservations",
+        "description": "Reservation requests left on the public QR landing page.",
+        "filter": {
+            "all": "All"
+        },
+        "status": {
+            "new": "New",
+            "contacted": "Contacted",
+            "converted": "Converted",
+            "rejected": "Rejected"
+        },
+        "searchPlaceholder": "Search by name, phone, email…",
+        "table": {
+            "client": "Customer",
+            "car": "Car",
+            "pickup": "Pickup",
+            "return": "Return",
+            "message": "Message",
+            "status": "Status",
+            "created": "Received",
+            "noCar": "—"
+        },
+        "actions": {
+            "details": "Details",
+            "changeStatus": "Change status"
+        },
+        "dialog": {
+            "phone": "Phone",
+            "email": "Email",
+            "car": "Requested car",
+            "dates": "Pickup → return",
+            "message": "Customer message",
+            "call": "Call",
+            "whatsapp": "WhatsApp",
+            "waMessage": "Hello {{name}}, we received your reservation request for the {{car}}. We are checking availability and will get back to you shortly.",
+            "status": "Status"
+        },
+        "toasts": {
+            "updated": "Status updated",
+            "couldNotUpdate": "Could not update status"
         }
     }
 }

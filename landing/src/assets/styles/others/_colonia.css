@@ -1,0 +1,320 @@
+/**
+ * Colonia design system (landing page)
+ * Source: landinginspriationdesign/index.html ("Colonia" Webflow template)
+ *
+ * Tokens:
+ * - primary  #fa7319   dark-orange #b34e0b   dark #171717
+ * - grey-dark #5c5c5c  grey-medium #6e6e6e
+ * - grey-light #f8f8f8 stroke-grey #ebebeb
+ *
+ * Headings: h1 56/64, h2 30/38, h3 26/32, h4 20/28 (600, -0.04em)
+ * Paragraphs: p1 18/26, p2 16/24, p3 14/20 (500, -0.01em)
+ * Radii: 8 / 10 / 12 / 14 / 20 / 30 / pill
+ */
+/**
+ * Inter, self-hosted (extracted from the template's own embedded webfont,
+ * a variable file covering weights 400–700). The template's Google-Fonts
+ * `@import` did not survive the bundling (remote @import after other
+ * statements is ignored), so text fell back to the system font and wrap
+ * points diverged from the template.
+ */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('/img/landing/fonts/Inter-400-700-normal.woff2') format('woff2');
+}
+
+
+/* Palette hookups — unlayered so they always win over Tailwind's theme vars */
+.colonia-root {
+    --primary: #fa7319;
+    --primary-deep: #d95c0a;
+    --primary-mild: #fb8a3c;
+    --primary-subtle: #fa73191a;
+
+    --gray-50: #f8f8f8;
+    --gray-100: #f1f1f1;
+    --gray-200: #ebebeb;
+    --gray-300: #d9d9d9;
+    --gray-400: #9d9d9d;
+    --gray-500: #5c5c5c;
+    --gray-600: #525252;
+    --gray-700: #2e2e2e;
+    --gray-800: #212121;
+}
+
+.dark .colonia-root {
+    --primary: #fa7319;
+    --primary-deep: #b34e0b;
+    --primary-mild: #fb8a3c;
+    --primary-subtle: #fa73193f;
+
+    --gray-50: #232323;
+    --gray-100: #2a2a2a;
+    --gray-200: #383838;
+    --gray-300: #4a4a4a;
+    --gray-400: #8a8a8a;
+    --gray-500: #b3b3b3;
+    --gray-600: #d2d2d2;
+    --gray-700: #e6e6e6;
+    --gray-800: #2b2b2b;
+}
+
+/* Component classes live in the components layer so Tailwind utilities
+   placed on the same element (bg-[...], text-[...]) can override them. */
+@layer components {
+    .colonia-root {
+        font-family:
+            'Inter',
+            sans-serif;
+        letter-spacing: -0.01em;
+        color: #5c5c5c;
+    }
+
+    .dark .colonia-root {
+        color: #b3b3b3;
+    }
+
+    /* =================== Typography scale =================== */
+    .colonia-root h1,
+    .colonia-root .col-h1 {
+        font-size: clamp(30px, 6vw, 56px);
+        line-height: 1.15;
+        font-weight: 600;
+        letter-spacing: -0.04em;
+    }
+
+    .colonia-root h2,
+    .colonia-root .col-h2 {
+        font-size: clamp(26px, 4vw, 30px);
+        line-height: 1.27;
+        font-weight: 600;
+        letter-spacing: -0.04em;
+    }
+
+    .colonia-root h3,
+    .colonia-root .col-h3 {
+        font-size: clamp(22px, 3.4vw, 26px);
+        line-height: 1.25;
+        font-weight: 600;
+        letter-spacing: -0.04em;
+    }
+
+    .colonia-root h4,
+    .colonia-root .col-h4 {
+        font-size: 20px;
+        line-height: 1.4;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+    }
+
+    .colonia-root h5,
+    .colonia-root .col-h5 {
+        font-size: 18px;
+        line-height: 1.4;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+    }
+
+    .colonia-root .col-p1 {
+        font-size: 18px;
+        line-height: 1.45;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+    }
+
+    .colonia-root .col-p2 {
+        font-size: 16px;
+        line-height: 1.5;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+    }
+
+    .colonia-root .col-p3,
+    .colonia-root button.col-p3,
+    .colonia-root a.col-p3 {
+        font-size: 14px;
+        line-height: 1.45;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+    }
+
+    .col-heading {
+        color: #171717;
+        letter-spacing: -0.04em;
+    }
+
+    .dark .col-heading {
+        color: #f8f8f8;
+    }
+
+    /* =================== Buttons =================== */
+    .col-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        border-radius: 8px;
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        text-decoration: none;
+        white-space: nowrap;
+        cursor: pointer;
+        transition:
+            filter 0.2s ease,
+            background-color 0.2s ease;
+    }
+
+    .col-btn:hover {
+        filter: brightness(1.06);
+    }
+
+    /* button-01 — dark gradient with subtle inset highlights */
+    .col-btn-dark {
+        color: #fff;
+        background-image: linear-gradient(0deg, #393939, #313131 46%, #282828);
+        border: 1px solid #000;
+        box-shadow:
+            inset 0 2px 1px rgba(255, 255, 255, 0.2),
+            inset 0 -2px #000;
+        padding: 14px 20px;
+    }
+
+    .dark .col-btn-dark {
+        background-image: linear-gradient(0deg, #454545, #3a3a3a 46%, #303030);
+    }
+
+    /* button-03 — light grey gradient with border */
+    .col-btn-light {
+        color: #171717;
+        background-image: linear-gradient(0deg, #fcfcfc, #f0f0f0);
+        border: 1px solid #ebebeb;
+        box-shadow:
+            inset 0 2px 1px rgba(228, 228, 228, 0.2),
+            inset 0 -2px 0 #fff;
+        padding: 14px 20px;
+    }
+
+    .dark .col-btn-light {
+        color: #f8f8f8;
+        background-image: linear-gradient(0deg, #343434, #262626);
+        border-color: rgba(255, 255, 255, 0.12);
+        box-shadow:
+            inset 0 2px 1px rgba(255, 255, 255, 0.08),
+            inset 0 -2px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    /* button-02 — plain white pill-sized button */
+    .col-btn-white {
+        color: #171717;
+        background-color: #fff;
+        padding: 10px 17px;
+    }
+
+    .dark .col-btn-white {
+        color: #f8f8f8;
+        background-color: #fff;
+    }
+
+    .col-btn-dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 100px;
+        background-color: #b34e0b;
+        box-shadow: 0 0 6px 1px rgba(250, 115, 25, 0.65);
+    }
+
+    /* =================== Tags & chips =================== */
+    .col-tag {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 16px;
+        line-height: 18px;
+        font-weight: 500;
+        letter-spacing: 0;
+        color: #6e6e6e;
+    }
+
+    .dark .col-tag {
+        color: #a3a3a3;
+    }
+
+    /* Hero "special heading" chip with orange glow gradient */
+    .col-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 24px 7px;
+        border-radius: 100px;
+        background-image: linear-gradient(#fff, rgba(250, 115, 25, 0.3));
+    }
+
+    .dark .col-chip {
+        background-image: linear-gradient(#2c2c2c, rgba(250, 115, 25, 0.28));
+    }
+
+    .col-chip-text {
+        color: #171717;
+        background-image: linear-gradient(#fa7319, #bf4d00);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .dark .col-chip-text {
+        color: #f8f8f8;
+    }
+
+    /* =================== Cards & surfaces =================== */
+    .col-card {
+        border-radius: 20px;
+        background-color: #f8f8f8;
+        text-align: start;
+    }
+
+    .dark .col-card {
+        background-color: #232323;
+    }
+
+    .col-card-lg {
+        border-radius: 30px;
+    }
+
+    .col-card-inner {
+        border-radius: 14px;
+        background-color: #fff;
+    }
+
+    .dark .col-card-inner {
+        background-color: #2e2e2e;
+    }
+
+    .col-divider {
+        height: 1px;
+        background-color: #ebebeb;
+    }
+
+    .dark .col-divider {
+        background-color: #383838;
+    }
+
+    /* =================== Fixed dark pill navbar =================== */
+    .colonia-fixed-navbar {
+        align-items: center;
+        justify-content: space-between;
+        background-color: #171717;
+        border-radius: 16px;
+        box-shadow: 0 8px 23.1px rgba(23, 23, 23, 0.25);
+        padding: 8px 8px 8px 16px;
+    }
+
+    .dark .colonia-fixed-navbar {
+        box-shadow:
+            0 8px 23.1px rgba(0, 0, 0, 0.5),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+}

@@ -1,65 +1,94 @@
-import type { IconType } from 'react-icons'
-import {
-    TbCalendarEvent,
-    TbCarSuv,
-    TbChartBar,
-    TbCreditCard,
-    TbFileText,
-    TbReceipt,
-    TbShieldCheck,
-    TbUsers,
-} from 'react-icons/tb'
+import { motion } from 'motion/react'
 import type { LandingModules } from '../types'
 
-const iconMap: Record<string, IconType> = {
-    calendar: TbCalendarEvent,
-    car: TbCarSuv,
-    users: TbUsers,
-    contract: TbFileText,
-    payments: TbCreditCard,
-    invoice: TbReceipt,
-    reports: TbChartBar,
-    team: TbShieldCheck,
-}
+/**
+ * Exact port of the Colonia template "features-v1" section.
+ * Source: landinginspriationdesign/index.html (https://colonia-template.webflow.io/)
+ *
+ * The markup mirrors the Webflow DOM one-to-one (features-v1 → container →
+ * features-v1-wrap → features-v1-top/-bottom) and every style lives in
+ * `src/assets/styles/others/_colonia-features.css` (design tokens are shared
+ * with the hero port). Card images are the extracted template assets
+ * public/img/landing/feature-1..6.avif — byte-identical with the template.
+ */
+
+/* The template sizes its six card images through four variants,
+   cycled 1, 2, 1, 3, 4, 4 down the grid. */
+const CARD_IMAGE_CLASSES = [
+    'features-v1-image-1',
+    'features-v1-image-2',
+    'features-v1-image-1',
+    'features-v1-image-3',
+    'features-v1-image-4',
+    'features-v1-image-4',
+] as const
+
+/* Scroll-in animation mirroring the template's Webflow interactions. */
+const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94]
+
+const rise = (delay: number) => ({
+    initial: { opacity: 0, y: 24, filter: 'blur(8px)' },
+    whileInView: { opacity: 1, y: 0, filter: 'blur(0px)' },
+    viewport: { once: true, margin: '-60px' },
+    transition: { duration: 0.7, delay, ease: EASE_OUT },
+})
 
 const Modules = ({ content }: { content: LandingModules }) => (
-    <section
-        id="modules"
-        className="border-t border-gray-200 dark:border-gray-700"
-    >
-        <div className="max-w-7xl mx-auto border-r border-l border-gray-200 dark:border-gray-700">
-            <div className="grid grid-cols-12 py-12 lg:py-24 px-4 lg:px-0">
-                <div className="col-span-1" />
-                <div className="col-span-10">
-                    <h3 className="max-w-2xl mx-auto lg:mx-0 leading-snug">
-                        <span>{content.heading}</span>
-                    </h3>
-                    <p className="text-slate-400 font-medium mt-3 max-w-2xl mx-auto lg:mx-0">
-                        {content.subheading}
-                    </p>
-                </div>
-                <div className="col-span-1" />
-            </div>
-            <div className="grid grid-cols-12 pb-24">
-                <div className="col-span-1" />
-                <div className="col-span-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {content.items.map((item) => {
-                        const Icon = iconMap[item.icon]
-                        return (
-                            <div
-                                key={item.id}
-                                className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6 transition-colors hover:border-gray-300 dark:hover:border-gray-600"
+    <section id="features" className="features-v1" dir="ltr">
+        <div className="colonia-container">
+            <div className="features-v1-wrap">
+                <div className="features-v1-top">
+                    <motion.div className="tag-wrap" {...rise(0.05)}>
+                        <img
+                            src="/img/landing/tag-features.svg"
+                            loading="lazy"
+                            alt=""
+                            className="tag-icon"
+                        />
+                        <div className="teg text-grey-02">{content.tag}</div>
+                    </motion.div>
+                    <div className="title-wrap">
+                        <motion.div className="heading-wrap" {...rise(0.15)}>
+                            <h2 className="text-h3">{content.heading}</h2>
+                        </motion.div>
+                        <div className="sub-heading-wrap">
+                            <motion.p
+                                className="paragraph-02 text-grey-01"
+                                {...rise(0.25)}
                             >
-                                <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary-subtle text-primary">
-                                    {Icon ? <Icon size={22} /> : null}
-                                </div>
-                                <h5 className="mt-5">{item.title}</h5>
-                                <p className="mt-2 text-sm">{item.description}</p>
-                            </div>
-                        )
-                    })}
+                                {content.subheading}
+                            </motion.p>
+                        </div>
+                    </div>
                 </div>
-                <div className="col-span-1" />
+                <div className="features-v1-bottom">
+                    {content.items.map((item, index) => (
+                        <motion.div
+                            key={item.id}
+                            className="features-v1-list"
+                            {...rise(0.05 + index * 0.06)}
+                        >
+                            <div
+                                className={`features-v1-list-top ${
+                                    CARD_IMAGE_CLASSES[index % CARD_IMAGE_CLASSES.length]
+                                }`}
+                            >
+                                <img
+                                    src={`/img/landing/feature-${index + 1}.avif`}
+                                    loading="lazy"
+                                    alt={item.title}
+                                    className="features-v1-image"
+                                />
+                            </div>
+                            <div className="features-v1-list-bottom">
+                                <div className="paragraph-02">{item.title}</div>
+                                <div className="paragraph-03 text-grey-01">
+                                    {item.description}
+                                </div>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
             </div>
         </div>
     </section>

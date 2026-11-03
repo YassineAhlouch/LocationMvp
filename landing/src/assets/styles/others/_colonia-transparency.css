@@ -1,0 +1,148 @@
+/**
+ * Exact port of the Colonia template "transparency" section.
+ * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ *
+ * Layout truth (measured at 1440, live template): the section only pads slim
+ * (20px) horizontally; `transparency-section` is the rounded (radius-normal)
+ * dark-orange banner carrying the same artwork as the works banner (the
+ * template's shared `sf-img-1`, extracted as works-transparency-bg.avif) at
+ * 50% / cover, with padding-top big (80px), slim side padding and
+ * overflow hidden. The centered `transparency-top` (536px) holds the white
+ * tag ("Full Transparency", hard-coded #fff in the template), the "Data
+ * Visibility" heading (text-h3) and the sub-heading (paragraph-02, inheriting
+ * the white color — no text-grey-01 class in the template). `transparency-bottom`
+ * opens 40px lower (margin-medium-rare) and hosts the framed dashboard
+ * screenshot (transparency.avif) capped at 550px. A `transparency-bg` layer
+ * (z-index -1) exists in the template markup but is hidden by interactions
+ * (Webflow `sf-hidden`) and defines no background — carried verbatim as an
+ * inert element. The template defines no media overrides for this section;
+ * the shared tokens shrink spacing at ≤991px / ≤767px / ≤479px.
+ *
+ * The app keeps its section id (#contact) on this slot so the navigation,
+ * footer links and the FAQ continue to land here.
+ */
+
+/* ===================== Transparency ===================== */
+.transparency {
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    position: relative;
+}
+
+.transparency-section {
+    padding-top: var(--_responsive---padding--padding-big);
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    background-color: var(--color--dark-orange);
+    background-image: url('/img/landing/works-transparency-bg.avif');
+    background-position: 50%;
+    background-size: cover;
+    position: relative;
+    overflow: hidden;
+}
+
+/* the template's generic `.container` (1280px); scoped to avoid
+   clashing with Tailwind's own .container utility */
+.transparency .colonia-container {
+    width: var(--100);
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.transparency-top {
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    color: #fff;
+    text-align: center;
+    flex-flow: column;
+    max-width: 536px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+}
+
+.transparency-bottom {
+    margin-top: var(--_responsive---margin--margin-medium-rare);
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+}
+
+.transparency-image {
+    width: var(--100);
+    height: var(--100);
+}
+
+/* interaction-hidden layer in the template (defines no background) */
+.transparency-bg {
+    z-index: -1;
+    position: absolute;
+    inset: 0%;
+}
+
+/* ===================== Shared building blocks =====================
+   (same scoped base as the other Colonia ports) */
+.transparency .tag-wrap {
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.transparency .tag-icon {
+    width: 16px;
+}
+
+.transparency .teg {
+    font-size: var(--_typography---tag--font-size);
+    line-height: var(--_typography---tag--line-height);
+    font-weight: var(--_typography---tag--font-weight);
+    letter-spacing: var(--_typography---tag--latter-spaces);
+}
+
+.transparency .text-light {
+    color: var(--color--light);
+}
+
+.transparency .title-wrap {
+    grid-column-gap: var(--_spacing---spacing-xsmall);
+    grid-row-gap: var(--_spacing---spacing-xsmall);
+    flex-flow: column;
+    display: flex;
+}
+
+.transparency .heading-wrap,
+.transparency .sub-heading-wrap {
+    display: flex;
+    justify-content: center;
+}
+
+.transparency .text-h3 {
+    font-size: var(--_typography---h3--font-size);
+    line-height: var(--_typography---h3--line-height);
+    font-weight: var(--_typography---h3--font-weight);
+    letter-spacing: var(--_typography---h3--latter-spaces);
+    /* the template's h2 inherits the intro's #fff from transparency-top;
+       the app's Tailwind base h2 (text-gray-900) must not win — same
+       explicit light color as the works heading
+       (--color--light never flips) */
+    color: var(--color--light);
+}
+
+.transparency .paragraph-02 {
+    font-size: var(--_typography---paragraph-02--font-size);
+    line-height: var(--_typography---paragraph-02--line-height);
+    font-weight: var(--_typography---paragraph-02--font-weight);
+    letter-spacing: var(--_typography---paragraph-02--latter-spaces);
+}
+
+/* ===================== Dark mode (app theme toggle) =====================
+   The banner (dark-orange artwork) and the white intro text stay untouched
+   in dark mode exactly like the template's
+   works banner — no overrides needed. */

@@ -1,151 +1,163 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { TbMinus, TbPlus, TbReceipt, TbSettings, TbUsers } from 'react-icons/tb'
 import classNames from '@/utils/classNames'
-import type { IconType } from 'react-icons'
-import type { LandingFaq, LandingFaqCategory } from '../types'
+import type { LandingPageContent, LandingFaqQuestion } from '../types'
 
-const categoryIcon: Record<string, IconType> = {
-    subscription: TbUsers,
-    billing: TbReceipt,
-    other: TbSettings,
-}
+/**
+ * Exact port of the Colonia template faq section (`<section class=faq>`).
+ * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ *
+ * The template's anatomy carries the app's content unchanged: a centered 470px
+ * intro (tag row with the 16px quote glyph + teg grey-02 text, text-h3 heading
+ * and the paragraph-02 grey-01 sub-heading), then a 660px column of grey
+ * accordions (`faq-list`, radius-slim, each a `faq-question` flex row with the
+ * 22px chevron artwork and a height-animated `faq-answers` box whose
+ * `faq-answer-text` paragraph holds the answer). Keeping the app's behaviour:
+ * one row open at a time and the chevron flipping 180°. The template's IX2
+ * height animation maps to the existing motion/react height toggle, and rows
+ * get the shared blur-rise entrance (rows widen the in-view margin to 200px
+ * below the fold so fast scrolls can't skip the stagger). The app's dark
+ * demo-CTA card stays below the rows (app content the template doesn't
+ * carry). Rules live in src/assets/styles/others/_colonia-faq.css.
+ */
+
+const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94]
+
+const rise = (delay: number) => ({
+    initial: { opacity: 0, y: 24, filter: 'blur(8px)' },
+    whileInView: { opacity: 1, y: 0, filter: 'blur(0px)' },
+    viewport: { once: true, margin: '-60px' },
+    transition: { duration: 0.7, delay, ease: EASE_OUT },
+})
 
 const Question = ({
     question,
     answer,
-    isFirst,
-    isLast,
+    isOpen,
+    onToggle,
 }: {
     question: string
     answer: string
-    isFirst: boolean
-    isLast: boolean
-}) => {
-    const [isOpen, setIsOpen] = useState(isFirst)
-
-    return (
-        <div
-            className={classNames(
-                !isLast && 'border-b border-gray-200 dark:border-gray-700',
-            )}
-        >
-            <button
-                type="button"
-                onClick={() => setIsOpen((open) => !open)}
-                className="group flex w-full items-center gap-4 py-5 text-start"
-            >
-                <span className="text-lg text-gray-400 transition-colors group-hover:text-primary">
-                    {isOpen ? <TbMinus /> : <TbPlus />}
-                </span>
-                <span className="font-medium heading-text transition-colors group-hover:text-primary">
-                    {question}
-                </span>
-            </button>
-            <AnimatePresence initial={false}>
-                {isOpen && (
-                    <motion.div
-                        key="content"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-                        className="overflow-hidden"
-                    >
-                        <p className="pb-5 ltr:ml-9 rtl:mr-9 text-sm text-gray-500 dark:text-gray-400">
-                            {answer}
-                        </p>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+    isOpen: boolean
+    onToggle: () => void
+}) => (
+    <div className="faq-list" aria-expanded={isOpen} onClick={onToggle}>
+        <div className="faq-question">
+            <div className="paragraph-02">{question}</div>
+            {/* the template's 22px chevron artwork, flipped open */}
+            <div className="faq-icon-box">
+                <img
+                    src="/img/landing/faq-icon.svg"
+                    alt=""
+                    aria-hidden="true"
+                    className={classNames(
+                        'faq-icon transition-transform duration-200',
+                        isOpen && 'rotate-180',
+                    )}
+                />
+            </div>
         </div>
-    )
-}
+        <AnimatePresence initial={false}>
+            {isOpen && (
+                <motion.div
+                    key="content"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                    className="faq-answers"
+                >
+                    <p className="paragraph-03 faq-answer-text">{answer}</p>
+                </motion.div>
+            )}
+        </AnimatePresence>
+    </div>
+)
 
-const Faq = ({ content }: { content: LandingFaq }) => {
-    const [selectedId, setSelectedId] = useState(
-        content.categories[0]?.id ?? '',
-    )
-
-    const selectedCategory = useMemo<LandingFaqCategory | undefined>(
-        () =>
-            content.categories.find((category) => category.id === selectedId),
-        [content.categories, selectedId],
-    )
-
-    const isCategoryActive = (category: LandingFaqCategory) =>
-        category.id === selectedCategory?.id
+const Faq = ({ content }: { content: LandingPageContent }) => {
+    const faq = content.faq
+    const [openIndex, setOpenIndex] = useState(0)
 
     return (
-        <section id="faq" className="border-t border-gray-200 dark:border-gray-700">
-            <div className="max-w-7xl mx-auto border-r border-l border-gray-200 dark:border-gray-700">
-                <div className="px-4 lg:px-0 py-12 lg:py-24">
-                    <div className="grid grid-cols-12">
-                        <div className="col-span-1" />
-                        <div className="col-span-10">
-                            <h3 className="max-w-2xl leading-snug">
-                                {content.heading}
-                            </h3>
-                            <p className="mt-3 max-w-2xl text-gray-500 dark:text-gray-400 font-medium">
-                                {content.subheading}
-                            </p>
+        <section id="faq" className="faq">
+            <div className="colonia-container">
+                <div className="faq-wrap">
+                    <div className="faq-top">
+                        <motion.div className="tag-wrap" {...rise(0.05)}>
+                            <img
+                                src="/img/landing/tag-faq.svg"
+                                loading="lazy"
+                                alt=""
+                                className="tag-icon"
+                            />
+                            <div className="teg text-grey-02">{faq.tag}</div>
+                        </motion.div>
+                        <div className="title-wrap">
+                            <motion.div className="heading-wrap" {...rise(0.15)}>
+                                <h2 className="text-h3">{faq.heading}</h2>
+                            </motion.div>
+                            <motion.div {...rise(0.25)}>
+                                <p className="paragraph-02 text-grey-01">
+                                    {faq.subheading}
+                                </p>
+                            </motion.div>
                         </div>
-                        <div className="col-span-1" />
                     </div>
-
-                    <div className="grid grid-cols-12 mt-10">
-                        <div className="col-span-1" />
-                        <div className="col-span-10 flex flex-col gap-6 md:flex-row md:gap-16">
-                            <div className="min-w-[230px]">
-                                <ul>
-                                    {content.categories.map((category) => {
-                                        const Icon = categoryIcon[category.id]
-                                        const isActive = isCategoryActive(category)
-
-                                        return (
-                                            <li key={category.id}>
-                                                <button
-                                                    type="button"
-                                                    onClick={() =>
-                                                        setSelectedId(category.id)
-                                                    }
-                                                    className={classNames(
-                                                        'my-1 flex h-9 w-full items-center gap-2 rounded-md px-2 text-start font-medium heading-text transition-colors',
-                                                        isActive
-                                                            ? 'bg-gray-100 font-semibold dark:bg-gray-700'
-                                                            : 'hover:bg-gray-50 dark:hover:bg-gray-800',
-                                                    )}
-                                                >
-                                                    <span className="text-lg">
-                                                        {Icon ? <Icon /> : null}
-                                                    </span>
-                                                    <span>{category.title}</span>
-                                                </button>
-                                            </li>
-                                        )
-                                    })}
-                                </ul>
-                            </div>
-                            <div className="flex-1">
-                                {selectedCategory?.questions.map(
-                                    (item, index) => (
+                    <div className="faq-bottom">
+                        <div className="faq-collection-list">
+                            {faq.questions.map(
+                                (item: LandingFaqQuestion, index: number) => (
+                                    <motion.div
+                                        key={item.question}
+                                        {...rise(0.2 + index * 0.05)}
+                                        viewport={{
+                                            once: true,
+                                            margin: '0px 0px 200px 0px',
+                                        }}
+                                    >
                                         <Question
-                                            key={item.question}
                                             question={item.question}
                                             answer={item.answer}
-                                            isFirst={index === 0}
-                                            isLast={
-                                                index ===
-                                                selectedCategory.questions
-                                                    .length -
-                                                    1
+                                            isOpen={openIndex === index}
+                                            onToggle={() =>
+                                                setOpenIndex(
+                                                    openIndex === index
+                                                        ? -1
+                                                        : index,
+                                                )
                                             }
                                         />
-                                    ),
-                                )}
+                                    </motion.div>
+                                ),
+                            )}
+
+                            {/* Demo CTA */}
+                            <div className="col-card bg-[#171717] dark:bg-[#232323] p-6 sm:p-8 mt-4">
+                                <img
+                                    src="/img/landing/cta-icon.svg"
+                                    alt=""
+                                    aria-hidden="true"
+                                    className="h-[50px] w-[50px]"
+                                />
+                                <p className="col-h5 mt-4">
+                                    <span className="text-white">
+                                        {content.faq.cta.title}{' '}
+                                    </span>
+                                    <span className="text-[#f8f8f8]/60 font-medium">
+                                        {content.faq.cta.accent}
+                                    </span>
+                                </p>
+                                <p className="mt-2 col-p3 text-[#f8f8f8]/70">
+                                    {content.faq.cta.text}
+                                </p>
+                                <a
+                                    href="#contact"
+                                    className="col-btn col-btn-white col-p3 mt-5 w-fit dark:text-[#171717]!"
+                                >
+                                    {content.faq.cta.button}
+                                </a>
                             </div>
                         </div>
-                        <div className="col-span-1" />
                     </div>
                 </div>
             </div>

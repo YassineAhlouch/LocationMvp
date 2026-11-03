@@ -9,6 +9,8 @@
             "reservationsDesc": "Gestion des réservations",
             "reservationsListe": "Liste des réservations",
             "reservationsListeDesc": "Liste des réservations",
+            "reservationsQr": "Réservations QR",
+            "reservationsQrDesc": "Demandes reçues via le code QR",
             "reservationsCalendrier": "Calendrier",
             "reservationsCalendrierDesc": "Calendrier des réservations",
             "vehicules": "Véhicules",
@@ -1721,6 +1723,49 @@
             "trend": "Inscriptions, jour par jour",
             "trendHint": "Clients créés chaque jour de la fenêtre, selon leur date d'inscription.",
             "rows": "Clients inscrits"
+        }
+    },
+    "landingReservations": {
+        "title": "Réservations QR",
+        "description": "Demandes de réservation envoyées depuis la page publique par code QR.",
+        "filter": {
+            "all": "Toutes"
+        },
+        "status": {
+            "new": "Nouvelle",
+            "contacted": "Contactée",
+            "converted": "Convertie",
+            "rejected": "Rejetée"
+        },
+        "searchPlaceholder": "Rechercher par nom, téléphone, e-mail…",
+        "table": {
+            "client": "Client",
+            "car": "Véhicule",
+            "pickup": "Prise en charge",
+            "return": "Retour",
+            "message": "Message",
+            "status": "Statut",
+            "created": "Reçue le",
+            "noCar": "—"
+        },
+        "actions": {
+            "details": "Détails",
+            "changeStatus": "Changer le statut"
+        },
+        "dialog": {
+            "phone": "Téléphone",
+            "email": "E-mail",
+            "car": "Véhicule demandé",
+            "dates": "Prise en charge → retour",
+            "message": "Message du client",
+            "call": "Appeler",
+            "whatsapp": "WhatsApp",
+            "waMessage": "Bonjour {{name}}, nous avons bien reçu votre demande de réservation pour le {{car}}. Nous vérifions la disponibilité et revenons vers vous rapidement.",
+            "status": "Statut"
+        },
+        "toasts": {
+            "updated": "Statut mis à jour",
+            "couldNotUpdate": "Mise à jour du statut impossible"
         }
     }
 }

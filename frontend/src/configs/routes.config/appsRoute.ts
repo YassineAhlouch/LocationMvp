@@ -98,6 +98,17 @@ const appsRoute: Routes = [
         },
     },
     {
+        key: 'gestion.reservations.qr',
+        path: `${APPS_PREFIX_PATH}/reservations/qr`,
+        component: lazy(() => import('@/views/location/LandingReservations')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'contained',
+            footer: false,
+        },
+    },
+    {
         key: 'gestion.reservations.calendrier',
         path: `${APPS_PREFIX_PATH}/reservations/calendrier`,
         component: lazy(() => import('@/views/location/ReservationCalendar')),

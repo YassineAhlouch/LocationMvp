@@ -141,6 +141,23 @@ const appsNavigationConfig: NavigationTree[] = [
                         subMenu: [],
                     },
                     {
+                        key: 'gestion.reservations.qr',
+                        path: `${APPS_PREFIX_PATH}/reservations/qr`,
+                        title: 'Reservation QR codes',
+                        translateKey: 'nav.gestion.reservationsQr',
+                        icon: 'gestionReservations',
+                        type: NAV_ITEM_TYPE_ITEM,
+                        authority: [ADMIN, USER],
+                        meta: {
+                            description: {
+                                translateKey:
+                                    'nav.gestion.reservationsQrDesc',
+                                label: 'Requests received via the QR landing',
+                            },
+                        },
+                        subMenu: [],
+                    },
+                    {
                         key: 'gestion.reservations.calendrier',
                         path: `${APPS_PREFIX_PATH}/reservations/calendrier`,
                         title: 'Calendar',

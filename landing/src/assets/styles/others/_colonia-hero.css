@@ -1,0 +1,831 @@
+/**
+ * Exact port of the Colonia template hero ("home-hero" section).
+ * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ *
+ * Every rule below is taken 1:1 from the template stylesheet. Values are
+ * resolved through the template's own design tokens (--_typography---*,
+ * --_spacing---*, --_responsive---*), copied verbatim in the token blocks
+ * so the hero renders identically at all breakpoints (991 / 767 / 479).
+ *
+ * Class names intentionally match the Webflow markup (home-hero, hero-wrap,
+ * home-hero-top, spcial-heading, button-01, ...) and all rules are scoped
+ * under .home-hero so they never clash with the rest of the app.
+ */
+
+/* ===================== Template design tokens (verbatim) ===================== */
+:root {
+    --font-family--primary-font: Inter, sans-serif;
+    --font-weight--normal: 400;
+    --font-weight--medium: 500;
+    --font-weight--semi-bold: 600;
+
+    --latter-spaces--small: -.01em;
+    --latter-spaces--xlarge: -.03em;
+    --latter-spaces--xxlarge: -.04em;
+
+    --color--dark: #171717;
+    --color--light: white;
+    --color--primary: #fa7319;
+    --color--dark-orange: #b34e0b;
+    --color--grey-dark: #5c5c5c;
+    --color--grey-medium: #6e6e6e;
+    --color--grey-light: #f8f8f8;
+    --color--stroke-grey: #ebebeb;
+    --color--transparent: #0000;
+
+    --100: 100%;
+
+    --_typography---h1--font-size: 56px;
+    --_typography---h1--line-height: 64px;
+    --_typography---h1--font-weight: var(--font-weight--semi-bold);
+    --_typography---h1--latter-spaces: var(--latter-spaces--xxlarge);
+
+    --_typography---h2--font-size: 30px;
+    --_typography---h2--line-height: 38px;
+    --_typography---h2--font-weight: var(--font-weight--semi-bold);
+    --_typography---h2--latter-spaces: var(--latter-spaces--xxlarge);
+
+    --_typography---h3--font-size: 26px;
+    --_typography---h3--line-height: 32px;
+    --_typography---h3--font-weight: var(--font-weight--semi-bold);
+    --_typography---h3--latter-spaces: var(--latter-spaces--xxlarge);
+
+    --_typography---h4--font-size: 20px;
+    --_typography---h4--line-height: 28px;
+    --_typography---h4--font-weight: var(--font-weight--semi-bold);
+    --_typography---h4--latter-spaces: var(--latter-spaces--xlarge);
+
+    --_typography---paragraph-01--font-size: 18px;
+    --_typography---paragraph-01--line-height: 26px;
+    --_typography---paragraph-01--font-weight: var(--font-weight--medium);
+    --_typography---paragraph-01--latter-spaces: var(--latter-spaces--small);
+
+    --_typography---paragraph-02--font-size: 16px;
+    --_typography---paragraph-02--line-height: 24px;
+    --_typography---paragraph-02--font-weight: var(--font-weight--medium);
+    --_typography---paragraph-02--latter-spaces: var(--latter-spaces--small);
+
+    --_typography---paragraph-03--font-size: 14px;
+    --_typography---paragraph-03--line-height: 20px;
+    --_typography---paragraph-03--font-weight: var(--font-weight--medium);
+    --_typography---paragraph-03--latter-spaces: var(--latter-spaces--small);
+
+    --_typography---tag--font-size: 16px;
+    --_typography---tag--line-height: 18px;
+    --_typography---tag--font-weight: var(--font-weight--medium);
+    --_typography---tag--latter-spaces: 0px;
+
+    --_spacing---spacing-slim: 20px;
+    --_spacing---spacing-small: 16px;
+    --_spacing---spacing-tiny: 8px;
+    --_spacing---spacing-xsmall: 14px;
+    --_spacing---spacing-xxsmall: 10px;
+    --_spacing---spacing-medium: 24px;
+    --_spacing---spacing-medium-rare: 26px;
+    --_spacing---spacing-normal: 32px;
+    --_spacing---spacing-regular: 30px;
+    --_spacing---spacing-large: 40px;
+    --_spacing---spacing-xxlarge: 55px;
+    --_spacing---spacing-xxxlarge: 60px;
+    --_spacing---spacing-big: 80px;
+    --_spacing---spacing-xxbig: 100px;
+
+    --_responsive---padding--padding-tiny: 10px;
+    --_responsive---padding--padding-xxsmall: 14px;
+    --_responsive---padding--padding-xsmall: 15px;
+    --_responsive---padding--padding-slim: 20px;
+    --_responsive---padding--padding-small: 18px;
+    --_responsive---padding--padding-medium: 22px;
+    --_responsive---padding--padding-medium-rare: 24px;
+    --_responsive---padding--padding-normal: 30px;
+    --_responsive---padding--padding-large: 32px;
+    --_responsive---padding--padding-xlarge: 40px;
+    --_responsive---padding--padding-big: 80px;
+    --_responsive---padding--padding-xxxlarge: 70px;
+    --_responsive---padding--padding-xbig: 100px;
+
+    --_responsive---margin--margin-xxsmall: 20px;
+    --_responsive---margin--margin-small: 30px;
+    --_responsive---margin--margin-slim: 40px;
+    --_responsive---margin--margin-medium: 50px;
+    --_responsive---margin--margin-medium-rare: 60px;
+    --_responsive---margin--margin-large: 80px;
+    --_responsive---margin--margin-regular: 70px;
+
+    --_responsive---border-radius--border-radius-xsmall: 8px;
+    --_responsive---border-radius--border-radius-slim: 12px;
+    --_responsive---border-radius--border-radius-small: 10px;
+    --_responsive---border-radius--border-radius-medium: 14px;
+    --_responsive---border-radius--border-radius-medium-rare: 16px;
+    --_responsive---border-radius--border-radius-normal: 20px;
+    --_responsive---border-radius--border-radius-large: 30px;
+    --_responsive---border-radius--radius-xlarge: 100px;
+}
+
+@media screen and (max-width: 991px) {
+    :root {
+        --_responsive---padding--padding-medium-rare: 20px;
+        --_responsive---padding--padding-slim: 20px;
+        --_responsive---padding--padding-large: 30px;
+        --_responsive---padding--padding-big: 70px;
+        --_responsive---padding--padding-xbig: 80px;
+        --_responsive---border-radius--border-radius-slim: 10px;
+        --_responsive---border-radius--border-radius-xsmall: 8px;
+        --_responsive---padding--padding-xlarge: 30px;
+        --_responsive---margin--margin-large: 60px;
+        --_responsive---border-radius--border-radius-normal: 18px;
+        --_responsive---margin--margin-xxsmall: 20px;
+        --_responsive---margin--margin-medium: 40px;
+        --_responsive---border-radius--border-radius-small: 8px;
+        --_responsive---padding--padding-tiny: 10px;
+        --_responsive---border-radius--radius-xlarge: 100px;
+        --_responsive---margin--margin-medium-rare: 50px;
+        --_responsive---padding--padding-xsmall: 15px;
+        --_responsive---border-radius--border-radius-medium: 12px;
+        --_responsive---border-radius--border-radius-large: 24px;
+        --_responsive---margin--margin-slim: 30px;
+        --_responsive---padding--padding-xxsmall: 14px;
+        --_responsive---border-radius--border-radius-medium-rare: 14px;
+        --_responsive---padding--padding-medium: 20px;
+        --_responsive---margin--margin-small: 26px;
+        --_responsive---margin--margin-regular: 60px;
+        --_responsive---padding--padding-normal: 28px;
+        --_responsive---padding--padding-xxxlarge: 60px;
+        --_typography---paragraph-01--font-size: 18px;
+        --_typography---paragraph-01--line-height: 26px;
+        --_typography---paragraph-01--latter-spaces: var(--latter-spaces--small);
+        --_typography---h1--font-size: 46px;
+        --_typography---h1--line-height: 54px;
+        --_typography---h2--font-size: 28px;
+        --_typography---h2--line-height: 36px;
+        --_typography---h2--font-weight: var(--font-weight--semi-bold);
+        --_typography---h2--latter-spaces: var(--latter-spaces--xxlarge);
+        --_typography---h3--font-size: 24px;
+        --_typography---h3--line-height: 32px;
+        --_typography---h3--font-weight: var(--font-weight--semi-bold);
+        --_typography---h3--latter-spaces: var(--latter-spaces--xxlarge);
+        --_typography---h4--font-size: 20px;
+        --_typography---h4--line-height: 28px;
+        --_typography---h4--font-weight: var(--font-weight--semi-bold);
+        --_typography---h4--latter-spaces: var(--latter-spaces--xlarge);
+        --_typography---h1--font-weight: var(--font-weight--semi-bold);
+        --_typography---h1--latter-spaces: var(--latter-spaces--xxlarge);
+        --_typography---paragraph-01--font-weight: var(--font-weight--medium);
+        --_typography---paragraph-02--font-size: 16px;
+        --_typography---paragraph-02--line-height: 24px;
+        --_typography---paragraph-02--font-weight: var(--font-weight--medium);
+        --_typography---paragraph-02--latter-spaces: var(--latter-spaces--small);
+        --_typography---paragraph-03--font-size: 14px;
+        --_typography---paragraph-03--line-height: 20px;
+        --_typography---paragraph-03--font-weight: var(--font-weight--medium);
+        --_typography---paragraph-03--latter-spaces: var(--latter-spaces--small);
+        --_typography---tag--font-size: 16px;
+        --_typography---tag--line-height: 18px;
+        --_typography---tag--font-weight: var(--font-weight--medium);
+        --_typography---tag--latter-spaces: 0px;
+        --_spacing---spacing-tiny: 8px;
+        --_spacing---spacing-slim: 18px;
+        --_spacing---spacing-xxxlarge: 40px;
+        --_spacing---spacing-big: 60px;
+        --_spacing---spacing-xxbig: 80px;
+        --_spacing---spacing-medium: 22px;
+        --_spacing---spacing-normal: 30px;
+        --_spacing---spacing-regular: 22px;
+        --_spacing---spacing-small: 14px;
+        --_spacing---spacing-xxsmall: 10px;
+        --_spacing---spacing-xsmall: 12px;
+        --_spacing---spacing-medium-rare: 24px;
+        --_spacing---spacing-xxlarge: 44px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    :root {
+        --_responsive---padding--padding-medium-rare: 18px;
+        --_responsive---padding--padding-slim: 18px;
+        --_responsive---padding--padding-large: 24px;
+        --_responsive---padding--padding-big: 50px;
+        --_responsive---padding--padding-xbig: 60px;
+        --_responsive---border-radius--border-radius-slim: 8px;
+        --_responsive---border-radius--border-radius-xsmall: 8px;
+        --_responsive---padding--padding-xlarge: 26px;
+        --_responsive---margin--margin-large: 50px;
+        --_responsive---border-radius--border-radius-normal: 16px;
+        --_responsive---margin--margin-xxsmall: 18px;
+        --_responsive---margin--margin-medium: 30px;
+        --_responsive---border-radius--border-radius-small: 6px;
+        --_responsive---padding--padding-tiny: 10px;
+        --_responsive---border-radius--radius-xlarge: 100px;
+        --_responsive---margin--margin-medium-rare: 40px;
+        --_responsive---padding--padding-xsmall: 12px;
+        --_responsive---border-radius--border-radius-medium: 10px;
+        --_responsive---border-radius--border-radius-large: 20px;
+        --_responsive---margin--margin-slim: 30px;
+        --_responsive---padding--padding-xxsmall: 12px;
+        --_responsive---border-radius--border-radius-medium-rare: 12px;
+        --_responsive---padding--padding-medium: 18px;
+        --_responsive---margin--margin-small: 20px;
+        --_responsive---margin--margin-regular: 40px;
+        --_responsive---padding--padding-normal: 20px;
+        --_responsive---padding--padding-xxxlarge: 50px;
+        --_typography---paragraph-01--font-size: 16px;
+        --_typography---paragraph-01--line-height: 22px;
+        --_typography---paragraph-01--latter-spaces: var(--latter-spaces--small);
+        --_typography---h1--font-size: 40px;
+        --_typography---h1--line-height: 48px;
+        --_typography---h1--font-weight: var(--font-weight--semi-bold);
+        --_typography---h1--latter-spaces: var(--latter-spaces--xxlarge);
+        --_typography---h2--font-size: 24px;
+        --_typography---h2--line-height: 38px;
+        --_typography---h2--font-weight: var(--font-weight--semi-bold);
+        --_typography---h2--latter-spaces: var(--latter-spaces--xxlarge);
+        --_typography---h3--font-size: 22px;
+        --_typography---h3--line-height: 30px;
+        --_typography---h3--font-weight: var(--font-weight--semi-bold);
+        --_typography---h3--latter-spaces: var(--latter-spaces--xxlarge);
+        --_typography---h4--font-size: 18px;
+        --_typography---h4--line-height: 26px;
+        --_typography---h4--font-weight: var(--font-weight--semi-bold);
+        --_typography---h4--latter-spaces: var(--latter-spaces--xlarge);
+        --_typography---paragraph-01--font-weight: var(--font-weight--medium);
+        --_typography---paragraph-02--font-size: 16px;
+        --_typography---paragraph-02--line-height: 24px;
+        --_typography---paragraph-02--font-weight: var(--font-weight--medium);
+        --_typography---paragraph-02--latter-spaces: var(--latter-spaces--small);
+        --_typography---paragraph-03--font-size: 14px;
+        --_typography---paragraph-03--line-height: 20px;
+        --_typography---paragraph-03--font-weight: var(--font-weight--medium);
+        --_typography---paragraph-03--latter-spaces: var(--latter-spaces--small);
+        --_typography---tag--font-size: 16px;
+        --_typography---tag--line-height: 18px;
+        --_typography---tag--font-weight: var(--font-weight--medium);
+        --_typography---tag--latter-spaces: 0px;
+        --_spacing---spacing-tiny: 8px;
+        --_spacing---spacing-slim: 16px;
+        --_spacing---spacing-xxxlarge: 30px;
+        --_spacing---spacing-big: 40px;
+        --_spacing---spacing-xxbig: 60px;
+        --_spacing---spacing-medium: 20px;
+        --_spacing---spacing-normal: 20px;
+        --_spacing---spacing-regular: 18px;
+        --_spacing---spacing-small: 14px;
+        --_spacing---spacing-xxsmall: 8px;
+        --_spacing---spacing-xsmall: 10px;
+        --_spacing---spacing-medium-rare: 20px;
+        --_spacing---spacing-xxlarge: 30px;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    :root {
+        --_responsive---padding--padding-medium-rare: 16px;
+        --_responsive---padding--padding-slim: 16px;
+        --_responsive---padding--padding-large: 20px;
+        --_responsive---padding--padding-big: 40px;
+        --_responsive---padding--padding-xbig: 40px;
+        --_responsive---border-radius--border-radius-slim: 6px;
+        --_responsive---border-radius--border-radius-xsmall: 6px;
+        --_responsive---padding--padding-xlarge: 20px;
+        --_responsive---margin--margin-large: 40px;
+        --_responsive---border-radius--border-radius-normal: 14px;
+        --_responsive---margin--margin-xxsmall: 16px;
+        --_responsive---margin--margin-medium: 30px;
+        --_responsive---border-radius--border-radius-small: 6px;
+        --_responsive---padding--padding-tiny: 10px;
+        --_responsive---border-radius--radius-xlarge: 100px;
+        --_responsive---margin--margin-medium-rare: 30px;
+        --_responsive---padding--padding-xsmall: 12px;
+        --_responsive---border-radius--border-radius-medium: 8px;
+        --_responsive---border-radius--border-radius-large: 18px;
+        --_responsive---margin--margin-slim: 20px;
+        --_responsive---padding--padding-xxsmall: 10px;
+        --_responsive---border-radius--border-radius-medium-rare: 10px;
+        --_responsive---padding--padding-medium: 16px;
+        --_responsive---margin--margin-small: 20px;
+        --_responsive---margin--margin-regular: 30px;
+        --_responsive---padding--padding-normal: 18px;
+        --_responsive---padding--padding-xxxlarge: 40px;
+        --_typography---paragraph-01--font-size: 14px;
+        --_typography---paragraph-01--line-height: 20px;
+        --_typography---paragraph-01--latter-spaces: var(--latter-spaces--small);
+        --_typography---h1--font-size: 29px;
+        --_typography---h1--line-height: 36px;
+        --_typography---h1--font-weight: var(--font-weight--semi-bold);
+        --_typography---h1--latter-spaces: var(--latter-spaces--xxlarge);
+        --_typography---h2--font-size: 22px;
+        --_typography---h2--line-height: 38px;
+        --_typography---h2--font-weight: var(--font-weight--semi-bold);
+        --_typography---h2--latter-spaces: var(--latter-spaces--xxlarge);
+        --_typography---h3--font-size: 20px;
+        --_typography---h3--line-height: 28px;
+        --_typography---h3--font-weight: var(--font-weight--semi-bold);
+        --_typography---h3--latter-spaces: var(--latter-spaces--xxlarge);
+        --_typography---h4--font-size: 16px;
+        --_typography---h4--line-height: 24px;
+        --_typography---h4--font-weight: var(--font-weight--semi-bold);
+        --_typography---h4--latter-spaces: var(--latter-spaces--xlarge);
+        --_typography---paragraph-01--font-weight: var(--font-weight--medium);
+        --_typography---paragraph-02--font-size: 14px;
+        --_typography---paragraph-02--line-height: 22px;
+        --_typography---paragraph-02--font-weight: var(--font-weight--medium);
+        --_typography---paragraph-02--latter-spaces: var(--latter-spaces--small);
+        --_typography---paragraph-03--font-size: 13px;
+        --_typography---paragraph-03--line-height: 19px;
+        --_typography---paragraph-03--font-weight: var(--font-weight--medium);
+        --_typography---paragraph-03--latter-spaces: var(--latter-spaces--small);
+        --_typography---tag--font-size: 16px;
+        --_typography---tag--line-height: 18px;
+        --_typography---tag--font-weight: var(--font-weight--medium);
+        --_typography---tag--latter-spaces: 0px;
+        --_spacing---spacing-tiny: 6px;
+        --_spacing---spacing-slim: 16px;
+        --_spacing---spacing-xxxlarge: 30px;
+        --_spacing---spacing-big: 30px;
+        --_spacing---spacing-xxbig: 40px;
+        --_spacing---spacing-medium: 18px;
+        --_spacing---spacing-normal: 20px;
+        --_spacing---spacing-regular: 18px;
+        --_spacing---spacing-small: 12px;
+        --_spacing---spacing-xxsmall: 6px;
+        --_spacing---spacing-xsmall: 8px;
+        --_spacing---spacing-medium-rare: 18px;
+    }
+}
+
+/* ===================== Hero typography (template base styles) ===================== */
+.home-hero h1 {
+    font-size: var(--_typography---h1--font-size);
+    line-height: var(--_typography---h1--line-height);
+    font-weight: var(--_typography---h1--font-weight);
+    letter-spacing: var(--_typography---h1--latter-spaces);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.home-hero .paragraph-02 {
+    font-size: var(--_typography---paragraph-02--font-size);
+    line-height: var(--_typography---paragraph-02--line-height);
+    font-weight: var(--_typography---paragraph-02--font-weight);
+    letter-spacing: var(--_typography---paragraph-02--latter-spaces);
+}
+
+.home-hero .paragraph-03 {
+    font-size: var(--_typography---paragraph-03--font-size);
+    line-height: var(--_typography---paragraph-03--line-height);
+    font-weight: var(--_typography---paragraph-03--font-weight);
+    letter-spacing: var(--_typography---paragraph-03--latter-spaces);
+}
+
+.home-hero .text-grey-01 {
+    color: var(--color--grey-dark);
+}
+
+.home-hero .text-grey-02 {
+    color: var(--color--grey-medium);
+}
+
+.home-hero .teg {
+    font-size: var(--_typography---tag--font-size);
+    line-height: var(--_typography---tag--line-height);
+    font-weight: var(--_typography---tag--font-weight);
+    letter-spacing: var(--_typography---tag--latter-spaces);
+}
+
+/* ===================== Buttons (button-01 dark / button-03 light) ===================== */
+.home-hero .button-01 {
+    grid-column-gap: 6px;
+    grid-row-gap: 6px;
+    border-radius: var(--_responsive---border-radius--border-radius-xsmall);
+    color: var(--color--light);
+    background-image: linear-gradient(0deg, #393939, #313131 46%, #282828);
+    border: 1px solid #000;
+    justify-content: center;
+    align-items: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: flex;
+    box-shadow:
+        inset 0 2px 1px rgba(255, 255, 255, 0.2),
+        inset 0 -2px #000;
+}
+
+.home-hero .button-03 {
+    grid-column-gap: 6px;
+    grid-row-gap: 6px;
+    border: 1px solid var(--color--stroke-grey);
+    border-radius: var(--_responsive---border-radius--border-radius-xsmall);
+    box-shadow:
+        inset 0 2px 1px 0 rgba(228, 228, 228, 0.2),
+        inset 0 -2px 0 0 var(--color--light);
+    color: var(--color--dark);
+    background-image: linear-gradient(0deg, #fcfcfc, #f0f0f0);
+    justify-content: center;
+    align-items: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: flex;
+}
+
+.home-hero .button-dot {
+    background-color: var(--color--dark-orange);
+    border-radius: 100px;
+    width: 4px;
+    height: 4px;
+}
+
+/* Webflow hover: label slides up and the duplicate label takes its place.
+   The duplicate is absolutely positioned over the same slot so translateY
+   maths matches the template's interaction. */
+.home-hero .button-text-wrap {
+    position: relative;
+    max-height: 20px;
+    overflow: hidden;
+}
+
+.home-hero .button-text-wrap .paragraph-03 {
+    transition:
+        transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.home-hero .button-text-wrap .paragraph-03:nth-child(2) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(100%);
+}
+
+.home-hero .button-01:hover .button-text-wrap .paragraph-03:nth-child(1),
+.home-hero .button-03:hover .button-text-wrap .paragraph-03:nth-child(1) {
+    transform: translateY(-100%);
+}
+
+.home-hero .button-01:hover .button-text-wrap .paragraph-03:nth-child(2),
+.home-hero .button-03:hover .button-text-wrap .paragraph-03:nth-child(2) {
+    transform: translateY(0);
+}
+
+/* ===================== Hero section ===================== */
+.home-hero {
+    padding-top: var(--_responsive---padding--padding-slim);
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+}
+
+/* Template keeps its navbar in flow inside the hero panel (home-nav-02 +
+   .navbar padding-top 14px ≈ 74px). The app renders the navbar fixed
+   instead, so this empty slot reproduces the template's spacing exactly
+   (panel top edge stays at 20px behind the floating pill). */
+.home-nav-02 {
+    height: 74px;
+}
+
+.home-hero-bg {
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    background-color: var(--color--grey-light);
+    padding-bottom: 6px;
+}
+
+.home-hero-container {
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    max-width: 1360px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-wrap {
+    margin-top: var(--_responsive---margin--margin-large);
+    overflow: hidden;
+}
+
+.home-hero-top {
+    grid-column-gap: var(--_spacing---spacing-regular);
+    grid-row-gap: var(--_spacing---spacing-regular);
+    flex-flow: column;
+    max-width: 660px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+}
+
+.home-hero-top-01 {
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    text-align: center;
+    flex-flow: column;
+    display: flex;
+}
+
+.home-hero-top-02 {
+    grid-column-gap: var(--_spacing---spacing-xxsmall);
+    grid-row-gap: var(--_spacing---spacing-xxsmall);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.hero-tag-wrap {
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.home-hero .tag-icon {
+    width: 16px;
+}
+
+.hero-heading {
+    grid-column-gap: var(--_spacing---spacing-xxsmall);
+    grid-row-gap: var(--_spacing---spacing-xxsmall);
+    flex-flow: column;
+    display: flex;
+}
+
+.hero-first-heading-wrap {
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    flex-flow: wrap;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.hero-title-icon {
+    max-width: 85px;
+    display: flex;
+    position: relative;
+}
+
+.hero-title-icon .title-icon-01 {
+    z-index: 1;
+    width: 50px;
+    height: 100%;
+    position: relative;
+    box-shadow: 0 6px 10px 1px rgba(250, 115, 25, 0.25);
+}
+
+.hero-title-icon .title-icon-02 {
+    z-index: 0;
+    width: 50px;
+    height: 100%;
+    position: relative;
+    right: 20px;
+    transform: rotate(10deg);
+    box-shadow: 0 6px 10px 1px rgba(185, 185, 185, 0.25);
+}
+
+.hero-sec-heading-wrap {
+    grid-column-gap: var(--_spacing---spacing-small);
+    grid-row-gap: var(--_spacing---spacing-small);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.spcial-heading {
+    padding: 4px var(--_responsive---padding--padding-medium-rare) 7px;
+    border-radius: var(--_responsive---border-radius--radius-xlarge);
+    background-image: linear-gradient(#fff, rgba(250, 115, 25, 0.3));
+}
+
+.spcial-h1 {
+    box-shadow: none;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(#fa7319, #bf4d00);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.hero-sub-heading {
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.home-hero-bottom {
+    margin-top: var(--_responsive---margin--margin-large);
+    padding-top: var(--_responsive---padding--padding-slim);
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    max-width: 1280px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    bottom: 1px;
+}
+
+.hero-dashboard-wrap {
+    z-index: 1;
+    width: var(--100);
+    height: var(--100);
+    border-top-left-radius: var(--_responsive---border-radius--border-radius-normal);
+    border-top-right-radius: var(--_responsive---border-radius--border-radius-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.home-hero .hero-dashboard {
+    width: var(--100);
+    height: var(--100);
+    object-fit: cover;
+}
+
+.home-hero .hero-dashboard-bg {
+    z-index: 0;
+    width: var(--100);
+    height: var(--100);
+    border-top-left-radius: var(--_responsive---border-radius--border-radius-normal);
+    border-top-right-radius: var(--_responsive---border-radius--border-radius-normal);
+    object-fit: cover;
+    position: absolute;
+    inset: 0%;
+}
+
+/* ===================== Tablet (<= 991px) ===================== */
+@media screen and (max-width: 991px) {
+    .home-nav-02 {
+        display: none;
+    }
+
+    .hero-wrap {
+        padding-top: var(--_responsive---padding--padding-big);
+        margin-top: 0;
+    }
+
+    .home-hero-bottom {
+        max-width: var(--100);
+    }
+
+    .hero-title-icon {
+        max-width: 66px;
+    }
+
+    .hero-title-icon .title-icon-01,
+    .hero-title-icon .title-icon-02 {
+        width: 44px;
+    }
+
+    .spcial-heading {
+        padding-top: 2px;
+    }
+}
+
+/* ===================== Mobile landscape (<= 767px) ===================== */
+@media screen and (max-width: 767px) {
+    .home-hero-bottom {
+        padding-top: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        bottom: 0;
+    }
+
+    .hero-title-icon {
+        max-width: 64px;
+    }
+
+    .hero-title-icon .title-icon-01,
+    .hero-title-icon .title-icon-02 {
+        width: 40px;
+    }
+
+    .hero-sec-heading-wrap {
+        flex-flow: wrap;
+    }
+
+    .hero-dashboard-wrap {
+        border-top-left-radius: var(--_responsive---border-radius--border-radius-small);
+        border-top-right-radius: var(--_responsive---border-radius--border-radius-small);
+    }
+
+    .home-hero .hero-dashboard {
+        object-position: 0% 0%;
+        height: 200px;
+    }
+
+    .home-hero .hero-dashboard-bg {
+        border-top-left-radius: var(--_responsive---border-radius--border-radius-small);
+        border-top-right-radius: var(--_responsive---border-radius--border-radius-small);
+    }
+}
+
+/* ===================== Mobile portrait (<= 479px) ===================== */
+@media screen and (max-width: 479px) {
+    /* App addition: the template hides its navbar entirely on small screens,
+       but the app keeps a fixed pill (≈52px tall at top:12px). Give the hero
+       text the same breathing room so the tag is not clipped by the pill. */
+    .hero-wrap {
+        padding-top: calc(var(--_responsive---padding--padding-big) + 24px);
+    }
+
+    .home-hero,
+    .home-hero-container {
+        padding-right: var(--_responsive---padding--padding-tiny);
+        padding-left: var(--_responsive---padding--padding-tiny);
+    }
+
+    .home-hero-bg {
+        padding-bottom: 4px;
+    }
+
+    .home-hero-bottom {
+        height: 160px;
+    }
+
+    .home-hero-top-02 {
+        flex-flow: wrap;
+    }
+
+    .home-hero .button-03 {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .hero-heading {
+        grid-column-gap: 4px;
+        grid-row-gap: 4px;
+    }
+
+    .hero-first-heading-wrap {
+        grid-column-gap: var(--_spacing---spacing-xxsmall);
+        grid-row-gap: var(--_spacing---spacing-xxsmall);
+    }
+
+    .hero-title-icon {
+        display: none;
+    }
+
+    .hero-sec-heading-wrap {
+        grid-column-gap: var(--_spacing---spacing-xxsmall);
+        grid-row-gap: var(--_spacing---spacing-xxsmall);
+    }
+
+    .spcial-heading {
+        padding: 2px var(--_responsive---padding--padding-slim) 4px;
+    }
+
+    .hero-dashboard-wrap {
+        border-top-left-radius: var(--_responsive---border-radius--border-radius-xsmall);
+        border-top-right-radius: var(--_responsive---border-radius--border-radius-xsmall);
+    }
+
+    .home-hero .hero-dashboard {
+        height: var(--100);
+        object-position: 0% 0%;
+    }
+
+    .home-hero .hero-dashboard-bg {
+        border-top-left-radius: var(--_responsive---border-radius--border-radius-xsmall);
+        border-top-right-radius: var(--_responsive---border-radius--border-radius-xsmall);
+    }
+}
+
+/* ===================== Dark mode (app theme toggle) =====================
+   The template itself is light-only; these overrides keep the hero readable
+   when the app's dark theme is active, following _colonia.css conventions. */
+.dark .home-hero .home-hero-bg {
+    background-color: #1d1d1d;
+}
+
+.dark .home-hero h1 {
+    color: #f8f8f8;
+}
+
+.dark .home-hero .text-grey-01 {
+    color: #b3b3b3;
+}
+
+.dark .home-hero .text-grey-02 {
+    color: #a3a3a3;
+}
+
+.dark .home-hero .spcial-heading {
+    background-image: linear-gradient(#2c2c2c, rgba(250, 115, 25, 0.28));
+}
+
+.dark .home-hero .spcial-h1 {
+    color: #f8f8f8;
+    background-image: none;
+    -webkit-text-fill-color: #f8f8f8;
+}
+
+.dark .home-hero .button-01 {
+    background-image: linear-gradient(0deg, #454545, #3a3a3a 46%, #303030);
+}
+
+.dark .home-hero .button-03 {
+    color: #f8f8f8;
+    background-image: linear-gradient(0deg, #343434, #262626);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow:
+        inset 0 2px 1px rgba(255, 255, 255, 0.08),
+        inset 0 -2px 0 rgba(255, 255, 255, 0.06);
+}
+
+.dark .home-hero .tag-icon {
+    filter: invert(1);
+    opacity: 0.8;
+}

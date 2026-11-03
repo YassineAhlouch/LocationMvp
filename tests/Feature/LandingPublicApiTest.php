@@ -164,4 +164,38 @@ class LandingPublicApiTest extends TestCase
             ->assertStatus(422)
             ->assertJsonValidationErrors(['car_id']);
     }
+
+    public function test_landing_contact_is_stored_as_a_lead(): void
+    {
+        $this->postJson('/api/v1/landing/contacts', [
+            'full_name' => 'Fatima El Ouazzani',
+            'agency_name' => 'Location Marrakech',
+            'phone' => '+212 6 12 34 56 78',
+            'email' => 'fatima@example.com',
+            'message' => 'Je veux un compte agence pour ma flotte.',
+        ])
+            ->assertCreated()
+            ->assertJsonPath('message', 'Your contact request has been received.');
+
+        $this->assertDatabaseHas('landing_contacts', [
+            'full_name' => 'Fatima El Ouazzani',
+            'agency_name' => 'Location Marrakech',
+            'phone' => '+212 6 12 34 56 78',
+        ]);
+    }
+
+    public function test_landing_contact_validates_contact_fields(): void
+    {
+        $this->postJson('/api/v1/landing/contacts', [])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['full_name', 'phone']);
+
+        $this->postJson('/api/v1/landing/contacts', [
+            'full_name' => 'Fatima El Ouazzani',
+            'phone' => '+212 6 12 34 56 78',
+            'email' => 'not-an-email',
+        ])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['email']);
+    }
 }

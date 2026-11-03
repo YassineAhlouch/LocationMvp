@@ -9,6 +9,8 @@
             "reservationsDesc": "إدارة الحجوزات",
             "reservationsListe": "قائمة الحجوزات",
             "reservationsListeDesc": "عرض الحجوزات",
+            "reservationsQr": "حجوزات رمز QR",
+            "reservationsQrDesc": "الطلبات المستلمة عبر رمز QR",
             "reservationsCalendrier": "التقويم",
             "reservationsCalendrierDesc": "تقويم الحجوزات",
             "vehicules": "المركبات",
@@ -1721,6 +1723,49 @@
             "trend": "التسجيلات يومًا بيوم",
             "trendHint": "العملاء المُنشؤون في كل يوم من أيام الفترة، حسب تاريخ تسجيلهم.",
             "rows": "العملاء المسجّلون"
+        }
+    },
+    "landingReservations": {
+        "title": "حجوزات QR",
+        "description": "طلبات الحجز المرسلة من الصفحة العامة عبر رمز QR.",
+        "filter": {
+            "all": "الكل"
+        },
+        "status": {
+            "new": "جديدة",
+            "contacted": "تم التواصل",
+            "converted": "تم التحويل",
+            "rejected": "مرفوضة"
+        },
+        "searchPlaceholder": "ابحث بالاسم أو الهاتف أو البريد…",
+        "table": {
+            "client": "الزبون",
+            "car": "السيارة",
+            "pickup": "الاستلام",
+            "return": "الإرجاع",
+            "message": "رسالة",
+            "status": "الحالة",
+            "created": "استُلمت",
+            "noCar": "—"
+        },
+        "actions": {
+            "details": "التفاصيل",
+            "changeStatus": "تغيير الحالة"
+        },
+        "dialog": {
+            "phone": "الهاتف",
+            "email": "البريد الإلكتروني",
+            "car": "السيارة المطلوبة",
+            "dates": "الاستلام → الإرجاع",
+            "message": "رسالة الزبون",
+            "call": "اتصال",
+            "whatsapp": "واتساب",
+            "waMessage": "مرحباً {{name}}، توصلنا بطلب حجزك للسيارة {{car}}. نتحقق من التوفر ونعود إليك قريباً.",
+            "status": "الحالة"
+        },
+        "toasts": {
+            "updated": "تم تحديث الحالة",
+            "couldNotUpdate": "تعذر تحديث الحالة"
         }
     }
 }

@@ -30,6 +30,8 @@ import type {
     ExpensePayload,
     Extra,
     InvoiceTemplate,
+    LandingReservation,
+    LandingReservationStatus,
     MarkInstallmentPaidPayload,
     Paginated,
     Payment,
@@ -278,6 +280,25 @@ export const apiGetReservations = (params?: Record<string, unknown>) =>
         url: '/v1/reservations',
         method: 'get',
         params,
+    })
+
+/** Reservation requests captured on the public QR landing (staff pipeline). */
+export const apiGetLandingReservations = (params?: Record<string, unknown>) =>
+    ApiService.fetchDataWithAxios<Paginated<LandingReservation>>({
+        url: '/v1/landing-reservations',
+        method: 'get',
+        params,
+    })
+
+/** Move a landing lead one step along its pipeline (new → contacted → …). */
+export const apiUpdateLandingReservationStatus = (
+    id: number,
+    status: LandingReservationStatus,
+) =>
+    ApiService.fetchDataWithAxios<LandingReservation>({
+        url: `/v1/landing-reservations/${id}/status`,
+        method: 'put',
+        data: { status },
     })
 
 export const apiGetReservation = (id: number) =>

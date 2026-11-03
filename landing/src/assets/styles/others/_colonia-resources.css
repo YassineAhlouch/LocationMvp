@@ -1,0 +1,291 @@
+/**
+ * Exact port of the Colonia template "resources" section.
+ * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ *
+ * Layout truth (measured at 1440): the section pads padding-big (80px)
+ * vertically and has no horizontal padding of its own; the container
+ * (`container` + `container-v3`) is 1360px wide; the centered `resources-top`
+ * (612px) holds the tag, one-line heading and sub-heading. `resources-bottom`
+ * opens with a 627px-tall `resources-image-box` — 20px of padding on the top
+ * and sides, border-radius 20px, overflow hidden — where a 16px-top-radius
+ * screenshot covers the whole inner area in front of an absolutely positioned
+ * full-bleed gradient backdrop (`resources-image-bg`, fit-cover) that only
+ * peeks through the 20px side/top padding as a warm mat. Below it, the two
+ * `resources-box-inner` cards (padding 22/10/10/10, grey-light, radius 20)
+ * sit in a 2-column grid with a 20px gap; each holds a wide illustration
+ * (max 500px, the template's white card chart images) above a white
+ * `resources-box-bottom` (radius 16, padding 15, centered title + subtext).
+ *
+ * Breakpoints (template values): at ≤991px the box stops being height-fixed
+ * (height auto); at ≤767px the top gap drops to 10px, the box padding/radius
+ * drop to 14px and the card grid becomes a single column; at ≤479px the main
+ * image is clipped to 160px. All other tokens are shared with the other
+ * Colonia ports (_colonia-hero.css, _colonia-benefits.css).
+ */
+
+/* ===================== Resources ===================== */
+.resources {
+    padding-top: var(--_responsive---padding--padding-big);
+    padding-bottom: var(--_responsive---padding--padding-big);
+}
+
+.resources .colonia-container {
+    width: var(--100);
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    max-width: 1360px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.resources-top {
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    text-align: center;
+    flex-flow: column;
+    max-width: 612px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+}
+
+.resources-bottom {
+    margin-top: var(--_responsive---margin--margin-medium-rare);
+    overflow: hidden;
+}
+
+/* ---- main image box: gradient mat behind a top-rounded screenshot ---- */
+.resources-image-box {
+    padding-top: var(--_responsive---padding--padding-slim);
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    height: 627px;
+    position: relative;
+    overflow: hidden;
+    /* The template relies on the page having no opaque background for its
+       raw -1 layer. The app's main carries one, so the box anchors the
+       stacking (same treatment as .values-main-bg): the gradient mat paints
+       above main's background, below the dashboard image — identical look. */
+    isolation: isolate;
+}
+
+.resources-image-bg {
+    z-index: -1;
+    width: var(--100);
+    height: var(--100);
+    position: absolute;
+    inset: 0%;
+}
+
+.resources-image {
+    width: var(--100);
+    height: var(--100);
+    max-width: var(--100);
+    border-top-left-radius: var(--_responsive---border-radius--border-radius-medium-rare);
+    border-top-right-radius: var(--_responsive---border-radius--border-radius-medium-rare);
+    overflow: hidden;
+}
+
+.resources-images {
+    width: var(--100);
+    height: var(--100);
+    object-fit: cover;
+    object-position: 0% 0%;
+}
+
+.resources .fit-cover {
+    width: var(--100);
+    height: var(--100);
+    object-fit: cover;
+}
+
+/* ---- two insight cards under the image box ---- */
+.resources-box-wrap {
+    margin-top: var(--_spacing---spacing-slim);
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-columns: 1fr;
+    display: grid;
+}
+
+.resources-box-inner {
+    padding: var(--_responsive---padding--padding-medium)
+        var(--_responsive---padding--padding-tiny)
+        var(--_responsive---padding--padding-tiny);
+    grid-column-gap: var(--_spacing---spacing-xxsmall);
+    grid-row-gap: var(--_spacing---spacing-xxsmall);
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    background-color: var(--color--grey-light);
+    flex-flow: column;
+    align-items: center;
+    display: flex;
+}
+
+.resources-box-top {
+    max-width: 500px;
+    width: var(--100);
+}
+
+.resources-box-bottom {
+    width: var(--100);
+    padding: var(--_responsive---padding--padding-xsmall);
+    grid-column-gap: var(--_spacing---spacing-xxsmall);
+    grid-row-gap: var(--_spacing---spacing-xxsmall);
+    border-radius: var(--_responsive---border-radius--border-radius-medium-rare);
+    background-color: var(--color--light);
+    text-align: center;
+    flex-flow: column;
+    display: flex;
+}
+
+.resources-box-bottom .paragraph-02 {
+    color: var(--color--dark);
+}
+
+.resources-inner-image {
+    width: var(--100);
+    height: var(--100);
+}
+
+/* ===================== Shared building blocks =====================
+   (same scoped base as the other Colonia ports) */
+.resources .tag-wrap {
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    align-items: center;
+    display: flex;
+}
+
+.resources .tag-icon {
+    width: 16px;
+    max-width: 100%;
+}
+
+.resources .teg {
+    font-size: var(--_typography---tag--font-size);
+    line-height: var(--_typography---tag--line-height);
+    font-weight: var(--_typography---tag--font-weight);
+    letter-spacing: var(--_typography---tag--latter-spaces);
+}
+
+.resources .text-grey-01 {
+    color: var(--color--grey-dark);
+}
+
+.resources .text-grey-02 {
+    color: var(--color--grey-medium);
+}
+
+.resources .title-wrap {
+    grid-column-gap: var(--_spacing---spacing-xsmall);
+    grid-row-gap: var(--_spacing---spacing-xsmall);
+    flex-flow: column;
+    display: flex;
+}
+
+.resources .heading-wrap,
+.resources .sub-heading-wrap {
+    display: flex;
+    justify-content: center;
+}
+
+.resources .text-h3 {
+    font-size: var(--_typography---h3--font-size);
+    line-height: var(--_typography---h3--line-height);
+    font-weight: var(--_typography---h3--font-weight);
+    letter-spacing: var(--_typography---h3--latter-spaces);
+}
+
+.resources .paragraph-02 {
+    font-size: var(--_typography---paragraph-02--font-size);
+    line-height: var(--_typography---paragraph-02--line-height);
+    font-weight: var(--_typography---paragraph-02--font-weight);
+    letter-spacing: var(--_typography---paragraph-02--latter-spaces);
+}
+
+.resources .paragraph-03 {
+    font-size: var(--_typography---paragraph-03--font-size);
+    line-height: var(--_typography---paragraph-03--line-height);
+    font-weight: var(--_typography---paragraph-03--font-weight);
+    letter-spacing: var(--_typography---paragraph-03--latter-spaces);
+}
+
+/* ===================== Tablet (<= 991px) ===================== */
+@media screen and (max-width: 991px) {
+    .resources {
+        padding-top: var(--_responsive---padding--padding-slim);
+    }
+
+    .resources-image-box,
+    .resources-image {
+        height: auto;
+    }
+}
+
+/* ===================== Mobile landscape (<= 767px) ===================== */
+@media screen and (max-width: 767px) {
+    .resources-top {
+        grid-column-gap: var(--_spacing---spacing-xxsmall);
+        grid-row-gap: var(--_spacing---spacing-xxsmall);
+    }
+
+    .resources-image-box {
+        padding-top: var(--_responsive---padding--padding-xxsmall);
+        padding-right: var(--_responsive---padding--padding-xxsmall);
+        padding-left: var(--_responsive---padding--padding-xxsmall);
+        border-radius: var(--_responsive---border-radius--border-radius-medium);
+    }
+
+    .resources-box-wrap {
+        grid-template-columns: 1fr;
+    }
+
+    .resources-image {
+        border-top-left-radius: var(--_responsive---border-radius--border-radius-medium);
+        border-top-right-radius: var(--_responsive---border-radius--border-radius-medium);
+    }
+}
+
+/* ===================== Mobile portrait (<= 479px) ===================== */
+@media screen and (max-width: 479px) {
+    .resources-image {
+        height: 160px;
+    }
+
+    .resources-images {
+        object-position: 0% 0%;
+    }
+}
+
+/* ===================== Dark mode (app theme toggle) =====================
+   The template is light-only; these follow _colonia.css conventions.
+   The screenshots and the gradient mat stay untouched (like the hero's
+   dashboard image); only text and grey surfaces adapt. */
+.dark .resources .text-h3,
+.dark .resources .resources-box-bottom .paragraph-02 {
+    color: #f8f8f8;
+}
+
+.dark .resources .text-grey-01 {
+    color: #b3b3b3;
+}
+
+.dark .resources .text-grey-02 {
+    color: #a3a3a3;
+}
+
+.dark .resources .resources-box-inner {
+    background-color: #232323;
+}
+
+.dark .resources .resources-box-bottom {
+    background-color: #2e2e2e;
+}
+
+.dark .resources .tag-icon {
+    filter: invert(1);
+    opacity: 0.8;
+}

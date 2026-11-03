@@ -1,0 +1,286 @@
+/**
+ * Exact port of the Colonia template "benefits" section.
+ * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ *
+ * Layout truth (measured at 1440): the section pads padding-big (80px)
+ * vertically and has no horizontal padding of its own; the container
+ * (`container` + `container-v3`) is 1360px wide; the centered `benefits-top`
+ * (536px) holds the tag, one-line heading and sub-heading; `benefits-bottom`
+ * is a 4-column grid (gap 20px) of eight 315×244 cards. Each card is a
+ * `benefits-list-wrap` with 5px padding: the visible ring around
+ * `benefits-list-main` (305×234, grey card with the orange icon tile, title
+ * and description). The white glyph images fill the whole 50px tile
+ * (template global img rule) — the glyphs are drawn centered in their
+ * 24×25 viewBoxes.
+ *
+ * Hover (observed on the live template, ~0.5s ease): the gradient ring
+ * (.benefits-list-bg, the --sf-img-26 pattern) fades in, and the icon tile's
+ * gradient crossfades from the light-peach `.benefits-icon-01` to the deep
+ * red-orange `.benefits-icon-02`. The card interior doesn't change.
+ * On ≤479px the grid becomes a single column and the cards turn sticky at
+ * top:10px so they pile up while scrolling.
+ *
+ * Design tokens are shared with the other Colonia ports (_colonia-hero.css).
+ */
+
+/* ===================== Benefits ===================== */
+.benefits {
+    padding-top: var(--_responsive---padding--padding-big);
+    padding-bottom: var(--_responsive---padding--padding-big);
+}
+
+.benefits .colonia-container {
+    width: var(--100);
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    max-width: 1360px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.benefits-top {
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    text-align: center;
+    flex-flow: column;
+    align-items: center;
+    max-width: 536px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+}
+
+.benefits-bottom {
+    margin-top: var(--_responsive---margin--margin-medium-rare);
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-auto-columns: 1fr;
+    display: grid;
+}
+
+/* ---- benefit cards ---- */
+.benefits-list-wrap {
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    padding: 5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.benefits-list-main {
+    z-index: 1;
+    height: var(--100);
+    padding: var(--_responsive---padding--padding-xlarge) var(--_responsive---padding--padding-xxsmall);
+    grid-column-gap: var(--_spacing---spacing-regular);
+    grid-row-gap: var(--_spacing---spacing-regular);
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    background-color: var(--color--grey-light);
+    flex-flow: column;
+    align-items: center;
+    display: flex;
+    position: relative;
+}
+
+.benefits-list-icon-wrap {
+    border-radius: var(--_responsive---border-radius--border-radius-xsmall);
+    border: 1px solid #ffddc6;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+/* light-peach gradient tile, fades out on hover */
+.benefits-icon-01 {
+    z-index: 1;
+    background-image: linear-gradient(#ffd2b4, #fa7319);
+    position: absolute;
+    inset: 0%;
+    box-shadow:
+        0 6px 10px 1px rgba(250, 115, 25, 0.25),
+        inset 1px 2px #ffdfca,
+        inset 0 -2px #f96503;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+/* deep red-orange tile, fades in on hover */
+.benefits-icon-02 {
+    z-index: 2;
+    background-image: linear-gradient(#ffd2b4, #e83100);
+    position: absolute;
+    inset: 0%;
+    box-shadow:
+        0 6px 10px 1px rgba(250, 115, 25, 0.25),
+        inset 1px 2px #ffb893,
+        inset 0 -2px #c72d00;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.benefits-icon {
+    z-index: 3;
+    position: relative;
+    width: var(--100);
+    max-width: var(--100);
+    height: var(--100);
+    display: inline-block;
+    flex: none;
+}
+
+.benefits-list-bottom {
+    grid-column-gap: var(--_spacing---spacing-xxsmall);
+    grid-row-gap: var(--_spacing---spacing-xxsmall);
+    text-align: center;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.benefits-list-bottom .paragraph-02 {
+    color: var(--color--dark);
+}
+
+/* gradient ring revealed around the card on hover */
+.benefits-list-bg {
+    position: absolute;
+    inset: 0%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.benefits .fit-cover {
+    width: var(--100);
+    height: var(--100);
+    object-fit: cover;
+}
+
+/* ---- hover choreography (0.5s ease, in and out) ---- */
+.benefits-list-wrap:hover .benefits-list-bg {
+    opacity: 1;
+}
+
+.benefits-list-wrap:hover .benefits-icon-01 {
+    opacity: 0;
+}
+
+.benefits-list-wrap:hover .benefits-icon-02 {
+    opacity: 1;
+}
+
+/* ===================== Shared building blocks ===================== */
+.benefits .tag-wrap {
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    align-items: center;
+    display: flex;
+}
+
+.benefits .tag-icon {
+    width: 16px;
+}
+
+.benefits .teg {
+    font-size: var(--_typography---tag--font-size);
+    line-height: var(--_typography---tag--line-height);
+    font-weight: var(--_typography---tag--font-weight);
+    letter-spacing: var(--_typography---tag--latter-spaces);
+}
+
+.benefits .text-grey-01 {
+    color: var(--color--grey-dark);
+}
+
+.benefits .text-grey-02 {
+    color: var(--color--grey-medium);
+}
+
+.benefits .title-wrap {
+    grid-column-gap: var(--_spacing---spacing-xsmall);
+    grid-row-gap: var(--_spacing---spacing-xsmall);
+    flex-flow: column;
+    display: flex;
+}
+
+.benefits .text-h3 {
+    font-size: var(--_typography---h3--font-size);
+    line-height: var(--_typography---h3--line-height);
+    font-weight: var(--_typography---h3--font-weight);
+    letter-spacing: var(--_typography---h3--latter-spaces);
+}
+
+.benefits .paragraph-02 {
+    font-size: var(--_typography---paragraph-02--font-size);
+    line-height: var(--_typography---paragraph-02--line-height);
+    font-weight: var(--_typography---paragraph-02--font-weight);
+    letter-spacing: var(--_typography---paragraph-02--latter-spaces);
+}
+
+.benefits .paragraph-03 {
+    font-size: var(--_typography---paragraph-03--font-size);
+    line-height: var(--_typography---paragraph-03--line-height);
+    font-weight: var(--_typography---paragraph-03--font-weight);
+    letter-spacing: var(--_typography---paragraph-03--latter-spaces);
+}
+
+/* ===================== Tablet (<= 991px) ===================== */
+@media screen and (max-width: 991px) {
+    .benefits-bottom {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* ===================== Mobile landscape (<= 767px) ===================== */
+@media screen and (max-width: 767px) {
+    .benefits-top {
+        grid-column-gap: var(--_spacing---spacing-xxsmall);
+        grid-row-gap: var(--_spacing---spacing-xxsmall);
+    }
+}
+
+/* ===================== Mobile portrait (<= 479px) ===================== */
+@media screen and (max-width: 479px) {
+    .benefits-bottom {
+        grid-template-columns: 1fr;
+    }
+
+    .benefits .heading-wrap.mobile-heading {
+        max-width: 200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .benefits-list-wrap {
+        position: sticky;
+        top: 10px;
+    }
+}
+
+/* ===================== Dark mode (app theme toggle) =====================
+   The template is light-only; these follow _colonia.css conventions. */
+.dark .benefits .text-h3,
+.dark .benefits .benefits-list-bottom .paragraph-02 {
+    color: #f8f8f8;
+}
+
+.dark .benefits .text-grey-01 {
+    color: #b3b3b3;
+}
+
+.dark .benefits .text-grey-02 {
+    color: #a3a3a3;
+}
+
+.dark .benefits .benefits-list-main {
+    background-color: #2e2e2e;
+}
+
+.dark .benefits .tag-icon {
+    filter: invert(1);
+    opacity: 0.8;
+}

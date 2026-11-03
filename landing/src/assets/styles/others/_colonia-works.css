@@ -1,0 +1,227 @@
+/**
+ * Exact port of the Colonia template "works" section.
+ * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ *
+ * Layout truth (measured at 1440, live template): the section only pads slim
+ * (20px) horizontally; `works-main` is a border-radius-normal dark-orange
+ * banner carrying the vivid gradient artwork (`sf-img-1`) at 50% / cover, with
+ * padding-top xbig (100px) and padding-bottom xlarge (40px). Inside the 1280px
+ * container, `works-top` (878px centered, light text) pins sticky while the
+ * `works-bottom` column of white step cards scrolls: each `work-card-wrap`
+ * (padding 30/40, gap 55, radius 20, max-width 331px) carries one of the
+ * template's `work-card-01/02/03` classes — sticky and rotated (3deg / -6deg /
+ * 4deg) so the cards pile up while scrolling. `works-bg-wrap` (z-index -1,
+ * black + a muted gradient image) keeps painting behind `works-main`'s opaque
+ * artwork exactly like the live template — the -1 layer never shows, kept
+ * verbatim as a guarded fallback.
+ *
+ * The app's floating navbar pill (fixed, ~34px→96px tall) would cover a
+ * 40px-pinned intro, so the sticky offsets shift by +80px (intro 120px, cards
+ * 340/380px) to keep the template's pin clearance — the same kind of
+ * app-context adaptation as the `isolation: isolate` fixes in
+ * _colonia-values.css / _colonia-resources.css.
+ *
+ * Breakpoints: only the ≤479px block changes the works section in the template
+ * (the intro and cards go static there); all other tokens are shared with the
+ * other Colonia ports (_colonia-hero.css, _colonia-benefits.css).
+ */
+
+/* ===================== Works ===================== */
+.works {
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+}
+
+.works-main {
+    padding-top: var(--_responsive---padding--padding-xbig);
+    padding-bottom: var(--_responsive---padding--padding-xlarge);
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    background-color: var(--color--dark-orange);
+    background-image: url('/img/landing/works-transparency-bg.avif');
+    background-position: 50%;
+    background-size: cover;
+    position: relative;
+}
+
+/* the template's generic `.container` (1280px); scoped to avoid
+   clashing with Tailwind's own .container utility */
+.works .colonia-container {
+    width: var(--100);
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.works-top {
+    grid-column-gap: var(--_spacing---spacing-medium);
+    grid-row-gap: var(--_spacing---spacing-medium);
+    color: var(--color--light);
+    text-align: center;
+    flex-flow: column;
+    max-width: 878px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    position: sticky;
+    /* template: top 40px — shifted +80px below the app's floating pill */
+    top: 120px;
+}
+
+.works-bottom {
+    margin-top: var(--_responsive---margin--margin-small);
+    grid-column-gap: var(--_spacing---spacing-xsmall);
+    grid-row-gap: var(--_spacing---spacing-xsmall);
+    flex-flow: column;
+    display: flex;
+    position: relative;
+}
+
+/* ---- the -1 mat (black + muted gradient) behind the banner artwork ---- */
+.works-bg-wrap {
+    z-index: -1;
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    background-color: #000;
+    position: absolute;
+    inset: 0%;
+    overflow: hidden;
+}
+
+.works .fit-cover {
+    width: var(--100);
+    height: var(--100);
+    object-fit: cover;
+}
+
+/* ---- sticky rotated step cards ---- */
+.work-card-wrap {
+    padding: var(--_responsive---padding--padding-normal)
+        var(--_responsive---padding--padding-xlarge);
+    grid-column-gap: var(--_spacing---spacing-xxlarge);
+    grid-row-gap: var(--_spacing---spacing-xxlarge);
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    background-color: var(--color--light);
+    flex-flow: column;
+    max-width: 331px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+}
+
+.work-card-wrap.work-card-01 {
+    z-index: 1;
+    position: sticky;
+    /* template: top 260px — shifted +80px below the app's floating pill */
+    top: 340px;
+    transform: rotate(3deg);
+}
+
+.work-card-wrap.work-card-02 {
+    z-index: 2;
+    position: sticky;
+    /* template: top 300px — shifted +80px below the app's floating pill */
+    top: 380px;
+    transform: rotate(-6deg);
+}
+
+.work-card-wrap.work-card-03 {
+    z-index: 3;
+    position: sticky;
+    /* template: top 260px — shifted +80px below the app's floating pill */
+    top: 340px;
+    transform: rotate(4deg);
+}
+
+/* card heading: the template's global h2 (tokens already responsive);
+   scoped because .colonia-root h2 clamps differently */
+.works .work-card-wrap h2 {
+    font-size: var(--_typography---h2--font-size);
+    line-height: var(--_typography---h2--line-height);
+    font-weight: var(--_typography---h2--font-weight);
+    letter-spacing: var(--_typography---h2--latter-spaces);
+    color: var(--color--dark);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* ===================== Shared building blocks =====================
+   (same scoped base as the other Colonia ports) */
+.works .tag-wrap {
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.works .tag-icon {
+    width: 16px;
+}
+
+.works .teg {
+    font-size: var(--_typography---tag--font-size);
+    line-height: var(--_typography---tag--line-height);
+    font-weight: var(--_typography---tag--font-weight);
+    letter-spacing: var(--_typography---tag--latter-spaces);
+}
+
+.works .text-light {
+    color: var(--color--light);
+}
+
+.works .text-h1 {
+    font-size: var(--_typography---h1--font-size);
+    line-height: var(--_typography---h1--line-height);
+    font-weight: var(--_typography---h1--font-weight);
+    letter-spacing: var(--_typography---h1--latter-spaces);
+    /* the template's works h1 takes the intro's light color; the app's
+       base layer paints every h1 text-gray-900, so set it explicitly */
+    color: var(--color--light);
+}
+
+.works .paragraph-01 {
+    font-size: var(--_typography---paragraph-01--font-size);
+    line-height: var(--_typography---paragraph-01--line-height);
+    font-weight: var(--_typography---paragraph-01--font-weight);
+    letter-spacing: var(--_typography---paragraph-01--latter-spaces);
+}
+
+.works .text-grey-01 {
+    color: var(--color--grey-dark);
+}
+
+/* ===================== Mobile portrait (<= 479px) =====================
+   Template rule: the intro and the cards go static and rest flat. */
+@media screen and (max-width: 479px) {
+    .works-top {
+        position: static;
+    }
+
+    .works-bottom {
+        margin-top: var(--_responsive---margin--margin-regular);
+    }
+
+    .work-card-wrap.work-card-01,
+    .work-card-wrap.work-card-02,
+    .work-card-wrap.work-card-03 {
+        position: static;
+        transform: none;
+    }
+}
+
+/* ===================== Dark mode (app theme toggle) =====================
+   The template is light-only; these follow _colonia.css conventions.
+   The banner (dark-orange artwork) and the light intro text stay untouched
+   (--color--light never flips); only the white cards and greys adapt. */
+.dark .works .work-card-wrap {
+    background-color: #2e2e2e;
+}
+
+.dark .works .work-card-wrap h2 {
+    color: #f8f8f8;
+}
+
+.dark .works .text-grey-01 {
+    color: #b3b3b3;
+}

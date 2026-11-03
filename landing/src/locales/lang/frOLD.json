@@ -1,0 +1,612 @@
+{
+    "landing": {
+        "nav": {
+            "items": [
+                {
+                    "title": "Pourquoi nous",
+                    "value": "why",
+                    "anchor": "why"
+                },
+                {
+                    "title": "Fonctionnalités",
+                    "value": "features",
+                    "anchor": "features"
+                },
+                {
+                    "title": "Tarifs",
+                    "value": "pricing",
+                    "anchor": "pricing"
+                },
+                {
+                    "title": "FAQ",
+                    "value": "faq",
+                    "anchor": "faq"
+                },
+                {
+                    "title": "Contact",
+                    "value": "contact",
+                    "anchor": "contact"
+                }
+            ]
+        },
+        "hero": {
+            "badge": "Trusted by 500+ Companies",
+            "heading": {
+                "top": {
+                    "before": "Shrink Your",
+                    "after": "Footprint,"
+                },
+                "bottom": {
+                    "before": "Grow Your",
+                    "emphasis": "Impact"
+                }
+            },
+            "subtext": "See where your emissions come from, spot what matters most, and make greener choices that actually stick.",
+            "primaryCta": {
+                "label": "Get Started",
+                "href": "#contact"
+            },
+            "secondaryCta": {
+                "label": "View Demo",
+                "href": "#tour"
+            }
+        },
+        "problems": {
+            "heading": {
+                "primary": "Moins de gestion manuelle.",
+                "secondary": "Plus de contrôle sur votre activité."
+            },
+            "items": [
+                {
+                    "id": "reservations",
+                    "icon": "scattered",
+                    "problemTitle": "Réservations éparpillées",
+                    "problemDescription": "Carnets papier, appels, tableurs… difficile de savoir qui a réservé quel véhicule et à quelle date.",
+                    "solutionTitle": "Réservations centralisées",
+                    "solutionDescription": "Toutes les réservations au même endroit : client, véhicule, dates et statut, avec vérification de la disponibilité."
+                },
+                {
+                    "id": "contracts",
+                    "icon": "admin",
+                    "problemTitle": "Tâches administratives manuelles",
+                    "problemDescription": "Contrats rédigés à la main, informations recopiées plusieurs fois, erreurs qui s'accumulent.",
+                    "solutionTitle": "Contrats générés en un clic",
+                    "solutionDescription": "Générez un contrat de location complet directement à partir des informations de la réservation."
+                },
+                {
+                    "id": "profitability",
+                    "icon": "unclear",
+                    "problemTitle": "Rentabilité difficile à mesurer",
+                    "problemDescription": "Sans suivi des dépenses par véhicule, impossible de savoir ce qui rapporte et ce qui coûte.",
+                    "solutionTitle": "Coûts et revenus par véhicule",
+                    "solutionDescription": "Suivez les revenus, les dépenses et la marge de chaque véhicule, et voyez d'un coup d'œil sa performance."
+                },
+                {
+                    "id": "team",
+                    "icon": "desync",
+                    "problemTitle": "Équipe désynchronisée",
+                    "problemDescription": "Qui prépare le véhicule de ce matin ? Qui a rappelé le client ? L'information se perd entre les mains de chacun.",
+                    "solutionTitle": "Travail organisé au même endroit",
+                    "solutionDescription": "Répartissez les tâches du jour sur une liste partagée et un tableau Kanban que toute l'équipe suit."
+                }
+            ],
+            "tag": "Pourquoi nous"
+        },
+        "modules": {
+            "tag": "Features",
+            "heading": "Everything You Need to Track Carbon Smarter",
+            "subheading": "Turn complex emission data into simple, actionable insights.",
+            "items": [
+                {
+                    "id": "ghg-snapshot",
+                    "title": "GHG Snapshot",
+                    "description": "Get a clear picture of emissions today and how they compare to last year."
+                },
+                {
+                    "id": "emissions-tracker",
+                    "title": "Carbon Emissions Tracker",
+                    "description": "Monitor your carbon output in real time for smarter sustainability actions."
+                },
+                {
+                    "id": "supplier-spend",
+                    "title": "Local Supplier Spend",
+                    "description": "Track your investments in local suppliers to boost community impact."
+                },
+                {
+                    "id": "booking-sync",
+                    "title": "Booking Sync",
+                    "description": "Connect multiple booking systems and keep data flowing seamlessly."
+                },
+                {
+                    "id": "employee-insights",
+                    "title": "Employee Insights",
+                    "description": "Track workforce metrics and diversity to build a stronger, more inclusive team."
+                },
+                {
+                    "id": "governance",
+                    "title": "Governance & Compliance",
+                    "description": "Manage policies, track progress, and ensure transparency across your organization."
+                }
+            ]
+        },
+        "workflow": {
+            "heading": "De la réservation au retour du véhicule, gardez chaque étape sous contrôle.",
+            "subtext": "Un déroulé simple qui suit le rythme réel de vos locations, du premier appel du client à la restitution du véhicule.",
+            "stepLabel": "Étape",
+            "steps": [
+                {
+                    "id": "step1",
+                    "title": "Créez la réservation",
+                    "description": "Sélectionnez le client et le véhicule, saisissez les dates et le lieu de retrait."
+                },
+                {
+                    "id": "step2",
+                    "title": "Vérifiez la disponibilité",
+                    "description": "La plateforme vérifie les chevauchements de dates et calcule le prix de la location."
+                },
+                {
+                    "id": "step3",
+                    "title": "Confirmez la réservation",
+                    "description": "Validez la réservation et préparez le contrat de location."
+                },
+                {
+                    "id": "step4",
+                    "title": "Enregistrez le retrait",
+                    "description": "Notez le kilométrage, le niveau de carburant et l'état du véhicule au départ."
+                },
+                {
+                    "id": "step5",
+                    "title": "Suivez les paiements",
+                    "description": "Encaissez les acomptes et les paiements, et suivez la période de location."
+                },
+                {
+                    "id": "step6",
+                    "title": "Clôturez la location",
+                    "description": "Enregistrez les informations de retour et clôturez la réservation."
+                }
+            ],
+            "tag": "Comment ça marche"
+        },
+        "profitability": {
+            "tag": "Benefits",
+            "heading": "Unlock the True Value of Sustainability",
+            "subtext": "Discover how smarter tracking and reporting can drive impact, efficiency, and trust.",
+            "highlights": [
+                {
+                    "id": "b1",
+                    "title": "Better Decisions",
+                    "description": "Turn complex data into clear insights to guide smarter strategies."
+                },
+                {
+                    "id": "b2",
+                    "title": "Efficiency Gains",
+                    "description": "Save time with automated tracking and simplified reporting."
+                },
+                {
+                    "id": "b3",
+                    "title": "Stronger Compliance",
+                    "description": "Stay aligned with regulations and build transparency with stakeholders."
+                },
+                {
+                    "id": "b4",
+                    "title": "Positive Impact",
+                    "description": "Reduce emissions and strengthen your contribution to the community"
+                },
+                {
+                    "id": "b5",
+                    "title": "Cost Savings",
+                    "description": "Cut unnecessary expenses by identifying waste and optimizing resource use."
+                },
+                {
+                    "id": "b6",
+                    "title": "Team Alignment",
+                    "description": "Bring everyone together around shared sustainability goals in one platform."
+                },
+                {
+                    "id": "b7",
+                    "title": "Future Growth",
+                    "description": "Build a resilient business prepared for evolving environmental challenges."
+                },
+                {
+                    "id": "b8",
+                    "title": "Stronger Reputation",
+                    "description": "Show progress, gain trust, and attract loyal customers and partners."
+                }
+            ]
+        },
+        "impactTracking": {
+            "tag": "Ressources durables",
+            "heading": "Suivi d'impact",
+            "subtext": "Surveillez les indicateurs clés de vos opérations pour détecter les tendances et mener des améliorations.",
+            "cards": [
+                {
+                    "id": "survey",
+                    "title": "Analyse des enquêtes",
+                    "description": "Visualisez les tendances des retours et identifiez les schémas clés de vos enquêtes."
+                },
+                {
+                    "id": "emissions",
+                    "title": "Répartition des émissions",
+                    "description": "Identifiez les sources de vos émissions et suivez vos réductions par succursale."
+                }
+            ]
+        },
+        "tasks": {
+            "heading": "Organisez le travail de votre équipe au même endroit.",
+            "subtext": "Planifiez les tâches quotidiennes, répartissez les responsabilités et suivez l'avancement du travail grâce à une liste de tâches partagée et un tableau Kanban.",
+            "examples": [
+                "Préparer les véhicules avant le retrait",
+                "Suivre les demandes des clients",
+                "Planifier la maintenance",
+                "Suivre les tâches administratives en attente"
+            ],
+            "tag": "Tâches d'équipe"
+        },
+        "integration": {
+            "tag": "Intégration",
+            "heading": "Intégrations sans effort",
+            "subtext": "Connectez vos outils et plateformes préférés sans effort pour fluidifier votre flux de travail et augmenter votre productivité."
+        },
+        "showcase": {
+            "reports": {
+                "eyebrow": "Rapports",
+                "title": "Performance de la flotte",
+                "badge": "6 derniers mois",
+                "stats": [
+                    {
+                        "label": "Chiffre d'affaires",
+                        "value": "412 900",
+                        "hint": "+22.1%"
+                    },
+                    {
+                        "label": "Occupation",
+                        "value": "78%",
+                        "hint": "+6.4%"
+                    },
+                    {
+                        "label": "Utilisation",
+                        "value": "84%",
+                        "hint": "+3.2%"
+                    }
+                ],
+                "chart": {
+                    "title": "Revenu mensuel",
+                    "trend": "En hausse"
+                },
+                "months": [
+                    "Mai",
+                    "Juin",
+                    "Juil",
+                    "Août",
+                    "Sept",
+                    "Oct"
+                ]
+            },
+            "vehiclePerformance": {
+                "eyebrow": "Rapports",
+                "title": "Véhicules les plus performants",
+                "columns": {
+                    "vehicle": "Véhicule",
+                    "revenue": "Revenu",
+                    "expenses": "Dépenses",
+                    "margin": "Marge",
+                    "bookedDays": "Jours réservés"
+                },
+                "rows": [
+                    {
+                        "vehicle": "Dacia Duster",
+                        "revenue": "48 200 MAD",
+                        "expenses": "16 400 MAD",
+                        "margin": "31 800 MAD",
+                        "bookedDays": "24 j"
+                    },
+                    {
+                        "vehicle": "Hyundai Tucson",
+                        "revenue": "40 700 MAD",
+                        "expenses": "14 100 MAD",
+                        "margin": "26 600 MAD",
+                        "bookedDays": "17 j"
+                    },
+                    {
+                        "vehicle": "Renault Clio",
+                        "revenue": "31 900 MAD",
+                        "expenses": "9 900 MAD",
+                        "margin": "22 000 MAD",
+                        "bookedDays": "19 j"
+                    }
+                ]
+            },
+            "tasksPreview": {
+                "eyebrow": "Équipe",
+                "title": "Tableau du jour",
+                "badge": "3 listes",
+                "columns": [
+                    {
+                        "id": "todo",
+                        "title": "À faire",
+                        "items": [
+                            {
+                                "id": "t1",
+                                "title": "Préparer le Duster pour le retrait de 10h"
+                            },
+                            {
+                                "id": "t2",
+                                "title": "Rappeler le client RSV-1039"
+                            },
+                            {
+                                "id": "t3",
+                                "title": "Relancer le paiement RSV-1038"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "doing",
+                        "title": "En cours",
+                        "items": [
+                            {
+                                "id": "t4",
+                                "title": "Contrat de location RSV-1042"
+                            },
+                            {
+                                "id": "t5",
+                                "title": "Nettoyage complet du Clio"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "done",
+                        "title": "Terminé",
+                        "items": [
+                            {
+                                "id": "t6",
+                                "title": "Contrôle technique Tucson"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "pricing": {
+            "tag": "Formules flexibles",
+            "heading": "Choisissez votre formule idéale",
+            "subtext": "Des petites équipes aux organisations globales, choisissez la formule qui grandit avec vous.",
+            "plans": [
+                {
+                    "name": "Formule Starter",
+                    "description": "Transformez des données complexes en analyses claires pour éclairer des décisions plus intelligentes.",
+                    "price": "$29",
+                    "features": [
+                        "Jusqu'à 3 membres d'équipe",
+                        "Suivi des émissions de base",
+                        "Tableaux de bord standard",
+                        "Support par e-mail"
+                    ],
+                    "cta": "Démarrer"
+                },
+                {
+                    "name": "Formule Croissance",
+                    "description": "Idéale pour les entreprises en plein essor recherchant des analyses avancées et de l'automatisation.",
+                    "price": "$79",
+                    "features": [
+                        "Jusqu'à 10 membres d'équipe",
+                        "Rapports automatisés",
+                        "Analyses et tableaux de bord avancés",
+                        "Support prioritaire"
+                    ],
+                    "cta": "Passer à Croissance",
+                    "dark": true
+                },
+                {
+                    "name": "Formule Impact",
+                    "description": "Pour les organisations prêtes à diriger avec des actions de durabilité à grande échelle.",
+                    "price": "$149",
+                    "features": [
+                        "Membres d'équipe illimités",
+                        "Intégrations et accès API complets",
+                        "Rapports de conformité personnalisés",
+                        "Responsable de la réussite dédié"
+                    ],
+                    "cta": "Démarrer"
+                }
+            ]
+        },
+        "faq": {
+            "heading": "Questions fréquentes",
+            "subheading": "Ce qu'il faut savoir avant de commencer. Une autre question ? Demandez une démonstration, nous vous répondrons en direct.",
+            "questions": [
+                {
+                    "question": "À qui s'adresse la plateforme ?",
+                    "answer": "Aux agences de location de voitures qui veulent centraliser leurs réservations, leurs contrats, leur flotte, leurs clients et leurs finances dans un seul outil, pilote par le dirigeant comme par les agents au comptoir."
+                },
+                {
+                    "question": "Puis-je gérer plusieurs véhicules et réservations ?",
+                    "answer": "Oui. Ajoutez votre flotte et suivez toutes vos réservations : la disponibilité de chaque véhicule est vérifiée automatiquement, les chevauchements de dates sont détectés pour éviter les doubles réservations."
+                },
+                {
+                    "question": "Puis-je générer des contrats de location ?",
+                    "answer": "Oui. Le contrat de location est généré à partir des informations de la réservation : client, conducteur, véhicule, dates, tarifs et garanties."
+                },
+                {
+                    "question": "Puis-je suivre les dépenses et la rentabilité de mes véhicules ?",
+                    "answer": "Oui. Enregistrez les dépenses de chaque véhicule (maintenance, assurances, échéances de financement) et consultez les rapports de revenus, de marges, de jours réservés et d'occupation."
+                },
+                {
+                    "question": "Comment fonctionne la réservation via QR code ?",
+                    "answer": "Vous générez un QR code depuis votre tableau de bord. Vos clients le scannent, ouvrent votre page publique de réservation et remplissent une demande avec leurs coordonnées et leurs dates. Vous vérifiez puis validez chaque demande."
+                },
+                {
+                    "question": "Puis-je organiser les tâches de mon équipe ?",
+                    "answer": "Oui. Créez les tâches du jour, répartissez-les et suivez leur avancement sur une liste de tâches partagée et un tableau Kanban."
+                },
+                {
+                    "question": "Comment connaître les tarifs ?",
+                    "answer": "Les formules mensuelles, 6 mois et annuelles sont présentées dans la section Tarifs. Pour plusieurs agences ou une flotte importante, demandez un devis sur mesure via le formulaire de contact."
+                },
+                {
+                    "question": "Comment demander une démonstration ?",
+                    "answer": "Remplissez le formulaire de contact en indiquant le nom de votre agence et vos besoins : l'équipe Double V Drive vous recontactera pour présenter la plateforme."
+                }
+            ],
+            "tag": "FAQ",
+            "cta": {
+                "title": "Prêt à simplifier",
+                "accent": "la gestion de votre agence ?",
+                "text": "Parlez-nous de votre agence et de vos besoins. Découvrez comment la plateforme peut vous aider à organiser vos réservations, votre flotte et vos opérations quotidiennes.",
+                "button": "Demander une démo"
+            }
+        },
+        "transparency": {
+            "tag": "Transparence totale",
+            "heading": "Visibilité des données",
+            "subtext": "Obtenez une vue claire des indicateurs clés de vos opérations —\ndes émissions aux fournisseurs, le tout au même endroit."
+        },
+        "footer": {
+            "headingLines": [
+                [
+                    "Prenez de meilleures",
+                    "décisions"
+                ],
+                [
+                    "agissez sur",
+                    "vos données dès aujourd'hui."
+                ]
+            ],
+            "subtext": "Simplifiez les défis complexes de durabilité grâce à des insights clairs, des rapports automatisés et des outils conçus pour générer un impact positif durable.",
+            "cta": "Commencer le suivi",
+            "copyright": "© 2026 Double V Drive. Tous droits réservés."
+        },
+        "statistics": {
+            "tag": "Values",
+            "heading": "Powerful Features, Simple to Use",
+            "subheading": "Climera gives you everything you need to understand your data, take action, and grow with confidence.",
+            "buttonLabel": "Learn More",
+            "items": [
+                {
+                    "id": "businesses",
+                    "text": "From startups to enterprises, Climera has helped thousands of businesses unlock the full potential of their data.",
+                    "slots": [
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857605"
+                        },
+                        {
+                            "type": "text",
+                            "text": "K+",
+                            "size": "h1"
+                        }
+                    ],
+                    "label": "Businesses"
+                },
+                {
+                    "id": "dashboards",
+                    "text": "Our mission isn’t just to deliver dashboards—it’s to drive growth. These stats highlight how Climera has become a catalyst for smarter decisions, stronger teams, and scalable success.",
+                    "slots": [
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857602"
+                        },
+                        {
+                            "type": "reel",
+                            "variant": "lower",
+                            "strip": "2304857605"
+                        },
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857600"
+                        },
+                        {
+                            "type": "text",
+                            "text": "K+",
+                            "size": "h1"
+                        }
+                    ],
+                    "label": "Dashboards Created"
+                },
+                {
+                    "id": "satisfaction",
+                    "text": "Climera is more than a tool—it’s a partner trusted by businesses across industries and continents. Our numbers demonstrate the scale and reliability we bring to every client.",
+                    "slots": [
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857609"
+                        },
+                        {
+                            "type": "reel",
+                            "variant": "lower",
+                            "strip": "8304857602"
+                        },
+                        {
+                            "type": "text",
+                            "text": "%",
+                            "size": "h1"
+                        }
+                    ],
+                    "label": "Satisfaction Rate"
+                },
+                {
+                    "id": "uptime",
+                    "text": "When data is clear and accessible, results follow. These milestones showcase how Climera helps organizations transform numbers into impact every single day.",
+                    "slots": [
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857609"
+                        },
+                        {
+                            "type": "reel",
+                            "variant": "lower",
+                            "strip": "9304857602"
+                        },
+                        {
+                            "type": "text",
+                            "text": ".",
+                            "size": "dot"
+                        },
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857609"
+                        },
+                        {
+                            "type": "text",
+                            "text": "%",
+                            "size": "h1"
+                        }
+                    ],
+                    "label": "Platform Uptime"
+                }
+            ]
+        },
+        "testimonials": {
+            "tag": "Ils nous font confiance",
+            "heading": "Témoignages clients",
+            "subtext": "Découvrez comment des équipes fluidifient leur travail et obtiennent de meilleurs résultats avec notre plateforme.",
+            "items": [
+                {
+                    "quote": "\"La plateforme a complètement transformé notre processus de reporting. Nous gagnons du temps, réduisons le stress et concentrons davantage d'énergie sur l'élaboration de stratégies efficaces.\"",
+                    "attribution": "Sarah L., Responsable développement durable chez GreenTech"
+                },
+                {
+                    "quote": "\"Enfin, nous voyons les données clairement entre les équipes. La collaboration est plus fluide, les décisions plus solides, et notre confiance ne cesse de croître au quotidien.\"",
+                    "attribution": "David R., Responsable des opérations chez EcoLogix"
+                },
+                {
+                    "quote": "\"Les analyses fournies sont exploitables et précises. Cette plateforme a considérablement élevé la façon dont nous mesurons, gérons et communiquons nos progrès en matière de durabilité.\"",
+                    "attribution": "James T., Directeur de projet chez NovaWorks"
+                },
+                {
+                    "quote": "\"Avec cet outil, le reporting devient fluide et simple. Nos parties prenantes font davantage confiance aux chiffres, et notre alignement interne n'a jamais été aussi fort.\"",
+                    "attribution": "Clara M., Directrice de la stratégie chez BrightPath Group"
+                },
+                {
+                    "quote": "\"Avant, la conformité épuisait nos ressources. Désormais, l'automatisation gère la complexité avec précision, nous laissant innover, croître et bâtir un impact durable.\"",
+                    "attribution": "Kevin A., Responsable développement durable chez UrbanSphere"
+                }
+            ]
+        }
+    }
+}

@@ -9,38 +9,44 @@ interface HeroTabProps {
     onClick: () => void
 }
 
-const HeroTab = ({ label, description, isActive, onClick }: HeroTabProps) => {
+const HeroTab = ({
+    label,
+    description,
+    isActive,
+    onClick,
+}: HeroTabProps) => {
     return (
-        <button
+        <motion.button
+            whileTap={{ scale: 0.97 }}
             className={classNames(
-                'flex flex-col items-center py-6 flex-1 transition-colors relative',
-                isActive ? '' : 'hover:bg-gray-50 dark:hover:bg-gray-800',
+                'flex flex-col items-center py-2 px-4 flex-1 max-w-[220px] rounded-[10px] border transition-colors text-start',
+                isActive
+                    ? 'bg-[#171717] border-[#171717] text-white shadow-[0_8px_23.1px_rgba(23,23,23,0.2)] dark:border-white/10'
+                    : 'bg-white border-[#ebebeb] text-[#5c5c5c] hover:border-[#d9d9d9] dark:bg-[#262626] dark:border-[#383838] dark:text-[#b3b3b3] dark:hover:border-[#4a4a4a]',
             )}
             onClick={onClick}
         >
             <span
                 className={classNames(
-                    'text-base font-medium relative z-10',
+                    'col-p3 relative z-10',
                     isActive
-                        ? 'heading-text'
-                        : 'text-gray-600 dark:text-gray-400',
+                        ? 'text-white'
+                        : 'text-[#171717] dark:text-[#f8f8f8]',
                 )}
             >
                 {label}
             </span>
-            <span className="text-gray-600 dark:text-gray-400 relative z-10">
+            <span
+                className={classNames(
+                    'relative z-10 text-xs',
+                    isActive ? 'text-white/70' : '',
+                )}
+            >
                 {description}
             </span>
-            {isActive && (
-                <motion.div
-                    layoutId="hero-tab-indicator"
-                    className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-1 w-[10%] bg-primary rounded-lg"
-                    initial={false}
-                    transition={{ type: 'spring', stiffness: 250, damping: 25 }}
-                />
-            )}
-        </button>
+        </motion.button>
     )
 }
 
 export default HeroTab
+

@@ -21,11 +21,13 @@ const NavList = ({
     tabs: propTabs,
     tabClassName,
     onTabClick,
+    onDark = false,
 }: {
     tabs: Tab[]
     tabClassName?: string
     onTabClick?: () => void
     mode?: 'vertical' | 'horizontal'
+    onDark?: boolean
 }) => {
     const [active, setActive] = useState<Tab>(propTabs[0])
     const [show, setShow] = useState(false)
@@ -48,7 +50,10 @@ const NavList = ({
                     onMouseEnter={() => moveSelectedTabToTop(idx)}
                     onMouseLeave={() => setShow(false)}
                     className={classNames(
-                        'relative px-5 py-2 rounded-xl',
+                        'relative px-4 py-2 rounded-lg',
+                        onDark
+                            ? 'col-p3 text-[#f8f8f8]/80 whitespace-nowrap hover:text-white'
+                            : 'col-p3 text-[#5c5c5c] whitespace-nowrap hover:text-[#171717] dark:text-[#b3b3b3] dark:hover:text-white',
                         tabClassName,
                     )}
                 >
@@ -62,14 +67,17 @@ const NavList = ({
                             }}
                             className={classNames(
                                 'absolute inset-0 rounded-lg',
-                                show && 'bg-gray-100 dark:bg-gray-700',
+                                show &&
+                                    (onDark
+                                        ? 'bg-white/10'
+                                        : 'bg-gray-100 dark:bg-gray-700'),
                             )}
                         />
                     )}
                     {(tab as AnchorTab).to ? (
                         <Link
                             to={(tab as AnchorTab).to}
-                            className="relative block heading-text font-medium z-10"
+                            className="relative block font-medium z-10"
                             smooth
                             duration={500}
                         >
@@ -78,7 +86,7 @@ const NavList = ({
                     ) : (
                         <a
                             href={(tab as LinkTab).href}
-                            className="relative block heading-text font-medium z-10"
+                            className="relative block font-medium z-10"
                             target="_blank"
                             rel="noopener noreferrer"
                         >

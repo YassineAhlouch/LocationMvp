@@ -20,4 +20,10 @@ Route::prefix('v1')->group(function () {
     Route::post('landing/reservations', [LandingController::class, 'store'])
         ->middleware('throttle:10,1')
         ->name('landing.reservations.store');
+
+    // Agency onboarding lead from the landing home — tight like the other
+    // POST: one submit per attempt, no authentication.
+    Route::post('landing/contacts', [LandingController::class, 'storeContact'])
+        ->middleware('throttle:10,1')
+        ->name('landing.contacts.store');
 });

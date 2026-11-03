@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Landing\FetchLandingCarsRequest;
+use App\Http\Requests\Landing\StoreLandingContactRequest;
 use App\Http\Requests\Landing\StoreLandingReservationRequest;
 use App\Http\Resources\LandingCarResource;
 use App\Models\Car;
+use App\Models\LandingContact;
 use App\Models\LandingReservation;
 use App\Models\QrCode;
 use Illuminate\Database\Eloquent\Collection;
@@ -73,6 +75,21 @@ class LandingController extends Controller
         return response()->json([
             'message' => 'Your reservation request has been received.',
             'id' => $reservation->id,
+        ], 201);
+    }
+
+    /**
+     * Agency lead from the landing home: no account is created here, staff
+     * use it to contact the agency and open its dashboard account with the
+     * fleet + QR creation the printed links depend on.
+     */
+    public function storeContact(StoreLandingContactRequest $request): JsonResponse
+    {
+        $contact = LandingContact::create($request->validated());
+
+        return response()->json([
+            'message' => 'Your contact request has been received.',
+            'id' => $contact->id,
         ], 201);
     }
 

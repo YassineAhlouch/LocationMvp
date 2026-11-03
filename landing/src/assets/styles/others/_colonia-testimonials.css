@@ -1,0 +1,287 @@
+/**
+ * Exact port of the Colonia template "testimonials" section.
+ * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ *
+ * Verified against the live template at 1440: a 1320px `.container-v4`
+ * (max-width override on the scoped colonia-container) holds a centered 400px
+ * intro — "Trusted Voices" tag (quote glyph, grey-02), "Client Stories" heading,
+ * one-line-wrap grey-01 sub-text — above a five-column grid (20px gaps,
+ * margin-medium-rare top) of five top-aligned cards (`#w-node …align-self:start`),
+ * each 240×256: `testimonials-main` (radius-normal, grey-light) > padded 20px /
+ * 32px-gap `testimonials-main-inner` > paragraph-02 quote (#171717 in the
+ * template via an inline style — ported as a scoped rule so dark mode can flip
+ * it) + paragraph-03 grey-01 attribution line.
+ *
+ * The template hides two rotated dark-orange cards (`rotate(-3deg)` /
+ * `rotate(3deg)`, z-index -1, opacity 0) behind each card and reveals them
+ * through a Webflow IX2 hover interaction; that interaction is reproduced with
+ * a plain CSS `:hover` fade here, together with the card's hidden
+ * `testimonials-hover-bg` artwork layer ("Testimonials Bg", extracted from the
+ * saved page's `--sf-img-52` variable — the live CDN asset) fading in over the
+ * grey card while its text flips to white. The template's grid node ids stay
+ * on the card wrappers so the `align-self: start` pins and the ≤991px
+ * two-column span (last card) keep working; the 767px step intentionally keeps
+ * two columns, exactly as the template does.
+ */
+
+/* ===================== Testimonials ===================== */
+.testimonials {
+    z-index: 3;
+    padding-top: var(--_responsive---padding--padding-big);
+    padding-bottom: var(--_responsive---padding--padding-big);
+    background-color: var(--color--light);
+    position: relative;
+}
+
+/* the template's `.container.container-v4` (1320px) */
+.testimonials .colonia-container {
+    width: var(--100);
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.testimonials-top {
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    text-align: center;
+    flex-flow: column;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+}
+
+.testimonials-bottom {
+    margin-top: var(--_responsive---margin--margin-medium-rare);
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-auto-columns: 1fr;
+    display: grid;
+}
+
+.testimonials-main {
+    grid-column-gap: var(--_spacing---spacing-normal);
+    grid-row-gap: var(--_spacing---spacing-normal);
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    background-color: var(--color--grey-light);
+    flex-flow: column;
+    position: relative;
+}
+
+.testimonials-main-inner {
+    padding: var(--_responsive---padding--padding-slim);
+    gap: var(--_spacing---spacing-normal);
+    flex-flow: column;
+    display: flex;
+    position: relative;
+    /* keeps the quote/attribution above the hover artwork layer */
+    z-index: 1;
+}
+
+/* the template's "Testimonials Bg" hover layer: the orange artwork fades in
+   over the grey card (template: IX2 animates opacity 0 → 1; saved-state gave
+   it 240×256 with background cover, 50% 50%) */
+.testimonials-hover-bg {
+    width: var(--100);
+    height: var(--100);
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    object-fit: cover;
+    position: absolute;
+    inset: 0%;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* the quote carries the template's inline `color: rgb(23, 23, 23)`; scoped
+   here so the app's dark mode can flip it */
+.testimonials .testimonials-main .paragraph-02 {
+    color: var(--color--dark);
+}
+
+/* the template anchors its hover cards to the card wrapper (Webflow's
+   ix2-added transform makes the wrapper a containing block there); a plain
+   positioned wrapper reproduces the same 240×256 anchor */
+.testimonials-list-wrap {
+    position: relative;
+}
+
+/* the rotated back cards revealed on hover (template: IX2 interaction) */
+.testimonials-hover {
+    z-index: -1;
+    width: var(--100);
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    background-color: var(--color--dark-orange);
+    position: absolute;
+    inset: 0%;
+    opacity: 0;
+    transform: rotate(-3deg);
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.testimonials-hover._02 {
+    transform: rotate(3deg);
+}
+
+.testimonials-list-wrap:hover .testimonials-hover {
+    opacity: 1;
+}
+
+.testimonials-list-wrap:hover .testimonials-hover-bg {
+    opacity: 1;
+}
+
+/* the card text flips white over the artwork (template's IX2 hover) */
+.testimonials .testimonials-main .paragraph-02,
+.testimonials .testimonials-main .paragraph-03 {
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.testimonials-list-wrap:hover .testimonials-main .paragraph-02 {
+    color: var(--color--light);
+}
+
+.testimonials-list-wrap:hover .testimonials-main .paragraph-03 {
+    color: var(--color--light);
+}
+
+/* the template pins all five cards with `align-self: start` on their grid
+   node ids (top-aligned rows for uneven quote lengths) */
+#w-node-c3ef3619-75f5-97e7-25e7-dea3ac6ceaf4-ac6ceae4,
+#w-node-c3ef3619-75f5-97e7-25e7-dea3ac6ceafe-ac6ceae4,
+#w-node-c3ef3619-75f5-97e7-25e7-dea3ac6ceb08-ac6ceae4,
+#w-node-c3ef3619-75f5-97e7-25e7-dea3ac6ceb12-ac6ceae4,
+#w-node-c3ef3619-75f5-97e7-25e7-dea3ac6ceb1c-ac6ceae4 {
+    align-self: start;
+}
+
+/* ===================== Typography & color classes ===================== */
+.testimonials .text-h3 {
+    font-size: var(--_typography---h3--font-size);
+    line-height: var(--_typography---h3--line-height);
+    font-weight: var(--_typography---h3--font-weight);
+    letter-spacing: var(--_typography---h3--latter-spaces);
+}
+
+.testimonials .paragraph-03 {
+    font-size: var(--_typography---paragraph-03--font-size);
+    line-height: var(--_typography---paragraph-03--line-height);
+    font-weight: var(--_typography---paragraph-03--font-weight);
+    letter-spacing: var(--_typography---paragraph-03--latter-spaces);
+}
+
+.testimonials .paragraph-02 {
+    font-size: var(--_typography---paragraph-02--font-size);
+    line-height: var(--_typography---paragraph-02--line-height);
+    font-weight: var(--_typography---paragraph-02--font-weight);
+    letter-spacing: var(--_typography---paragraph-02--latter-spaces);
+}
+
+.testimonials .text-grey-01 {
+    color: var(--color--grey-dark);
+}
+
+.testimonials .text-grey-02 {
+    color: var(--color--grey-medium);
+}
+
+.testimonials .text-light {
+    color: var(--color--light);
+}
+
+/* ===================== Shared building blocks (intro) ===================== */
+.testimonials .tag-wrap {
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.testimonials .tag-icon {
+    width: 16px;
+}
+
+.testimonials .teg {
+    font-size: var(--_typography---tag--font-size);
+    line-height: var(--_typography---tag--line-height);
+    font-weight: var(--_typography---tag--font-weight);
+    letter-spacing: var(--_typography---tag--latter-spaces);
+}
+
+.testimonials .title-wrap {
+    grid-column-gap: var(--_spacing---spacing-xsmall);
+    grid-row-gap: var(--_spacing---spacing-xsmall);
+    flex-flow: column;
+    display: flex;
+}
+
+.testimonials .heading-wrap,
+.testimonials .sub-heading-wrap {
+    display: flex;
+    justify-content: center;
+}
+
+/* ===================== Dark mode (app theme toggle) =====================
+   The template is light-only. The section's own white band goes transparent
+   (the template's white sits on a white page anyway); cards and text adapt
+   like the other ports. */
+.dark .testimonials {
+    background-color: transparent;
+}
+
+.dark .testimonials .text-h3 {
+    color: #f8f8f8;
+}
+
+.dark .testimonials .text-grey-01 {
+    color: #b3b3b3;
+}
+
+.dark .testimonials .text-grey-02 {
+    color: #a3a3a3;
+}
+
+.dark .testimonials .testimonials-main {
+    background-color: #2e2e2e;
+    color: #f8f8f8;
+}
+
+.dark .testimonials .testimonials-main .paragraph-02 {
+    color: #f8f8f8;
+}
+
+.dark .testimonials .tag-icon {
+    filter: invert(1);
+    opacity: 0.8;
+}
+
+/* ===================== Media (template breakpoints) ===================== */
+@media screen and (max-width: 991px) {
+    /* the template shares this rule with .plans-v1-bottom */
+    .testimonials .testimonials-bottom {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* the last card spans both columns */
+    #w-node-c3ef3619-75f5-97e7-25e7-dea3ac6ceb1c-ac6ceae4 {
+        grid-area: span 1 / span 2 / span 1 / span 2;
+    }
+}
+
+/* the template keeps two columns through 767px */
+
+@media screen and (max-width: 479px) {
+    .testimonials .testimonials-bottom {
+        grid-template-columns: 1fr;
+    }
+
+    #w-node-c3ef3619-75f5-97e7-25e7-dea3ac6ceb1c-ac6ceae4 {
+        grid-column: span 1 / span 1;
+    }
+}

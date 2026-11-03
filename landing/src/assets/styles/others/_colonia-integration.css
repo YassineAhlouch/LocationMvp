@@ -1,0 +1,133 @@
+/**
+ * Exact port of the Colonia template "integration" section.
+ * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ *
+ * Layout truth (measured at 1440): the section pads padding-big (80px)
+ * vertically. The centered `integration-top` (536px) holds the tag ("Integration",
+ * grey-02), the "Seamless Integrations" heading (text-h3) and the sub-heading
+ * (paragraph-02 grey-01) — the same intro shape as the resources section, just
+ * narrower. `integration-bottom` opens 80px lower (margin-large) and hosts the
+ * template's hub-and-spoke partner diagram (integration.avif, 2031×819 with a
+ * transparent background) capped at 980px, no radius. The template defines no
+ * media overrides for this section — the shared tokens shrink spacing at
+ * ≤991px / ≤767px / ≤479px (padding-big 70/50/40, slim 20/…). All other tokens
+ * are shared with the other Colonia ports (_colonia-hero.css).
+ */
+
+/* ===================== Integration ===================== */
+.integration {
+    padding-top: var(--_responsive---padding--padding-big);
+    padding-bottom: var(--_responsive---padding--padding-big);
+}
+
+/* the template's generic `.container` (1280px); scoped to avoid
+   clashing with Tailwind's own .container utility */
+.integration .colonia-container {
+    width: var(--100);
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.integration-top {
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    text-align: center;
+    flex-flow: column;
+    max-width: 536px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+}
+
+.integration-bottom {
+    margin-top: var(--_responsive---margin--margin-large);
+    max-width: 980px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+}
+
+.integration-image {
+    width: var(--100);
+    height: var(--100);
+}
+
+/* ===================== Shared building blocks =====================
+   (same scoped base as the other Colonia ports) */
+.integration .tag-wrap {
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.integration .tag-icon {
+    width: 16px;
+}
+
+.integration .teg {
+    font-size: var(--_typography---tag--font-size);
+    line-height: var(--_typography---tag--line-height);
+    font-weight: var(--_typography---tag--font-weight);
+    letter-spacing: var(--_typography---tag--latter-spaces);
+}
+
+.integration .text-grey-02 {
+    color: var(--color--grey-medium);
+}
+
+.integration .title-wrap {
+    grid-column-gap: var(--_spacing---spacing-xsmall);
+    grid-row-gap: var(--_spacing---spacing-xsmall);
+    flex-flow: column;
+    display: flex;
+}
+
+.integration .heading-wrap,
+.integration .sub-heading-wrap {
+    display: flex;
+    justify-content: center;
+}
+
+.integration .text-h3 {
+    font-size: var(--_typography---h3--font-size);
+    line-height: var(--_typography---h3--line-height);
+    font-weight: var(--_typography---h3--font-weight);
+    letter-spacing: var(--_typography---h3--latter-spaces);
+}
+
+.integration .paragraph-02 {
+    font-size: var(--_typography---paragraph-02--font-size);
+    line-height: var(--_typography---paragraph-02--line-height);
+    font-weight: var(--_typography---paragraph-02--font-weight);
+    letter-spacing: var(--_typography---paragraph-02--latter-spaces);
+}
+
+.integration .text-grey-01 {
+    color: var(--color--grey-dark);
+}
+
+/* ===================== Dark mode (app theme toggle) =====================
+   The template is light-only; these follow _colonia.css conventions.
+   The partner diagram stays untouched (light logo cards on a transparent
+   mat) like the other ports' imagery; only text and icons adapt. */
+.dark .integration .text-h3 {
+    color: #f8f8f8;
+}
+
+.dark .integration .text-grey-01 {
+    color: #b3b3b3;
+}
+
+.dark .integration .text-grey-02 {
+    color: #a3a3a3;
+}
+
+.dark .integration .tag-icon {
+    filter: invert(1);
+    opacity: 0.8;
+}

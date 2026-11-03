@@ -1,0 +1,245 @@
+/**
+ * Exact port of the Colonia template faq section (`<section class=faq>`).
+ * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ *
+ * Layout truth (measured at 1440): an explicit light band (`background-color:
+ * var(--color--light)`) padded padding-big (80px) around a 1360px container.
+ * The centered `faq-top` intro (470px) is the template's shared header: tag
+ * row (16px quote glyph = the same artwork as the testimonials tag — the
+ * template's own reuse) + teg grey-02, then title-wrap with the text-h3
+ * heading and the paragraph-02 grey-01 sub-heading. margin-medium-rare below,
+ * `faq-bottom` (660px) holds `faq-collection-list` (10px column gaps) of grey
+ * rows (`faq-list`, radius-slim 12, padding-medium-rare 24, cursor pointer): a
+ * flex-row question (paragraph-02, space-between) with a 22px `faq-icon-box`
+ * chevron artwork beside it, then the height-animated `faq-answers`
+ * (max-width 555px, overflow hidden) with `faq-answer-text`
+ * (paragraph-03, padding-top slim, grey-dark). The template's IX2 height
+ * animation is kept as the existing motion/react height toggle; the chevron
+ * flips 180° when open, like the app already did. The app's dark demo-CTA
+ * card stays below the rows (app content the template doesn't carry), styled
+ * with the legacy colonia classes.
+ *
+ * Breakpoints: 767px = padding-top xlarge (40), 20px icon box; 479px = 14px
+ * row padding, 18px icon box. Dark mode follows the ports: the explicit light
+ * band goes transparent, cards #2e2e2e, question #f8f8f8, answer/tag/chevron
+ * flipped (grey artwork inverted at 0.8 opacity).
+ */
+
+/* the page band (template gives the section an explicit light background) */
+.faq {
+    padding-top: var(--_responsive---padding--padding-big);
+    padding-bottom: var(--_responsive---padding--padding-big);
+    background-color: var(--color--light);
+}
+
+/* the template's base `.container` */
+.faq .colonia-container {
+    width: var(--100);
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    max-width: 1360px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ---- centered intro (470px) ---- */
+.faq .faq-top {
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    text-align: center;
+    flex-flow: column;
+    max-width: 470px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+}
+
+.faq .tag-wrap {
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.faq .tag-icon {
+    width: 16px;
+}
+
+.faq .teg {
+    font-size: var(--_typography---tag--font-size);
+    line-height: var(--_typography---tag--line-height);
+    font-weight: var(--_typography---tag--font-weight);
+    letter-spacing: var(--_typography---tag--latter-spaces);
+}
+
+.faq .text-grey-01 {
+    color: var(--color--grey-dark);
+}
+
+.faq .text-grey-02 {
+    color: var(--color--grey-medium);
+}
+
+.faq .title-wrap {
+    grid-column-gap: var(--_spacing---spacing-xsmall);
+    grid-row-gap: var(--_spacing---spacing-xsmall);
+    flex-flow: column;
+    display: flex;
+}
+
+.faq .heading-wrap {
+    grid-column-gap: var(--_spacing---spacing-xsmall);
+    grid-row-gap: var(--_spacing---spacing-xsmall);
+    flex-flow: column;
+    display: flex;
+}
+
+.faq .text-h3 {
+    font-size: var(--_typography---h3--font-size);
+    line-height: var(--_typography---h3--line-height);
+    font-weight: var(--_typography---h3--font-weight);
+    letter-spacing: var(--_typography---h3--latter-spaces);
+}
+
+.faq .paragraph-02 {
+    font-size: var(--_typography---paragraph-02--font-size);
+    line-height: var(--_typography---paragraph-02--line-height);
+    font-weight: var(--_typography---paragraph-02--font-weight);
+    letter-spacing: var(--_typography---paragraph-02--latter-spaces);
+}
+
+.faq .paragraph-03 {
+    font-size: var(--_typography---paragraph-03--font-size);
+    line-height: var(--_typography---paragraph-03--line-height);
+    font-weight: var(--_typography---paragraph-03--font-weight);
+    letter-spacing: var(--_typography---paragraph-03--latter-spaces);
+}
+
+/* ---- the accordion list (660px) ---- */
+.faq .faq-bottom {
+    margin-top: var(--_responsive---margin--margin-medium-rare);
+    grid-column-gap: var(--_spacing---spacing-xxsmall);
+    grid-row-gap: var(--_spacing---spacing-xxsmall);
+    flex-flow: column;
+    max-width: 660px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+}
+
+.faq .faq-collection-list {
+    grid-column-gap: var(--_spacing---spacing-xxsmall);
+    grid-row-gap: var(--_spacing---spacing-xxsmall);
+    flex-flow: column;
+    display: flex;
+}
+
+.faq .faq-list {
+    border-radius: var(--_responsive---border-radius--border-radius-slim);
+    background-color: var(--color--grey-light);
+    padding: var(--_responsive---padding--padding-medium-rare);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.faq .faq-question {
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+}
+
+.faq .faq-question .paragraph-02 {
+    color: var(--color--dark);
+}
+
+.faq .faq-icon-box {
+    flex: none;
+    justify-content: center;
+    align-items: center;
+    width: 22px;
+    height: 22px;
+    display: flex;
+}
+
+.faq .faq-icon {
+    width: var(--100);
+}
+
+.faq .faq-answers {
+    max-width: 555px;
+    overflow: hidden;
+}
+
+.faq .paragraph-03.faq-answer-text {
+    padding-top: var(--_responsive---padding--padding-slim);
+    color: var(--color--grey-dark);
+}
+
+/* ===================== Media (template breakpoints) ===================== */
+
+/* Mobile landscape (<= 767px) */
+@media screen and (max-width: 767px) {
+    .faq {
+        padding-top: var(--_responsive---padding--padding-xlarge);
+    }
+
+    .faq .faq-icon-box {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Mobile portrait (<= 479px) */
+@media screen and (max-width: 479px) {
+    .faq .faq-list {
+        padding: 14px;
+    }
+
+    .faq .faq-icon-box {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* ===================== Dark mode (app theme toggle) =====================
+   The template is light-only; dark values follow _colonia.css conventions. */
+.dark .faq {
+    background-color: transparent;
+}
+
+.dark .faq .text-h3 {
+    color: #f8f8f8;
+}
+
+.dark .faq .text-grey-01 {
+    color: #b3b3b3;
+}
+
+.dark .faq .text-grey-02 {
+    color: #a3a3a3;
+}
+
+.dark .faq .faq-list {
+    background-color: #2e2e2e;
+}
+
+.dark .faq .faq-question .paragraph-02 {
+    color: #f8f8f8;
+}
+
+.dark .faq .paragraph-03.faq-answer-text {
+    color: #b3b3b3;
+}
+
+.dark .faq .faq-icon {
+    filter: invert(1);
+    opacity: 0.8;
+}
+
+.dark .faq .tag-icon {
+    filter: invert(1);
+    opacity: 0.8;
+}

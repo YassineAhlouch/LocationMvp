@@ -4,79 +4,117 @@ export type LandingNavItem = {
     anchor: string
 }
 
-export type LandingHeroTab = {
-    value: string
-    label: string
-    description: string
+export type LandingCtaLink = { label: string; href: string }
+
+export type LandingHeroHeadingTop = {
+    /** Text rendered before the inline title-icon pair (e.g. "Shrink Your"). */
+    before: string
+    /** Text rendered after the inline title-icon pair (e.g. "Footprint,"). */
+    after: string
+}
+
+export type LandingHeroHeadingBottom = {
+    /** Regular heading text next to the highlighted chip (e.g. "Grow Your"). */
+    before: string
+    /** Text inside the orange gradient chip (e.g. "Impact"). */
+    emphasis: string
 }
 
 export type LandingHero = {
-    headingLines: string[]
-    subtext: string
-    primaryCta: { label: string; href: string }
-    secondaryCta: { label: string; href: string }
-    tabs: LandingHeroTab[]
-}
-
-export type LandingBentoCard = {
-    title: string
-    description: string
-}
-
-export type LandingBentoDocTag = {
-    label: string
-}
-
-export type LandingBentoLocale = {
-    flag: string
-    text: string
-    code: string
-}
-
-export type LandingBento = {
-    heading: { primary: string; secondary: string }
-    cards: {
-        ai: LandingBentoCard
-        theming: LandingBentoCard
-        docs: LandingBentoCard & { floatingTags: LandingBentoDocTag[] }
-        i18n: LandingBentoCard & { locales: LandingBentoLocale[] }
-        responsive: LandingBentoCard
+    badge: string
+    heading: {
+        top: LandingHeroHeadingTop
+        bottom: LandingHeroHeadingBottom
     }
+    subtext: string
+    primaryCta: LandingCtaLink
+    secondaryCta: LandingCtaLink
 }
 
-export type LandingTechItem = {
+export type LandingProblemItem = {
     id: string
-    image: string
-    title: string
+    icon: string
+    problemTitle: string
+    problemDescription: string
+    solutionTitle: string
+    solutionDescription: string
 }
 
-export type LandingTech = {
+export type LandingProblems = {
+    tag: string
     heading: { primary: string; secondary: string }
-    stack: LandingTechItem[]
+    items: LandingProblemItem[]
 }
 
 export type LandingModuleItem = {
     id: string
     title: string
     description: string
-    icon: string
+    /** Legacy icon key from the earlier app-styled layout (not used by the
+     * template port — card images come from feature-*.avif). */
+    icon?: string
 }
 
 export type LandingModules = {
+    tag: string
     heading: string
     subheading: string
     items: LandingModuleItem[]
 }
 
-export type LandingShowcaseStatus =
-    | 'confirmed'
-    | 'pickedUp'
-    | 'paid'
-    | 'pending'
-    | 'returned'
-    | 'available'
-    | 'onRent'
-    | 'maintenance'
+export type LandingWorkflowStep = {
+    id: string
+    title: string
+    description: string
+}
+
+export type LandingWorkflow = {
+    tag: string
+    heading: string
+    subtext: string
+    /** Localized "Step" word for the template's "Step N – Title" card heading. */
+    stepLabel: string
+    steps: LandingWorkflowStep[]
+}
+
+export type LandingProfitHighlight = {
+    id: string
+    title: string
+    description: string
+}
+
+export type LandingProfitability = {
+    tag: string
+    heading: string
+    subtext: string
+    highlights: LandingProfitHighlight[]
+}
+
+export type LandingImpactCard = {
+    id: string
+    title: string
+    description: string
+}
+
+export type LandingImpactTracking = {
+    tag: string
+    heading: string
+    subtext: string
+    cards: LandingImpactCard[]
+}
+
+export type LandingTasks = {
+    tag: string
+    heading: string
+    subtext: string
+    examples: string[]
+}
+
+export type LandingIntegration = {
+    tag: string
+    heading: string
+    subtext: string
+}
 
 export type LandingShowcaseStat = {
     label: string
@@ -84,54 +122,15 @@ export type LandingShowcaseStat = {
     hint: string
 }
 
+export type LandingPerformanceRow = {
+    vehicle: string
+    revenue: string
+    expenses: string
+    margin: string
+    bookedDays: string
+}
+
 export type LandingShowcase = {
-    statuses: Record<LandingShowcaseStatus, string>
-    reservations: {
-        eyebrow: string
-        title: string
-        badge: string
-        columns: {
-            reference: string
-            customer: string
-            vehicle: string
-            dates: string
-            status: string
-        }
-        stats: LandingShowcaseStat[]
-        rows: {
-            id: string
-            customer: string
-            vehicle: string
-            dates: string
-            status: LandingShowcaseStatus
-        }[]
-    }
-    fleet: {
-        eyebrow: string
-        title: string
-        badge: string
-        items: {
-            name: string
-            plate: string
-            status: LandingShowcaseStatus
-            rate: string
-            fuel: string
-        }[]
-    }
-    payments: {
-        eyebrow: string
-        title: string
-        badge: string
-        stats: LandingShowcaseStat[]
-        columns: { recent: string; period: string }
-        rows: {
-            id: string
-            customer: string
-            amount: string
-            method: string
-            status: LandingShowcaseStatus
-        }[]
-    }
     reports: {
         eyebrow: string
         title: string
@@ -140,31 +139,45 @@ export type LandingShowcase = {
         chart: { title: string; trend: string }
         months: string[]
     }
+    vehiclePerformance: {
+        eyebrow: string
+        title: string
+        columns: {
+            vehicle: string
+            revenue: string
+            expenses: string
+            margin: string
+            bookedDays: string
+        }
+        rows: LandingPerformanceRow[]
+    }
+    tasksPreview: {
+        eyebrow: string
+        title: string
+        badge: string
+        columns: {
+            id: string
+            title: string
+            items: { id: string; title: string }[]
+        }[]
+    }
 }
 
 export type LandingPricingPlan = {
-    id: string
     name: string
     description: string
     price: string
-    originalPrice: string
-    period: string
-    note: string
-    saving: string
-    badge: string
-    highlighted: boolean
-    ctaLabel: string
+    features: string[]
+    cta: string
+    /** the template's middle card (`bg-transparent` dark-orange artwork) */
+    dark?: boolean
 }
 
 export type LandingPricing = {
-    eyebrow: string
+    tag: string
     heading: string
-    subheading: string
-    promo: string
-    features: string[]
+    subtext: string
     plans: LandingPricingPlan[]
-    note: string
-    footnote: string
 }
 
 export type LandingFaqQuestion = {
@@ -172,45 +185,85 @@ export type LandingFaqQuestion = {
     answer: string
 }
 
-export type LandingFaqCategory = {
-    id: string
-    title: string
-    questions: LandingFaqQuestion[]
-}
-
 export type LandingFaq = {
-    eyebrow: string
+    tag: string
     heading: string
     subheading: string
-    categories: LandingFaqCategory[]
+    questions: LandingFaqQuestion[]
+    cta: { title: string; accent: string; text: string; button: string }
 }
 
-export type LandingCta = {
-    title: string
-    subtitle: string
-    ctaLabel: string
-    ctaHref: string
+export type LandingTransparency = {
+    tag: string
+    heading: string
+    /** Lines break at template-authentic points via whitespace-pre-line. */
+    subtext: string
 }
 
 export type LandingFooter = {
+    /** Each heading line: two text segments with the template's inline cta
+     *  icon artwork between them. */
+    headingLines: string[][]
+    subtext: string
+    cta: string
     copyright: string
-    brandText: string
 }
 
-export type LandingNav = {
-    items: LandingNavItem[]
+/** One "slot" of the values counter:
+ *  - reel: a static digit strip — `upper` boxes anchor the column flex-end
+ *    (the strip's LAST digit shows), `lower` boxes anchor normally (FIRST
+ *    digit shows, rendered grey), exactly like the template's baked rolls.
+ *  - text: a plain suffix such as "K+", "%" or the smaller "." separator
+ *    (which carries no .text-h1 class in the template). */
+export type LandingStatSlot =
+    | { type: 'reel'; variant: 'upper' | 'lower'; strip: string }
+    | { type: 'text'; text: string; size: 'h1' | 'dot' }
+
+export type LandingStatItem = {
+    id: string
+    /** Copy shown left of the statistic tile (values-list-left). */
+    text: string
+    slots: LandingStatSlot[]
+    /** Label under the counter, e.g. "Businesses". */
+    label: string
+}
+
+export type LandingStatistics = {
+    tag: string
+    heading: string
+    subheading: string
+    buttonLabel: string
+    items: LandingStatItem[]
+}
+
+export type LandingTestimonialItem = {
+    quote: string
+    attribution: string
+}
+
+export type LandingTestimonials = {
+    tag: string
+    heading: string
+    subtext: string
+    items: LandingTestimonialItem[]
 }
 
 export type LandingPageContent = {
-    nav: LandingNav
+    nav: { items: LandingNavItem[] }
     hero: LandingHero
-    bento: LandingBento
-    tech: LandingTech
+    problems: LandingProblems
     modules: LandingModules
+    statistics: LandingStatistics
+    workflow: LandingWorkflow
+    profitability: LandingProfitability
+    impactTracking: LandingImpactTracking
+    tasks: LandingTasks
+    integration: LandingIntegration
     showcase: LandingShowcase
     pricing: LandingPricing
+    testimonials: LandingTestimonials
     faq: LandingFaq
-    cta: LandingCta
+    transparency: LandingTransparency
     footer: LandingFooter
 }
 

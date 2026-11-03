@@ -3,14 +3,14 @@
         "nav": {
             "items": [
                 {
+                    "title": "لماذا نحن",
+                    "value": "why",
+                    "anchor": "why"
+                },
+                {
                     "title": "المميزات",
                     "value": "features",
                     "anchor": "features"
-                },
-                {
-                    "title": "الوحدات",
-                    "value": "modules",
-                    "anchor": "modules"
                 },
                 {
                     "title": "الأسعار",
@@ -23,517 +23,591 @@
                     "anchor": "faq"
                 },
                 {
-                    "title": "لماذا نحن",
-                    "value": "why",
-                    "anchor": "why"
-                },
-                {
                     "title": "اتصل بنا",
                     "value": "contact",
-                    "anchor": "cta"
+                    "anchor": "contact"
                 }
             ]
         },
         "hero": {
-            "headingLines": ["المنصة الكاملة", "لشركات تأجير السيارات."],
-            "subtext": "الحجوزات والأسطول والعملاء والعقود والمدفوعات والتقارير — في نظام واحد يمكن لعملك الاعتماد عليه.",
-            "primaryCta": { "label": "احجز عرضاً توضيحياً", "href": "#cta" },
-            "secondaryCta": { "label": "استكشف الوحدات", "href": "#modules" },
-            "tabs": [
-                {
-                    "value": "reservations",
-                    "label": "الحجوزات",
-                    "description": "الحجوزات والعقود"
-                },
-                {
-                    "value": "fleet",
-                    "label": "الأسطول",
-                    "description": "المركبات والتوفر"
-                },
-                {
-                    "value": "payments",
-                    "label": "المدفوعات",
-                    "description": "الفواتير والإيرادات"
-                },
-                {
-                    "value": "reports",
-                    "label": "التقارير",
-                    "description": "تحليل الأداء"
-                }
-            ]
-        },
-        "bento": {
+            "badge": "Trusted by 500+ Companies",
             "heading": {
-                "primary": "مصمم لطريقة عمل شركات التأجير.",
-                "secondary": "كل الأدوات التي يحتاجها فريقك يومياً — بدون جداول بيانات."
-            },
-            "cards": {
-                "ai": {
-                    "title": "أتمتة الأعمال المتكررة",
-                    "description": "تذكيرات تلقائية للاستلام والإرجاع وتجديد التأمين والمدفوعات المتأخرة."
+                "top": {
+                    "before": "Shrink Your",
+                    "after": "Footprint,"
                 },
-                "theming": {
-                    "title": "هويتك داخل النظام",
-                    "description": "خصّص الألوان والمستندات وبوابة العملاء بما يناسب شركتك."
-                },
-                "docs": {
-                    "title": "عقود في ثوانٍ",
-                    "description": "أنشئ عقود التأجير والفواتير وتقارير التسليم تلقائياً.",
-                    "floatingTags": [
-                        { "label": "عقد تأجير" },
-                        { "label": "فاتورة" },
-                        { "label": "تقرير أضرار" },
-                        { "label": "قائمة تسليم" }
-                    ]
-                },
-                "i18n": {
-                    "title": "جاهز لكل عميل",
-                    "description": "دعم مدمج لتعدد اللغات مع دعم كامل للاتجاه من اليمين إلى اليسار.",
-                    "locales": [
-                        {
-                            "flag": "/img/countries/US.png",
-                            "text": "سيارتك جاهزة للاستلام.",
-                            "code": "US"
-                        },
-                        {
-                            "flag": "/img/countries/CN.png",
-                            "text": "您的车辆已准备好提车。",
-                            "code": "CN"
-                        },
-                        {
-                            "flag": "/img/countries/ES.png",
-                            "text": "Su vehículo está listo para recoger.",
-                            "code": "ES"
-                        },
-                        {
-                            "flag": "/img/countries/SA.png",
-                            "text": "سيارتك جاهزة للاستلام.",
-                            "code": "SA"
-                        }
-                    ]
-                },
-                "responsive": {
-                    "title": "شركتك في جيبك",
-                    "description": "أدر الحجوزات وتوفر المركبات والموافقات من أي جهاز."
+                "bottom": {
+                    "before": "Grow Your",
+                    "emphasis": "Impact"
                 }
+            },
+            "subtext": "See where your emissions come from, spot what matters most, and make greener choices that actually stick.",
+            "primaryCta": {
+                "label": "Get Started",
+                "href": "#contact"
+            },
+            "secondaryCta": {
+                "label": "View Demo",
+                "href": "#tour"
             }
         },
-        "tech": {
+        "problems": {
             "heading": {
-                "primary": "أساس موثوق مصمم للتوسع.",
-                "secondary": "حديث وآمن وسريع — مع صلاحيات حسب الدور وسجل تدقيق ودعم تعدد اللغات."
+                "primary": "إدارة يدوية أقل.",
+                "secondary": "تحكم أكبر في نشاطك."
             },
-            "stack": [
-                { "id": "react", "image": "react.png", "title": "React" },
-                {
-                    "id": "typescript",
-                    "image": "typescript.png",
-                    "title": "TypeScript"
-                },
-                {
-                    "id": "tailwind",
-                    "image": "tailwind.png",
-                    "title": "TailwindCSS"
-                },
-                { "id": "vite", "image": "vite.png", "title": "Vite" },
-                { "id": "zustand", "image": "zustand.png", "title": "Zustand" },
-                {
-                    "id": "react-hook-form",
-                    "image": "react-hook-form.png",
-                    "title": "React Hook Form"
-                },
-                {
-                    "id": "tanstack",
-                    "image": "tanstack.png",
-                    "title": "TanStack Table"
-                },
-                {
-                    "id": "i18next",
-                    "image": "i18next.svg",
-                    "title": "React i18next"
-                },
-                { "id": "motion", "image": "motion.png", "title": "Motion" },
-                {
-                    "id": "react-router",
-                    "image": "react-router.svg",
-                    "title": "React Router"
-                }
-            ]
-        },
-        "modules": {
-            "heading": "نظام واحد لكل أجزاء شركتك.",
-            "subheading": "استبدل جداول البيانات والأدوات المتفرقة بمصدر حقيقة واحد.",
             "items": [
                 {
                     "id": "reservations",
-                    "title": "الحجوزات",
-                    "description": "أنشئ وعدّل وتابع الحجوزات مع توفر المركبات لحظياً.",
-                    "icon": "calendar"
-                },
-                {
-                    "id": "fleet",
-                    "title": "الأسطول",
-                    "description": "إدارة المركبات واللوحات والتأمين والصيانة والوثائق.",
-                    "icon": "car"
-                },
-                {
-                    "id": "customers",
-                    "title": "العملاء",
-                    "description": "احتفظ بملفات العملاء ورخصهم وسجل تأجيرهم في مكان واحد.",
-                    "icon": "users"
+                    "icon": "scattered",
+                    "problemTitle": "حجوزات مبعثرة",
+                    "problemDescription": "دفاتر ورقية، مكالمات، ملفات Excel… من الصعب معرفة من حجز أي مركبة ومتى.",
+                    "solutionTitle": "حجوزات مركزية",
+                    "solutionDescription": "كل الحجوزات في مكان واحد: الزبون، المركبة، التواريخ والحالة، مع التحقق من التوفر."
                 },
                 {
                     "id": "contracts",
-                    "title": "العقود",
-                    "description": "أنشئ وقّع وأرشف عقود التأجير تلقائياً.",
-                    "icon": "contract"
+                    "icon": "admin",
+                    "problemTitle": "أعمال إدارية يدوية",
+                    "problemDescription": "عقود تُكتب يدويًا، معلومات تُنسخ عدة مرات، وأخطاء تتراكم.",
+                    "solutionTitle": "عقود بضغطة واحدة",
+                    "solutionDescription": "أنشئ عقد كراء كاملًا مباشرة من معلومات الحجز نفسها."
                 },
                 {
-                    "id": "payments",
-                    "title": "المدفوعات",
-                    "description": "تابع الوديعات والمدفوعات والاستردادات والأرصدة المستحقة.",
-                    "icon": "payments"
-                },
-                {
-                    "id": "invoices",
-                    "title": "الفواتير",
-                    "description": "أصدر فواتير بعملات متعددة وصدّرها للمحاسبة.",
-                    "icon": "invoice"
-                },
-                {
-                    "id": "reports",
-                    "title": "التقارير",
-                    "description": "الإيرادات ونسبة الإشغال وأداء الأسطول في لمحة.",
-                    "icon": "reports"
+                    "id": "profitability",
+                    "icon": "unclear",
+                    "problemTitle": "مردودية يصعب قياسها",
+                    "problemDescription": "بدون تتبع مصاريف كل مركبة، لا يمكنك معرفة ما يجلب الأرباح وما يكلّف المال.",
+                    "solutionTitle": "كلفة وإيرادات لكل مركبة",
+                    "solutionDescription": "تابع الإيرادات والمصاريف والهامش لكل مركبة، وشاهد أداءها بلمحة واحدة."
                 },
                 {
                     "id": "team",
-                    "title": "الفريق والأدوار",
-                    "description": "صلاحيات حسب الدور للمديرين والمشرفين والوكلاء والمالية.",
-                    "icon": "team"
+                    "icon": "desync",
+                    "problemTitle": "فريق غير منسّق",
+                    "problemDescription": "من يجهّز مركبة الصباح؟ من اتصل للرد على الزبون؟ تضيع المعلومة بين الأفراد.",
+                    "solutionTitle": "العمل منظم في مكان واحد",
+                    "solutionDescription": "وزّع مهام اليوم على قائمة مهام مشتركة ولوحة كانبان يتابعها الفريق كله."
+                }
+            ],
+            "tag": "لماذا نحن"
+        },
+        "modules": {
+      "tag": "المميزات",
+      "heading": "كل ما تحتاجه لإدارة وكالة كراء السيارات",
+      "subheading": "حوّل الحجوزات والسيارات والمدفوعات إلى معلومات بسيطة وقابلة للتنفيذ.",
+      "items": [
+        {
+          "id": "fleet-snapshot",
+          "title": "لمحة عن الأسطول",
+          "description": "اعرف السيارات المتاحة أو المؤجرة أو في الصيانة اليوم وقارنها بالشهر الماضي."
+        },
+        {
+          "id": "revenue-tracker",
+          "title": "تتبع الإيرادات",
+          "description": "تابع الدفعات والضمانات والمصاريف لحظة بلحظة للحفاظ على ربحية كل سيارة."
+        },
+        {
+          "id": "live-availability",
+          "title": "التوفر المباشر",
+          "description": "تجنب الحجز المزدوج بتقويم يحجز السيارة فور حجزها."
+        },
+        {
+          "id": "qr-reservation",
+          "title": "رابط حجز برمز QR",
+          "description": "أنشئ رمز QR ورابطاً لكل سيارة أو وكالة ليحجز العملاء في ثوانٍ."
+        },
+        {
+          "id": "team-tasks",
+          "title": "مهام الفريق",
+          "description": "عيّن مهام التنظيف والتسليم والمعاينة لفريقك وتتبع ما تم إنجازه."
+        },
+        {
+          "id": "contracts-inspections",
+          "title": "العقود والمعاينات",
+          "description": "اطبع العقود وسجّل معاينة الاستلام والإرجاع واحتفظ بسجل كامل لكل عملية كراء."
+        }
+      ]
+
+        },
+        "workflow": {
+            "heading": "من الحجز إلى إرجاع المركبة، أبقَ كل خطوة تحت سيطرتك.",
+            "subtext": "مسار بسيط يواكب إيقاع عمليات الكراء الحقيقية، من أول اتصال بالزبون إلى إرجاع المركبة.",
+            "stepLabel": "الخطوة",
+            "steps": [
+                {
+                    "id": "step1",
+                    "title": "أنشئ الحجز",
+                    "description": "اختر الزبون والمركبة، وأدخل التواريخ ومكان التسلم."
+                },
+                {
+                    "id": "step2",
+                    "title": "تحقق من التوفر",
+                    "description": "تتحقق المنصة من تداخل التواريخ وتحسب سعر الكراء."
+                },
+                {
+                    "id": "step3",
+                    "title": "أكّد الحجز",
+                    "description": "اضبَط الحجز وجهّز عقد الكراء."
+                },
+                {
+                    "id": "step4",
+                    "title": "سجّل التسلم",
+                    "description": "دوّن المسافة المقطوعة ومستوى الوقود وحالة المركبة عند الانطلاق."
+                },
+                {
+                    "id": "step5",
+                    "title": "تابع المدفوعات",
+                    "description": "احصُل على العربونات والمدفوعات وتابع فترة الكراء."
+                },
+                {
+                    "id": "step6",
+                    "title": "أغلق عملية الكراء",
+                    "description": "سجّل معلومات الإرجاع وأنهِ الحجز."
+                }
+            ],
+            "tag": "كيف يعمل"
+        },
+        "profitability": {
+            "tag": "Benefits",
+            "heading": "Unlock the True Value of Sustainability",
+            "subtext": "Discover how smarter tracking and reporting can drive impact, efficiency, and trust.",
+            "highlights": [
+                {
+                    "id": "b1",
+                    "title": "Better Decisions",
+                    "description": "Turn complex data into clear insights to guide smarter strategies."
+                },
+                {
+                    "id": "b2",
+                    "title": "Efficiency Gains",
+                    "description": "Save time with automated tracking and simplified reporting."
+                },
+                {
+                    "id": "b3",
+                    "title": "Stronger Compliance",
+                    "description": "Stay aligned with regulations and build transparency with stakeholders."
+                },
+                {
+                    "id": "b4",
+                    "title": "Positive Impact",
+                    "description": "Reduce emissions and strengthen your contribution to the community"
+                },
+                {
+                    "id": "b5",
+                    "title": "Cost Savings",
+                    "description": "Cut unnecessary expenses by identifying waste and optimizing resource use."
+                },
+                {
+                    "id": "b6",
+                    "title": "Team Alignment",
+                    "description": "Bring everyone together around shared sustainability goals in one platform."
+                },
+                {
+                    "id": "b7",
+                    "title": "Future Growth",
+                    "description": "Build a resilient business prepared for evolving environmental challenges."
+                },
+                {
+                    "id": "b8",
+                    "title": "Stronger Reputation",
+                    "description": "Show progress, gain trust, and attract loyal customers and partners."
                 }
             ]
         },
+        "impactTracking": {
+            "tag": "مصادر مستدامة",
+            "heading": "متابعة الأثر",
+            "subtext": "راقب المؤشرات الرئيسية عبر عملياتك لاستكشاف الاتجاهات وتحقيق التحسينات.",
+            "cards": [
+                {
+                    "id": "survey",
+                    "title": "رؤى الاستبيانات",
+                    "description": "اعرض اتجاهات التعليقات واستكشف الأنماط الرئيسية في نتائج الاستبيانات."
+                },
+                {
+                    "id": "emissions",
+                    "title": "تحليل الانبعاثات",
+                    "description": "اعرف مصادر انبعاثاتك وتابع التخفيضات عبر فروعك."
+                }
+            ]
+        },
+        "tasks": {
+            "heading": "نظّم عمل فريقك في مكان واحد.",
+            "subtext": "خطط للمهام اليومية، ووزّع المسؤوليات وتابع التقدم بفضل قائمة مهام مشتركة ولوحة كانبان.",
+            "examples": [
+                "تحضير المركبات قبل التسلم",
+                "متابعة طلبات الزبائن",
+                "برمجة الصيانة",
+                "متابعة المهام الإدارية المعلّقة"
+            ],
+            "tag": "مهام الفريق"
+        },
+        "integration": {
+            "tag": "التكامل",
+            "heading": "تكاملات سلسة",
+            "subtext": "اربط أدواتك ومنصاتك المفضلة بسلاسة لتبسيط مسار عملك وتعزيز إنتاجيتك."
+        },
         "showcase": {
-            "statuses": {
-                "confirmed": "مؤكد",
-                "pickedUp": "تم التسليم",
-                "paid": "مدفوع",
-                "pending": "قيد الانتظار",
-                "returned": "مُسترجع",
-                "available": "متوفر",
-                "onRent": "مؤجر",
-                "maintenance": "في الصيانة"
-            },
-            "reservations": {
-                "eyebrow": "الحجوزات",
-                "title": "هذا الأسبوع",
-                "badge": "24 نشط",
-                "columns": {
-                    "reference": "المرجع",
-                    "customer": "العميل",
-                    "vehicle": "المركبة",
-                    "dates": "التواريخ",
-                    "status": "الحالة"
-                },
-                "stats": [
-                    { "label": "متوفر", "value": "18", "hint": "مركبة جاهزة" },
-                    { "label": "مؤجر", "value": "9", "hint": "+3 اليوم" },
-                    { "label": "استلام اليوم", "value": "5", "hint": "2 قريباً" }
-                ],
-                "rows": [
-                    {
-                        "id": "RSV-1042",
-                        "customer": "Sara Mansouri",
-                        "vehicle": "Dacia Duster",
-                        "dates": "12 أكتوبر – 18 أكتوبر",
-                        "status": "confirmed"
-                    },
-                    {
-                        "id": "RSV-1041",
-                        "customer": "Youssef El Amrani",
-                        "vehicle": "Renault Clio",
-                        "dates": "11 أكتوبر – 15 أكتوبر",
-                        "status": "pickedUp"
-                    },
-                    {
-                        "id": "RSV-1040",
-                        "customer": "Lina Haddad",
-                        "vehicle": "Peugeot 208",
-                        "dates": "10 أكتوبر – 14 أكتوبر",
-                        "status": "paid"
-                    },
-                    {
-                        "id": "RSV-1039",
-                        "customer": "Omar Benali",
-                        "vehicle": "Hyundai Tucson",
-                        "dates": "09 أكتوبر – 20 أكتوبر",
-                        "status": "pending"
-                    },
-                    {
-                        "id": "RSV-1038",
-                        "customer": "Emma Laurent",
-                        "vehicle": "Toyota Yaris",
-                        "dates": "08 أكتوبر – 12 أكتوبر",
-                        "status": "returned"
-                    }
-                ]
-            },
-            "fleet": {
-                "eyebrow": "الأسطول",
-                "title": "المركبات",
-                "badge": "32 إجمالاً",
-                "items": [
-                    {
-                        "name": "Dacia Duster",
-                        "plate": "12345-A-6",
-                        "status": "available",
-                        "rate": "450 درهم",
-                        "fuel": "ديزل"
-                    },
-                    {
-                        "name": "Renault Clio",
-                        "plate": "88421-B-3",
-                        "status": "onRent",
-                        "rate": "320 درهم",
-                        "fuel": "بنزين"
-                    },
-                    {
-                        "name": "Hyundai Tucson",
-                        "plate": "55710-C-1",
-                        "status": "available",
-                        "rate": "650 درهم",
-                        "fuel": "هجين"
-                    },
-                    {
-                        "name": "Toyota Yaris",
-                        "plate": "90233-D-8",
-                        "status": "maintenance",
-                        "rate": "300 درهم",
-                        "fuel": "بنزين"
-                    }
-                ]
-            },
-            "payments": {
-                "eyebrow": "المدفوعات",
-                "title": "إيرادات هذا الشهر",
-                "badge": "+18.4%",
-                "stats": [
-                    { "label": "المحصّل", "value": "128,450", "hint": "درهم" },
-                    { "label": "المستحق", "value": "14,300", "hint": "درهم" },
-                    { "label": "متوسط الإيجار", "value": "2,140", "hint": "درهم" }
-                ],
-                "columns": {
-                    "recent": "المدفوعات الأخيرة",
-                    "period": "هذا الأسبوع"
-                },
-                "rows": [
-                    {
-                        "id": "INV-2041",
-                        "customer": "Sara Mansouri",
-                        "amount": "2,700 درهم",
-                        "method": "بطاقة",
-                        "status": "paid"
-                    },
-                    {
-                        "id": "INV-2040",
-                        "customer": "Youssef El Amrani",
-                        "amount": "1,280 درهم",
-                        "method": "نقداً",
-                        "status": "paid"
-                    },
-                    {
-                        "id": "INV-2039",
-                        "customer": "Lina Haddad",
-                        "amount": "3,900 درهم",
-                        "method": "تحويل",
-                        "status": "pending"
-                    },
-                    {
-                        "id": "INV-2038",
-                        "customer": "Omar Benali",
-                        "amount": "4,550 درهم",
-                        "method": "بطاقة",
-                        "status": "pending"
-                    }
-                ]
-            },
             "reports": {
                 "eyebrow": "التقارير",
                 "title": "أداء الأسطول",
                 "badge": "آخر 6 أشهر",
                 "stats": [
                     {
-                        "label": "الإيرادات",
-                        "value": "412,900",
+                        "label": "رقم المعاملات",
+                        "value": "412 900",
                         "hint": "+22.1%"
                     },
                     {
-                        "label": "نسبة الإشغال",
+                        "label": "الإشغال",
                         "value": "78%",
                         "hint": "+6.4%"
                     },
                     {
-                        "label": "نسبة الاستغلال",
+                        "label": "الاستعمال",
                         "value": "84%",
                         "hint": "+3.2%"
                     }
                 ],
                 "chart": {
-                    "title": "الإيرادات الشهرية",
-                    "trend": "في اتجاه صاعد"
+                    "title": "الإيراد الشهري",
+                    "trend": "في ارتفاع"
                 },
                 "months": [
-                    "مايو",
+                    "ماي",
                     "يونيو",
-                    "يوليو",
-                    "أغسطس",
-                    "سبتمبر",
+                    "يوليوز",
+                    "غشت",
+                    "شتنبر",
                     "أكتوبر"
+                ]
+            },
+            "vehiclePerformance": {
+                "eyebrow": "التقارير",
+                "title": "المركبات الأكثر أداءً",
+                "columns": {
+                    "vehicle": "المركبة",
+                    "revenue": "الإيراد",
+                    "expenses": "المصاريف",
+                    "margin": "الهامش",
+                    "bookedDays": "أيام الحجز"
+                },
+                "rows": [
+                    {
+                        "vehicle": "داسيا دوستر",
+                        "revenue": "48 200 درهم",
+                        "expenses": "16 400 درهم",
+                        "margin": "31 800 درهم",
+                        "bookedDays": "24 يومًا"
+                    },
+                    {
+                        "vehicle": "هيونداي توسان",
+                        "revenue": "40 700 درهم",
+                        "expenses": "14 100 درهم",
+                        "margin": "26 600 درهم",
+                        "bookedDays": "17 يومًا"
+                    },
+                    {
+                        "vehicle": "رينو كليو",
+                        "revenue": "31 900 درهم",
+                        "expenses": "9 900 درهم",
+                        "margin": "22 000 درهم",
+                        "bookedDays": "19 يومًا"
+                    }
+                ]
+            },
+            "tasksPreview": {
+                "eyebrow": "الفريق",
+                "title": "لوحة اليوم",
+                "badge": "3 قوائم",
+                "columns": [
+                    {
+                        "id": "todo",
+                        "title": "للتنفيذ",
+                        "items": [
+                            {
+                                "id": "t1",
+                                "title": "تحضير الدوستر للتسلم في الساعة 10 صباحًا"
+                            },
+                            {
+                                "id": "t2",
+                                "title": "الاتصال بالزبون RSV-1039"
+                            },
+                            {
+                                "id": "t3",
+                                "title": "متابعة دفعة RSV-1038"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "doing",
+                        "title": "قيد التنفيذ",
+                        "items": [
+                            {
+                                "id": "t4",
+                                "title": "عقد كراء RSV-1042"
+                            },
+                            {
+                                "id": "t5",
+                                "title": "تنظيف شامل للكليو"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "done",
+                        "title": "منجز",
+                        "items": [
+                            {
+                                "id": "t6",
+                                "title": "المراقبة التقنية للتوسان"
+                            }
+                        ]
+                    }
                 ]
             }
         },
         "pricing": {
-            "eyebrow": "الأسعار",
-            "heading": "أسعار بسيطة لشركة التأجير الخاصة بك.",
-            "subheading": "خطة واحدة تشمل جميع الوحدات. اختر فترة الفوترة المناسبة لك — أسعار الإطلاق بخصم يصل إلى 50% لفترة محدودة.",
-            "promo": "عرض الإطلاق — خصم يصل إلى 50%",
-            "features": [
-                "حجوزات وعقود تأجير غير محدودة",
-                "إدارة الأسطول والصيانة والوثائق",
-                "ملفات العملاء وسجل التأجير",
-                "الفواتير والتأمينات وتتبع المدفوعات",
-                "التقارير والتحليلات والتصدير",
-                "حسابات فريق بصلاحيات حسب الدور",
-                "الإنجليزية والفرنسية والعربية مع دعم RTL",
-                "تحديثات مجانية ودعم بالبريد الإلكتروني"
-            ],
+            "tag": "خطط مرنة",
+            "heading": "اختر خطتك المثالية",
+            "subtext": "من الفرق الصغيرة إلى التأثير العالمي، اختر خطة تنمو معك.",
             "plans": [
                 {
-                    "id": "monthly",
-                    "name": "شهري",
-                    "description": "مرونة كاملة، يمكنك الإلغاء في أي وقت.",
-                    "price": "50",
-                    "originalPrice": "100",
-                    "period": "/ شهر",
-                    "note": "تُفوتر شهرياً",
-                    "saving": "خصم 50%",
-                    "badge": "",
-                    "highlighted": false,
-                    "ctaLabel": "اختر الخطة"
+                    "name": "خطة البداية",
+                    "description": "حوّل البيانات المعقدة إلى رؤى واضحة لصياغة استراتيجيات أذكى.",
+                    "price": "$29",
+                    "features": [
+                        "حتى 3 أعضاء للفريق",
+                        "تتبع أساسي للانبعاثات",
+                        "لوحات تحكم قياسية",
+                        "دعم عبر البريد الإلكتروني"
+                    ],
+                    "cta": "ابدأ الآن"
                 },
                 {
-                    "id": "semiannual",
-                    "name": "6 أشهر",
-                    "description": "غطِّ موسماً كاملاً بنصف السعر.",
-                    "price": "300",
-                    "originalPrice": "600",
-                    "period": "/ 6 أشهر",
-                    "note": "50 درهماً شهرياً",
-                    "saving": "خصم 50%",
-                    "badge": "Best value",
-                    "highlighted": false,
-                    "ctaLabel": "اختر الخطة"
+                    "name": "خطة النمو",
+                    "description": "مثالية للشركات النامية التي تحتاج إلى رؤى متقدمة والأتمتة.",
+                    "price": "$79",
+                    "features": [
+                        "حتى 10 أعضاء للفريق",
+                        "تقارير آلية",
+                        "تحليلات ولوحات تحكم متقدمة",
+                        "دعم ذو أولوية"
+                    ],
+                    "cta": "الترقية إلى النمو",
+                    "dark": true
                 },
                 {
-                    "id": "annual",
-                    "name": "سنوي",
-                    "description": "أفضل قيمة للشركات النامية.",
-                    "price": "600",
-                    "originalPrice": "1,000",
-                    "period": "/ سنة",
-                    "note": "50 درهماً شهرياً",
-                    "saving": "خصم 40%",
-                    "badge": "أفضل قيمة",
-                    "highlighted": true,
-                    "ctaLabel": "اختر الخطة"
-                }
-            ],
-            "note": "جميع الأسعار بالدرهم المغربي (MAD). بدون رسوم إعداد أو تكاليف خفية.",
-            "footnote": "هل لديك عدة فروع أو أسطول كبير؟ تواصل معنا للحصول على خطة مخصصة."
-        },
-        "faq": {
-            "eyebrow": "الأسئلة الشائعة",
-            "heading": "الأسئلة الشائعة",
-            "subheading": "كل ما تحتاج معرفته قبل البدء. لديك سؤال آخر؟ احجز عرضاً توضيحياً وسنجيبك مباشرة.",
-            "categories": [
-                {
-                    "id": "subscription",
-                    "title": "تفاصيل الاشتراك",
-                    "questions": [
-                        {
-                            "question": "ماذا يشمل الاشتراك؟",
-                            "answer": "تشمل كل خطة المنصة كاملة: الحجوزات والأسطول والعملاء والعقود والمدفوعات والفواتير والتقارير وأدوار الفريق ودعم تعدد اللغات. لا توجد وحدات خفية."
-                        },
-                        {
-                            "question": "هل أحتاج إلى تثبيت أي شيء؟",
-                            "answer": "لا. يعمل Double V Drive في متصفحك على الحاسوب والجهاز اللوحي والهاتف، وتُخزَّن بياناتك بأمان في السحابة."
-                        },
-                        {
-                            "question": "هل يمكنني تغيير فترة الفوترة لاحقاً؟",
-                            "answer": "نعم. يمكنك الانتقال من الشهري إلى 6 أشهر أو السنوي في أي وقت. يُطبَّق الرصيد المتبقي على الفترة الجديدة."
-                        },
-                        {
-                            "question": "هل هناك نسخة تجريبية مجانية؟",
-                            "answer": "نعم، نقدّم تجربة مجانية لمدة 14 يوماً لتختبر المنصة مع أسطولك قبل الاشتراك."
-                        },
-                        {
-                            "question": "هل يمكنني الإلغاء في أي وقت؟",
-                            "answer": "نعم. يمكن إلغاء الاشتراكات الشهرية في أي وقت وتبقى نشطة حتى نهاية الفترة المدفوعة."
-                        }
-                    ]
-                },
-                {
-                    "id": "billing",
-                    "title": "الفوترة والمدفوعات",
-                    "questions": [
-                        {
-                            "question": "ما طرق الدفع المقبولة؟",
-                            "answer": "نقبل البطاقات البنكية والتحويلات المصرفية والدفع نقداً في مكتبنا. تُنشأ فاتورة تلقائياً لكل عملية دفع."
-                        },
-                        {
-                            "question": "بأي عملة الأسعار؟",
-                            "answer": "جميع الأسعار بالدرهم المغربي (MAD) ولا تشمل الضرائب المحلية حيثما ينطبق."
-                        },
-                        {
-                            "question": "هل تقدّمون استرداداً؟",
-                            "answer": "الخطط الشهرية غير قابلة للاسترداد. للخطط نصف السنوية والسنوية، تواصل معنا خلال 14 يوماً من الدفع لاسترداد نسبي."
-                        },
-                        {
-                            "question": "كيف أحصل على فاتورة؟",
-                            "answer": "كل عملية دفع تُنشئ فاتورة قابلة للتنزيل في قسم الفوترة، جاهزة لمحاسبك."
-                        }
-                    ]
-                },
-                {
-                    "id": "other",
-                    "title": "أخرى",
-                    "questions": [
-                        {
-                            "question": "هل يعمل باللغة العربية؟",
-                            "answer": "نعم. المنصة متاحة بالإنجليزية والفرنسية والعربية مع دعم كامل للاتجاه من اليمين إلى اليسار."
-                        },
-                        {
-                            "question": "هل يمكن لعدة أعضاء استخدامه؟",
-                            "answer": "نعم. ادعُ فريقك وحدّد الأدوار: المالك أو المدير أو الوكيل أو المالية."
-                        },
-                        {
-                            "question": "كيف أتواصل مع الدعم؟",
-                            "answer": "راسلنا على support@doublevdrive.com أو احجز عرضاً توضيحياً وسنرشدك خلال الإعداد."
-                        }
-                    ]
+                    "name": "خطة التأثير",
+                    "description": "للمؤسسات المستعدة للقيادة من خلال إجراءات استدامة شاملة.",
+                    "price": "$149",
+                    "features": [
+                        "أعضاء للفريق بلا حدود",
+                        "تكاملات كاملة ووصول إلى API",
+                        "تقارير امتثال مخصصة",
+                        "مدير نجاح مخصص"
+                    ],
+                    "cta": "ابدأ الآن"
                 }
             ]
         },
-        "cta": {
-            "title": "هل أنت مستعد للتحديث",
-            "subtitle": "أعمال تأجير السيارات؟",
-            "ctaLabel": "احجز عرضاً توضيحياً",
-            "ctaHref": "mailto:hello@doublevdrive.com"
+        "faq": {
+            "heading": "الأسئلة الشائعة",
+            "subheading": "ما تحتاج معرفته قبل البدء. سؤال آخر؟ اطلب عرضًا توضيحيًا وسنجيبكم مباشرة.",
+            "questions": [
+                {
+                    "question": "لمن تُوجَّه المنصة؟",
+                    "answer": "لوكالات كراء السيارات التي تريد مركز حجوزاتها وعقودها وأسطولها وزبائنها ومالياتها في أداة واحدة، يستعملها المسؤول كما يستعملها المحاسبون في الوكالة."
+                },
+                {
+                    "question": "هل يمكنني إدارة عدة مركبات وحجوزات؟",
+                    "answer": "نعم. أضف أسطولك وتابع كل حجوزاتك: يُتحقق من توفر كل مركبة تلقائيًا، وتُكتشف تداخلات التواريخ لتجنب الحجز المزدوج."
+                },
+                {
+                    "question": "هل يمكنني إنشاء عقود كراء؟",
+                    "answer": "نعم. يُنشأ عقد الكراء من معلومات الحجز: الزبون، السائق، المركبة، التواريخ، الأسعار والعربونات."
+                },
+                {
+                    "question": "هل يمكنني تتبع مصاريف ومردودية مركباتي؟",
+                    "answer": "نعم. سجّل مصاريف كل مركبة (صيانة، تأمين، أقساط التمويل) واستعرض تقارير الإيرادات والهوامش وأيام الحجز والإشغال."
+                },
+                {
+                    "question": "كيف يعمل الحجز عبر رمز QR؟",
+                    "answer": "أنشئ رمز QR من لوحة التحكم. يمسحه الزبائن، يفتحون صفحتك العامة للحجز ويملؤون طلبًا بمعلوماتهم وتواريخهم. تراجعون كل طلب وتقبِلونه."
+                },
+                {
+                    "question": "هل يمكنني تنظيم مهام فريقي؟",
+                    "answer": "نعم. أنشئ مهام اليوم، ووزّعها وتابع تقدمها على قائمة مهام مشتركة ولوحة كانبان."
+                },
+                {
+                    "question": "كيف أتعرف على الأسعار؟",
+                    "answer": "الصيغ الشهرية و6 أشهر والسنوية معروضة في قسم الأسعار. لعدة وكالات أو أسطول كبير، اطلب عرض سعر مخصص عبر نموذج الاتصال."
+                },
+                {
+                    "question": "كيف أطلب عرضًا توضيحيًا؟",
+                    "answer": "املأ نموذج الاتصال مع ذكر اسم وكالتك واحتياجاتك: سيتواصل فريق Double V Drive معكم لعرض المنصة."
+                }
+            ],
+            "tag": "الأسئلة الشائعة",
+            "cta": {
+                "title": "جاهز لتبسيط",
+                "accent": "طريقة إدارة وكالتك؟",
+                "text": "أخبرنا عن وكالتك واحتياجاتك. اكتشف كيف تساعدك المنصة على تنظيم حجوزاتك وأسطولك وعملياتك اليومية.",
+                "button": "اطلب عرضًا توضيحيًا"
+            }
+        },
+        "transparency": {
+            "tag": "شفافية كاملة",
+            "heading": "رؤية البيانات",
+            "subtext": "احصل على رؤية واضحة للمؤشرات الأساسية في عملياتك —\nمن الانبعاثات إلى الموردين، كل ذلك في مكان واحد."
         },
         "footer": {
-            "copyright": "© 2026 Double V Drive. جميع الحقوق محفوظة.",
-            "brandText": "DOUBLE V DRIVE"
+            "headingLines": [
+                [
+                    "اتخذ قرارات",
+                    "أذكى"
+                ],
+                [
+                    "اعمل على",
+                    "بياناتك اليوم."
+                ]
+            ],
+            "subtext": "بسّط تحديات الاستدامة المعقدة من خلال رؤى واضحة وتقارير مؤتمتة وأدوات مصممة لدفع أثر إيجابي دائم.",
+            "cta": "ابدأ التتبع",
+            "copyright": "© 2026 Double V Drive. جميع الحقوق محفوظة."
+        },
+        "statistics": {
+            "tag": "قيمنا",
+            "heading": "صُمم ليبقي كل سيارة محجوزة وكل درهم مُتتبَّعاً",
+            "subheading": "يمنحك doublevdrive كل ما تحتاجه لإدارة أسطولك والتحرك بسرعة وتنمية وكالتك بثقة.",
+            "buttonLabel": "ابدأ الآن",
+            "items": [
+                {
+                    "id": "double-bookings",
+                    "text": "تُقفل السيارة لحظة حجزها. تُحجب التواريخ المتداخلة تلقائياً، فلا يمكن لعميلين الحصول على السيارة نفسها حتى لو وصل الحجزان في اللحظة ذاتها.",
+                    "slots": [
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857605"
+                        },
+                        {
+                            "type": "text",
+                            "text": "K+",
+                            "size": "h1"
+                        }
+                    ],
+                    "label": "حجوزات مزدوجة"
+                },
+                {
+                    "id": "audit-trail",
+                    "text": "يُسجَّل كل تغيير في السعر أو التاريخ أو الحالة أو الدفعة مع اسم صاحبه ووقته. تُحلّ النزاعات مع العملاء في ثوانٍ.",
+                    "slots": [
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857602"
+                        },
+                        {
+                            "type": "reel",
+                            "variant": "lower",
+                            "strip": "2304857605"
+                        },
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857600"
+                        },
+                        {
+                            "type": "text",
+                            "text": "K+",
+                            "size": "h1"
+                        }
+                    ],
+                    "label": "تغييرات مسجّلة"
+                },
+                {
+                    "id": "online-booking",
+                    "text": "يمكنك مشاركة رمز QR أو رابط لكل سيارة أو وكالة. يمكن للعملاء الحجز في أي وقت، حتى عندما يكون مكتبك مغلقًا، وتسجل الحجز مباشرة في لوحة التحكم الخاصة بك.",
+                    "slots": [
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857609"
+                        },
+                        {
+                            "type": "reel",
+                            "variant": "lower",
+                            "strip": "8304857602"
+                        },
+                        {
+                            "type": "text",
+                            "text": "%",
+                            "size": "h1"
+                        }
+                    ],
+                    "label": "حجوزات عبر الإنترنت"
+                },
+                {
+                    "id": "languages",
+                    "text": "أدر وكالتك بالعربية أو الفرنسية أو الإنجليزية. فريقك وعقودك وعملاؤك يعملون باللغة التي تناسبهم.",
+                    "slots": [
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857609"
+                        },
+                        {
+                            "type": "reel",
+                            "variant": "lower",
+                            "strip": "9304857602"
+                        },
+                        {
+                            "type": "text",
+                            "text": ".",
+                            "size": "dot"
+                        },
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857609"
+                        },
+                        {
+                            "type": "text",
+                            "text": "%",
+                            "size": "h1"
+                        }
+                    ],
+                    "label": "لغات"
+                }
+            ]
+        },
+        "testimonials": {
+            "tag": "أصوات موثوقة",
+            "heading": "قصص العملاء",
+            "subtext": "تعرّف على كيفية تبسيط الفرق لسير العمل وتحقيق نتائج أفضل مع منصتنا.",
+            "items": [
+                {
+                    "quote": "\"حوّلت المنصة عمليات إعداد التقارير لدينا تمامًا. نوفر الوقت ونقلل الضغط ونركز طاقتنا أكثر على بناء استراتيجيات فعالة.\"",
+                    "attribution": "سارة ل.، مديرة الاستدامة في GreenTech"
+                },
+                {
+                    "quote": "\"أخيرًا، نرى البيانات بوضوح عبر الفرق. يعمل التعاون بسلاسة أكبر، وتصبح القرارات أقوى، وتنمو ثقتنا يومًا بعد يوم.\"",
+                    "attribution": "ديفيد ر.، مدير العمليات في EcoLogix"
+                },
+                {
+                    "quote": "\"الرؤى المقدمة قابلة للتنفيذ ودقيقة. رفعت هذه المنصة بشكل كبير طريقة قياسنا لإمكانات تقدمنا في الاستدامة وإدارتها والتواصل بشأنها.\"",
+                    "attribution": "جيمس ت.، مدير المشاريع في NovaWorks"
+                },
+                {
+                    "quote": "\"مع هذه الأداة، أصبحت التقارير سلسة وسهلة. يثق أصحاب المصلحة بالأرقام أكثر، ولم تكن مواءمتنا الداخلية أقوى من أي وقت مضى.\"",
+                    "attribution": "كلارا م.، مديرة الاستراتيجية في BrightPath Group"
+                },
+                {
+                    "quote": "\"كانت الامتثالية تسحب الموارد سابقًا. الآن تتولى الأتمتة التعقيد بدقة، ما يتيح لنا الابتكار والنمو وبناء تأثير مستدام.\"",
+                    "attribution": "كيفين أ.، مسؤول الاستدامة في UrbanSphere"
+                }
+            ]
         }
     }
 }

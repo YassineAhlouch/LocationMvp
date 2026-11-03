@@ -14,3 +14,4 @@ export const getLandingPageContent = (
     language: string,
 ): LandingPageContent =>
     resources[language]?.landing ?? resources[defaultLanguage].landing
+ 

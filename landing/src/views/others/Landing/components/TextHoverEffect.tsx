@@ -44,8 +44,8 @@ const TextHoverEffect = ({
                 >
                     {hovered && (
                         <>
-                            <stop offset="0%" stopColor="#3c5de5" />
-                            <stop offset="100%" stopColor="#3c5de5" />
+                            <stop offset="0%" stopColor="#fa7319" />
+                            <stop offset="100%" stopColor="#b34e0b" />
                         </>
                     )}
                 </linearGradient>

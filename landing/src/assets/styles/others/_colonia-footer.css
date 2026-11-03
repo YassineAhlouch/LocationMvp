@@ -1,0 +1,285 @@
+/**
+ * Exact port of the Colonia template footer section (`<section class=footer>`).
+ * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ *
+ * A 20px-padded orange section holds the rounded `footer-main` card (radius
+ * slim, dark-orange + the "footer" artwork background, positioned 50% 0) with
+ * a centered 680px column: the two-line `text-light footer-title` h1-scale
+ * heading where every line = two h2 segments with a 50px `cta-icon` artwork
+ * between them, the tilted (rotate 2.02deg) 389×265 `cta-box` "Email Box"
+ * artwork (`box-shadow: none` on the block — the red glow
+ * `0 41px 29.3px #cb2c00` comes from the wrapping `footer-top-02-wrap`), a
+ * centered 587px `footer-top-03` column (paragraph-02 text-light subtext +
+ * `button-01` pill with the duplicated-label hover roll) and — outside the
+ * column — a `footer-bottom` row: 98×32 logo + paragraph-03 text-light
+ * copyright. The template's breakpoints carry over (991 = 10px side padding,
+ * 300px box, 40px icons; 767 = stacked centered footer-bottom, 220px box,
+ * 38px icons; 479 = 180px box, wrapping 10px-gap heading rows, 26px/34px
+ * title, hidden icons). The template is light-only; the orange artwork card
+ * works unchanged on both app themes so only the scroll-rise motion
+ * (motion/react, mirroring the other Colonia ports) replaces its IX2.
+ */
+
+/* the page-level footer frame (20px around the rounded card, none on top) */
+.footer {
+    padding-bottom: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    padding-right: var(--_responsive---padding--padding-slim);
+    position: relative;
+}
+
+.footer .footer-main {
+    border-radius: var(--_responsive---border-radius--border-radius-slim);
+    background-color: var(--color--dark-orange);
+    background-image: url('/img/landing/footer-bg.avif');
+    background-position: 50% 0%;
+    background-size: cover;
+    position: relative;
+}
+
+/* the template's `.container.container-v2` */
+.footer .colonia-container {
+    width: var(--100);
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    padding-top: var(--_responsive---padding--padding-large);
+    padding-bottom: var(--_responsive---padding--padding-large);
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+/* the centered 680px column */
+.footer .footer-top {
+    padding-top: var(--_responsive---padding--padding-xlarge);
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* each heading line = two h2 segments + the cta icon between */
+.footer .footer-top-01-1 {
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+/* h1-scale heading typography */
+.footer .footer-title {
+    font-size: var(--_typography---h1--font-size);
+    line-height: var(--_typography---h1--line-height);
+    font-weight: var(--_typography---h1--font-weight);
+    letter-spacing: var(--_typography---h1--latter-spaces);
+}
+
+.footer .text-light {
+    color: var(--color--light);
+}
+
+.footer .cta-icon {
+    width: 50px;
+    height: 50px;
+    box-shadow: 0 6px 10px 1px #fa731940;
+}
+
+/* the tilted "Email Box" block — glow shadow lives on the wrap */
+.footer .footer-top-02 {
+    max-width: 389px;
+    height: 265px;
+    margin-top: var(--_responsive---margin--margin-xxsmall);
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: none;
+    transform: rotate(2.02deg);
+}
+
+.footer .footer-top-02-wrap {
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 41px 29.3px #cb2c00;
+}
+
+.footer .cta-box {
+    width: var(--100);
+    height: var(--100);
+}
+
+/* the subtext + button column */
+.footer .footer-top-03 {
+    z-index: 5;
+    margin-top: var(--_responsive---margin--margin-medium);
+    max-width: 587px;
+    grid-column-gap: var(--_spacing---spacing-regular);
+    grid-row-gap: var(--_spacing---spacing-regular);
+    text-align: center;
+    flex-flow: column;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    position: relative;
+}
+
+.footer .paragraph-02 {
+    font-size: var(--_typography---paragraph-02--font-size);
+    line-height: var(--_typography---paragraph-02--line-height);
+    font-weight: var(--_typography---paragraph-02--font-weight);
+    letter-spacing: var(--_typography---paragraph-02--latter-spaces);
+}
+
+.footer .paragraph-03 {
+    font-size: var(--_typography---paragraph-03--font-size);
+    line-height: var(--_typography---paragraph-03--line-height);
+    font-weight: var(--_typography---paragraph-03--font-weight);
+    letter-spacing: var(--_typography---paragraph-03--latter-spaces);
+}
+
+.footer .paragraph-03.text-light {
+    color: var(--color--light);
+}
+
+/* the logo + copyright row (outside the centered column) */
+.footer .footer-bottom {
+    margin-top: var(--_responsive---margin--margin-large);
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+}
+
+.footer .footer-logo-wrap {
+    max-width: 98px;
+    height: 32px;
+}
+
+.footer .footer-logo {
+    width: var(--100);
+    height: var(--100);
+    object-fit: contain;
+    object-position: 0% 50%;
+}
+
+.footer .footer-link {
+    color: var(--color--light);
+    transition: color 0.3s;
+}
+
+.footer .footer-link:hover {
+    color: var(--color--dark);
+}
+
+/* the button pill + label roll (same scoped copy as the other Colonia ports) */
+.footer .button-01 {
+    grid-column-gap: 6px;
+    grid-row-gap: 6px;
+    border-radius: var(--_responsive---border-radius--border-radius-xsmall);
+    color: var(--color--light);
+    background-image: linear-gradient(0deg, #393939, #313131 46%, #282828);
+    border: 1px solid #000;
+    justify-content: center;
+    align-items: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: flex;
+    box-shadow:
+        inset 0 2px 1px rgba(255, 255, 255, 0.2),
+        inset 0 -2px #000;
+}
+
+.footer .button-dot {
+    background-color: var(--color--dark-orange);
+    border-radius: 100px;
+    width: 4px;
+    height: 4px;
+}
+
+.footer .button-text-wrap {
+    position: relative;
+    max-height: 20px;
+    overflow: hidden;
+}
+
+.footer .button-text-wrap .paragraph-03 {
+    color: inherit;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.footer .button-text-wrap .paragraph-03:nth-child(2) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(100%);
+}
+
+.footer .button-01:hover .button-text-wrap .paragraph-03:nth-child(1) {
+    transform: translateY(-100%);
+}
+
+.footer .button-01:hover .button-text-wrap .paragraph-03:nth-child(2) {
+    transform: translateY(0);
+}
+
+/* ===================== Media (template breakpoints) ===================== */
+@media screen and (max-width: 991px) {
+    .footer {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .footer .footer-top-02 {
+        max-width: 300px;
+        height: auto;
+    }
+
+    .footer .cta-icon {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .footer .footer-bottom {
+        text-align: center;
+        flex-flow: column;
+    }
+
+    .footer .footer-top-02 {
+        max-width: 220px;
+    }
+
+    .footer .cta-icon {
+        width: 38px;
+        height: 38px;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .footer .footer-logo-wrap {
+        max-width: 98px;
+        height: auto;
+    }
+
+    .footer .footer-top-02 {
+        max-width: 180px;
+    }
+
+    .footer .footer-top-01-1 {
+        grid-column-gap: 10px;
+        grid-row-gap: 2px;
+        flex-flow: wrap;
+    }
+
+    .footer .footer-title {
+        font-size: 26px;
+        line-height: 34px;
+    }
+
+    .footer .cta-icon {
+        display: none;
+    }
+}

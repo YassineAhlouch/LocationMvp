@@ -7,7 +7,6 @@ import {
 } from 'motion/react'
 import { TbMenu2 } from 'react-icons/tb'
 import NavList from './NavList'
-import BrandLogo from './BrandLogo'
 import LanguageSelector from './LanguageSelector'
 import Drawer from '@/components/ui/Drawer'
 import classNames from '@/utils/classNames'
@@ -43,41 +42,58 @@ const Navigation = ({
     return (
         <motion.div
             ref={ref}
-            className="fixed inset-x-0 top-0 z-[30] w-full pointer-events-none max-w-7xl mx-auto"
+            className="fixed inset-x-0 top-3 lg:top-[34px] z-[30] w-full pointer-events-none mx-auto px-4"
         >
-            <div className="w-full h-full pointer-events-auto">
+            <div className="w-full pointer-events-auto flex justify-center">
                 <NavBody
                     scrolled={scrolled}
                     mode={mode}
-                    className="hidden lg:flex w-full items-center justify-between"
+                    className="hidden lg:flex w-full items-center justify-between gap-3"
                 >
-                    <div className="flex items-center gap-4">
-                        <BrandLogo />
+                    <div className="flex items-center">
+                        <img
+                            src="/img/logo/logo-dark-full.svg"
+                            alt="ANAS"
+                            className="h-8 w-auto"
+                        />
                     </div>
                     <div className="flex-1 flex justify-center">
-                        <NavList tabs={navMenu} />
+                        <NavList tabs={navMenu} onDark />
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
                         <LanguageSelector />
                         <ThemeToggle mode={mode} toggleMode={toggleMode} />
+                        <a href="#contact" className="col-btn col-btn-white col-p3">
+                            Start Tracking
+                        </a>
                     </div>
                 </NavBody>
 
                 <MobileNav
                     scrolled={scrolled}
                     mode={mode}
-                    className="lg:hidden w-full flex items-center justify-between"
+                    className="lg:hidden w-full flex items-center justify-between gap-2"
                 >
                     <button
                         onClick={() => setIsDrawerOpen(true)}
-                        className="p-1 text-neutral-600 dark:text-neutral-300"
+                        className="p-2 text-[#f8f8f8]"
                     >
-                        <TbMenu2 size={24} />
+                        <TbMenu2 size={20} />
                     </button>
-                    <BrandLogo />
+                    <img
+                        src="/img/logo/logo-dark-full.svg"
+                        alt="ANAS"
+                        className="h-7 w-auto"
+                    />
                     <div className="flex items-center gap-1">
                         <LanguageSelector />
                         <ThemeToggle mode={mode} toggleMode={toggleMode} />
+                        <a
+                            href="#contact"
+                            className="col-btn col-btn-white col-p3 hidden sm:inline-flex"
+                        >
+                            Start Tracking
+                        </a>
                     </div>
                 </MobileNav>
 
@@ -88,7 +104,7 @@ const Navigation = ({
                     width={250}
                     placement={direction === 'rtl' ? 'right' : 'left'}
                 >
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-2">
                         <NavList
                             onTabClick={() => setIsDrawerOpen(false)}
                             tabs={navMenu}
@@ -104,7 +120,6 @@ const NavBody = ({
     children,
     className,
     scrolled,
-    mode,
 }: {
     children: React.ReactNode
     className?: string
@@ -114,27 +129,14 @@ const NavBody = ({
     <motion.div
         layout
         animate={{
-            width: scrolled ? '50%' : '100%',
-            y: scrolled ? 10 : 0,
-            borderRadius: scrolled ? '10px' : '0px',
-            backgroundColor: scrolled
-                ? mode === 'dark'
-                    ? 'rgb(0 0 0 / 33%)'
-                    : 'rgba(255, 255, 255, 0.8)'
-                : 'transparent',
-            borderColor: 'rgba(200, 200, 200, 0.2)',
-            boxShadow: scrolled
-                ? '0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset'
-                : 'none',
+            scale: scrolled ? 0.94 : 1,
+            y: scrolled ? 6 : 0,
         }}
         transition={{ type: 'spring', stiffness: 500, damping: 50 }}
-        style={{ minWidth: '1000px' }}
         className={classNames(
-            'relative mx-auto px-4 py-2 backdrop-blur-md transition-colors',
-            scrolled
-                ? 'dark:bg-neutral-900/80 border border-transparent dark:border-white/10'
-                : 'dark:bg-transparent',
+            'max-w-[730px]',
             className,
+            'colonia-fixed-navbar',
         )}
     >
         {children}
@@ -145,7 +147,6 @@ const MobileNav = ({
     children,
     className,
     scrolled,
-    mode,
 }: {
     children: React.ReactNode
     className?: string
@@ -153,26 +154,13 @@ const MobileNav = ({
     mode: Mode
 }) => (
     <motion.div
-        layout
         animate={{
-            width: scrolled ? '90%' : '100%',
-            y: scrolled ? 20 : 0,
-            borderRadius: scrolled ? '12px' : '0px',
-            backgroundColor: scrolled
-                ? mode === 'dark'
-                    ? 'rgb(0 0 0 / 33%)'
-                    : 'rgba(255, 255, 255, 0.8)'
-                : 'transparent',
-            boxShadow: scrolled
-                ? '0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset'
-                : 'none',
+            y: scrolled ? 4 : 0,
         }}
         transition={{ type: 'spring', stiffness: 200, damping: 50 }}
         className={classNames(
-            'relative mx-auto px-4 py-2 backdrop-blur-md transition-colors',
-            scrolled
-                ? 'dark:bg-neutral-900/80 border border-transparent dark:border-white/10'
-                : 'dark:bg-transparent',
+            'max-w-full',
+            'colonia-fixed-navbar',
             className,
         )}
     >
@@ -217,7 +205,7 @@ const ThemeToggle = ({
     toggleMode: () => void
 }) => (
     <motion.button
-        className="relative flex cursor-pointer items-center justify-center rounded-xl p-2 text-neutral-500 dark:text-neutral-400"
+        className="relative flex cursor-pointer items-center justify-center rounded-lg p-2 text-[#f8f8f8]/70 hover:text-white transition-colors"
         onClick={toggleMode}
         whileHover={{ scale: 1.12 }}
         whileTap={{ scale: 0.85 }}
