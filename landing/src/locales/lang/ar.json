@@ -169,50 +169,18 @@
             "tag": "كيف يعمل"
         },
         "profitability": {
-            "tag": "Benefits",
-            "heading": "Unlock the True Value of Sustainability",
-            "subtext": "Discover how smarter tracking and reporting can drive impact, efficiency, and trust.",
+            "tag": "المزايا",
+            "heading": "اكتشف القيمة الحقيقية لأسطولك",
+            "subtext": "تعرّف كيف يمكن للحجز والتتبع الذكي أن يزيد الأرباح والكفاءة والثقة.",
             "highlights": [
-                {
-                    "id": "b1",
-                    "title": "Better Decisions",
-                    "description": "Turn complex data into clear insights to guide smarter strategies."
-                },
-                {
-                    "id": "b2",
-                    "title": "Efficiency Gains",
-                    "description": "Save time with automated tracking and simplified reporting."
-                },
-                {
-                    "id": "b3",
-                    "title": "Stronger Compliance",
-                    "description": "Stay aligned with regulations and build transparency with stakeholders."
-                },
-                {
-                    "id": "b4",
-                    "title": "Positive Impact",
-                    "description": "Reduce emissions and strengthen your contribution to the community"
-                },
-                {
-                    "id": "b5",
-                    "title": "Cost Savings",
-                    "description": "Cut unnecessary expenses by identifying waste and optimizing resource use."
-                },
-                {
-                    "id": "b6",
-                    "title": "Team Alignment",
-                    "description": "Bring everyone together around shared sustainability goals in one platform."
-                },
-                {
-                    "id": "b7",
-                    "title": "Future Growth",
-                    "description": "Build a resilient business prepared for evolving environmental challenges."
-                },
-                {
-                    "id": "b8",
-                    "title": "Stronger Reputation",
-                    "description": "Show progress, gain trust, and attract loyal customers and partners."
-                }
+                { "id": "b1", "title": "قرارات أفضل", "description": "حوّل الحجوزات والمدفوعات والمصاريف إلى أرقام واضحة تقودك إلى تسعير واختيارات أسطول أذكى." },
+                { "id": "b2", "title": "وقت أقل ضائعاً", "description": "استبدل الورق والمكالمات وجداول البيانات بتسعير وعقود وفحص توفر تلقائي." },
+                { "id": "b3", "title": "مساءلة كاملة", "description": "يُسجَّل كل تغيير مع اسم صاحبه ووقته، فتُحلّ النزاعات في ثوانٍ." },
+                { "id": "b4", "title": "عملاء أكثر رضا", "description": "حجز سريع عبر الإنترنت وعقود واضحة يعنيان أخطاء أقل وعملاء أكثر وفاءً." },
+                { "id": "b5", "title": "أرباح أكبر", "description": "اعرف ما تدره كل سيارة وما تكلفه، واكتشف السيارات المتوقفة، ولا تدع الإيرادات تضيع." },
+                { "id": "b6", "title": "فريق متناغم", "description": "عيّن المهام والصلاحيات ليعرف الجميع ما عليهم فعله، كل ذلك في منصة واحدة." },
+                { "id": "b7", "title": "مجال للنمو", "description": "أضف سيارات وموظفين ووكالات دون تغيير الأدوات أو فقدان السيطرة." },
+                { "id": "b8", "title": "سمعة أقوى", "description": "العقود والمعاينات الاحترافية تبني الثقة وتجذب عملاء وشركاء أوفياء." }
             ]
         },
         "impactTracking": {
@@ -583,29 +551,29 @@
             ]
         },
         "testimonials": {
-            "tag": "أصوات موثوقة",
-            "heading": "قصص العملاء",
-            "subtext": "تعرّف على كيفية تبسيط الفرق لسير العمل وتحقيق نتائج أفضل مع منصتنا.",
+            "tag": "لماذا تنتقل الوكالات إلينا",
+            "heading": "صُمم لمشاكلك اليومية",
+            "subtext": "هذه هي المشاكل التي تواجهها وكالات كراء السيارات كل يوم، وهكذا يحلها doublevdrive.",
             "items": [
                 {
-                    "quote": "\"حوّلت المنصة عمليات إعداد التقارير لدينا تمامًا. نوفر الوقت ونقلل الضغط ونركز طاقتنا أكثر على بناء استراتيجيات فعالة.\"",
-                    "attribution": "سارة ل.، مديرة الاستدامة في GreenTech"
+                    "quote": "\"حجز عميلان السيارة نفسها لنهاية الأسبوع نفسها.\"",
+                    "attribution": "الحل: الحجب التلقائي للتواريخ المتداخلة"
                 },
                 {
-                    "quote": "\"أخيرًا، نرى البيانات بوضوح عبر الفرق. يعمل التعاون بسلاسة أكبر، وتصبح القرارات أقوى، وتنمو ثقتنا يومًا بعد يوم.\"",
-                    "attribution": "ديفيد ر.، مدير العمليات في EcoLogix"
+                    "quote": "\"لا أعرف أي السيارات تربح فعلاً.\"",
+                    "attribution": "الحل: الإيرادات والمصاريف لكل سيارة"
                 },
                 {
-                    "quote": "\"الرؤى المقدمة قابلة للتنفيذ ودقيقة. رفعت هذه المنصة بشكل كبير طريقة قياسنا لإمكانات تقدمنا في الاستدامة وإدارتها والتواصل بشأنها.\"",
-                    "attribution": "جيمس ت.، مدير المشاريع في NovaWorks"
+                    "quote": "\"يقول العميل إن السعر تغيّر ولا أستطيع إثبات العكس.\"",
+                    "attribution": "الحل: سجل كامل لكل تعديل"
                 },
                 {
-                    "quote": "\"مع هذه الأداة، أصبحت التقارير سلسة وسهلة. يثق أصحاب المصلحة بالأرقام أكثر، ولم تكن مواءمتنا الداخلية أقوى من أي وقت مضى.\"",
-                    "attribution": "كلارا م.، مديرة الاستراتيجية في BrightPath Group"
+                    "quote": "\"ينسى موظفيّ من عليه تنظيف أو تسليم أي سيارة.\"",
+                    "attribution": "الحل: مهام الفريق"
                 },
                 {
-                    "quote": "\"كانت الامتثالية تسحب الموارد سابقًا. الآن تتولى الأتمتة التعقيد بدقة، ما يتيح لنا الابتكار والنمو وبناء تأثير مستدام.\"",
-                    "attribution": "كيفين أ.، مسؤول الاستدامة في UrbanSphere"
+                    "quote": "\"يراسلني العملاء ليلاً فأخسر الحجز.\"",
+                    "attribution": "الحل: روابط الحجز عبر QR والإنترنت"
                 }
             ]
         }

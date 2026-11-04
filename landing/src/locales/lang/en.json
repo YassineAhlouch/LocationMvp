@@ -167,52 +167,20 @@
             "tag": "How It Works"
         },
         "profitability": {
-            "tag": "Benefits",
-            "heading": "Unlock the True Value of Sustainability",
-            "subtext": "Discover how smarter tracking and reporting can drive impact, efficiency, and trust.",
-            "highlights": [
-                {
-                    "id": "b1",
-                    "title": "Better Decisions",
-                    "description": "Turn complex data into clear insights to guide smarter strategies."
-                },
-                {
-                    "id": "b2",
-                    "title": "Efficiency Gains",
-                    "description": "Save time with automated tracking and simplified reporting."
-                },
-                {
-                    "id": "b3",
-                    "title": "Stronger Compliance",
-                    "description": "Stay aligned with regulations and build transparency with stakeholders."
-                },
-                {
-                    "id": "b4",
-                    "title": "Positive Impact",
-                    "description": "Reduce emissions and strengthen your contribution to the community"
-                },
-                {
-                    "id": "b5",
-                    "title": "Cost Savings",
-                    "description": "Cut unnecessary expenses by identifying waste and optimizing resource use."
-                },
-                {
-                    "id": "b6",
-                    "title": "Team Alignment",
-                    "description": "Bring everyone together around shared sustainability goals in one platform."
-                },
-                {
-                    "id": "b7",
-                    "title": "Future Growth",
-                    "description": "Build a resilient business prepared for evolving environmental challenges."
-                },
-                {
-                    "id": "b8",
-                    "title": "Stronger Reputation",
-                    "description": "Show progress, gain trust, and attract loyal customers and partners."
-                }
-            ]
-        },
+    "tag": "Benefits",
+    "heading": "Unlock the True Value of Your Fleet",
+    "subtext": "Discover how smarter booking and tracking can drive profit, efficiency, and trust.",
+    "highlights": [
+        { "id": "b1", "title": "Better Decisions", "description": "Turn bookings, payments and expenses into clear numbers that guide smarter pricing and fleet choices." },
+        { "id": "b2", "title": "Time Saved", "description": "Replace paper, calls and spreadsheets with automatic pricing, contracts and availability checks." },
+        { "id": "b3", "title": "Full Accountability", "description": "Every change is recorded with who made it and when, so disputes are settled in seconds." },
+        { "id": "b4", "title": "Happier Clients", "description": "Fast online reservations and clear contracts mean fewer mistakes and more repeat customers." },
+        { "id": "b5", "title": "More Profit", "description": "See what each car earns and costs, spot idle vehicles and stop revenue from slipping away." },
+        { "id": "b6", "title": "Team Alignment", "description": "Assign tasks and permissions so everyone knows what to do, all in one platform." },
+        { "id": "b7", "title": "Room to Grow", "description": "Add cars, staff and agencies without changing tools or losing control." },
+        { "id": "b8", "title": "Stronger Reputation", "description": "Professional contracts and inspections build trust and attract loyal customers and partners." }
+    ]
+},
         "impactTracking": {
             "tag": "Business Performance",
             "heading": "Performance Tracking",
@@ -527,29 +495,29 @@
             ]
         },
         "testimonials": {
-            "tag": "Trusted Voices",
-            "heading": "Client Stories",
-            "subtext": "Hear how teams streamline workflows and achieve better results with our platform.",
+            "tag": "Why Agencies Switch",
+            "heading": "Built for the Problems You Face Every Day",
+            "subtext": "These are the daily headaches rental agencies tell us about, and how doublevdrive fixes them.",
             "items": [
                 {
-                    "quote": "\"The platform transformed our reporting process completely. We save time, reduce stress, and focus more energy on building effective strategies.\"",
-                    "attribution": "Sarah L., Sustainability Manager at GreenTech"
+                    "quote": "\"Two clients booked the same car for the same weekend.\"",
+                    "attribution": "Fixed by: automatic availability blocking"
                 },
                 {
-                    "quote": "\"Finally, we can see data clearly across teams. Collaboration flows better, decisions feel stronger, and our confidence keeps growing daily.\"",
-                    "attribution": "David R., Operations Manager at EcoLogix"
+                    "quote": "\"I don't know which cars actually make money.\"",
+                    "attribution": "Fixed by: revenue and expenses per car"
                 },
                 {
-                    "quote": "\"The insights provided are actionable and precise. This platform significantly elevated how we measure, manage, and communicate sustainability progress.\"",
-                    "attribution": "James T., Project Director at NovaWorks"
+                    "quote": "\"A client says the price changed. I can't prove otherwise.\"",
+                    "attribution": "Fixed by: full history of every change"
                 },
                 {
-                    "quote": "\"With this tool, reporting feels effortless and smooth. Our stakeholders trust the numbers more, and internal alignment has never been stronger overall.\"",
-                    "attribution": "Clara M., Head of Strategy at BrightPath Group"
+                    "quote": "\"My staff forget who must clean or deliver which car.\"",
+                    "attribution": "Fixed by: team tasks"
                 },
                 {
-                    "quote": "“Before, compliance drained resources. Now, automation handles complexity with accuracy, freeing us to innovate, grow, and build sustainable impact.”",
-                    "attribution": "Kevin A., Sustainability Lead at UrbanSphere"
+                    "quote": "\"Clients message me at night and I lose the booking.\"",
+                    "attribution": "Fixed by: QR and online reservation links"
                 }
             ]
         }

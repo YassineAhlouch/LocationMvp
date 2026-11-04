@@ -168,50 +168,18 @@
             "tag": "Comment ça marche"
         },
         "profitability": {
-            "tag": "Benefits",
-            "heading": "Unlock the True Value of Sustainability",
-            "subtext": "Discover how smarter tracking and reporting can drive impact, efficiency, and trust.",
+            "tag": "Avantages",
+            "heading": "Libérez toute la valeur de votre flotte",
+            "subtext": "Découvrez comment une réservation et un suivi plus intelligents augmentent les profits, l'efficacité et la confiance.",
             "highlights": [
-                {
-                    "id": "b1",
-                    "title": "Better Decisions",
-                    "description": "Turn complex data into clear insights to guide smarter strategies."
-                },
-                {
-                    "id": "b2",
-                    "title": "Efficiency Gains",
-                    "description": "Save time with automated tracking and simplified reporting."
-                },
-                {
-                    "id": "b3",
-                    "title": "Stronger Compliance",
-                    "description": "Stay aligned with regulations and build transparency with stakeholders."
-                },
-                {
-                    "id": "b4",
-                    "title": "Positive Impact",
-                    "description": "Reduce emissions and strengthen your contribution to the community"
-                },
-                {
-                    "id": "b5",
-                    "title": "Cost Savings",
-                    "description": "Cut unnecessary expenses by identifying waste and optimizing resource use."
-                },
-                {
-                    "id": "b6",
-                    "title": "Team Alignment",
-                    "description": "Bring everyone together around shared sustainability goals in one platform."
-                },
-                {
-                    "id": "b7",
-                    "title": "Future Growth",
-                    "description": "Build a resilient business prepared for evolving environmental challenges."
-                },
-                {
-                    "id": "b8",
-                    "title": "Stronger Reputation",
-                    "description": "Show progress, gain trust, and attract loyal customers and partners."
-                }
+                { "id": "b1", "title": "Meilleures décisions", "description": "Transformez réservations, paiements et dépenses en chiffres clairs pour fixer de meilleurs prix et choisir vos voitures." },
+                { "id": "b2", "title": "Gain de temps", "description": "Remplacez papier, appels et tableurs par un calcul de prix, des contrats et un contrôle de disponibilité automatiques." },
+                { "id": "b3", "title": "Traçabilité totale", "description": "Chaque modification est enregistrée avec son auteur et l'heure : les litiges se règlent en quelques secondes." },
+                { "id": "b4", "title": "Clients plus satisfaits", "description": "Réservation en ligne rapide et contrats clairs : moins d'erreurs et plus de clients fidèles." },
+                { "id": "b5", "title": "Plus de profit", "description": "Voyez ce que chaque voiture rapporte et coûte, repérez celles qui restent à l'arrêt et évitez les pertes de revenus." },
+                { "id": "b6", "title": "Équipe alignée", "description": "Assignez tâches et permissions pour que chacun sache quoi faire, sur une seule plateforme." },
+                { "id": "b7", "title": "Prêt pour la croissance", "description": "Ajoutez voitures, employés et agences sans changer d'outil ni perdre le contrôle." },
+                { "id": "b8", "title": "Meilleure réputation", "description": "Des contrats et des états des lieux professionnels inspirent confiance et attirent clients et partenaires fidèles." }
             ]
         },
         "impactTracking": {
@@ -582,29 +550,29 @@
             ]
         },
         "testimonials": {
-            "tag": "Ils nous font confiance",
-            "heading": "Témoignages clients",
-            "subtext": "Découvrez comment des équipes fluidifient leur travail et obtiennent de meilleurs résultats avec notre plateforme.",
+            "tag": "Pourquoi changer",
+            "heading": "Conçu pour les problèmes du quotidien",
+            "subtext": "Voici les casse-têtes que rencontrent les agences de location chaque jour, et comment doublevdrive les résout.",
             "items": [
                 {
-                    "quote": "\"La plateforme a complètement transformé notre processus de reporting. Nous gagnons du temps, réduisons le stress et concentrons davantage d'énergie sur l'élaboration de stratégies efficaces.\"",
-                    "attribution": "Sarah L., Responsable développement durable chez GreenTech"
+                    "quote": "\"Deux clients ont réservé la même voiture pour le même week-end.\"",
+                    "attribution": "Résolu par : le blocage automatique des disponibilités"
                 },
                 {
-                    "quote": "\"Enfin, nous voyons les données clairement entre les équipes. La collaboration est plus fluide, les décisions plus solides, et notre confiance ne cesse de croître au quotidien.\"",
-                    "attribution": "David R., Responsable des opérations chez EcoLogix"
+                    "quote": "\"Je ne sais pas quelles voitures rapportent vraiment de l'argent.\"",
+                    "attribution": "Résolu par : revenus et dépenses par voiture"
                 },
                 {
-                    "quote": "\"Les analyses fournies sont exploitables et précises. Cette plateforme a considérablement élevé la façon dont nous mesurons, gérons et communiquons nos progrès en matière de durabilité.\"",
-                    "attribution": "James T., Directeur de projet chez NovaWorks"
+                    "quote": "\"Un client dit que le prix a changé et je ne peux pas prouver le contraire.\"",
+                    "attribution": "Résolu par : l'historique complet de chaque modification"
                 },
                 {
-                    "quote": "\"Avec cet outil, le reporting devient fluide et simple. Nos parties prenantes font davantage confiance aux chiffres, et notre alignement interne n'a jamais été aussi fort.\"",
-                    "attribution": "Clara M., Directrice de la stratégie chez BrightPath Group"
+                    "quote": "\"Mes employés oublient qui doit nettoyer ou livrer quelle voiture.\"",
+                    "attribution": "Résolu par : les tâches d'équipe"
                 },
                 {
-                    "quote": "\"Avant, la conformité épuisait nos ressources. Désormais, l'automatisation gère la complexité avec précision, nous laissant innover, croître et bâtir un impact durable.\"",
-                    "attribution": "Kevin A., Responsable développement durable chez UrbanSphere"
+                    "quote": "\"Des clients m'écrivent la nuit et je perds la réservation.\"",
+                    "attribution": "Résolu par : les liens de réservation QR et en ligne"
                 }
             ]
         }
