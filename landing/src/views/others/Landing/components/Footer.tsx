@@ -8,7 +8,9 @@ import type { LandingFooter } from '../types'
  *
  * A rounded orange `footer-main` artwork card holds a centered 680px column:
  * the two-line white h1-scale heading (each line = two h2 segments with the
- * template's inline `cta-icon` artwork between them), the tilted "Email Box"
+ * template's inline `cta-icon` artwork between them — badge kept, glyphs
+ * swapped for the brand medallion and a car; template originals kept as
+ * footer-cta-icon-0{1,2}-example.avif/.svg), the tilted "Email Box"
  * artwork with its red glow, and a centered subtext + `button-01` pill whose
  * label rolls up on hover (the template's duplicated-label hover). A
  * `footer-bottom` row under the column carries the logo + copyright line.

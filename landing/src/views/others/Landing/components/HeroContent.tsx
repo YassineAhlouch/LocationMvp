@@ -10,7 +10,11 @@ import { localeImageBase } from './localeImage'
  * The markup mirrors the Webflow DOM one-to-one (home-hero → home-hero-bg →
  * home-hero-container → hero-wrap → home-hero-top/bottom) and every style
  * lives in `src/assets/styles/others/_colonia-hero.css` untouched. Images are
- * the extracted template assets already shipped in public/img/landing.
+ * the extracted template assets already shipped in public/img/landing. The
+ * inline title badges keep their template frame (gradient rounds + shadows)
+ * but the glyphs were swapped for the fleet product: title-icon-01 carries
+ * the brand mark (logo.svg medallion, white) and title-icon-02 a car icon;
+ * template originals remain as title-icon-0{1,2}-example.avif/.svg.
  *
  * Navigation is NOT rendered here on purpose: the template's navbar
  * (.home-nav-02) is position:none/overlaid, and the app renders its fixed

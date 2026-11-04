@@ -10,10 +10,11 @@ import type { LandingIntegration } from '../types'
  * integration.avif: orange rounded hub with the white ANAS logo at the center
  * (palette matched to the template original), connected light-grey feature
  * tiles with orange icons and warm cream-to-orange connectors —
- * fleet/clients/pricing/qr on the left, payments/reports/contracts/tasks on
- * the right; earlier variants are
+ * fleet (car icon)/clients/pricing/qr on the left, payments/reports/
+ * contracts/tasks on the right; earlier variants are
  * kept as integration-backup.avif (brand logos, blue hub) and
- * integration-backup2.avif (blue hub, white tiles). All styling lives in
+ * integration-backup2.avif (blue hub, white tiles), and the pre-car
+ * truck-glyph build as integration-backup3.avif. All styling lives in
  * src/assets/styles/others/_colonia-integration.css.
  */
 

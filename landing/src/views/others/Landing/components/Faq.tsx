@@ -18,7 +18,10 @@ import type { LandingPageContent, LandingFaqQuestion } from '../types'
  * get the shared blur-rise entrance (rows widen the in-view margin to 200px
  * below the fold so fast scrolls can't skip the stagger). The app's dark
  * demo-CTA card stays below the rows (app content the template doesn't
- * carry). Rules live in src/assets/styles/others/_colonia-faq.css.
+ * carry); its `cta-icon.svg` badge keeps the template's white rounded-square
+ * design but the glyph is now a car (template original kept as
+ * cta-icon-example.avif/.svg). Rules live in
+ * src/assets/styles/others/_colonia-faq.css.
  */
 
 const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94]
