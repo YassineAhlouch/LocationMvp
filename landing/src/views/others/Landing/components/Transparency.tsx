@@ -7,9 +7,15 @@ import type { LandingTransparency } from '../types'
  *
  * The rounded dark-orange banner (same artwork as the works banner) holds a
  * centered white intro ("Full Transparency" tag, "Data Visibility" heading,
- * sub-heading) above the framed dashboard screenshot (transparency.avif,
- * max 550px). This replaces the former working contact form that occupied the
- * template's `transparency` slot (the form/Lead API lived only on the landing).
+ * sub-heading) above the framed analytics artwork (transparency.avif,
+ * max 550px). The asset is a rebuilt Colonia-style "transparency" artwork
+ * drawn from measured template geometry (HTML/SVG → headless-Chrome capture
+ * → AVIF) with car/fleet-agency content: reservations-by-vehicle-class
+ * donut, "Payments by method" card, "Fleet by class" side card and the
+ * vehicle-class/bookings table. The original template crop is kept as
+ * transparency-example.avif. This replaces the former working contact form
+ * that occupied the template's `transparency` slot (the form/Lead API lived
+ * only on the landing).
  * The section keeps the app's #contact id so the navigation, footer links and
  * the FAQ keep landing here. All styling lives in
  * src/assets/styles/others/_colonia-transparency.css.

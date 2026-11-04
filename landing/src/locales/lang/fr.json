@@ -243,9 +243,9 @@
             "tag": "Tâches d'équipe"
         },
         "integration": {
-            "tag": "Intégration",
-            "heading": "Intégrations sans effort",
-            "subtext": "Connectez vos outils et plateformes préférés sans effort pour fluidifier votre flux de travail et augmenter votre productivité."
+            "tag": "Une seule plateforme",
+            "heading": "Tout fonctionne ensemble",
+            "subtext": "Flotte, clients, paiements et équipe sont connectés au même endroit : chaque réservation met à jour toute l'agence automatiquement."   
         },
         "showcase": {
             "reports": {
@@ -367,49 +367,49 @@
             }
         },
         "pricing": {
-            "tag": "Formules flexibles",
-            "heading": "Choisissez votre formule idéale",
-            "subtext": "Des petites équipes aux organisations globales, choisissez la formule qui grandit avec vous.",
-            "plans": [
-                {
-                    "name": "Formule Starter",
-                    "description": "Transformez des données complexes en analyses claires pour éclairer des décisions plus intelligentes.",
-                    "price": "$29",
-                    "features": [
-                        "Jusqu'à 3 membres d'équipe",
-                        "Suivi des émissions de base",
-                        "Tableaux de bord standard",
-                        "Support par e-mail"
-                    ],
-                    "cta": "Démarrer"
-                },
-                {
-                    "name": "Formule Croissance",
-                    "description": "Idéale pour les entreprises en plein essor recherchant des analyses avancées et de l'automatisation.",
-                    "price": "$79",
-                    "features": [
-                        "Jusqu'à 10 membres d'équipe",
-                        "Rapports automatisés",
-                        "Analyses et tableaux de bord avancés",
-                        "Support prioritaire"
-                    ],
-                    "cta": "Passer à Croissance",
-                    "dark": true
-                },
-                {
-                    "name": "Formule Impact",
-                    "description": "Pour les organisations prêtes à diriger avec des actions de durabilité à grande échelle.",
-                    "price": "$149",
-                    "features": [
-                        "Membres d'équipe illimités",
-                        "Intégrations et accès API complets",
-                        "Rapports de conformité personnalisés",
-                        "Responsable de la réussite dédié"
-                    ],
-                    "cta": "Démarrer"
-                }
-            ]
+    "tag": "Formules flexibles",
+    "heading": "Choisissez votre formule idéale",
+    "subtext": "D'une agence à une seule voiture à une flotte complète, choisissez une formule qui évolue avec vous.",
+    "plans": [
+        {
+            "name": "Formule Starter",
+            "description": "Tout ce dont une petite agence a besoin pour remplacer papier et tableurs.",
+            "price": "299 MAD",
+            "features": [
+                "Jusqu'à 10 voitures",
+                "Jusqu'à 3 membres d'équipe",
+                "Réservations et calendrier de disponibilité",
+                "Contrats et factures imprimables"
+            ],
+            "cta": "Choisir Starter"
         },
+        {
+            "name": "Formule Growth",
+            "description": "Idéale pour les agences en croissance qui veulent des réservations en ligne et le contrôle total de leur argent.",
+            "price": "699 MAD",
+            "features": [
+                "Jusqu'à 40 voitures",
+                "Jusqu'à 10 membres d'équipe",
+                "Liens de réservation QR et tâches d'équipe",
+                "Paiements, dépenses et rapports"
+            ],
+            "cta": "Passer à Growth",
+            "dark": true
+        },
+        {
+            "name": "Formule Business",
+            "description": "Pour les grandes flottes et les équipes qui veulent une visibilité et un contrôle complets.",
+            "price": "1 499 MAD",
+            "features": [
+                "Voitures et membres illimités",
+                "Rôles et permissions personnalisés",
+                "Financement des voitures et journal d'activité",
+                "Responsable de compte dédié"
+            ],
+            "cta": "Choisir Business"
+        }
+    ]
+},
         "faq": {
             "heading": "Questions fréquentes",
             "subheading": "Ce qu'il faut savoir avant de commencer. Une autre question ? Demandez une démonstration, nous vous répondrons en direct.",
@@ -458,7 +458,7 @@
         "transparency": {
             "tag": "Transparence totale",
             "heading": "Visibilité des données",
-            "subtext": "Obtenez une vue claire des indicateurs clés de vos opérations —\ndes émissions aux fournisseurs, le tout au même endroit."
+            "subtext": "Obtenez une vision claire des indicateurs clés de votre agence — des\nréservations aux paiements — au même endroit."
         },
         "footer": {
             "headingLines": [

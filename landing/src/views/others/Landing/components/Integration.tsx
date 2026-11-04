@@ -6,11 +6,15 @@ import type { LandingIntegration } from '../types'
  * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
  *
  * A centered intro ("Integration" tag, "Seamless Integrations" heading,
- * sub-heading) sits above the template's hub-and-spoke partner diagram
- * (integration.avif, max 980px) that fades in below. This replaces the former
- * ProductTour screenshot carousel that occupied the template's `integration`
- * slot (its content lives on in the app's other preview panels).
- * All styling lives in src/assets/styles/others/_colonia-integration.css.
+ * sub-heading) sits above the hub-and-spoke integration diagram (a custom
+ * integration.avif: orange rounded hub with the white ANAS logo at the center
+ * (palette matched to the template original), connected light-grey feature
+ * tiles with orange icons and warm cream-to-orange connectors —
+ * fleet/clients/pricing/qr on the left, payments/reports/contracts/tasks on
+ * the right; earlier variants are
+ * kept as integration-backup.avif (brand logos, blue hub) and
+ * integration-backup2.avif (blue hub, white tiles). All styling lives in
+ * src/assets/styles/others/_colonia-integration.css.
  */
 
 const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94]

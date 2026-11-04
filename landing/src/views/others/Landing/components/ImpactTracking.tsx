@@ -1,18 +1,23 @@
 import { motion } from 'motion/react'
+import { useTranslation } from 'react-i18next'
 import type { LandingImpactTracking } from '../types'
+import { localeImageBase, localeImageSuffix } from './localeImage'
 
 /**
  * Exact port of the Colonia template "resources" section.
  * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
  *
- * A centered intro column (Sustainable Resources tag, "Impact Tracking"
+ * A centered intro column (Business Performance tag, "Performance Tracking"
  * heading, sub-heading) sits above the 627px-tall `resources-image-box`: the
- * tracking dashboard screenshot (`resources-main.avif`, 16px top radius)
- * covering a full-bleed warm gradient mat (`fit-cover.avif`) that peeks
- * through the 20px side/top padding. Below it, `resources-box-wrap` shows the
- * two insight cards (Survey Insights / Emissions Breakdown), each carrying a
- * wide chart illustration (`resources-inner*.avif`, max 500px) over a white
- * `resources-box-bottom` with the title and description. All styling lives in
+ * tracking dashboard screenshot (`resources-main-{en,fr,ar}.png`, picked per
+ * active language, 16px top radius) covering a full-bleed warm gradient mat
+ * (`fit-cover.avif`) that peeks through the 20px side/top padding. Below it,
+ * `resources-box-wrap` shows the two insight cards (Fleet Utilization /
+ * Revenue vs Expenses), each carrying a wide chart illustration
+ * (`resources-inner*.avif`, max 500px, with -fr/-ar localized variants like
+ * the feature grid; the template originals are kept as
+ * `resources-inner-example*.avif`) over a white `resources-box-bottom` with
+ * the title and description. All styling lives in
  * src/assets/styles/others/_colonia-resources.css.
  */
 
@@ -25,17 +30,21 @@ const rise = (delay: number) => ({
     transition: { duration: 0.7, delay, ease: EASE_OUT },
 })
 
-/** Section illustration per card id (template's resources inner images). */
-const CARD_IMAGES: Record<string, string> = {
-    survey: '/img/landing/resources-inner.avif',
-    emissions: '/img/landing/resources-inner-2.avif',
-}
-
 const ImpactTracking = ({
     content,
 }: {
     content: LandingImpactTracking
-}) => (
+}) => {
+    const { i18n } = useTranslation()
+    const imageBase = localeImageBase(i18n.resolvedLanguage ?? i18n.language)
+    const imageSuffix = localeImageSuffix(i18n.resolvedLanguage ?? i18n.language)
+
+    /** Section illustration per card id, localized like the feature grid. */
+    const CARD_IMAGES: Record<string, string> = {
+        survey: `/img/landing/resources-inner${imageSuffix}.avif`,
+        emissions: `/img/landing/resources-inner-2${imageSuffix}.avif`,
+    }
+    return (
     <section id="impact-tracking" dir="ltr" className="resources">
         <div className="colonia-container container-v3">
             <div className="resources-wrap">
@@ -75,7 +84,7 @@ const ImpactTracking = ({
                     >
                         <div className="resources-image">
                             <img
-                                src="/img/landing/resources-main.avif"
+                                src={`/img/landing/resources-main-${imageBase}.png`}
                                 loading="lazy"
                                 alt="Impact tracking dashboard"
                                 className="resources-images"
@@ -123,6 +132,7 @@ const ImpactTracking = ({
             </div>
         </div>
     </section>
-)
+    )
+}
 
 export default ImpactTracking

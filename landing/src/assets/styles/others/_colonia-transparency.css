@@ -11,8 +11,8 @@
  * tag ("Full Transparency", hard-coded #fff in the template), the "Data
  * Visibility" heading (text-h3) and the sub-heading (paragraph-02, inheriting
  * the white color — no text-grey-01 class in the template). `transparency-bottom`
- * opens 40px lower (margin-medium-rare) and hosts the framed dashboard
- * screenshot (transparency.avif) capped at 550px. A `transparency-bg` layer
+ * opens 40px lower (margin-medium-rare) and hosts the framed analytics
+ * artwork (transparency.avif) capped at 550px. A `transparency-bg` layer
  * (z-index -1) exists in the template markup but is hidden by interactions
  * (Webflow `sf-hidden`) and defines no background — carried verbatim as an
  * inert element. The template defines no media overrides for this section;

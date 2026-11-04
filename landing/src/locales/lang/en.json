@@ -242,9 +242,10 @@
             "tag": "Team Tasks"
         },
         "integration": {
-            "tag": "Integration",
-            "heading": "Seamless Integrations",
-            "subtext": "Connect your favorite tools and platforms effortlessly to streamline your workflow and boost productivity."
+            "tag": "One Platform",
+            "heading": "Everything Works Together",
+            "subtext": "Fleet, clients, payments and your team are connected in one place, so every booking updates the whole agency automatically."
+            
         },
         "showcase": {
             "reports": {
@@ -368,44 +369,44 @@
         "pricing": {
             "tag": "Flexible Plans",
             "heading": "Pick Your Perfect Plan",
-            "subtext": "From small teams to global impact, choose a plan that grows with you.",
+            "subtext": "From a single-car agency to a full fleet, choose a plan that grows with you.",
             "plans": [
                 {
                     "name": "Starter Plan",
-                    "description": "Turn complex data into clear insights to guide smarter strategies.",
-                    "price": "$29",
+                    "description": "Everything a small agency needs to replace paper and spreadsheets.",
+                    "price": "299 MAD",
                     "features": [
+                        "Up to 10 cars",
                         "Up to 3 team members",
-                        "Basic emissions tracking",
-                        "Standard dashboards",
-                        "Email support"
+                        "Reservations & availability calendar",
+                        "Printable contracts & invoices"
                     ],
                     "cta": "Get Starter"
                 },
                 {
                     "name": "Growth Plan",
-                    "description": "Best for growing companies needing advanced insights and automation.",
-                    "price": "$79",
+                    "description": "Best for growing agencies that want online bookings and full control of their money.",
+                    "price": "699 MAD",
                     "features": [
+                        "Up to 40 cars",
                         "Up to 10 team members",
-                        "Automated reporting",
-                        "Advanced analytics & dashboards",
-                        "Priority support"
+                        "QR reservation links & team tasks",
+                        "Payments, expenses & reports"
                     ],
                     "cta": "Upgrade to Growth",
                     "dark": true
                 },
                 {
-                    "name": "Impact Plan",
-                    "description": "For organizations ready to lead with full-scale sustainability action.",
-                    "price": "$149",
+                    "name": "Business Plan",
+                    "description": "For large fleets and multi-user teams that need full visibility and control.",
+                    "price": "1,499 MAD",
                     "features": [
-                        "Unlimited team members",
-                        "Full integrations & API access",
-                        "Custom compliance reports",
+                        "Unlimited cars & team members",
+                        "Custom roles & permissions",
+                        "Car financing & activity log",
                         "Dedicated success manager"
                     ],
-                    "cta": "Get Starter"
+                    "cta": "Get Business"
                 }
             ]
         },
@@ -457,7 +458,7 @@
         "transparency": {
             "tag": "Full Transparency",
             "heading": "Data Visibility",
-            "subtext": "Get a clear view of key metrics across your operations — from\nemissions to suppliers — all in one place."
+            "subtext": "Get a clear view of key metrics across your agency — from\nreservations to payments — all in one place."
         },
         "footer": {
             "headingLines": [
@@ -475,56 +476,56 @@
             "copyright": "© 2026 Double V Drive. All rights reserved."
         },
         "statistics": {
-    "tag": "Values",
-    "heading": "Built to Keep Every Car Booked and Every Dirham Tracked",
-    "subheading": "doublevdrive gives you everything you need to manage your fleet, act fast, and grow your agency with confidence.",
-    "buttonLabel": "Get Started",
-    "items": [
-        {
-            "id": "double-bookings",
-            "text": "A car is locked the moment it is reserved. Overlapping dates are blocked automatically, so two clients can never get the same car, even when bookings arrive at the same second.",
-            "slots": [
-                { "type": "reel", "variant": "upper", "strip": "6304857600" },
+            "tag": "Values",
+            "heading": "Built to Keep Every Car Booked and Every Dirham Tracked",
+            "subheading": "doublevdrive gives you everything you need to manage your fleet, act fast, and grow your agency with confidence.",
+            "buttonLabel": "Get Started",
+            "items": [
                 {
-                    "type": "text",
-                    "text": "K+",
-                    "size": "h1"
+                    "id": "double-bookings",
+                    "text": "A car is locked the moment it is reserved. Overlapping dates are blocked automatically, so two clients can never get the same car, even when bookings arrive at the same second.",
+                    "slots": [
+                        { "type": "reel", "variant": "upper", "strip": "6304857600" },
+                        {
+                            "type": "text",
+                            "text": "K+",
+                            "size": "h1"
+                        }
+                    ],
+                    "label": "Double Bookings"
+                },
+                {
+                    "id": "audit-trail",
+                    "text": "Every price, date, status or payment change is recorded with who made it and when. Disputes with clients are settled in seconds, not hours.",
+                    "slots": [
+                        { "type": "reel", "variant": "upper", "strip": "6304857601" },
+                        { "type": "reel", "variant": "lower", "strip": "0304857602" },
+                        { "type": "reel", "variant": "upper", "strip": "6304857600" },
+                        { "type": "text", "text": "%", "size": "h1" }
+                    ],
+                    "label": "Changes Tracked"
+                },
+                {
+                    "id": "online-booking",
+                    "text": "Share a QR code or a link per car or agency. Clients can reserve at any hour, even when your office is closed, and the booking lands straight in your dashboard.",
+                    "slots": [
+                        { "type": "reel", "variant": "upper", "strip": "6304857602" },
+                        { "type": "reel", "variant": "lower", "strip": "4304857602" },
+                        { "type": "text", "text": "/", "size": "h1" },
+                        { "type": "reel", "variant": "upper", "strip": "6304857607" }
+                    ],
+                    "label": "Online Reservations"
+                },
+                {
+                    "id": "languages",
+                    "text": "Run your agency in Arabic, French or English. Your team, your contracts and your clients all work in the language they are most comfortable with.",
+                    "slots": [
+                        { "type": "reel", "variant": "upper", "strip": "6304857603" }
+                    ],
+                    "label": "Languages"
                 }
-            ],
-            "label": "Double Bookings"
+            ]
         },
-        {
-            "id": "audit-trail",
-            "text": "Every price, date, status or payment change is recorded with who made it and when. Disputes with clients are settled in seconds, not hours.",
-            "slots": [
-                { "type": "reel", "variant": "upper", "strip": "6304857601" },
-                { "type": "reel", "variant": "lower", "strip": "0304857602" },
-                { "type": "reel", "variant": "upper", "strip": "6304857600" },
-                { "type": "text", "text": "%", "size": "h1" }
-            ],
-            "label": "Changes Tracked"
-        },
-        {
-            "id": "online-booking",
-            "text": "Share a QR code or a link per car or agency. Clients can reserve at any hour, even when your office is closed, and the booking lands straight in your dashboard.",
-            "slots": [
-                { "type": "reel", "variant": "upper", "strip": "6304857602" },
-                { "type": "reel", "variant": "lower", "strip": "4304857602" },
-                { "type": "text", "text": "/", "size": "h1" },
-                { "type": "reel", "variant": "upper", "strip": "6304857607" }
-            ],
-            "label": "Online Reservations"
-        },
-        {
-            "id": "languages",
-            "text": "Run your agency in Arabic, French or English. Your team, your contracts and your clients all work in the language they are most comfortable with.",
-            "slots": [
-                { "type": "reel", "variant": "upper", "strip": "6304857603" }
-            ],
-            "label": "Languages"
-        }
-    ]
-},
         "testimonials": {
             "tag": "Trusted Voices",
             "heading": "Client Stories",
