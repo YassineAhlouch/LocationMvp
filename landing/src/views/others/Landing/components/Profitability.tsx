@@ -2,9 +2,7 @@ import { motion } from 'motion/react'
 import type {
     LandingProfitability,
     LandingProfitHighlight,
-    LandingShowcase,
 } from '../types'
-import { PerformancePreview, PreviewFrame } from './previewPanels'
 
 /**
  * Exact port of the Colonia template "benefits" section.
@@ -76,10 +74,8 @@ const BenefitCard = ({
 
 const Profitability = ({
     content,
-    showcase,
 }: {
     content: LandingProfitability
-    showcase: LandingShowcase
 }) => (
     <>
         <section id="profitability" dir="ltr" className="benefits">
@@ -124,23 +120,6 @@ const Profitability = ({
                         ))}
                     </div>
                 </div>
-            </div>
-        </section>
-        {/* Vehicle performance preview — app extra kept from the previous
-           design, unchanged below the ported section */}
-        <section className="mb-4 px-4">
-            <div className="max-w-7xl mx-auto pb-12 lg:pb-20">
-                <motion.div
-                    initial={{ opacity: 0, y: 24 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-60px' }}
-                    transition={{ duration: 0.5, delay: 0.15 }}
-                    className="max-w-[980px] mx-auto"
-                >
-                    <PreviewFrame>
-                        <PerformancePreview content={showcase} />
-                    </PreviewFrame>
-                </motion.div>
             </div>
         </section>
     </>

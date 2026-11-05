@@ -67,7 +67,7 @@
                 }
             ]
         },
-         "hero": {
+        "hero": {
             "badge": "Trusted by 500+ Rental Agencies",
             "heading": {
                 "top": {
@@ -89,84 +89,43 @@
                 "href": "#tour"
             }
         },
-        "problems": {
-            "heading": {
-                "primary": "Moins de gestion manuelle.",
-                "secondary": "Plus de contrôle sur votre activité."
-            },
+        "modules": {
+            "tag": "Fonctionnalités",
+            "heading": "Tout ce qu'il faut pour gérer votre agence de location",
+            "subheading": "Transformez réservations, voitures et paiements en informations simples et exploitables.",
             "items": [
                 {
-                    "id": "reservations",
-                    "icon": "scattered",
-                    "problemTitle": "Réservations éparpillées",
-                    "problemDescription": "Carnets papier, appels, tableurs… difficile de savoir qui a réservé quel véhicule et à quelle date.",
-                    "solutionTitle": "Réservations centralisées",
-                    "solutionDescription": "Toutes les réservations au même endroit : client, véhicule, dates et statut, avec vérification de la disponibilité."
+                    "id": "fleet-snapshot",
+                    "title": "Aperçu de la flotte",
+                    "description": "Voyez quelles voitures sont libres, louées ou en entretien aujourd'hui et comparez au mois dernier."
                 },
                 {
-                    "id": "contracts",
-                    "icon": "admin",
-                    "problemTitle": "Tâches administratives manuelles",
-                    "problemDescription": "Contrats rédigés à la main, informations recopiées plusieurs fois, erreurs qui s'accumulent.",
-                    "solutionTitle": "Contrats générés en un clic",
-                    "solutionDescription": "Générez un contrat de location complet directement à partir des informations de la réservation."
+                    "id": "revenue-tracker",
+                    "title": "Suivi des revenus",
+                    "description": "Suivez paiements, cautions et dépenses en temps réel pour garder chaque voiture rentable."
                 },
                 {
-                    "id": "profitability",
-                    "icon": "unclear",
-                    "problemTitle": "Rentabilité difficile à mesurer",
-                    "problemDescription": "Sans suivi des dépenses par véhicule, impossible de savoir ce qui rapporte et ce qui coûte.",
-                    "solutionTitle": "Coûts et revenus par véhicule",
-                    "solutionDescription": "Suivez les revenus, les dépenses et la marge de chaque véhicule, et voyez d'un coup d'œil sa performance."
+                    "id": "live-availability",
+                    "title": "Disponibilité en direct",
+                    "description": "Évitez les doubles réservations grâce à un calendrier qui bloque la voiture dès sa réservation."
                 },
                 {
-                    "id": "team",
-                    "icon": "desync",
-                    "problemTitle": "Équipe désynchronisée",
-                    "problemDescription": "Qui prépare le véhicule de ce matin ? Qui a rappelé le client ? L'information se perd entre les mains de chacun.",
-                    "solutionTitle": "Travail organisé au même endroit",
-                    "solutionDescription": "Répartissez les tâches du jour sur une liste partagée et un tableau Kanban que toute l'équipe suit."
+                    "id": "qr-reservation",
+                    "title": "Lien de réservation QR",
+                    "description": "Générez un QR code et un lien par voiture ou par agence pour que vos clients réservent en quelques secondes."
+                },
+                {
+                    "id": "team-tasks",
+                    "title": "Tâches d'équipe",
+                    "description": "Assignez nettoyage, livraisons et inspections à votre équipe et suivez l'avancement."
+                },
+                {
+                    "id": "contracts-inspections",
+                    "title": "Contrats et inspections",
+                    "description": "Imprimez les contrats, enregistrez les états des lieux au départ et au retour, et gardez l'historique de chaque location."
                 }
-            ],
-            "tag": "Pourquoi nous"
+            ]
         },
-            "modules": {
-      "tag": "Fonctionnalités",
-      "heading": "Tout ce qu'il faut pour gérer votre agence de location",
-      "subheading": "Transformez réservations, voitures et paiements en informations simples et exploitables.",
-      "items": [
-        {
-          "id": "fleet-snapshot",
-          "title": "Aperçu de la flotte",
-          "description": "Voyez quelles voitures sont libres, louées ou en entretien aujourd'hui et comparez au mois dernier."
-        },
-        {
-          "id": "revenue-tracker",
-          "title": "Suivi des revenus",
-          "description": "Suivez paiements, cautions et dépenses en temps réel pour garder chaque voiture rentable."
-        },
-        {
-          "id": "live-availability",
-          "title": "Disponibilité en direct",
-          "description": "Évitez les doubles réservations grâce à un calendrier qui bloque la voiture dès sa réservation."
-        },
-        {
-          "id": "qr-reservation",
-          "title": "Lien de réservation QR",
-          "description": "Générez un QR code et un lien par voiture ou par agence pour que vos clients réservent en quelques secondes."
-        },
-        {
-          "id": "team-tasks",
-          "title": "Tâches d'équipe",
-          "description": "Assignez nettoyage, livraisons et inspections à votre équipe et suivez l'avancement."
-        },
-        {
-          "id": "contracts-inspections",
-          "title": "Contrats et inspections",
-          "description": "Imprimez les contrats, enregistrez les états des lieux au départ et au retour, et gardez l'historique de chaque location."
-        }
-      ] },
-
         "workflow": {
             "heading": "De la réservation au retour du véhicule, gardez chaque étape sous contrôle.",
             "subtext": "Un déroulé simple qui suit le rythme réel de vos locations, du premier appel du client à la restitution du véhicule.",
@@ -210,14 +169,46 @@
             "heading": "Libérez toute la valeur de votre flotte",
             "subtext": "Découvrez comment une réservation et un suivi plus intelligents augmentent les profits, l'efficacité et la confiance.",
             "highlights": [
-                { "id": "b1", "title": "Meilleures décisions", "description": "Transformez réservations, paiements et dépenses en chiffres clairs pour fixer de meilleurs prix et choisir vos voitures." },
-                { "id": "b2", "title": "Gain de temps", "description": "Remplacez papier, appels et tableurs par un calcul de prix, des contrats et un contrôle de disponibilité automatiques." },
-                { "id": "b3", "title": "Traçabilité totale", "description": "Chaque modification est enregistrée avec son auteur et l'heure : les litiges se règlent en quelques secondes." },
-                { "id": "b4", "title": "Clients plus satisfaits", "description": "Réservation en ligne rapide et contrats clairs : moins d'erreurs et plus de clients fidèles." },
-                { "id": "b5", "title": "Plus de profit", "description": "Voyez ce que chaque voiture rapporte et coûte, repérez celles qui restent à l'arrêt et évitez les pertes de revenus." },
-                { "id": "b6", "title": "Équipe alignée", "description": "Assignez tâches et permissions pour que chacun sache quoi faire, sur une seule plateforme." },
-                { "id": "b7", "title": "Prêt pour la croissance", "description": "Ajoutez voitures, employés et agences sans changer d'outil ni perdre le contrôle." },
-                { "id": "b8", "title": "Meilleure réputation", "description": "Des contrats et des états des lieux professionnels inspirent confiance et attirent clients et partenaires fidèles." }
+                {
+                    "id": "b1",
+                    "title": "Meilleures décisions",
+                    "description": "Transformez réservations, paiements et dépenses en chiffres clairs pour fixer de meilleurs prix et choisir vos voitures."
+                },
+                {
+                    "id": "b2",
+                    "title": "Gain de temps",
+                    "description": "Remplacez papier, appels et tableurs par un calcul de prix, des contrats et un contrôle de disponibilité automatiques."
+                },
+                {
+                    "id": "b3",
+                    "title": "Traçabilité totale",
+                    "description": "Chaque modification est enregistrée avec son auteur et l'heure : les litiges se règlent en quelques secondes."
+                },
+                {
+                    "id": "b4",
+                    "title": "Clients plus satisfaits",
+                    "description": "Réservation en ligne rapide et contrats clairs : moins d'erreurs et plus de clients fidèles."
+                },
+                {
+                    "id": "b5",
+                    "title": "Plus de profit",
+                    "description": "Voyez ce que chaque voiture rapporte et coûte, repérez celles qui restent à l'arrêt et évitez les pertes de revenus."
+                },
+                {
+                    "id": "b6",
+                    "title": "Équipe alignée",
+                    "description": "Assignez tâches et permissions pour que chacun sache quoi faire, sur une seule plateforme."
+                },
+                {
+                    "id": "b7",
+                    "title": "Prêt pour la croissance",
+                    "description": "Ajoutez voitures, employés et agences sans changer d'outil ni perdre le contrôle."
+                },
+                {
+                    "id": "b8",
+                    "title": "Meilleure réputation",
+                    "description": "Des contrats et des états des lieux professionnels inspirent confiance et attirent clients et partenaires fidèles."
+                }
             ]
         },
         "impactTracking": {
@@ -237,185 +228,55 @@
                 }
             ]
         },
-        "tasks": {
-            "heading": "Organisez le travail de votre équipe au même endroit.",
-            "subtext": "Planifiez les tâches quotidiennes, répartissez les responsabilités et suivez l'avancement du travail grâce à une liste de tâches partagée et un tableau Kanban.",
-            "examples": [
-                "Préparer les véhicules avant le retrait",
-                "Suivre les demandes des clients",
-                "Planifier la maintenance",
-                "Suivre les tâches administratives en attente"
-            ],
-            "tag": "Tâches d'équipe"
-        },
         "integration": {
             "tag": "Une seule plateforme",
             "heading": "Tout fonctionne ensemble",
-            "subtext": "Flotte, clients, paiements et équipe sont connectés au même endroit : chaque réservation met à jour toute l'agence automatiquement."   
-        },
-        "showcase": {
-            "reports": {
-                "eyebrow": "Rapports",
-                "title": "Performance de la flotte",
-                "badge": "6 derniers mois",
-                "stats": [
-                    {
-                        "label": "Chiffre d'affaires",
-                        "value": "412 900",
-                        "hint": "+22.1%"
-                    },
-                    {
-                        "label": "Occupation",
-                        "value": "78%",
-                        "hint": "+6.4%"
-                    },
-                    {
-                        "label": "Utilisation",
-                        "value": "84%",
-                        "hint": "+3.2%"
-                    }
-                ],
-                "chart": {
-                    "title": "Revenu mensuel",
-                    "trend": "En hausse"
-                },
-                "months": [
-                    "Mai",
-                    "Juin",
-                    "Juil",
-                    "Août",
-                    "Sept",
-                    "Oct"
-                ]
-            },
-            "vehiclePerformance": {
-                "eyebrow": "Rapports",
-                "title": "Véhicules les plus performants",
-                "columns": {
-                    "vehicle": "Véhicule",
-                    "revenue": "Revenu",
-                    "expenses": "Dépenses",
-                    "margin": "Marge",
-                    "bookedDays": "Jours réservés"
-                },
-                "rows": [
-                    {
-                        "vehicle": "Dacia Duster",
-                        "revenue": "48 200 MAD",
-                        "expenses": "16 400 MAD",
-                        "margin": "31 800 MAD",
-                        "bookedDays": "24 j"
-                    },
-                    {
-                        "vehicle": "Hyundai Tucson",
-                        "revenue": "40 700 MAD",
-                        "expenses": "14 100 MAD",
-                        "margin": "26 600 MAD",
-                        "bookedDays": "17 j"
-                    },
-                    {
-                        "vehicle": "Renault Clio",
-                        "revenue": "31 900 MAD",
-                        "expenses": "9 900 MAD",
-                        "margin": "22 000 MAD",
-                        "bookedDays": "19 j"
-                    }
-                ]
-            },
-            "tasksPreview": {
-                "eyebrow": "Équipe",
-                "title": "Tableau du jour",
-                "badge": "3 listes",
-                "columns": [
-                    {
-                        "id": "todo",
-                        "title": "À faire",
-                        "items": [
-                            {
-                                "id": "t1",
-                                "title": "Préparer le Duster pour le retrait de 10h"
-                            },
-                            {
-                                "id": "t2",
-                                "title": "Rappeler le client RSV-1039"
-                            },
-                            {
-                                "id": "t3",
-                                "title": "Relancer le paiement RSV-1038"
-                            }
-                        ]
-                    },
-                    {
-                        "id": "doing",
-                        "title": "En cours",
-                        "items": [
-                            {
-                                "id": "t4",
-                                "title": "Contrat de location RSV-1042"
-                            },
-                            {
-                                "id": "t5",
-                                "title": "Nettoyage complet du Clio"
-                            }
-                        ]
-                    },
-                    {
-                        "id": "done",
-                        "title": "Terminé",
-                        "items": [
-                            {
-                                "id": "t6",
-                                "title": "Contrôle technique Tucson"
-                            }
-                        ]
-                    }
-                ]
-            }
+            "subtext": "Flotte, clients, paiements et équipe sont connectés au même endroit : chaque réservation met à jour toute l'agence automatiquement."
         },
         "pricing": {
-    "tag": "Formules flexibles",
-    "heading": "Choisissez votre formule idéale",
-    "subtext": "D'une agence à une seule voiture à une flotte complète, choisissez une formule qui évolue avec vous.",
-    "plans": [
-        {
-            "name": "Formule Starter",
-            "description": "Tout ce dont une petite agence a besoin pour remplacer papier et tableurs.",
-            "price": "299 MAD",
-            "features": [
-                "Jusqu'à 10 voitures",
-                "Jusqu'à 3 membres d'équipe",
-                "Réservations et calendrier de disponibilité",
-                "Contrats et factures imprimables"
-            ],
-            "cta": "Choisir Starter"
+            "tag": "Formules flexibles",
+            "heading": "Choisissez votre formule idéale",
+            "subtext": "D'une agence à une seule voiture à une flotte complète, choisissez une formule qui évolue avec vous.",
+            "plans": [
+                {
+                    "name": "Formule Starter",
+                    "description": "Tout ce dont une petite agence a besoin pour remplacer papier et tableurs.",
+                    "price": "299 MAD",
+                    "features": [
+                        "Jusqu'à 10 voitures",
+                        "Jusqu'à 3 membres d'équipe",
+                        "Réservations et calendrier de disponibilité",
+                        "Contrats et factures imprimables"
+                    ],
+                    "cta": "Choisir Starter"
+                },
+                {
+                    "name": "Formule Growth",
+                    "description": "Idéale pour les agences en croissance qui veulent des réservations en ligne et le contrôle total de leur argent.",
+                    "price": "699 MAD",
+                    "features": [
+                        "Jusqu'à 40 voitures",
+                        "Jusqu'à 10 membres d'équipe",
+                        "Liens de réservation QR et tâches d'équipe",
+                        "Paiements, dépenses et rapports"
+                    ],
+                    "cta": "Passer à Growth",
+                    "dark": true
+                },
+                {
+                    "name": "Formule Business",
+                    "description": "Pour les grandes flottes et les équipes qui veulent une visibilité et un contrôle complets.",
+                    "price": "1 499 MAD",
+                    "features": [
+                        "Voitures et membres illimités",
+                        "Rôles et permissions personnalisés",
+                        "Financement des voitures et journal d'activité",
+                        "Responsable de compte dédié"
+                    ],
+                    "cta": "Choisir Business"
+                }
+            ]
         },
-        {
-            "name": "Formule Growth",
-            "description": "Idéale pour les agences en croissance qui veulent des réservations en ligne et le contrôle total de leur argent.",
-            "price": "699 MAD",
-            "features": [
-                "Jusqu'à 40 voitures",
-                "Jusqu'à 10 membres d'équipe",
-                "Liens de réservation QR et tâches d'équipe",
-                "Paiements, dépenses et rapports"
-            ],
-            "cta": "Passer à Growth",
-            "dark": true
-        },
-        {
-            "name": "Formule Business",
-            "description": "Pour les grandes flottes et les équipes qui veulent une visibilité et un contrôle complets.",
-            "price": "1 499 MAD",
-            "features": [
-                "Voitures et membres illimités",
-                "Rôles et permissions personnalisés",
-                "Financement des voitures et journal d'activité",
-                "Responsable de compte dédié"
-            ],
-            "cta": "Choisir Business"
-        }
-    ]
-},
         "faq": {
             "heading": "Questions fréquentes",
             "subheading": "Ce qu'il faut savoir avant de commencer. Une autre question ? Demandez une démonstration, nous vous répondrons en direct.",

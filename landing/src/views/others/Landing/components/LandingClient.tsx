@@ -2,7 +2,6 @@ import { useThemeStore } from '@/store/themeStore'
 import useLocale from '@/utils/hooks/useLocale'
 import Navigation from './NavigationBar'
 import HeroContent from './HeroContent'
-import ProblemSolution from './ProblemSolution'
 import Modules from './Modules'
 import Statistics from './Statistics'
 import ClearView from './ClearView'
@@ -10,7 +9,6 @@ import Profitability from './Profitability'
 import ImpactTracking from './ImpactTracking'
 import Workflow from './Workflow'
 import Integration from './Integration'
-import TeamTasks from './TeamTasks'
 import Pricing from './Pricing'
 import Testimonials from './Testimonials'
 import Faq from './Faq'
@@ -25,8 +23,7 @@ type Props = { content: LandingPageContent }
  * Section order mirrors the Colonia template:
  * hero → features → values/statistics → benefits → resources →
  * works → integration → plans → testimonials → faq → footer,
- * with the `why` and `tasks` blocks kept as extra app-specific sections and
- * the app-specific clear-view module pile right after the values area.
+ * with the app-specific clear-view module pile right after the values area.
  */export default function LandingClient({ content }: Props) {
     const mode = useThemeStore((t) => t.mode)
     const setMode = useThemeStore((t) => t.setMode)
@@ -62,13 +59,8 @@ type Props = { content: LandingPageContent }
             <Statistics content={content} />
             {/* clear view (app-specific): module showcase pile */}
             <ClearView content={content.clearView} />
-            {/* extra: why us */}
-            <ProblemSolution content={content.problems} />
-            {/* benefits + performance preview */}
-            <Profitability
-                content={content.profitability}
-                showcase={content.showcase}
-            />
+            {/* benefits */}
+            <Profitability content={content.profitability} />
             {/* resources: sustainable resources / impact tracking */}
             <ImpactTracking content={content.impactTracking} />
             {/* works: dark-orange stacked step cards */}
@@ -81,8 +73,6 @@ type Props = { content: LandingPageContent }
             {/* plans-v1: pick your perfect plan
                 (the template places plans directly after transparency) */}
             <Pricing content={content.pricing} />
-            {/* extra: team tasks */}
-            <TeamTasks content={content} />
             {/* testimonials */}
             <Testimonials content={content.testimonials} />
             {/* faq */}

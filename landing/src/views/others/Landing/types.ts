@@ -31,21 +31,6 @@ export type LandingHero = {
     secondaryCta: LandingCtaLink
 }
 
-export type LandingProblemItem = {
-    id: string
-    icon: string
-    problemTitle: string
-    problemDescription: string
-    solutionTitle: string
-    solutionDescription: string
-}
-
-export type LandingProblems = {
-    tag: string
-    heading: { primary: string; secondary: string }
-    items: LandingProblemItem[]
-}
-
 export type LandingModuleItem = {
     id: string
     title: string
@@ -119,64 +104,10 @@ export type LandingImpactTracking = {
     cards: LandingImpactCard[]
 }
 
-export type LandingTasks = {
-    tag: string
-    heading: string
-    subtext: string
-    examples: string[]
-}
-
 export type LandingIntegration = {
     tag: string
     heading: string
     subtext: string
-}
-
-export type LandingShowcaseStat = {
-    label: string
-    value: string
-    hint: string
-}
-
-export type LandingPerformanceRow = {
-    vehicle: string
-    revenue: string
-    expenses: string
-    margin: string
-    bookedDays: string
-}
-
-export type LandingShowcase = {
-    reports: {
-        eyebrow: string
-        title: string
-        badge: string
-        stats: LandingShowcaseStat[]
-        chart: { title: string; trend: string }
-        months: string[]
-    }
-    vehiclePerformance: {
-        eyebrow: string
-        title: string
-        columns: {
-            vehicle: string
-            revenue: string
-            expenses: string
-            margin: string
-            bookedDays: string
-        }
-        rows: LandingPerformanceRow[]
-    }
-    tasksPreview: {
-        eyebrow: string
-        title: string
-        badge: string
-        columns: {
-            id: string
-            title: string
-            items: { id: string; title: string }[]
-        }[]
-    }
 }
 
 export type LandingPricingPlan = {
@@ -267,16 +198,13 @@ export type LandingTestimonials = {
 export type LandingPageContent = {
     nav: { items: LandingNavItem[] }
     hero: LandingHero
-    problems: LandingProblems
     modules: LandingModules
     statistics: LandingStatistics
     clearView: LandingClearView
     workflow: LandingWorkflow
     profitability: LandingProfitability
     impactTracking: LandingImpactTracking
-    tasks: LandingTasks
     integration: LandingIntegration
-    showcase: LandingShowcase
     pricing: LandingPricing
     testimonials: LandingTestimonials
     faq: LandingFaq

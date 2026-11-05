@@ -89,83 +89,43 @@
                 "href": "#tour"
             }
         },
-        "problems": {
-            "heading": {
-                "primary": "Less manual work.",
-                "secondary": "More control over your business."
-            },
+        "modules": {
+            "tag": "Features",
+            "heading": "Everything You Need to Run Your Rental Agency",
+            "subheading": "Turn bookings, cars and payments into simple, actionable insights.",
             "items": [
                 {
-                    "id": "reservations",
-                    "icon": "scattered",
-                    "problemTitle": "Reservations scattered everywhere",
-                    "problemDescription": "Paper books, phone calls, spreadsheets… hard to know who booked which vehicle and when.",
-                    "solutionTitle": "Centralized reservations",
-                    "solutionDescription": "All reservations in one place: customer, vehicle, dates and status, with availability checking."
+                    "id": "fleet-snapshot",
+                    "title": "Fleet Snapshot",
+                    "description": "See which cars are free, rented or in service today and how it compares to last month."
                 },
                 {
-                    "id": "contracts",
-                    "icon": "admin",
-                    "problemTitle": "Manual admin work",
-                    "problemDescription": "Contracts written by hand, information copied several times, errors piling up.",
-                    "solutionTitle": "Contracts in one click",
-                    "solutionDescription": "Generate a complete rental contract directly from the reservation information."
+                    "id": "revenue-tracker",
+                    "title": "Revenue Tracker",
+                    "description": "Follow payments, deposits and expenses in real time to keep every car profitable."
                 },
                 {
-                    "id": "profitability",
-                    "icon": "unclear",
-                    "problemTitle": "Profitability hard to measure",
-                    "problemDescription": "Without tracking vehicle expenses, you can't tell what makes money and what costs money.",
-                    "solutionTitle": "Costs and revenue per vehicle",
-                    "solutionDescription": "Track revenue, expenses and margin for each vehicle, and see its performance at a glance."
+                    "id": "live-availability",
+                    "title": "Live Availability",
+                    "description": "Avoid double bookings with a calendar that blocks cars the moment they are reserved."
                 },
                 {
-                    "id": "team",
-                    "icon": "desync",
-                    "problemTitle": "Team out of sync",
-                    "problemDescription": "Who prepares this morning's vehicle? Who called the customer back? Information gets lost between people.",
-                    "solutionTitle": "Organized work in one place",
-                    "solutionDescription": "Distribute the day's tasks on a shared task list and a Kanban board your whole team follows."
+                    "id": "qr-reservation",
+                    "title": "QR Reservation Link",
+                    "description": "Generate a QR code and a link per car or agency so clients can reserve in seconds."
+                },
+                {
+                    "id": "team-tasks",
+                    "title": "Team Tasks",
+                    "description": "Assign cleaning, deliveries and inspections to your team and track what is done."
+                },
+                {
+                    "id": "contracts-inspections",
+                    "title": "Contracts & Inspections",
+                    "description": "Print contracts, record pickup and return inspections and keep a full history per rental."
                 }
-            ],
-            "tag": "Why us"
+            ]
         },
-        
-            "modules": {
-      "tag": "Features",
-      "heading": "Everything You Need to Run Your Rental Agency",
-      "subheading": "Turn bookings, cars and payments into simple, actionable insights.",
-      "items": [
-        {
-          "id": "fleet-snapshot",
-          "title": "Fleet Snapshot",
-          "description": "See which cars are free, rented or in service today and how it compares to last month."
-        },
-        {
-          "id": "revenue-tracker",
-          "title": "Revenue Tracker",
-          "description": "Follow payments, deposits and expenses in real time to keep every car profitable."
-        },
-        {
-          "id": "live-availability",
-          "title": "Live Availability",
-          "description": "Avoid double bookings with a calendar that blocks cars the moment they are reserved."
-        },
-        {
-          "id": "qr-reservation",
-          "title": "QR Reservation Link",
-          "description": "Generate a QR code and a link per car or agency so clients can reserve in seconds."
-        },
-        {
-          "id": "team-tasks",
-          "title": "Team Tasks",
-          "description": "Assign cleaning, deliveries and inspections to your team and track what is done."
-        },
-        {
-          "id": "contracts-inspections",
-          "title": "Contracts & Inspections",
-          "description": "Print contracts, record pickup and return inspections and keep a full history per rental."
-        } ] },
         "workflow": {
             "heading": "From reservation to vehicle return, keep every step under control.",
             "subtext": "A simple flow that follows the real rhythm of your rentals, from the customer's first call to the vehicle's return.",
@@ -205,20 +165,52 @@
             "tag": "How It Works"
         },
         "profitability": {
-    "tag": "Benefits",
-    "heading": "Unlock the True Value of Your Fleet",
-    "subtext": "Discover how smarter booking and tracking can drive profit, efficiency, and trust.",
-    "highlights": [
-        { "id": "b1", "title": "Better Decisions", "description": "Turn bookings, payments and expenses into clear numbers that guide smarter pricing and fleet choices." },
-        { "id": "b2", "title": "Time Saved", "description": "Replace paper, calls and spreadsheets with automatic pricing, contracts and availability checks." },
-        { "id": "b3", "title": "Full Accountability", "description": "Every change is recorded with who made it and when, so disputes are settled in seconds." },
-        { "id": "b4", "title": "Happier Clients", "description": "Fast online reservations and clear contracts mean fewer mistakes and more repeat customers." },
-        { "id": "b5", "title": "More Profit", "description": "See what each car earns and costs, spot idle vehicles and stop revenue from slipping away." },
-        { "id": "b6", "title": "Team Alignment", "description": "Assign tasks and permissions so everyone knows what to do, all in one platform." },
-        { "id": "b7", "title": "Room to Grow", "description": "Add cars, staff and agencies without changing tools or losing control." },
-        { "id": "b8", "title": "Stronger Reputation", "description": "Professional contracts and inspections build trust and attract loyal customers and partners." }
-    ]
-},
+            "tag": "Benefits",
+            "heading": "Unlock the True Value of Your Fleet",
+            "subtext": "Discover how smarter booking and tracking can drive profit, efficiency, and trust.",
+            "highlights": [
+                {
+                    "id": "b1",
+                    "title": "Better Decisions",
+                    "description": "Turn bookings, payments and expenses into clear numbers that guide smarter pricing and fleet choices."
+                },
+                {
+                    "id": "b2",
+                    "title": "Time Saved",
+                    "description": "Replace paper, calls and spreadsheets with automatic pricing, contracts and availability checks."
+                },
+                {
+                    "id": "b3",
+                    "title": "Full Accountability",
+                    "description": "Every change is recorded with who made it and when, so disputes are settled in seconds."
+                },
+                {
+                    "id": "b4",
+                    "title": "Happier Clients",
+                    "description": "Fast online reservations and clear contracts mean fewer mistakes and more repeat customers."
+                },
+                {
+                    "id": "b5",
+                    "title": "More Profit",
+                    "description": "See what each car earns and costs, spot idle vehicles and stop revenue from slipping away."
+                },
+                {
+                    "id": "b6",
+                    "title": "Team Alignment",
+                    "description": "Assign tasks and permissions so everyone knows what to do, all in one platform."
+                },
+                {
+                    "id": "b7",
+                    "title": "Room to Grow",
+                    "description": "Add cars, staff and agencies without changing tools or losing control."
+                },
+                {
+                    "id": "b8",
+                    "title": "Stronger Reputation",
+                    "description": "Professional contracts and inspections build trust and attract loyal customers and partners."
+                }
+            ]
+        },
         "impactTracking": {
             "tag": "Business Performance",
             "heading": "Performance Tracking",
@@ -236,141 +228,10 @@
                 }
             ]
         },
-        "tasks": {
-            "heading": "Organize your team's work in one place.",
-            "subtext": "Plan daily tasks, distribute responsibilities and track progress with a shared task list and a Kanban board.",
-            "examples": [
-                "Prepare vehicles before pickup",
-                "Follow up on customer requests",
-                "Schedule maintenance",
-                "Track pending administrative tasks"
-            ],
-            "tag": "Team Tasks"
-        },
         "integration": {
             "tag": "One Platform",
             "heading": "Everything Works Together",
             "subtext": "Fleet, clients, payments and your team are connected in one place, so every booking updates the whole agency automatically."
-            
-        },
-        "showcase": {
-            "reports": {
-                "eyebrow": "Reports",
-                "title": "Fleet performance",
-                "badge": "Last 6 months",
-                "stats": [
-                    {
-                        "label": "Revenue",
-                        "value": "412 900",
-                        "hint": "+22.1%"
-                    },
-                    {
-                        "label": "Occupancy",
-                        "value": "78%",
-                        "hint": "+6.4%"
-                    },
-                    {
-                        "label": "Utilization",
-                        "value": "84%",
-                        "hint": "+3.2%"
-                    }
-                ],
-                "chart": {
-                    "title": "Monthly revenue",
-                    "trend": "Trending up"
-                },
-                "months": [
-                    "May",
-                    "Jun",
-                    "Jul",
-                    "Aug",
-                    "Sep",
-                    "Oct"
-                ]
-            },
-            "vehiclePerformance": {
-                "eyebrow": "Reports",
-                "title": "Top performing vehicles",
-                "columns": {
-                    "vehicle": "Vehicle",
-                    "revenue": "Revenue",
-                    "expenses": "Expenses",
-                    "margin": "Margin",
-                    "bookedDays": "Booked days"
-                },
-                "rows": [
-                    {
-                        "vehicle": "Dacia Duster",
-                        "revenue": "48 200 MAD",
-                        "expenses": "16 400 MAD",
-                        "margin": "31 800 MAD",
-                        "bookedDays": "24 d"
-                    },
-                    {
-                        "vehicle": "Hyundai Tucson",
-                        "revenue": "40 700 MAD",
-                        "expenses": "14 100 MAD",
-                        "margin": "26 600 MAD",
-                        "bookedDays": "17 d"
-                    },
-                    {
-                        "vehicle": "Renault Clio",
-                        "revenue": "31 900 MAD",
-                        "expenses": "9 900 MAD",
-                        "margin": "22 000 MAD",
-                        "bookedDays": "19 d"
-                    }
-                ]
-            },
-            "tasksPreview": {
-                "eyebrow": "Team",
-                "title": "Today's board",
-                "badge": "3 lists",
-                "columns": [
-                    {
-                        "id": "todo",
-                        "title": "To do",
-                        "items": [
-                            {
-                                "id": "t1",
-                                "title": "Prepare the Duster for the 10am pickup"
-                            },
-                            {
-                                "id": "t2",
-                                "title": "Call back customer RSV-1039"
-                            },
-                            {
-                                "id": "t3",
-                                "title": "Follow up on payment RSV-1038"
-                            }
-                        ]
-                    },
-                    {
-                        "id": "doing",
-                        "title": "In progress",
-                        "items": [
-                            {
-                                "id": "t4",
-                                "title": "Rental contract RSV-1042"
-                            },
-                            {
-                                "id": "t5",
-                                "title": "Full cleanup of the Clio"
-                            }
-                        ]
-                    },
-                    {
-                        "id": "done",
-                        "title": "Done",
-                        "items": [
-                            {
-                                "id": "t6",
-                                "title": "Tucson technical inspection"
-                            }
-                        ]
-                    }
-                ]
-            }
         },
         "pricing": {
             "tag": "Flexible Plans",
@@ -491,7 +352,11 @@
                     "id": "double-bookings",
                     "text": "A car is locked the moment it is reserved. Overlapping dates are blocked automatically, so two clients can never get the same car, even when bookings arrive at the same second.",
                     "slots": [
-                        { "type": "reel", "variant": "upper", "strip": "6304857600" },
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857600"
+                        },
                         {
                             "type": "text",
                             "text": "K+",
@@ -504,10 +369,26 @@
                     "id": "audit-trail",
                     "text": "Every price, date, status or payment change is recorded with who made it and when. Disputes with clients are settled in seconds, not hours.",
                     "slots": [
-                        { "type": "reel", "variant": "upper", "strip": "6304857601" },
-                        { "type": "reel", "variant": "lower", "strip": "0304857602" },
-                        { "type": "reel", "variant": "upper", "strip": "6304857600" },
-                        { "type": "text", "text": "%", "size": "h1" }
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857601"
+                        },
+                        {
+                            "type": "reel",
+                            "variant": "lower",
+                            "strip": "0304857602"
+                        },
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857600"
+                        },
+                        {
+                            "type": "text",
+                            "text": "%",
+                            "size": "h1"
+                        }
                     ],
                     "label": "Changes Tracked"
                 },
@@ -515,10 +396,26 @@
                     "id": "online-booking",
                     "text": "Share a QR code or a link per car or agency. Clients can reserve at any hour, even when your office is closed, and the booking lands straight in your dashboard.",
                     "slots": [
-                        { "type": "reel", "variant": "upper", "strip": "6304857602" },
-                        { "type": "reel", "variant": "lower", "strip": "4304857602" },
-                        { "type": "text", "text": "/", "size": "h1" },
-                        { "type": "reel", "variant": "upper", "strip": "6304857607" }
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857602"
+                        },
+                        {
+                            "type": "reel",
+                            "variant": "lower",
+                            "strip": "4304857602"
+                        },
+                        {
+                            "type": "text",
+                            "text": "/",
+                            "size": "h1"
+                        },
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857607"
+                        }
                     ],
                     "label": "Online Reservations"
                 },
@@ -526,7 +423,11 @@
                     "id": "languages",
                     "text": "Run your agency in Arabic, French or English. Your team, your contracts and your clients all work in the language they are most comfortable with.",
                     "slots": [
-                        { "type": "reel", "variant": "upper", "strip": "6304857603" }
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857603"
+                        }
                     ],
                     "label": "Languages"
                 }
