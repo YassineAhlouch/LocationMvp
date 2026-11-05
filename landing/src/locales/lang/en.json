@@ -1,12 +1,50 @@
 {
     "landing": {
-        "nav": {
+        "clearView": {
+            "tag": "Modules",
+            "heading": "A clear view of your business, at a glance.",
+            "subheading": "Each module displays your agency's information, ready to use for the day‑to‑day team.",
             "items": [
                 {
-                    "title": "Why us",
-                    "value": "why",
-                    "anchor": "why"
+                    "id": "reservations",
+                    "number": "01",
+                    "title": "Reservations",
+                    "description": "Every rental in one pipeline — pending, confirmed, active or completed at a glance."
                 },
+                {
+                    "id": "fleet",
+                    "number": "02",
+                    "title": "Fleet management",
+                    "description": "See which cars are free, rented or in service today, with the full history of every vehicle."
+                },
+                {
+                    "id": "payments",
+                    "number": "03",
+                    "title": "Payments and expenses",
+                    "description": "Follow payments, deposits and expenses in real time to keep every car profitable."
+                },
+                {
+                    "id": "reports",
+                    "number": "04",
+                    "title": "Reports",
+                    "description": "Turn reservations, payments and fleet data into clear reports on revenue, occupancy and performance."
+                },
+                {
+                    "id": "tasks",
+                    "number": "05",
+                    "title": "Tasks and Kanban board",
+                    "description": "Assign cleaning, deliveries and inspections to your team and track what is done."
+                },
+                {
+                    "id": "booking",
+                    "number": "06",
+                    "title": "Public booking page and QR code",
+                    "description": "Generate a QR code and a link per car or agency so clients can reserve in seconds."
+                }
+            ]
+        },
+        "nav": {
+            "items": [
                 {
                     "title": "Features",
                     "value": "features",

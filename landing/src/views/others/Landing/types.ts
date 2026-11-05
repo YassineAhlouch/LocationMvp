@@ -62,6 +62,22 @@ export type LandingModules = {
     items: LandingModuleItem[]
 }
 
+/** One module card of the app-specific "Clear View" section. */
+export type LandingClearViewItem = {
+    id: string
+    /** Card label rendered as the template-style big number ("01"–"06"). */
+    number: string
+    title: string
+    description: string
+}
+
+export type LandingClearView = {
+    tag: string
+    heading: string
+    subheading: string
+    items: LandingClearViewItem[]
+}
+
 export type LandingWorkflowStep = {
     id: string
     title: string
@@ -254,6 +270,7 @@ export type LandingPageContent = {
     problems: LandingProblems
     modules: LandingModules
     statistics: LandingStatistics
+    clearView: LandingClearView
     workflow: LandingWorkflow
     profitability: LandingProfitability
     impactTracking: LandingImpactTracking

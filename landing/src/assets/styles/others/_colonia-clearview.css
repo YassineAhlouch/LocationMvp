@@ -1,0 +1,261 @@
+/**
+ * App-specific "Clear View" section (ClearView.tsx) — six module cards that
+ * pile up while scrolling. Section chrome follows the Features section
+ * (_colonia-features.css): section-level `--padding-big` top/bottom, the
+ * 1280px `colonia-container`, a centered 536px intro (tag → h2 `.title-wrap`
+ * → sub-heading) with h3-scale typography — and NO background banner: the
+ * cards sit on the plain page surface with a hairline border only (no
+ * box-shadow).
+ *
+ * Each card carries the resources section's image treatment
+ * (_colonia-resources.css): the `.cv-imgwrap` stage (padding, radius,
+ * overflow hidden, isolation) where a full-bleed warm mat
+ * (`cv-imgwrap-mat` ← fit-cover.avif) paints behind the capture, which keeps
+ * its natural aspect at full width, its transparent edges letting the mat
+ * peek through, like `resources-image-box`.
+ *
+ * The piling behavior keeps the works-section mechanics (see
+ * _colonia-works.css for the sticky adaptation rationale) with two
+ * clear-view adaptations: the sticky tops CENTER the card on the screen
+ * height (a card measures 756px, so `top: calc(50vh - 378px)` rests its
+ * middle at the screen middle, clamped below the floating pill) alternating
+ * ±40px so the previous card keeps a
+ * strip peeking out of the pile; and z-indexes increase with DOM order (set
+ * inline in ClearView.tsx) because the template's z-cycling only works for a
+ * 3-step pile. The intro is static (features-like). On ≤479px both go
+ * static.
+ */
+
+.clearview {
+    padding-top: var(--_responsive---padding--padding-big);
+    padding-bottom: var(--_responsive---padding--padding-big);
+}
+
+/* same scoped base as the other Colonia ports (features/works) */
+.clearview .colonia-container {
+    width: var(--100);
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.clearview-wrap {
+    position: relative;
+}
+
+/* ---- intro: the Features section's centered header (static, scrolls
+   away like features — the pile does the pinning) ---- */
+.clearview-top {
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    text-align: center;
+    flex-flow: column;
+    max-width: 536px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+}
+
+/* ---- the piling module cards: Features-style content column
+   (features-v1-bottom's 1122px) ---- */
+.clearview-bottom {
+    margin-top: var(--_responsive---margin--margin-medium-rare);
+    grid-column-gap: var(--_spacing---spacing-xsmall);
+    grid-row-gap: var(--_spacing---spacing-xsmall);
+    flex-flow: column;
+    max-width: 1122px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    position: relative;
+}
+
+.clearview-card {
+    padding: var(--_responsive---padding--padding-normal)
+        var(--_responsive---padding--padding-xlarge);
+    grid-column-gap: var(--_spacing---spacing-regular);
+    grid-row-gap: var(--_spacing---spacing-regular);
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    background-color: var(--color--light);
+    border: 1px solid rgba(23, 23, 23, 0.08);
+    flex-flow: column;
+    align-items: stretch;
+    display: flex;
+}
+
+/* alternating pins centered on the viewport height: a card measures 756px
+   (head 68px + natural-height capture + paddings), so `top: calc(50vh -
+   378px)` rests its middle on the screen middle, clamped below the app's
+   floating pill; the 40px stagger keeps the previous card's strip peeking
+   out of the pile */
+.clearview-card.cv-pin-a {
+    position: sticky;
+    top: max(calc(50vh - 378px), 118px);
+}
+
+.clearview-card.cv-pin-b {
+    position: sticky;
+    top: max(calc(50vh - 338px), 158px);
+}
+
+/* ---- card head: big number + title + description ---- */
+.cv-head {
+    grid-column-gap: var(--_spacing---spacing-regular);
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
+}
+
+.cv-num {
+    font-size: var(--_typography---h2--font-size);
+    line-height: var(--_typography---h2--line-height);
+    font-weight: var(--_typography---h2--font-weight);
+    letter-spacing: var(--_typography---h2--latter-spaces);
+    /* the colonia orange, same accent the medallion badges use */
+    color: var(--color--dark-orange);
+}
+
+.cv-head-txt {
+    margin-top: var(--_responsive---margin--margin-xxsmall);
+    margin-left: var(--_spacing---spacing-xsmall);
+    grid-column-gap: var(--_spacing---spacing-small);
+    display: flex;
+    flex-flow: column;
+    text-align: left;
+}
+
+.clearview .cv-title {
+    font-size: var(--_typography---h4--font-size);
+    line-height: var(--_typography---h4--line-height);
+    font-weight: var(--_typography---h4--font-weight);
+    letter-spacing: var(--_typography---h4--latter-spaces);
+    color: var(--color--dark);
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-right: 0;
+}
+
+.clearview .paragraph-03 {
+    font-size: var(--_typography---paragraph-03--font-size);
+    line-height: var(--_typography---paragraph-03--line-height);
+    font-weight: var(--_typography---paragraph-03--font-weight);
+    letter-spacing: var(--_typography---paragraph-03--latter-spaces);
+}
+
+.clearview .text-grey-01 {
+    color: var(--color--grey-dark);
+}
+
+.clearview .text-grey-02 {
+    color: var(--color--grey-medium);
+}
+
+/* ---- localized app screenshot on the resources-style mat: the capture
+   keeps its natural aspect at full width, and the stage wraps it so the
+   full-bleed gradient mat (fit-cover.avif) peeks only through the slim
+   padding and the capture's transparent edges ---- */
+.cv-imgwrap {
+    padding: var(--_responsive---padding--padding-slim);
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    position: relative;
+    overflow: hidden;
+    /* same anchoring treatment as .resources-image-box: the mat paints
+       below the capture, above the card's background */
+    isolation: isolate;
+}
+
+.cv-imgwrap-mat {
+    position: absolute;
+    inset: 0%;
+    width: var(--100);
+    height: var(--100);
+    z-index: -1;
+}
+
+.cv-shot {
+    width: var(--100);
+    display: block;
+}
+
+/* ===================== Features shared chrome =====================
+   (same scoped token copies as _colonia-features.css) */
+.clearview .tag-wrap {
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.clearview .tag-icon {
+    width: 16px;
+}
+
+.clearview .teg {
+    font-size: var(--_typography---tag--font-size);
+    line-height: var(--_typography---tag--line-height);
+    font-weight: var(--_typography---tag--font-weight);
+    letter-spacing: var(--_typography---tag--latter-spaces);
+}
+
+/* the intro heading: Features uses the h3-scale global title */
+.clearview .text-h3 {
+    font-size: var(--_typography---h3--font-size);
+    line-height: var(--_typography---h3--line-height);
+    font-weight: var(--_typography---h3--font-weight);
+    letter-spacing: var(--_typography---h3--latter-spaces);
+}
+
+.clearview .paragraph-02 {
+    font-size: var(--_typography---paragraph-02--font-size);
+    line-height: var(--_typography---paragraph-02--line-height);
+    font-weight: var(--_typography---paragraph-02--font-weight);
+    letter-spacing: var(--_typography---paragraph-02--latter-spaces);
+}
+
+/* ===================== Mobile portrait (<= 479px) =====================
+   Features-style header/body spacing; the intro and the cards go static
+   (template rule from works). */
+@media screen and (max-width: 479px) {
+    .clearview-top {
+        position: static;
+        grid-column-gap: var(--_spacing---spacing-small);
+        grid-row-gap: var(--_spacing---spacing-small);
+    }
+
+    .clearview-bottom {
+        margin-top: var(--_responsive---margin--margin-regular);
+    }
+
+    .clearview-card.cv-pin-a,
+    .clearview-card.cv-pin-b {
+        position: static;
+    }
+
+    .clearview-card {
+        padding: var(--_responsive---padding--padding-normal);
+    }
+}
+
+/* ===================== Dark mode (app theme toggle) =====================
+   TheFeatures chrome relies on the app's dark-aware base colors; here the
+   white card surfaces need explicit flips (same palette as works): #2e2e2e
+   surfaces, #f8f8f8 titles, #b3b3b3 greys and a deeper shadow. */
+.dark .clearview-card {
+    background-color: #2e2e2e;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .clearview .cv-title {
+    color: #f8f8f8;
+}
+
+.dark .clearview .text-grey-01 {
+    color: #b3b3b3;
+}
+
+.dark .clearview .text-grey-02 {
+    color: #b3b3b3;
+}

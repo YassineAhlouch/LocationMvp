@@ -5,6 +5,7 @@ import HeroContent from './HeroContent'
 import ProblemSolution from './ProblemSolution'
 import Modules from './Modules'
 import Statistics from './Statistics'
+import ClearView from './ClearView'
 import Profitability from './Profitability'
 import ImpactTracking from './ImpactTracking'
 import Workflow from './Workflow'
@@ -24,7 +25,8 @@ type Props = { content: LandingPageContent }
  * Section order mirrors the Colonia template:
  * hero → features → values/statistics → benefits → resources →
  * works → integration → plans → testimonials → faq → footer,
- * with the `why` and `tasks` blocks kept as extra app-specific sections.
+ * with the `why` and `tasks` blocks kept as extra app-specific sections and
+ * the app-specific clear-view module pile right after the values area.
  */export default function LandingClient({ content }: Props) {
     const mode = useThemeStore((t) => t.mode)
     const setMode = useThemeStore((t) => t.setMode)
@@ -58,6 +60,8 @@ type Props = { content: LandingPageContent }
             <Modules content={content.modules} />
             {/* values (statistics) */}
             <Statistics content={content} />
+            {/* clear view (app-specific): module showcase pile */}
+            <ClearView content={content.clearView} />
             {/* extra: why us */}
             <ProblemSolution content={content.problems} />
             {/* benefits + performance preview */}

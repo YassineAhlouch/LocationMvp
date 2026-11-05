@@ -8,6 +8,9 @@ const BrandLogo = ({
     imgClassName?: string
 }) => (
     <span className={classNames('inline-flex items-center', className)}>
+        {/* Full logo = title-icon badge square + wordmark (rebuilt from the
+            original blue square design; originals kept as
+            logo-{dark,light}-full-example.svg) */}
         <img
             src="/img/logo/logo-light-full.svg"
             alt="Double V Drive"

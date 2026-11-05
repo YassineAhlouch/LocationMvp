@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion } from 'motion/react'
 import { Link } from 'react-scroll'
 import classNames from '@/utils/classNames'
 
@@ -17,8 +16,14 @@ export type LinkTab = {
 
 export type Tab = LinkTab | AnchorTab
 
+/**
+ * Static pill list: no tab reordering and no shared-layout chip.
+ * (The former reorder-on-hover/click + flying layoutId highlight made the
+ * fixed navbar re-flow on every interaction — visible as the bar blinking
+ * during smooth scrolls — so activation is a plain highlight now.)
+ */
 const NavList = ({
-    tabs: propTabs,
+    tabs,
     tabClassName,
     onTabClick,
     onDark = false,
@@ -29,51 +34,29 @@ const NavList = ({
     mode?: 'vertical' | 'horizontal'
     onDark?: boolean
 }) => {
-    const [active, setActive] = useState<Tab>(propTabs[0])
-    const [show, setShow] = useState(false)
-
-    const moveSelectedTabToTop = (idx: number) => {
-        setShow(true)
-        const newTabs = [...propTabs]
-        const selectedTab = newTabs.splice(idx, 1)
-        newTabs.unshift(selectedTab[0])
-        setActive(newTabs[0])
-        onTabClick?.()
-    }
+    const [active, setActive] = useState<Tab | null>(null)
 
     return (
         <>
-            {propTabs.map((tab, idx) => (
+            {tabs.map((tab) => (
                 <button
                     key={tab.title}
-                    onClick={() => moveSelectedTabToTop(idx)}
-                    onMouseEnter={() => moveSelectedTabToTop(idx)}
-                    onMouseLeave={() => setShow(false)}
+                    onClick={() => {
+                        setActive(tab)
+                        onTabClick?.()
+                    }}
                     className={classNames(
-                        'relative px-4 py-2 rounded-lg',
+                        'relative block px-4 py-2 rounded-lg col-p3 whitespace-nowrap transition-colors',
                         onDark
-                            ? 'col-p3 text-[#f8f8f8]/80 whitespace-nowrap hover:text-white'
-                            : 'col-p3 text-[#5c5c5c] whitespace-nowrap hover:text-[#171717] dark:text-[#b3b3b3] dark:hover:text-white',
+                            ? 'text-[#f8f8f8]/80 hover:text-white'
+                            : 'text-[#5c5c5c] hover:text-[#171717] dark:text-[#b3b3b3] dark:hover:text-white',
+                        active?.value === tab.value &&
+                            (onDark
+                                ? 'bg-white/10 text-white'
+                                : 'bg-gray-100 text-[#171717] dark:bg-gray-700 dark:text-white'),
                         tabClassName,
                     )}
                 >
-                    {active.value === tab.value && (
-                        <motion.div
-                            layoutId="clickedbutton"
-                            transition={{
-                                type: 'spring',
-                                bounce: 0.3,
-                                duration: 0.6,
-                            }}
-                            className={classNames(
-                                'absolute inset-0 rounded-lg',
-                                show &&
-                                    (onDark
-                                        ? 'bg-white/10'
-                                        : 'bg-gray-100 dark:bg-gray-700'),
-                            )}
-                        />
-                    )}
                     {(tab as AnchorTab).to ? (
                         <Link
                             to={(tab as AnchorTab).to}

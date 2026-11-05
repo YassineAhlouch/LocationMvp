@@ -13,7 +13,9 @@ import type { LandingFooter } from '../types'
  * footer-cta-icon-0{1,2}-example.avif/.svg), the tilted "Email Box"
  * artwork with its red glow, and a centered subtext + `button-01` pill whose
  * label rolls up on hover (the template's duplicated-label hover). A
- * `footer-bottom` row under the column carries the logo + copyright line.
+ * `footer-bottom` row under the column carries the logo + copyright line
+ * (`logo-light-full.svg` rebuilt as the gradient badge + white wordmark to
+ * match the navbar logo; original kept as logo-light-full-example.svg).
  * Content copy is the template's; the CTA targets the app's `#contact` anchor,
  * and the scroll-rise motion mirrors the other Colonia ports. Rules live in
  * src/assets/styles/others/_colonia-footer.css.

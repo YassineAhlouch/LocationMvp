@@ -1,12 +1,50 @@
 {
     "landing": {
-        "nav": {
+        "clearView": {
+            "tag": "Modules",
+            "heading": "Une vue claire de votre activité, en un coup d'œil.",
+            "subheading": "Chaque module affiche les informations de votre agence, prêtes à l'emploi pour l'équipe au quotidien.",
             "items": [
                 {
-                    "title": "Pourquoi nous",
-                    "value": "why",
-                    "anchor": "why"
+                    "id": "reservations",
+                    "number": "01",
+                    "title": "Réservations",
+                    "description": "Toutes les locations dans un seul pipeline — en attente, confirmées, actives ou terminées en un coup d'œil."
                 },
+                {
+                    "id": "fleet",
+                    "number": "02",
+                    "title": "Gestion de flotte",
+                    "description": "Voyez quelles voitures sont libres, louées ou en service aujourd'hui, avec l'historique complet de chaque véhicule."
+                },
+                {
+                    "id": "payments",
+                    "number": "03",
+                    "title": "Paiements et dépenses",
+                    "description": "Suivez paiements, cautions et dépenses en temps réel pour garder chaque voiture rentable."
+                },
+                {
+                    "id": "reports",
+                    "number": "04",
+                    "title": "Rapports",
+                    "description": "Transformez réservations, paiements et données de flotte en rapports clairs sur le revenu, l'occupation et la performance."
+                },
+                {
+                    "id": "tasks",
+                    "number": "05",
+                    "title": "Tâches et tableau Kanban",
+                    "description": "Assignez nettoyage, livraisons et inspections à votre équipe et suivez l'avancement."
+                },
+                {
+                    "id": "booking",
+                    "number": "06",
+                    "title": "Page de réservation publique et QR code",
+                    "description": "Générez un QR code et un lien par voiture ou par agence pour que vos clients réservent en quelques secondes."
+                }
+            ]
+        },
+        "nav": {
+            "items": [
                 {
                     "title": "Fonctionnalités",
                     "value": "features",

@@ -1,10 +1,5 @@
-import React, { useRef, useState } from 'react'
-import {
-    motion,
-    AnimatePresence,
-    useScroll,
-    useMotionValueEvent,
-} from 'motion/react'
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'motion/react'
 import { TbMenu2 } from 'react-icons/tb'
 import NavList from './NavList'
 import LanguageSelector from './LanguageSelector'
@@ -21,35 +16,27 @@ type NavigationProps = {
     direction?: Direction
 }
 
+/**
+ * Fixed pill navbar. Deliberately static: the former scroll-driven scale/y
+ * springs (NavBody/MobileNav) re-animated the bar whenever a smooth scroll
+ * crossed the trigger threshold, making it look like the navbar blinked
+ * while navigating — so the bar keeps a constant size/position now. The bar's
+ * logo (logo-dark-full.svg) was rebuilt as the title-icon gradient badge +
+ * brand wordmark, replacing the old blue square (original kept as
+ * logo-dark-full-example.svg).
+ */
 const Navigation = ({
     toggleMode,
     mode,
     navMenu,
     direction = 'ltr',
 }: NavigationProps) => {
-    const ref = useRef<HTMLDivElement>(null)
-    const { scrollY } = useScroll({
-        target: ref,
-        offset: ['start start', 'end start'],
-    })
-    const [scrolled, setScrolled] = useState(false)
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
-    useMotionValueEvent(scrollY, 'change', (latest) => {
-        setScrolled(latest > 50)
-    })
-
     return (
-        <motion.div
-            ref={ref}
-            className="fixed inset-x-0 top-3 lg:top-[34px] z-[30] w-full pointer-events-none mx-auto px-4"
-        >
+        <div className="fixed inset-x-0 top-3 lg:top-[34px] z-[30] w-full pointer-events-none mx-auto px-4">
             <div className="w-full pointer-events-auto flex justify-center">
-                <NavBody
-                    scrolled={scrolled}
-                    mode={mode}
-                    className="hidden lg:flex w-full items-center justify-between gap-3"
-                >
+                <NavBody className="hidden lg:flex w-full items-center justify-between gap-3">
                     <div className="flex items-center">
                         <img
                             src="/img/logo/logo-dark-full.svg"
@@ -69,11 +56,7 @@ const Navigation = ({
                     </div>
                 </NavBody>
 
-                <MobileNav
-                    scrolled={scrolled}
-                    mode={mode}
-                    className="lg:hidden w-full flex items-center justify-between gap-2"
-                >
+                <MobileNav className="lg:hidden w-full flex items-center justify-between gap-2">
                     <button
                         onClick={() => setIsDrawerOpen(true)}
                         className="p-2 text-[#f8f8f8]"
@@ -112,60 +95,32 @@ const Navigation = ({
                     </div>
                 </Drawer>
             </div>
-        </motion.div>
+        </div>
     )
 }
 
 const NavBody = ({
     children,
     className,
-    scrolled,
 }: {
     children: React.ReactNode
     className?: string
-    scrolled: boolean
-    mode: Mode
 }) => (
-    <motion.div
-        layout
-        animate={{
-            scale: scrolled ? 0.94 : 1,
-            y: scrolled ? 6 : 0,
-        }}
-        transition={{ type: 'spring', stiffness: 500, damping: 50 }}
-        className={classNames(
-            'max-w-[730px]',
-            className,
-            'colonia-fixed-navbar',
-        )}
-    >
+    <div className={classNames('max-w-[730px]', className, 'colonia-fixed-navbar')}>
         {children}
-    </motion.div>
+    </div>
 )
 
 const MobileNav = ({
     children,
     className,
-    scrolled,
 }: {
     children: React.ReactNode
     className?: string
-    scrolled: boolean
-    mode: Mode
 }) => (
-    <motion.div
-        animate={{
-            y: scrolled ? 4 : 0,
-        }}
-        transition={{ type: 'spring', stiffness: 200, damping: 50 }}
-        className={classNames(
-            'max-w-full',
-            'colonia-fixed-navbar',
-            className,
-        )}
-    >
+    <div className={classNames('max-w-full', 'colonia-fixed-navbar', className)}>
         {children}
-    </motion.div>
+    </div>
 )
 
 const SunIcon = () => (
