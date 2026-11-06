@@ -6,12 +6,11 @@ import type { LandingHero } from "../types";
 import { localeImageBase } from "./localeImage";
 
 /**
- * Exact port of the Colonia template hero section.
- * Source: landinginspriationdesign/index.html (https://colonia-template.webflow.io/)
+ * Exact port of the doublevdrive template hero section.
  *
  * The markup mirrors the Webflow DOM one-to-one (home-hero → home-hero-bg →
  * home-hero-container → hero-wrap → home-hero-top/bottom) and every style
- * lives in `src/assets/styles/others/_colonia-hero.css` untouched. Images are
+ * lives in `src/assets/styles/others/_doublevdrive-hero.css` untouched. Images are
  * the extracted template assets already shipped in public/img/landing. The
  * inline title badges keep their template frame (gradient rounds + shadows)
  * but the glyphs were swapped for the fleet product: title-icon-01 carries

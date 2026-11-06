@@ -1,6 +1,5 @@
 /**
- * Exact port of the Colonia template "transparency" section.
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template "transparency" section.
  *
  * Layout truth (measured at 1440, live template): the section only pads slim
  * (20px) horizontally; `transparency-section` is the rounded (radius-normal)
@@ -44,7 +43,7 @@
 
 /* the template's generic `.container` (1280px); scoped to avoid
    clashing with Tailwind's own .container utility */
-.transparency .colonia-container {
+.transparency .doublevdrive-container {
     width: var(--100);
     padding-right: var(--_responsive---padding--padding-slim);
     padding-left: var(--_responsive---padding--padding-slim);
@@ -86,7 +85,7 @@
 }
 
 /* ===================== Shared building blocks =====================
-   (same scoped base as the other Colonia ports) */
+   (same scoped base as the other template ports) */
 .transparency .tag-wrap {
     grid-column-gap: 5px;
     grid-row-gap: 5px;

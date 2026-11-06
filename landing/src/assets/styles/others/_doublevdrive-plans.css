@@ -1,6 +1,5 @@
 /**
- * Exact port of the Colonia template "plans-v1" section (pricing).
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template "plans-v1" section (pricing).
  *
  * Layout truth (measured at 1440, live template): a centered 536px intro
  * ("Flexible Plans" tag in grey-02, "Pick Your Perfect Plan" heading, one-line
@@ -20,7 +19,7 @@
  * placement node id: spanning two columns at ≤991px, back to one at ≤767px.
  *
  * Card text color follows the template body (--color--dark, #171717) instead
- * of colonia-root's greys; the app's dark mode adapts the light cards like the
+ * of doublevdrive-root's greys; the app's dark mode adapts the light cards like the
  * works cards (#2e2e2e surface, #f8f8f8 text, inverted icons/dots).
  */
 
@@ -32,7 +31,7 @@
 
 /* the template's generic `.container` (1280px); scoped to avoid
    clashing with Tailwind's own .container utility */
-.plans-v1 .colonia-container {
+.plans-v1 .doublevdrive-container {
     width: var(--100);
     padding-right: var(--_responsive---padding--padding-slim);
     padding-left: var(--_responsive---padding--padding-slim);
@@ -194,7 +193,7 @@
 }
 
 /* ===================== Shared building blocks (intro) =====================
-   (same scoped base as the other Colonia ports) */
+   (same scoped base as the other template ports) */
 .plans-v1 .tag-wrap {
     grid-column-gap: 5px;
     grid-row-gap: 5px;

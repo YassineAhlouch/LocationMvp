@@ -1,6 +1,5 @@
 /**
- * Colonia design system (landing page)
- * Source: landinginspriationdesign/index.html ("Colonia" Webflow template)
+ * doublevdrive design system (landing page)
  *
  * Tokens:
  * - primary  #fa7319   dark-orange #b34e0b   dark #171717
@@ -28,7 +27,7 @@
 
 
 /* Palette hookups — unlayered so they always win over Tailwind's theme vars */
-.colonia-root {
+.doublevdrive-root {
     --primary: #fa7319;
     --primary-deep: #d95c0a;
     --primary-mild: #fb8a3c;
@@ -45,7 +44,7 @@
     --gray-800: #212121;
 }
 
-.dark .colonia-root {
+.dark .doublevdrive-root {
     --primary: #fa7319;
     --primary-deep: #b34e0b;
     --primary-mild: #fb8a3c;
@@ -65,7 +64,7 @@
 /* Component classes live in the components layer so Tailwind utilities
    placed on the same element (bg-[...], text-[...]) can override them. */
 @layer components {
-    .colonia-root {
+    .doublevdrive-root {
         font-family:
             'Inter',
             sans-serif;
@@ -73,68 +72,68 @@
         color: #5c5c5c;
     }
 
-    .dark .colonia-root {
+    .dark .doublevdrive-root {
         color: #b3b3b3;
     }
 
     /* =================== Typography scale =================== */
-    .colonia-root h1,
-    .colonia-root .col-h1 {
+    .doublevdrive-root h1,
+    .doublevdrive-root .col-h1 {
         font-size: clamp(30px, 6vw, 56px);
         line-height: 1.15;
         font-weight: 600;
         letter-spacing: -0.04em;
     }
 
-    .colonia-root h2,
-    .colonia-root .col-h2 {
+    .doublevdrive-root h2,
+    .doublevdrive-root .col-h2 {
         font-size: clamp(26px, 4vw, 30px);
         line-height: 1.27;
         font-weight: 600;
         letter-spacing: -0.04em;
     }
 
-    .colonia-root h3,
-    .colonia-root .col-h3 {
+    .doublevdrive-root h3,
+    .doublevdrive-root .col-h3 {
         font-size: clamp(22px, 3.4vw, 26px);
         line-height: 1.25;
         font-weight: 600;
         letter-spacing: -0.04em;
     }
 
-    .colonia-root h4,
-    .colonia-root .col-h4 {
+    .doublevdrive-root h4,
+    .doublevdrive-root .col-h4 {
         font-size: 20px;
         line-height: 1.4;
         font-weight: 600;
         letter-spacing: -0.03em;
     }
 
-    .colonia-root h5,
-    .colonia-root .col-h5 {
+    .doublevdrive-root h5,
+    .doublevdrive-root .col-h5 {
         font-size: 18px;
         line-height: 1.4;
         font-weight: 600;
         letter-spacing: -0.03em;
     }
 
-    .colonia-root .col-p1 {
+    .doublevdrive-root .col-p1 {
         font-size: 18px;
         line-height: 1.45;
         font-weight: 500;
         letter-spacing: -0.01em;
     }
 
-    .colonia-root .col-p2 {
+    .doublevdrive-root .col-p2 {
         font-size: 16px;
         line-height: 1.5;
         font-weight: 500;
         letter-spacing: -0.01em;
     }
 
-    .colonia-root .col-p3,
-    .colonia-root button.col-p3,
-    .colonia-root a.col-p3 {
+    .doublevdrive-root .col-p3,
+    .doublevdrive-root button.col-p3,
+    .doublevdrive-root a.col-p3 {
         font-size: 14px;
         line-height: 1.45;
         font-weight: 500;
@@ -305,7 +304,7 @@
     }
 
     /* =================== Fixed dark pill navbar =================== */
-    .colonia-fixed-navbar {
+    .doublevdrive-fixed-navbar {
         align-items: center;
         justify-content: space-between;
         background-color: #171717;
@@ -314,7 +313,7 @@
         padding: 8px 8px 8px 16px;
     }
 
-    .dark .colonia-fixed-navbar {
+    .dark .doublevdrive-fixed-navbar {
         box-shadow:
             0 8px 23.1px rgba(0, 0, 0, 0.5),
             inset 0 0 0 1px rgba(255, 255, 255, 0.08);

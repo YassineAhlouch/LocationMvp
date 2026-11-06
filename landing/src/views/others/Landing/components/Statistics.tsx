@@ -3,8 +3,7 @@ import { Link as RouterLink } from "react-router";
 import type { LandingPageContent, LandingStatSlot } from "../types";
 
 /**
- * Exact port of the Colonia template "values" section.
- * Source: landinginspriationdesign/index.html (https://colonia-template.webflow.io/)
+ * Exact port of the doublevdrive template "values" section.
  *
  * A sticky left column (tag → heading → sub-heading → "Learn More" button)
  * sits beside four sticky white rows that pile up while scrolling, each with
@@ -12,7 +11,7 @@ import type { LandingPageContent, LandingStatSlot } from "../types";
  * NOT animate (the template bakes them: `upper` strips read the last digit,
  * `lower` strips the first); only the rows fade/blur in on scroll. The orange
  * glow behind the section is values-bg.svg, extracted from the template.
- * All styling lives in src/assets/styles/others/_colonia-values.css.
+ * All styling lives in src/assets/styles/others/_doublevdrive-values.css.
  */
 
 const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
@@ -49,7 +48,7 @@ const Statistics = ({ content }: { content: LandingPageContent }) => {
     return (
         <section className="values" dir="ltr">
             <div className="values-main-bg">
-                <div className="colonia-container values-container">
+                <div className="doublevdrive-container values-container">
                     <div className="values-wrap">
                         <div className="values-left">
                             <motion.div className="tag-wrap" {...rise(0.05)}>

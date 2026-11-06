@@ -4,8 +4,7 @@ import { Link as RouterLink } from "react-router";
 import type { LandingFooter } from "../types";
 
 /**
- * Exact port of the Colonia template footer section (`<section class=footer>`).
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template footer section (`<section class=footer>`).
  *
  * A rounded orange `footer-main` artwork card holds a centered 680px column:
  * the two-line white h1-scale heading (each line = two h2 segments with the
@@ -18,8 +17,8 @@ import type { LandingFooter } from "../types";
  * (`logo-light-full.svg` rebuilt as the gradient badge + white wordmark to
  * match the navbar logo; original kept as logo-light-full-example.svg).
  * Content copy is the template's; the CTA targets the app's `#contact` anchor,
- * and the scroll-rise motion mirrors the other Colonia ports. Rules live in
- * src/assets/styles/others/_colonia-footer.css.
+ * and the scroll-rise motion mirrors the other template ports. Rules live in
+ * src/assets/styles/others/_doublevdrive-footer.css.
  */
 
 const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
@@ -63,7 +62,7 @@ const Footer = ({
     return (
         <section className="footer">
             <div className="footer-main">
-                <div className="colonia-container">
+                <div className="doublevdrive-container">
                     <div className="footer-wrap">
                         <div className="footer-top">
                             <div className="footer-top-01">

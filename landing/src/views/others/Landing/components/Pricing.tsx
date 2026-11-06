@@ -3,8 +3,7 @@ import { Link as RouterLink } from "react-router";
 import type { LandingPricing } from "../types";
 
 /**
- * Exact port of the Colonia template "plans-v1" section (pricing).
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template "plans-v1" section (pricing).
  *
  * Centered intro ("Flexible Plans" tag / "Pick Your Perfect Plan" heading /
  * grey-01 sub-text) above three pricing cards in the template's CMS list
@@ -14,9 +13,9 @@ import type { LandingPricing } from "../types";
  * `button-01` CTA and the orange dot. Prices are left-aligned `text-h1`; the
  * middle card's price carries `pricing-amount` (white). The template's grid
  * node id stays on the third list wrapper so the template's ≤991px two-column
- * span keeps working (rules in _colonia-plans.css). CTAs keep the app's
+ * span keeps working (rules in _doublevdrive-plans.css). CTAs keep the app's
  * #contact target (the template links its product sub-pages). All styling
- * lives in src/assets/styles/others/_colonia-plans.css.
+ * lives in src/assets/styles/others/_doublevdrive-plans.css.
  */
 
 const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
@@ -139,7 +138,7 @@ const PricingCard = ({
 
 const Pricing = ({ content }: { content: LandingPricing }) => (
     <section id="pricing" className="plans-v1">
-        <div className="colonia-container">
+        <div className="doublevdrive-container">
             <div className="plans-v1-wrap">
                 <div className="plans-v1-top">
                     <motion.div className="tag-wrap" {...rise(0.05)}>

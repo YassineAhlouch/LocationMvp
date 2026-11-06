@@ -5,8 +5,7 @@ import classNames from "@/utils/classNames";
 import type { LandingPageContent, LandingFaqQuestion } from "../types";
 
 /**
- * Exact port of the Colonia template faq section (`<section class=faq>`).
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template faq section (`<section class=faq>`).
  *
  * The template's anatomy carries the app's content unchanged: a centered 470px
  * intro (tag row with the 16px quote glyph + teg grey-02 text, text-h3 heading
@@ -22,7 +21,7 @@ import type { LandingPageContent, LandingFaqQuestion } from "../types";
  * carry); its `cta-icon.svg` badge keeps the template's white rounded-square
  * design but the glyph is now a car (template original kept as
  * cta-icon-example.avif/.svg). Rules live in
- * src/assets/styles/others/_colonia-faq.css.
+ * src/assets/styles/others/_doublevdrive-faq.css.
  */
 
 const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
@@ -84,7 +83,7 @@ const Faq = ({ content }: { content: LandingPageContent }) => {
 
     return (
         <section id="faq" className="faq">
-            <div className="colonia-container">
+            <div className="doublevdrive-container">
                 <div className="faq-wrap">
                     <div className="faq-top">
                         <motion.div className="tag-wrap" {...rise(0.05)}>

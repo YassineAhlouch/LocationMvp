@@ -2,8 +2,7 @@ import { motion } from "motion/react";
 import type { LandingWorkflow } from "../types";
 
 /**
- * Exact port of the Colonia template "works" section.
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template "works" section.
  *
  * A rounded dark-orange banner (`works-main`) carrying the template's vivid
  * gradient artwork holds a sticky light intro (`works-top`: white tag
@@ -14,7 +13,7 @@ import type { LandingWorkflow } from "../types";
  * pile up while scrolling; on ≤479px they go static (template rule).
  * The rental flow has six steps, so the three template classes cycle and the
  * card title follows the template's "Step N – Title" format.
- * All styling lives in src/assets/styles/others/_colonia-works.css.
+ * All styling lives in src/assets/styles/others/_doublevdrive-works.css.
  */
 
 const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
@@ -44,7 +43,7 @@ const stepsArgs = (label: string, title: string, index: number) =>
 const Workflow = ({ content }: { content: LandingWorkflow }) => (
     <section id="workflow" className="works">
         <div className="works-main">
-            <div className="colonia-container">
+            <div className="doublevdrive-container">
                 <div className="works-wrap">
                     <div className="works-top">
                         <motion.div className="tag-wrap" {...rise(0.05)}>

@@ -1,6 +1,5 @@
 /**
- * Exact port of the Colonia template "integration" section.
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template "integration" section.
  *
  * Layout truth (measured at 1440): the section pads padding-big (80px)
  * vertically. The centered `integration-top` (536px) holds the tag ("Integration",
@@ -11,7 +10,7 @@
  * transparent background) capped at 980px, no radius. The template defines no
  * media overrides for this section — the shared tokens shrink spacing at
  * ≤991px / ≤767px / ≤479px (padding-big 70/50/40, slim 20/…). All other tokens
- * are shared with the other Colonia ports (_colonia-hero.css).
+ * are shared with the other template ports (_doublevdrive-hero.css).
  */
 
 /* ===================== Integration ===================== */
@@ -22,7 +21,7 @@
 
 /* the template's generic `.container` (1280px); scoped to avoid
    clashing with Tailwind's own .container utility */
-.integration .colonia-container {
+.integration .doublevdrive-container {
     width: var(--100);
     padding-right: var(--_responsive---padding--padding-slim);
     padding-left: var(--_responsive---padding--padding-slim);
@@ -56,7 +55,7 @@
 }
 
 /* ===================== Shared building blocks =====================
-   (same scoped base as the other Colonia ports) */
+   (same scoped base as the other template ports) */
 .integration .tag-wrap {
     grid-column-gap: 5px;
     grid-row-gap: 5px;
@@ -112,7 +111,7 @@
 }
 
 /* ===================== Dark mode (app theme toggle) =====================
-   The template is light-only; these follow _colonia.css conventions.
+   The template is light-only; these follow _doublevdrive.css conventions.
    The partner diagram stays untouched (light logo cards on a transparent
    mat) like the other ports' imagery; only text and icons adapt. */
 .dark .integration .text-h3 {

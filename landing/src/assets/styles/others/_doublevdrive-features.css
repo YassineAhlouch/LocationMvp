@@ -1,14 +1,13 @@
 /**
- * Exact port of the Colonia template "features-v1" section.
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template "features-v1" section.
  *
  * Rules are taken 1:1 from the template stylesheet, scoped under
  * `.features-v1` so nothing leaks into the rest of the app. Values resolve
  * through the template's own design tokens, which live in
- * `_colonia-hero.css` (same file set, imported first) so both sections
+ * `_doublevdrive-hero.css` (same file set, imported first) so both sections
  * share the identical responsive scale.
  *
- * "container" is renamed `colonia-container` here: Tailwind ships its own
+ * "container" is renamed `doublevdrive-container` here: Tailwind ships its own
  * global `.container` class and the wrapper must not pick up its
  * breakpoint widths.
  */
@@ -19,7 +18,7 @@
     padding-bottom: var(--_responsive---padding--padding-big);
 }
 
-.features-v1 .colonia-container {
+.features-v1 .doublevdrive-container {
     width: var(--100);
     padding-right: var(--_responsive---padding--padding-slim);
     padding-left: var(--_responsive---padding--padding-slim);
@@ -198,7 +197,7 @@
 
 /* ===================== Dark mode (app theme toggle) =====================
    The template is light-only; these keep the section readable with the
-   app's dark theme, following _colonia.css conventions. */
+   app's dark theme, following _doublevdrive.css conventions. */
 .dark .features-v1 .text-h3,
 .dark .features-v1 .features-v1-list-bottom .paragraph-02 {
     color: #f8f8f8;

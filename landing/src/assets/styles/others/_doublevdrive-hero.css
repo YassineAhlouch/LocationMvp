@@ -1,6 +1,5 @@
 /**
- * Exact port of the Colonia template hero ("home-hero" section).
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template hero ("home-hero" section).
  *
  * Every rule below is taken 1:1 from the template stylesheet. Values are
  * resolved through the template's own design tokens (--_typography---*,
@@ -785,7 +784,7 @@
 
 /* ===================== Dark mode (app theme toggle) =====================
    The template itself is light-only; these overrides keep the hero readable
-   when the app's dark theme is active, following _colonia.css conventions. */
+   when the app's dark theme is active, following _doublevdrive.css conventions. */
 .dark .home-hero .home-hero-bg {
     background-color: #1d1d1d;
 }

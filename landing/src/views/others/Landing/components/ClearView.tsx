@@ -1,7 +1,7 @@
-import { motion } from 'motion/react'
-import { useTranslation } from 'react-i18next'
-import type { LandingClearView } from '../types'
-import { localeImageBase } from './localeImage'
+import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
+import type { LandingClearView } from "../types";
+import { localeImageBase } from "./localeImage";
 
 /**
  * App-specific "Clear View" section, placed right after the values block.
@@ -12,7 +12,7 @@ import { localeImageBase } from './localeImage'
  * and AR payments uses its `paiment-ar.png` filename).
  *
  * Section chrome follows the Features section (Modules.tsx): same
- * `colonia-container`, the same centered 536px intro (tag → h2/title-wrap →
+ * `doublevdrive-container`, the same centered 536px intro (tag → h2/title-wrap →
  * sub-heading) with h3-scale typography, section-level padding — and no
  * background banner: the cards sit on the plain page surface with just a
  * hairline border (no box-shadow). Each card hosts its screenshot the
@@ -24,56 +24,56 @@ import { localeImageBase } from './localeImage'
  * so the previous card keeps a strip peeking above the newcomer), z-indexes
  * increase with DOM order (set inline; the template's z-cycling only works
  * for a 3-step pile) and on ≤479px the intro and cards go static. All
- * styling lives in src/assets/styles/others/_colonia-clearview.css.
+ * styling lives in src/assets/styles/others/_doublevdrive-clearview.css.
  */
 
-const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94]
+const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
 
 const rise = (delay: number) => ({
-    initial: { opacity: 0, y: 24, filter: 'blur(8px)' },
-    whileInView: { opacity: 1, y: 0, filter: 'blur(0px)' },
-    viewport: { once: true, margin: '-60px' },
+    initial: { opacity: 0, y: 24, filter: "blur(8px)" },
+    whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+    viewport: { once: true, margin: "-60px" },
     transition: { duration: 0.7, delay, ease: EASE_OUT },
-})
+});
 
 /** The cards' transform is reserved for the stacking (no y movement). */
 const fade = (delay: number) => ({
-    initial: { opacity: 0, filter: 'blur(10px)' },
-    whileInView: { opacity: 1, filter: 'blur(0px)' },
-    viewport: { once: true, margin: '-80px' },
+    initial: { opacity: 0, filter: "blur(10px)" },
+    whileInView: { opacity: 1, filter: "blur(0px)" },
+    viewport: { once: true, margin: "-80px" },
     transition: { duration: 0.7, delay, ease: EASE_OUT },
-})
+});
 
 /** Screenshot per module id, localized like the hero/features assets. */
-const shotFor = (id: string, base: 'en' | 'fr' | 'ar') => {
+const shotFor = (id: string, base: "en" | "fr" | "ar") => {
     switch (id) {
-        case 'reservations':
-            return `/img/clearview/reservation-${base}.png`
-        case 'fleet':
-            return `/img/clearview/vehicule-${base}.png`
-        case 'payments':
-            return base === 'ar'
-                ? '/img/clearview/paiment-ar.png'
-                : `/img/clearview/payment-${base}.png`
-        case 'reports':
-            return `/img/clearview/performance-client-${base}.png`
-        case 'tasks':
+        case "reservations":
+            return `/img/clearview/reservation-${base}.png`;
+        case "fleet":
+            return `/img/clearview/vehicule-${base}.png`;
+        case "payments":
+            return base === "ar"
+                ? "/img/clearview/paiment-ar.png"
+                : `/img/clearview/payment-${base}.png`;
+        case "reports":
+            return `/img/clearview/performance-client-${base}.png`;
+        case "tasks":
             /* only the EN capture exists — keep it for every language */
-            return '/img/clearview/task-en.png'
-        case 'booking':
-            return `/img/clearview/callendar-${base}.png`
+            return "/img/clearview/task-en.png";
+        case "booking":
+            return `/img/clearview/callendar-${base}.png`;
         default:
-            return ''
+            return "";
     }
-}
+};
 
 const ClearView = ({ content }: { content: LandingClearView }) => {
-    const { i18n } = useTranslation()
-    const imageBase = localeImageBase(i18n.resolvedLanguage ?? i18n.language)
+    const { i18n } = useTranslation();
+    const imageBase = localeImageBase(i18n.resolvedLanguage ?? i18n.language);
 
     return (
         <section className="clearview">
-            <div className="colonia-container">
+            <div className="doublevdrive-container">
                 <div className="clearview-wrap">
                     <div className="clearview-top">
                         <motion.div className="tag-wrap" {...rise(0.05)}>
@@ -109,7 +109,7 @@ const ClearView = ({ content }: { content: LandingClearView }) => {
                             <motion.div
                                 key={item.id}
                                 className={`clearview-card ${
-                                    index % 2 ? 'cv-pin-b' : 'cv-pin-a'
+                                    index % 2 ? "cv-pin-b" : "cv-pin-a"
                                 }`}
                                 style={{ zIndex: index + 1 }}
                                 {...fade(0.04 * index)}
@@ -145,7 +145,7 @@ const ClearView = ({ content }: { content: LandingClearView }) => {
                 </div>
             </div>
         </section>
-    )
-}
+    );
+};
 
-export default ClearView
+export default ClearView;

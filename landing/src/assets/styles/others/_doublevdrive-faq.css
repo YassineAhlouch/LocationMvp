@@ -1,6 +1,5 @@
 /**
- * Exact port of the Colonia template faq section (`<section class=faq>`).
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template faq section (`<section class=faq>`).
  *
  * Layout truth (measured at 1440): an explicit light band (`background-color:
  * var(--color--light)`) padded padding-big (80px) around a 1360px container.
@@ -17,7 +16,7 @@
  * animation is kept as the existing motion/react height toggle; the chevron
  * flips 180° when open, like the app already did. The app's dark demo-CTA
  * card stays below the rows (app content the template doesn't carry), styled
- * with the legacy colonia classes.
+ * with the legacy template classes.
  *
  * Breakpoints: 767px = padding-top xlarge (40), 20px icon box; 479px = 14px
  * row padding, 18px icon box. Dark mode follows the ports: the explicit light
@@ -33,7 +32,7 @@
 }
 
 /* the template's base `.container` */
-.faq .colonia-container {
+.faq .doublevdrive-container {
     width: var(--100);
     padding-right: var(--_responsive---padding--padding-slim);
     padding-left: var(--_responsive---padding--padding-slim);
@@ -205,7 +204,7 @@
 }
 
 /* ===================== Dark mode (app theme toggle) =====================
-   The template is light-only; dark values follow _colonia.css conventions. */
+   The template is light-only; dark values follow _doublevdrive.css conventions. */
 .dark .faq {
     background-color: transparent;
 }

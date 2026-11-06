@@ -1,20 +1,20 @@
-import { useRef, useState } from 'react'
-import { motion } from 'motion/react'
-import classNames from '@/utils/classNames'
+import { useRef, useState } from "react";
+import { motion } from "motion/react";
+import classNames from "@/utils/classNames";
 
 const TextHoverEffect = ({
     text,
     duration,
     className,
 }: {
-    text: string
-    duration?: number
-    automatic?: boolean
-    className?: string
+    text: string;
+    duration?: number;
+    automatic?: boolean;
+    className?: string;
 }) => {
-    const svgRef = useRef<SVGSVGElement>(null)
-    const [hovered, setHovered] = useState(false)
-    const [maskPosition, setMaskPosition] = useState({ cx: '50%', cy: '50%' })
+    const svgRef = useRef<SVGSVGElement>(null);
+    const [hovered, setHovered] = useState(false);
+    const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
 
     return (
         <svg
@@ -26,13 +26,13 @@ const TextHoverEffect = ({
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             onMouseMove={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect()
+                const rect = e.currentTarget.getBoundingClientRect();
                 setMaskPosition({
                     cx: `${((e.clientX - rect.left) / rect.width) * 100}%`,
                     cy: `${((e.clientY - rect.top) / rect.height) * 100}%`,
-                })
+                });
             }}
-            className={classNames('select-none', className)}
+            className={classNames("select-none", className)}
         >
             <defs>
                 <linearGradient
@@ -54,9 +54,9 @@ const TextHoverEffect = ({
                     id="revealMask"
                     gradientUnits="userSpaceOnUse"
                     r="20%"
-                    initial={{ cx: '50%', cy: '50%' }}
+                    initial={{ cx: "50%", cy: "50%" }}
                     animate={maskPosition}
-                    transition={{ duration: duration ?? 0, ease: 'easeOut' }}
+                    transition={{ duration: duration ?? 0, ease: "easeOut" }}
                 >
                     <stop offset="0%" stopColor="white" />
                     <stop offset="100%" stopColor="black" />
@@ -91,7 +91,7 @@ const TextHoverEffect = ({
                 className="fill-transparent stroke-gray-200 font-[helvetica] text-2xl font-bold dark:stroke-gray-700"
                 initial={{ strokeDashoffset: 1000, strokeDasharray: 1000 }}
                 animate={{ strokeDashoffset: 0, strokeDasharray: 1000 }}
-                transition={{ duration: 4, ease: 'easeInOut' }}
+                transition={{ duration: 4, ease: "easeInOut" }}
             >
                 {text}
             </motion.text>
@@ -108,7 +108,7 @@ const TextHoverEffect = ({
                 {text}
             </text>
         </svg>
-    )
-}
+    );
+};
 
-export default TextHoverEffect
+export default TextHoverEffect;

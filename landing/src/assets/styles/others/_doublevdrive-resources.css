@@ -1,6 +1,5 @@
 /**
- * Exact port of the Colonia template "resources" section.
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template "resources" section.
  *
  * Layout truth (measured at 1440): the section pads padding-big (80px)
  * vertically and has no horizontal padding of its own; the container
@@ -20,7 +19,7 @@
  * (height auto); at ≤767px the top gap drops to 10px, the box padding/radius
  * drop to 14px and the card grid becomes a single column; at ≤479px the main
  * image is clipped to 160px. All other tokens are shared with the other
- * Colonia ports (_colonia-hero.css, _colonia-benefits.css).
+ * doublevdrive ports (_doublevdrive-hero.css, _doublevdrive-benefits.css).
  */
 
 /* ===================== Resources ===================== */
@@ -29,7 +28,7 @@
     padding-bottom: var(--_responsive---padding--padding-big);
 }
 
-.resources .colonia-container {
+.resources .doublevdrive-container {
     width: var(--100);
     padding-right: var(--_responsive---padding--padding-slim);
     padding-left: var(--_responsive---padding--padding-slim);
@@ -151,7 +150,7 @@
 }
 
 /* ===================== Shared building blocks =====================
-   (same scoped base as the other Colonia ports) */
+   (same scoped base as the other template ports) */
 .resources .tag-wrap {
     grid-column-gap: 5px;
     grid-row-gap: 5px;
@@ -261,7 +260,7 @@
 }
 
 /* ===================== Dark mode (app theme toggle) =====================
-   The template is light-only; these follow _colonia.css conventions.
+   The template is light-only; these follow _doublevdrive.css conventions.
    The screenshots and the gradient mat stay untouched (like the hero's
    dashboard image); only text and grey surfaces adapt. */
 .dark .resources .text-h3,

@@ -1,6 +1,5 @@
 /**
- * Exact port of the Colonia template footer section (`<section class=footer>`).
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template footer section (`<section class=footer>`).
  *
  * A 20px-padded orange section holds the rounded `footer-main` card (radius
  * slim, dark-orange + the "footer" artwork background, positioned 50% 0) with
@@ -17,7 +16,7 @@
  * 38px icons; 479 = 180px box, wrapping 10px-gap heading rows, 26px/34px
  * title, hidden icons). The template is light-only; the orange artwork card
  * works unchanged on both app themes so only the scroll-rise motion
- * (motion/react, mirroring the other Colonia ports) replaces its IX2.
+ * (motion/react, mirroring the other template ports) replaces its IX2.
  */
 
 /* the page-level footer frame (20px around the rounded card, none on top) */
@@ -38,7 +37,7 @@
 }
 
 /* the template's `.container.container-v2` */
-.footer .colonia-container {
+.footer .doublevdrive-container {
     width: var(--100);
     padding-right: var(--_responsive---padding--padding-slim);
     padding-left: var(--_responsive---padding--padding-slim);
@@ -172,7 +171,7 @@
     color: var(--color--dark);
 }
 
-/* the button pill + label roll (same scoped copy as the other Colonia ports) */
+/* the button pill + label roll (same scoped copy as the other template ports) */
 .footer .button-01 {
     grid-column-gap: 6px;
     grid-row-gap: 6px;

@@ -1,9 +1,8 @@
 /**
- * Exact port of the Colonia template "testimonials" section.
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template "testimonials" section.
  *
  * Verified against the live template at 1440: a 1320px `.container-v4`
- * (max-width override on the scoped colonia-container) holds a centered 400px
+ * (max-width override on the scoped doublevdrive-container) holds a centered 400px
  * intro — "Trusted Voices" tag (quote glyph, grey-02), "Client Stories" heading,
  * one-line-wrap grey-01 sub-text — above a five-column grid (20px gaps,
  * margin-medium-rare top) of five top-aligned cards (`#w-node …align-self:start`),
@@ -34,7 +33,7 @@
 }
 
 /* the template's `.container.container-v4` (1320px) */
-.testimonials .colonia-container {
+.testimonials .doublevdrive-container {
     width: var(--100);
     padding-right: var(--_responsive---padding--padding-slim);
     padding-left: var(--_responsive---padding--padding-slim);

@@ -1,9 +1,8 @@
-import { motion } from 'motion/react'
-import type { LandingIntegration } from '../types'
+import { motion } from "motion/react";
+import type { LandingIntegration } from "../types";
 
 /**
- * Exact port of the Colonia template "integration" section.
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template "integration" section.
  *
  * A centered intro ("Integration" tag, "Seamless Integrations" heading,
  * sub-heading) sits above the hub-and-spoke integration diagram (a custom
@@ -15,25 +14,21 @@ import type { LandingIntegration } from '../types'
  * kept as integration-backup.avif (brand logos, blue hub) and
  * integration-backup2.avif (blue hub, white tiles), and the pre-car
  * truck-glyph build as integration-backup3.avif. All styling lives in
- * src/assets/styles/others/_colonia-integration.css.
+ * src/assets/styles/others/_doublevdrive-integration.css.
  */
 
-const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94]
+const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
 
 const rise = (delay: number) => ({
-    initial: { opacity: 0, y: 24, filter: 'blur(8px)' },
-    whileInView: { opacity: 1, y: 0, filter: 'blur(0px)' },
-    viewport: { once: true, margin: '-60px' },
+    initial: { opacity: 0, y: 24, filter: "blur(8px)" },
+    whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+    viewport: { once: true, margin: "-60px" },
     transition: { duration: 0.7, delay, ease: EASE_OUT },
-})
+});
 
-const Integration = ({
-    content,
-}: {
-    content: LandingIntegration
-}) => (
+const Integration = ({ content }: { content: LandingIntegration }) => (
     <section id="integration" className="integration">
-        <div className="colonia-container">
+        <div className="doublevdrive-container">
             <div className="integration-wrap">
                 <div className="integration-top">
                     <motion.div className="tag-wrap" {...rise(0.05)}>
@@ -43,15 +38,10 @@ const Integration = ({
                             alt=""
                             className="tag-icon"
                         />
-                        <div className="teg text-grey-02">
-                            {content.tag}
-                        </div>
+                        <div className="teg text-grey-02">{content.tag}</div>
                     </motion.div>
                     <div className="title-wrap">
-                        <motion.div
-                            className="heading-wrap"
-                            {...rise(0.15)}
-                        >
+                        <motion.div className="heading-wrap" {...rise(0.15)}>
                             <h2 className="text-h3">{content.heading}</h2>
                         </motion.div>
                         <div className="sub-heading-wrap">
@@ -76,6 +66,6 @@ const Integration = ({
             </div>
         </div>
     </section>
-)
+);
 
-export default Integration
+export default Integration;

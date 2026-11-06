@@ -20,7 +20,7 @@ import type { LandingPageContent } from "../types";
 type Props = { content: LandingPageContent };
 
 /**
- * Section order mirrors the Colonia template:
+ * Section order mirrors the doublevdrive template:
  * hero → features → values/statistics → benefits → resources →
  * works → integration → plans → testimonials → faq → footer,
  * with the app-specific clear-view module pile right after the values area.
@@ -47,7 +47,7 @@ type Props = { content: LandingPageContent };
     );
 
     return (
-        <main className="colonia-root bg-white dark:bg-gray-900">
+        <main className="doublevdrive-root bg-white dark:bg-gray-900">
             <Navigation
                 toggleMode={() =>
                     setMode(resolvedMode === "light" ? "dark" : "light")

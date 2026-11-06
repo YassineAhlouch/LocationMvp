@@ -1,6 +1,5 @@
 /**
- * Exact port of the Colonia template "works" section.
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template "works" section.
  *
  * Layout truth (measured at 1440, live template): the section only pads slim
  * (20px) horizontally; `works-main` is a border-radius-normal dark-orange
@@ -19,11 +18,11 @@
  * 40px-pinned intro, so the sticky offsets shift by +80px (intro 120px, cards
  * 340/380px) to keep the template's pin clearance — the same kind of
  * app-context adaptation as the `isolation: isolate` fixes in
- * _colonia-values.css / _colonia-resources.css.
+ * _doublevdrive-values.css / _doublevdrive-resources.css.
  *
  * Breakpoints: only the ≤479px block changes the works section in the template
  * (the intro and cards go static there); all other tokens are shared with the
- * other Colonia ports (_colonia-hero.css, _colonia-benefits.css).
+ * other doublevdrive ports (_doublevdrive-hero.css, _doublevdrive-benefits.css).
  */
 
 /* ===================== Works ===================== */
@@ -45,7 +44,7 @@
 
 /* the template's generic `.container` (1280px); scoped to avoid
    clashing with Tailwind's own .container utility */
-.works .colonia-container {
+.works .doublevdrive-container {
     width: var(--100);
     padding-right: var(--_responsive---padding--padding-slim);
     padding-left: var(--_responsive---padding--padding-slim);
@@ -134,7 +133,7 @@
 }
 
 /* card heading: the template's global h2 (tokens already responsive);
-   scoped because .colonia-root h2 clamps differently */
+   scoped because .doublevdrive-root h2 clamps differently */
 .works .work-card-wrap h2 {
     font-size: var(--_typography---h2--font-size);
     line-height: var(--_typography---h2--line-height);
@@ -146,7 +145,7 @@
 }
 
 /* ===================== Shared building blocks =====================
-   (same scoped base as the other Colonia ports) */
+   (same scoped base as the other template ports) */
 .works .tag-wrap {
     grid-column-gap: 5px;
     grid-row-gap: 5px;
@@ -211,7 +210,7 @@
 }
 
 /* ===================== Dark mode (app theme toggle) =====================
-   The template is light-only; these follow _colonia.css conventions.
+   The template is light-only; these follow _doublevdrive.css conventions.
    The banner (dark-orange artwork) and the light intro text stay untouched
    (--color--light never flips); only the white cards and greys adapt. */
 .dark .works .work-card-wrap {

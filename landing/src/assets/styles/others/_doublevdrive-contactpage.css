@@ -1,7 +1,7 @@
 /**
  * App-specific "Contact" page (Contact.tsx — the /contact SPA route).
  *
- * Faithful port of the Colonia template's contact section: a 470px centered
+ * Faithful port of the doublevdrive template's contact section: a 470px centered
  * intro (.contact-top-heading: tag-wrap → col-h1 → paragraph-02 subtext), a
  * three-column grid of grey info boxes (.contact-info-box — the golden
  * gradient .plan-icon-wrap-02 tile, an h5 + text stack and the dark
@@ -31,7 +31,7 @@
     padding-bottom: var(--_responsive---padding--padding-big);
 }
 
-.contact .colonia-container {
+.contact .doublevdrive-container {
     width: var(--100);
     padding-right: var(--_responsive---padding--padding-slim);
     padding-left: var(--_responsive---padding--padding-slim);

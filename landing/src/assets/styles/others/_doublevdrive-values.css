@@ -1,6 +1,5 @@
 /**
- * Exact port of the Colonia template "values" section.
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template "values" section.
  *
  * Layout truth (measured at 1440): the section pads slim (20px) horizontally
  * around the grey `values-main-bg` panel; the `values-container` (1340px)
@@ -15,8 +14,8 @@
  * The wide orange glow is `values-bg` (two blurred svg circles) sitting in
  * `values-bg-wrap` behind everything.
  *
- * Design tokens are shared with the other Colonia ports (_colonia-hero.css).
- * "container" is renamed `colonia-container` (Tailwind owns `.container`).
+ * Design tokens are shared with the other template ports (_doublevdrive-hero.css).
+ * "container" is renamed `doublevdrive-container` (Tailwind owns `.container`).
  */
 
 /* ===================== Values ===================== */
@@ -25,7 +24,7 @@
     padding-left: var(--_responsive---padding--padding-slim);
 }
 
-.values .colonia-container {
+.values .doublevdrive-container {
     width: var(--100);
     padding-right: var(--_responsive---padding--padding-slim);
     padding-left: var(--_responsive---padding--padding-slim);
@@ -465,7 +464,7 @@
 }
 
 /* ===================== Dark mode (app theme toggle) =====================
-   The template is light-only; these follow _colonia.css conventions. */
+   The template is light-only; these follow _doublevdrive.css conventions. */
 .dark .values .text-h3,
 .dark .values .statistics-number-box .text-h1,
 .dark .values .statistics-number-wrap h1:not(.text-h1),

@@ -1,21 +1,21 @@
 /**
  * App-specific "Clear View" section (ClearView.tsx) — six module cards that
  * pile up while scrolling. Section chrome follows the Features section
- * (_colonia-features.css): section-level `--padding-big` top/bottom, the
- * 1280px `colonia-container`, a centered 536px intro (tag → h2 `.title-wrap`
+ * (_doublevdrive-features.css): section-level `--padding-big` top/bottom, the
+ * 1280px `doublevdrive-container`, a centered 536px intro (tag → h2 `.title-wrap`
  * → sub-heading) with h3-scale typography — and NO background banner: the
  * cards sit on the plain page surface with a hairline border only (no
  * box-shadow).
  *
  * Each card carries the resources section's image treatment
- * (_colonia-resources.css): the `.cv-imgwrap` stage (padding, radius,
+ * (_doublevdrive-resources.css): the `.cv-imgwrap` stage (padding, radius,
  * overflow hidden, isolation) where a full-bleed warm mat
  * (`cv-imgwrap-mat` ← fit-cover.avif) paints behind the capture, which keeps
  * its natural aspect at full width, its transparent edges letting the mat
  * peek through, like `resources-image-box`.
  *
  * The piling behavior keeps the works-section mechanics (see
- * _colonia-works.css for the sticky adaptation rationale) with two
+ * _doublevdrive-works.css for the sticky adaptation rationale) with two
  * clear-view adaptations: the sticky tops CENTER the card on the screen
  * height (a card measures 756px, so `top: calc(50vh - 378px)` rests its
  * middle at the screen middle, clamped below the floating pill) alternating
@@ -31,8 +31,8 @@
     padding-bottom: var(--_responsive---padding--padding-big);
 }
 
-/* same scoped base as the other Colonia ports (features/works) */
-.clearview .colonia-container {
+/* same scoped base as the other template ports (features/works) */
+.clearview .doublevdrive-container {
     width: var(--100);
     padding-right: var(--_responsive---padding--padding-slim);
     padding-left: var(--_responsive---padding--padding-slim);
@@ -113,7 +113,7 @@
     line-height: var(--_typography---h2--line-height);
     font-weight: var(--_typography---h2--font-weight);
     letter-spacing: var(--_typography---h2--latter-spaces);
-    /* the colonia orange, same accent the medallion badges use */
+    /* the doublevdrive orange, same accent the medallion badges use */
     color: var(--color--dark-orange);
 }
 
@@ -180,7 +180,7 @@
 }
 
 /* ===================== Features shared chrome =====================
-   (same scoped token copies as _colonia-features.css) */
+   (same scoped token copies as _doublevdrive-features.css) */
 .clearview .tag-wrap {
     grid-column-gap: 5px;
     grid-row-gap: 5px;

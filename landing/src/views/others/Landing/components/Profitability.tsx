@@ -1,12 +1,8 @@
-import { motion } from 'motion/react'
-import type {
-    LandingProfitability,
-    LandingProfitHighlight,
-} from '../types'
+import { motion } from "motion/react";
+import type { LandingProfitability, LandingProfitHighlight } from "../types";
 
 /**
- * Exact port of the Colonia template "benefits" section.
- * Source: landinginspriationdesign/index.html (https://colonia-template.webflow.io/)
+ * Exact port of the doublevdrive template "benefits" section.
  *
  * A centered intro column (tag, one-line heading, sub-heading) sits above a
  * 4-column grid of eight cards. Each card is a 5px-padded `benefits-list-wrap`
@@ -18,27 +14,27 @@ import type {
  * itself doesn't change. The glyph images fill the whole 50px tile (the
  * template's global img sizing) with their artwork drawn centered in the
  * 24×25 viewBoxes. All styling lives in
- * src/assets/styles/others/_colonia-benefits.css.
+ * src/assets/styles/others/_doublevdrive-benefits.css.
  *
  * The vehicle performance preview below the grid is an app extra kept from
  * the previous design.
  */
 
-const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94]
+const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
 
 const rise = (delay: number) => ({
-    initial: { opacity: 0, y: 24, filter: 'blur(8px)' },
-    whileInView: { opacity: 1, y: 0, filter: 'blur(0px)' },
-    viewport: { once: true, margin: '-60px' },
+    initial: { opacity: 0, y: 24, filter: "blur(8px)" },
+    whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+    viewport: { once: true, margin: "-60px" },
     transition: { duration: 0.7, delay, ease: EASE_OUT },
-})
+});
 
 const BenefitCard = ({
     item,
     index,
 }: {
-    item: LandingProfitHighlight
-    index: number
+    item: LandingProfitHighlight;
+    index: number;
 }) => (
     <motion.div className="benefits-list-wrap" {...rise(0.15 + index * 0.05)}>
         <div className="benefits-list-main">
@@ -70,16 +66,12 @@ const BenefitCard = ({
             />
         </div>
     </motion.div>
-)
+);
 
-const Profitability = ({
-    content,
-}: {
-    content: LandingProfitability
-}) => (
+const Profitability = ({ content }: { content: LandingProfitability }) => (
     <>
         <section id="profitability" dir="ltr" className="benefits">
-            <div className="colonia-container container-v3">
+            <div className="doublevdrive-container container-v3">
                 <div className="benefits-wrap">
                     <motion.div className="benefits-top" {...rise(0.05)}>
                         <div className="tag-wrap">
@@ -123,6 +115,6 @@ const Profitability = ({
             </div>
         </section>
     </>
-)
+);
 
-export default Profitability
+export default Profitability;

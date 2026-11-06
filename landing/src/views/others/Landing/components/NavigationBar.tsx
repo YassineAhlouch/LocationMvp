@@ -136,7 +136,7 @@ const NavBody = ({
         className={classNames(
             "max-w-[730px]",
             className,
-            "colonia-fixed-navbar",
+            "doublevdrive-fixed-navbar",
         )}
     >
         {children}
@@ -151,7 +151,11 @@ const MobileNav = ({
     className?: string;
 }) => (
     <div
-        className={classNames("max-w-full", "colonia-fixed-navbar", className)}
+        className={classNames(
+            "max-w-full",
+            "doublevdrive-fixed-navbar",
+            className,
+        )}
     >
         {children}
     </div>

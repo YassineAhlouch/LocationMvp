@@ -1,14 +1,13 @@
-import { motion } from 'motion/react'
-import type { LandingTransparency } from '../types'
+import { motion } from "motion/react";
+import type { LandingTransparency } from "../types";
 
 /**
- * Exact port of the Colonia template "transparency" section.
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template "transparency" section.
  *
  * The rounded dark-orange banner (same artwork as the works banner) holds a
  * centered white intro ("Full Transparency" tag, "Data Visibility" heading,
  * sub-heading) above the framed analytics artwork (transparency.avif,
- * max 550px). The asset is a rebuilt Colonia-style "transparency" artwork
+ * max 550px). The asset is a rebuilt doublevdrive-style "transparency" artwork
  * drawn from measured template geometry (HTML/SVG → headless-Chrome capture
  * → AVIF) with car/fleet-agency content: reservations-by-vehicle-class
  * donut, "Payments by method" card, "Fleet by class" side card and the
@@ -18,26 +17,22 @@ import type { LandingTransparency } from '../types'
  * only on the landing).
  * The section keeps the app's #contact id so the navigation, footer links and
  * the FAQ keep landing here. All styling lives in
- * src/assets/styles/others/_colonia-transparency.css.
+ * src/assets/styles/others/_doublevdrive-transparency.css.
  */
 
-const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94]
+const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
 
 const rise = (delay: number) => ({
-    initial: { opacity: 0, y: 24, filter: 'blur(8px)' },
-    whileInView: { opacity: 1, y: 0, filter: 'blur(0px)' },
-    viewport: { once: true, margin: '-60px' },
+    initial: { opacity: 0, y: 24, filter: "blur(8px)" },
+    whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+    viewport: { once: true, margin: "-60px" },
     transition: { duration: 0.7, delay, ease: EASE_OUT },
-})
+});
 
-const Transparency = ({
-    content,
-}: {
-    content: LandingTransparency
-}) => (
+const Transparency = ({ content }: { content: LandingTransparency }) => (
     <section id="contact" className="transparency">
         <div className="transparency-section">
-            <div className="colonia-container">
+            <div className="doublevdrive-container">
                 <div className="transparency-wrap">
                     <div className="transparency-top">
                         <motion.div className="tag-wrap" {...rise(0.05)}>
@@ -47,18 +42,14 @@ const Transparency = ({
                                 alt=""
                                 className="tag-icon"
                             />
-                            <div className="teg text-light">
-                                {content.tag}
-                            </div>
+                            <div className="teg text-light">{content.tag}</div>
                         </motion.div>
                         <div className="title-wrap">
                             <motion.div
                                 className="heading-wrap"
                                 {...rise(0.15)}
                             >
-                                <h2 className="text-h3">
-                                    {content.heading}
-                                </h2>
+                                <h2 className="text-h3">{content.heading}</h2>
                             </motion.div>
                             <div className="sub-heading-wrap">
                                 <motion.p
@@ -87,6 +78,6 @@ const Transparency = ({
             <div className="transparency-bg" aria-hidden="true" />
         </div>
     </section>
-)
+);
 
-export default Transparency
+export default Transparency;

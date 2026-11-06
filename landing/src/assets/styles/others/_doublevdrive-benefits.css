@@ -1,6 +1,5 @@
 /**
- * Exact port of the Colonia template "benefits" section.
- * Source: landinginspriationdesign/index.html — https://colonia-template.webflow.io/
+ * Exact port of the doublevdrive template "benefits" section.
  *
  * Layout truth (measured at 1440): the section pads padding-big (80px)
  * vertically and has no horizontal padding of its own; the container
@@ -20,7 +19,7 @@
  * On ≤479px the grid becomes a single column and the cards turn sticky at
  * top:10px so they pile up while scrolling.
  *
- * Design tokens are shared with the other Colonia ports (_colonia-hero.css).
+ * Design tokens are shared with the other template ports (_doublevdrive-hero.css).
  */
 
 /* ===================== Benefits ===================== */
@@ -29,7 +28,7 @@
     padding-bottom: var(--_responsive---padding--padding-big);
 }
 
-.benefits .colonia-container {
+.benefits .doublevdrive-container {
     width: var(--100);
     padding-right: var(--_responsive---padding--padding-slim);
     padding-left: var(--_responsive---padding--padding-slim);
@@ -262,7 +261,7 @@
 }
 
 /* ===================== Dark mode (app theme toggle) =====================
-   The template is light-only; these follow _colonia.css conventions. */
+   The template is light-only; these follow _doublevdrive.css conventions. */
 .dark .benefits .text-h3,
 .dark .benefits .benefits-list-bottom .paragraph-02 {
     color: #f8f8f8;
