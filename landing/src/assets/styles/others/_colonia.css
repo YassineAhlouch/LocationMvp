@@ -216,7 +216,9 @@
     }
 
     .dark .col-btn-white {
-        color: #f8f8f8;
+        /* the pill stays white — flipping the label to #f8f8f8 made it
+           unreadable on the white surface */
+        color: #171717;
         background-color: #fff;
     }
 

@@ -63,7 +63,7 @@
                 {
                     "title": "Contact",
                     "value": "contact",
-                    "anchor": "contact"
+                    "route": "/contact"
                 }
             ]
         },
@@ -82,7 +82,7 @@
             "subtext": "Track every car, reservation, payment and inspection in one place — then let your team pick up tasks and share QR-coded reservations that actually stick.",
             "primaryCta": {
                 "label": "Get Started",
-                "href": "#contact"
+                "href": "/contact"
             },
             "secondaryCta": {
                 "label": "View Demo",
@@ -329,14 +329,8 @@
         },
         "footer": {
             "headingLines": [
-                [
-                    "Make smarter",
-                    "decisions"
-                ],
-                [
-                    "act on",
-                    "your data today."
-                ]
+                ["Make smarter", "decisions"],
+                ["act on", "your data today."]
             ],
             "subtext": "Simplify complex sustainability challenges with clear insights, automated reporting, and tools designed to drive lasting positive impact.",
             "cta": "Start Tracking",
@@ -459,6 +453,59 @@
                     "attribution": "Fixed by: QR and online reservation links"
                 }
             ]
+        },
+        "contactPage": {
+            "tag": "Contact Us",
+            "heading": "Let’s Connect. We’re Here.",
+            "subtext": "Pricing, onboarding or product questions — one direct line to the team.",
+            "boxes": [
+                {
+                    "title": "Talk to Sales",
+                    "text": "Curious about pricing, plans, or partnerships? Let’s explore what fits best for your agency.",
+                    "pill": "Connect with Sales",
+                    "href": "wa:Hello! I run a rental agency and would like to talk about pricing."
+                },
+                {
+                    "title": "Book a Demo",
+                    "text": "See the platform live: reservations, payments and the printable QR codes — bring your fleet, we set everything up.",
+                    "pill": "Request a Demo",
+                    "href": "#contact-form"
+                },
+                {
+                    "title": "Explore Features",
+                    "text": "Walk through the full pipeline: reservations, fleet, payments, reports and QR booking.",
+                    "pill": "See Features",
+                    "href": "/#features"
+                }
+            ],
+            "formIntro": {
+                "tag": "Say Hello",
+                "heading": "We’d Love to Hear From You",
+                "subtext": "Got a question or just want to say hi? Message us anytime."
+            },
+            "form": {
+                "fullName": "Full Name",
+                "phFullName": "Enter name",
+                "phone": "Phone",
+                "phPhone": "+212 6 …",
+                "agency": "Agency",
+                "phAgency": "Your agency’s name",
+                "email": "Email Address",
+                "phEmail": "you@example.com",
+                "message": "Message",
+                "phMessage": "Fleet size, city, needs…",
+                "submit": "Submit",
+                "sending": "Please wait…"
+            },
+            "successText": "Thank you! Your submission has been received!",
+            "errors": {
+                "name": "Please enter your full name.",
+                "phone": "Please enter a phone number.",
+                "unexpected": "Oops! Something went wrong while submitting the form.",
+                "unreachable": "The server is unreachable. Check your connection and try again.",
+                "invalidFields": "Some fields are invalid.",
+                "server": "Server error. Please try again."
+            }
         }
     }
 }

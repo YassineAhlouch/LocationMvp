@@ -1,20 +1,29 @@
-import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
-import { TbMenu2 } from 'react-icons/tb'
-import NavList from './NavList'
-import LanguageSelector from './LanguageSelector'
-import Drawer from '@/components/ui/Drawer'
-import classNames from '@/utils/classNames'
-import type { Tab } from './NavList'
-import type { Mode } from '../types'
-import type { Direction } from '@/@types/theme'
+import React, { useState } from "react";
+import { Link as RouterLink } from "react-router";
+import { motion, AnimatePresence } from "motion/react";
+import { TbMenu2 } from "react-icons/tb";
+import NavList from "./NavList";
+import LanguageSelector from "./LanguageSelector";
+import Drawer from "@/components/ui/Drawer";
+import classNames from "@/utils/classNames";
+import type { Tab } from "./NavList";
+import type { Mode } from "../types";
+import type { Direction } from "@/@types/theme";
 
 type NavigationProps = {
-    toggleMode: () => void
-    mode: Mode
-    navMenu: Tab[]
-    direction?: Direction
-}
+    toggleMode: () => void;
+    mode: Mode;
+    navMenu: Tab[];
+    direction?: Direction;
+    /** Target of the white "Start Tracking" pill (default: the landing's
+     *  #contact banner — pass /#contact from the SPA's contact page). */
+    ctaHref?: string;
+    /** SPA target for the same pill (the landing routes it to /contact; a
+     *  route wins over `ctaHref`). */
+    ctaRoute?: string;
+    /** Initially-highlighted nav pill (the contact page marks Contact). */
+    navActiveValue?: string;
+};
 
 /**
  * Fixed pill navbar. Deliberately static: the former scroll-driven scale/y
@@ -29,9 +38,24 @@ const Navigation = ({
     toggleMode,
     mode,
     navMenu,
-    direction = 'ltr',
+    direction = "ltr",
+    ctaHref = "#contact",
+    ctaRoute,
+    navActiveValue,
 }: NavigationProps) => {
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+    /* the white pill navigates in-SPA when a route is given (/contact) */
+    const ctaButton = (className: string) =>
+        ctaRoute ? (
+            <RouterLink to={ctaRoute} className={className}>
+                Start Tracking
+            </RouterLink>
+        ) : (
+            <a href={ctaHref} className={className}>
+                Start Tracking
+            </a>
+        );
 
     return (
         <div className="fixed inset-x-0 top-3 lg:top-[34px] z-[30] w-full pointer-events-none mx-auto px-4">
@@ -45,14 +69,17 @@ const Navigation = ({
                         />
                     </div>
                     <div className="flex-1 flex justify-center">
-                        <NavList tabs={navMenu} onDark />
+                        <NavList
+                            tabs={navMenu}
+                            onDark
+                            activeValue={navActiveValue}
+                            layoutIdPrefix="nav"
+                        />
                     </div>
                     <div className="flex items-center gap-1.5">
                         <LanguageSelector />
                         <ThemeToggle mode={mode} toggleMode={toggleMode} />
-                        <a href="#contact" className="col-btn col-btn-white col-p3">
-                            Start Tracking
-                        </a>
+                        {ctaButton("col-btn col-btn-white col-p3")}
                     </div>
                 </NavBody>
 
@@ -71,12 +98,9 @@ const Navigation = ({
                     <div className="flex items-center gap-1">
                         <LanguageSelector />
                         <ThemeToggle mode={mode} toggleMode={toggleMode} />
-                        <a
-                            href="#contact"
-                            className="col-btn col-btn-white col-p3 hidden sm:inline-flex"
-                        >
-                            Start Tracking
-                        </a>
+                        {ctaButton(
+                            "col-btn col-btn-white col-p3 hidden sm:inline-flex",
+                        )}
                     </div>
                 </MobileNav>
 
@@ -85,43 +109,53 @@ const Navigation = ({
                     isOpen={isDrawerOpen}
                     onClose={() => setIsDrawerOpen(false)}
                     width={250}
-                    placement={direction === 'rtl' ? 'right' : 'left'}
+                    placement={direction === "rtl" ? "right" : "left"}
                 >
                     <div className="flex flex-col gap-2">
                         <NavList
                             onTabClick={() => setIsDrawerOpen(false)}
                             tabs={navMenu}
+                            activeValue={navActiveValue}
+                            layoutIdPrefix="drawer"
                         />
                     </div>
                 </Drawer>
             </div>
         </div>
-    )
-}
+    );
+};
 
 const NavBody = ({
     children,
     className,
 }: {
-    children: React.ReactNode
-    className?: string
+    children: React.ReactNode;
+    className?: string;
 }) => (
-    <div className={classNames('max-w-[730px]', className, 'colonia-fixed-navbar')}>
+    <div
+        className={classNames(
+            "max-w-[730px]",
+            className,
+            "colonia-fixed-navbar",
+        )}
+    >
         {children}
     </div>
-)
+);
 
 const MobileNav = ({
     children,
     className,
 }: {
-    children: React.ReactNode
-    className?: string
+    children: React.ReactNode;
+    className?: string;
 }) => (
-    <div className={classNames('max-w-full', 'colonia-fixed-navbar', className)}>
+    <div
+        className={classNames("max-w-full", "colonia-fixed-navbar", className)}
+    >
         {children}
     </div>
-)
+);
 
 const SunIcon = () => (
     <svg
@@ -134,7 +168,7 @@ const SunIcon = () => (
         <path d="M184,128a56,56,0,1,1-56-56A56,56,0,0,1,184,128Z" opacity="1" />
         <path d="M120,40V32a8,8,0,0,1,16,0v8a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-8-8A8,8,0,0,0,50.34,61.66Zm0,116.68-8,8a8,8,0,0,0,11.32,11.32l8-8a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l8-8a8,8,0,0,0-11.32-11.32l-8,8A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l8,8a8,8,0,0,0,11.32-11.32ZM40,120H32a8,8,0,0,0,0,16h8a8,8,0,0,0,0-16Zm88,88a8,8,0,0,0-8,8v8a8,8,0,0,0,16,0v-8A8,8,0,0,0,128,208Zm96-88h-8a8,8,0,0,0,0,16h8a8,8,0,0,0,0-16Z" />
     </svg>
-)
+);
 
 const MoonIcon = () => (
     <svg
@@ -150,21 +184,21 @@ const MoonIcon = () => (
         />
         <path d="M240,96a8,8,0,0,1-8,8H216v16a8,8,0,0,1-16,0V104H184a8,8,0,0,1,0-16h16V72a8,8,0,0,1,16,0V88h16A8,8,0,0,1,240,96ZM144,56h8v8a8,8,0,0,0,16,0V56h8a8,8,0,0,0,0-16h-8V32a8,8,0,0,0-16,0v8h-8a8,8,0,0,0,0,16Zm72.77,97a8,8,0,0,1,1.43,8A96,96,0,1,1,95.07,37.8a8,8,0,0,1,10.6,9.06A88.07,88.07,0,0,0,209.14,150.33A8,8,0,0,1,216.77,153Zm-19.39,14.88c-1.79.09-3.59.14-5.38.14A104.11,104.11,0,0,1,88,64c0-1.79,0-3.59.14-5.38A80,80,0,1,0,197.38,167.86Z" />
     </svg>
-)
+);
 
 const ThemeToggle = ({
     mode,
     toggleMode,
 }: {
-    mode: Mode
-    toggleMode: () => void
+    mode: Mode;
+    toggleMode: () => void;
 }) => (
     <motion.button
         className="relative flex cursor-pointer items-center justify-center rounded-lg p-2 text-[#f8f8f8]/70 hover:text-white transition-colors"
         onClick={toggleMode}
         whileHover={{ scale: 1.12 }}
         whileTap={{ scale: 0.85 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+        transition={{ type: "spring", stiffness: 400, damping: 17 }}
     >
         <div className="relative w-5 h-5">
             <AnimatePresence mode="sync" initial={false}>
@@ -176,12 +210,12 @@ const ThemeToggle = ({
                     exit={{ opacity: 0, rotate: 90, scale: 0.5 }}
                     transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
                 >
-                    {mode === 'light' ? <MoonIcon /> : <SunIcon />}
+                    {mode === "light" ? <MoonIcon /> : <SunIcon />}
                 </motion.span>
             </AnimatePresence>
         </div>
         <span className="sr-only">Toggle theme</span>
     </motion.button>
-)
+);
 
-export default Navigation
+export default Navigation;

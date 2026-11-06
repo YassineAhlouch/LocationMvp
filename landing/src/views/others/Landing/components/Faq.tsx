@@ -1,7 +1,8 @@
-import { useState } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
-import classNames from '@/utils/classNames'
-import type { LandingPageContent, LandingFaqQuestion } from '../types'
+import { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { Link as RouterLink } from "react-router";
+import classNames from "@/utils/classNames";
+import type { LandingPageContent, LandingFaqQuestion } from "../types";
 
 /**
  * Exact port of the Colonia template faq section (`<section class=faq>`).
@@ -24,14 +25,14 @@ import type { LandingPageContent, LandingFaqQuestion } from '../types'
  * src/assets/styles/others/_colonia-faq.css.
  */
 
-const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94]
+const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
 
 const rise = (delay: number) => ({
-    initial: { opacity: 0, y: 24, filter: 'blur(8px)' },
-    whileInView: { opacity: 1, y: 0, filter: 'blur(0px)' },
-    viewport: { once: true, margin: '-60px' },
+    initial: { opacity: 0, y: 24, filter: "blur(8px)" },
+    whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+    viewport: { once: true, margin: "-60px" },
     transition: { duration: 0.7, delay, ease: EASE_OUT },
-})
+});
 
 const Question = ({
     question,
@@ -39,10 +40,10 @@ const Question = ({
     isOpen,
     onToggle,
 }: {
-    question: string
-    answer: string
-    isOpen: boolean
-    onToggle: () => void
+    question: string;
+    answer: string;
+    isOpen: boolean;
+    onToggle: () => void;
 }) => (
     <div className="faq-list" aria-expanded={isOpen} onClick={onToggle}>
         <div className="faq-question">
@@ -54,8 +55,8 @@ const Question = ({
                     alt=""
                     aria-hidden="true"
                     className={classNames(
-                        'faq-icon transition-transform duration-200',
-                        isOpen && 'rotate-180',
+                        "faq-icon transition-transform duration-200",
+                        isOpen && "rotate-180",
                     )}
                 />
             </div>
@@ -65,7 +66,7 @@ const Question = ({
                 <motion.div
                     key="content"
                     initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
+                    animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
                     className="faq-answers"
@@ -75,11 +76,11 @@ const Question = ({
             )}
         </AnimatePresence>
     </div>
-)
+);
 
 const Faq = ({ content }: { content: LandingPageContent }) => {
-    const faq = content.faq
-    const [openIndex, setOpenIndex] = useState(0)
+    const faq = content.faq;
+    const [openIndex, setOpenIndex] = useState(0);
 
     return (
         <section id="faq" className="faq">
@@ -96,7 +97,10 @@ const Faq = ({ content }: { content: LandingPageContent }) => {
                             <div className="teg text-grey-02">{faq.tag}</div>
                         </motion.div>
                         <div className="title-wrap">
-                            <motion.div className="heading-wrap" {...rise(0.15)}>
+                            <motion.div
+                                className="heading-wrap"
+                                {...rise(0.15)}
+                            >
                                 <h2 className="text-h3">{faq.heading}</h2>
                             </motion.div>
                             <motion.div {...rise(0.25)}>
@@ -115,7 +119,7 @@ const Faq = ({ content }: { content: LandingPageContent }) => {
                                         {...rise(0.2 + index * 0.05)}
                                         viewport={{
                                             once: true,
-                                            margin: '0px 0px 200px 0px',
+                                            margin: "0px 0px 200px 0px",
                                         }}
                                     >
                                         <Question
@@ -144,7 +148,7 @@ const Faq = ({ content }: { content: LandingPageContent }) => {
                                 />
                                 <p className="col-h5 mt-4">
                                     <span className="text-white">
-                                        {content.faq.cta.title}{' '}
+                                        {content.faq.cta.title}{" "}
                                     </span>
                                     <span className="text-[#f8f8f8]/60 font-medium">
                                         {content.faq.cta.accent}
@@ -153,19 +157,19 @@ const Faq = ({ content }: { content: LandingPageContent }) => {
                                 <p className="mt-2 col-p3 text-[#f8f8f8]/70">
                                     {content.faq.cta.text}
                                 </p>
-                                <a
-                                    href="#contact"
+                                <RouterLink
+                                    to="/contact"
                                     className="col-btn col-btn-white col-p3 mt-5 w-fit dark:text-[#171717]!"
                                 >
                                     {content.faq.cta.button}
-                                </a>
+                                </RouterLink>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-    )
-}
+    );
+};
 
-export default Faq
+export default Faq;

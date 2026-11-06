@@ -1,7 +1,10 @@
 export type LandingNavItem = {
     title: string
     value: string
-    anchor: string
+    /** In-page anchor id — smooth-scrolled with react-scroll (landing). */
+    anchor?: string
+    /** SPA route (react-router), e.g. /contact — renders as a plain link. */
+    route?: string
 }
 
 export type LandingCtaLink = { label: string; href: string }
@@ -110,6 +113,51 @@ export type LandingIntegration = {
     subtext: string
 }
 
+/** One info box of the contact page's top row (the template contact-top). */
+export type LandingContactBox = {
+    title: string
+    text: string
+    pill: string
+    /** wa: → wa.me deep link using the rest as the prefilled message; else raw href. */
+    href: string
+}
+
+/** The dedicated /contact page copy (template contact section + the lead form). */
+export type LandingContactPage = {
+    tag: string
+    heading: string
+    subtext: string
+    boxes: LandingContactBox[]
+    formIntro: {
+        tag: string
+        heading: string
+        subtext: string
+    }
+    form: {
+        fullName: string
+        phFullName: string
+        agency: string
+        phAgency: string
+        phone: string
+        phPhone: string
+        email: string
+        phEmail: string
+        message: string
+        phMessage: string
+        submit: string
+        sending: string
+    }
+    successText: string
+    errors: {
+        name: string
+        phone: string
+        unexpected: string
+        unreachable: string
+        invalidFields: string
+        server: string
+    }
+}
+
 export type LandingPricingPlan = {
     name: string
     description: string
@@ -204,6 +252,7 @@ export type LandingPageContent = {
     workflow: LandingWorkflow
     profitability: LandingProfitability
     impactTracking: LandingImpactTracking
+    contactPage: LandingContactPage
     integration: LandingIntegration
     pricing: LandingPricing
     testimonials: LandingTestimonials

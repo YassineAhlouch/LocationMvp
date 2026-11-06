@@ -17,6 +17,7 @@ export const TAG_ICONS = {
     testimonials: '/img/landing/tag-testimonials.svg',
     faq: '/img/landing/tag-faq.svg',
     transparency: '/img/landing/tag-transparency.svg',
+    contact: '/img/landing/tag-contact.svg',
 } as const
 
 /** Small orange tag icon used in Colonia section/hero tags. */

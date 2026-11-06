@@ -1,0 +1,486 @@
+/**
+ * App-specific "Contact" page (Contact.tsx — the /contact SPA route).
+ *
+ * Faithful port of the Colonia template's contact section: a 470px centered
+ * intro (.contact-top-heading: tag-wrap → col-h1 → paragraph-02 subtext), a
+ * three-column grid of grey info boxes (.contact-info-box — the golden
+ * gradient .plan-icon-wrap-02 tile, an h5 + text stack and the dark
+ * .button-01 pill with its orange .button-dot / rolling label), then the
+ * 660px .contact-bottom (.contaict-title + .form-block): label +
+ * .text-field pairs inside .form-feld-wrap rows, the textarea, the dark
+ * gradient .normal-submit-button (full width, orange dot, hover flips the
+ * border to dark-orange), the orange .success-message and the pale-red
+ * .error-message-v2 banner — measured from the template stylesheet.
+ *
+ * The form POSTs to /api/v1/landing/contacts (api/contact.ts): client-side
+ * required checks (full name, phone) then the 422 field errors rendered under
+ * the fields. The layout serves rtl (flex/grid flips with the document
+ * direction); breakpoints follow the template: the boxes drop 3 → 2 → 1
+ * columns and the field pairs stack at ≤479px. Dark mode flips surfaces,
+ * borders and titles like the other ports (works/clearview palette).
+ */
+
+.contact {
+    /* the fixed pill navbar (bottom ≈ 90px desktop / 64px mobile) overlaps the
+       section otherwise: --padding-big is 80px wide / 40px ≤767, so an extra
+       64px keeps ~55px of air under the bar (80px on mobile) */
+    --contact-nav-clear: 64px;
+    padding-top: calc(
+        var(--_responsive---padding--padding-big) + var(--contact-nav-clear)
+    );
+    padding-bottom: var(--_responsive---padding--padding-big);
+}
+
+.contact .colonia-container {
+    width: var(--100);
+    padding-right: var(--_responsive---padding--padding-slim);
+    padding-left: var(--_responsive---padding--padding-slim);
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ---- shared section chrome (tag → title → subtext) ---- */
+.contact .tag-wrap {
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.contact .tag-icon {
+    width: 16px;
+}
+
+.contact .teg {
+    font-size: var(--_typography---tag--font-size);
+    line-height: var(--_typography---tag--line-height);
+    font-weight: var(--_typography---tag--font-weight);
+    letter-spacing: var(--_typography---tag--latter-spaces);
+}
+
+.contact .text-grey-01 {
+    color: var(--color--grey-dark);
+}
+
+.contact .text-grey-02 {
+    color: var(--color--grey-medium);
+}
+
+.contact .text-light {
+    color: var(--color--light);
+}
+
+.contact .title-wrap {
+    grid-column-gap: var(--_spacing---spacing-xsmall);
+    grid-row-gap: var(--_spacing---spacing-xsmall);
+    flex-flow: column;
+    display: flex;
+}
+
+.contact .heading-wrap,
+.contact .sub-heading-wrap {
+    grid-column-gap: var(--_spacing---spacing-xsmall);
+    grid-row-gap: var(--_spacing---spacing-xsmall);
+    flex-flow: column;
+    display: flex;
+}
+
+.contact .text-h3 {
+    font-size: var(--_typography---h3--font-size);
+    line-height: var(--_typography---h3--line-height);
+    font-weight: var(--_typography---h3--font-weight);
+    letter-spacing: var(--_typography---h3--latter-spaces);
+    color: var(--color--dark);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.contact .paragraph-02 {
+    font-size: var(--_typography---paragraph-02--font-size);
+    line-height: var(--_typography---paragraph-02--line-height);
+    font-weight: var(--_typography---paragraph-02--font-weight);
+    letter-spacing: var(--_typography---paragraph-02--latter-spaces);
+    color: var(--color--dark);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.contact .paragraph-03 {
+    font-size: var(--_typography---paragraph-03--font-size);
+    line-height: var(--_typography---paragraph-03--line-height);
+    font-weight: var(--_typography---paragraph-03--font-weight);
+    letter-spacing: var(--_typography---paragraph-03--latter-spaces);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* ---- contact-top: centered intro + the three info boxes ---- */
+.contact .contact-top-heading {
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    text-align: center;
+    flex-flow: column;
+    max-width: 470px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+}
+
+.contact .col-h1 {
+    color: var(--color--dark);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.contact .contact-info-wrap {
+    margin-top: var(--_responsive---margin--margin-medium-rare);
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-columns: 1fr;
+    display: grid;
+}
+
+.contact .contact-info-box {
+    padding: var(--_responsive---padding--padding-medium-rare);
+    grid-column-gap: var(--_spacing---spacing-medium);
+    grid-row-gap: var(--_spacing---spacing-medium);
+    border-radius: var(--_responsive---border-radius--border-radius-normal);
+    background-color: var(--color--grey-light);
+    flex-flow: column;
+    display: flex;
+}
+
+/* the golden gradient icon tile (template plan-icon-wrap-02) */
+.contact .plan-icon-wrap-02 {
+    border-radius: var(--_responsive---border-radius--border-radius-xsmall);
+    background-image: linear-gradient(#ffd2b4, #fa7319);
+    border: 1px solid #ffddc6;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    color: white;
+    box-shadow:
+        0 6px 10px 1px #fa731940,
+        inset 1px 2px #ffdfca,
+        inset 0 -2px #f96503;
+}
+
+.contact .contact-info-box-text {
+    grid-column-gap: var(--_spacing---spacing-xxsmall);
+    grid-row-gap: var(--_spacing---spacing-xxsmall);
+    flex-flow: column;
+    display: flex;
+}
+
+.contact .contact-info-box-text .col-h5 {
+    color: var(--color--dark);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* the pill (same dark gradient + labelled roll as the footer's button-01) */
+.contact .button-01 {
+    grid-column-gap: 6px;
+    grid-row-gap: 6px;
+    border-radius: var(--_responsive---border-radius--border-radius-xsmall);
+    color: var(--color--light);
+    background-image: linear-gradient(0deg, #393939, #313131 46%, #282828);
+    border: 1px solid #000;
+    justify-content: center;
+    align-items: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: flex;
+    box-shadow:
+        inset 0 2px 1px rgba(255, 255, 255, 0.2),
+        inset 0 -2px #000;
+}
+
+.contact .button-dot {
+    background-color: var(--color--dark-orange);
+    border-radius: 100px;
+    width: 4px;
+    height: 4px;
+}
+
+/* the stacked rolling label — the copies must be block boxes: transforms
+   don't apply to inline elements, and the 20px-high wrap clips the line */
+.contact .button-text-wrap {
+    position: relative;
+    display: block;
+    max-height: 20px;
+    overflow: hidden;
+}
+
+.contact .button-text-wrap .paragraph-03 {
+    display: block;
+    color: inherit;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contact .button-text-wrap .paragraph-03:nth-child(2) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(100%);
+}
+
+.contact .button-01:hover .button-text-wrap .paragraph-03:nth-child(1) {
+    transform: translateY(-100%);
+}
+
+.contact .button-01:hover .button-text-wrap .paragraph-03:nth-child(2) {
+    transform: translateY(0);
+}
+
+/* ---- contact-bottom: Say Hello title + the 660px form block ---- */
+.contact .contact-bottom {
+    margin-top: var(--_responsive---margin--margin-large);
+    max-width: 660px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.contact .contaict-title {
+    grid-column-gap: var(--_spacing---spacing-slim);
+    grid-row-gap: var(--_spacing---spacing-slim);
+    text-align: center;
+    flex-flow: column;
+    display: flex;
+}
+
+.contact .form-block {
+    margin-top: var(--_responsive---margin--margin-large);
+    margin-bottom: 0;
+    scroll-margin-top: 110px;
+}
+
+.contact .form {
+    grid-column-gap: var(--_spacing---spacing-medium);
+    grid-row-gap: var(--_spacing---spacing-medium);
+    flex-flow: column;
+    display: flex;
+}
+
+.contact .form-feld-wrap {
+    grid-column-gap: var(--_spacing---spacing-medium);
+    grid-row-gap: var(--_spacing---spacing-medium);
+    justify-content: space-between;
+    display: flex;
+}
+
+.contact .form-feld {
+    width: var(--100);
+    grid-column-gap: var(--_spacing---spacing-tiny);
+    grid-row-gap: var(--_spacing---spacing-tiny);
+    flex-flow: column;
+    align-items: flex-start;
+    display: flex;
+}
+
+.contact .text-field,
+.contact .text-area-field {
+    width: 100%;
+    padding: var(--_responsive---padding--padding-xxsmall)
+        var(--_responsive---padding--padding-small);
+    border: 1px solid var(--color--stroke-grey);
+    border-radius: var(--_responsive---border-radius--border-radius-xsmall);
+    background-color: var(--color--grey-light);
+    color: var(--color--dark);
+    font-size: var(--_typography---paragraph-03--font-size);
+    line-height: var(--_typography---paragraph-03--line-height);
+    font-weight: var(--_typography---paragraph-03--font-weight);
+    letter-spacing: var(--_typography---paragraph-03--latter-spaces);
+    min-height: 48px;
+    margin-bottom: 0;
+    outline: none;
+    transition: border-color 0.2s ease;
+    resize: none;
+}
+
+.contact .text-area-field {
+    min-height: 150px;
+}
+
+.contact .text-field:focus,
+.contact .text-area-field:focus {
+    border-color: var(--color--dark-orange);
+}
+
+.contact .text-field::placeholder,
+.contact .text-area-field::placeholder {
+    color: var(--color--grey-medium);
+}
+
+/* a 422 message rendered under its field */
+.contact .contact-field-error {
+    font-size: var(--_typography---paragraph-03--font-size);
+    line-height: var(--_typography---paragraph-03--line-height);
+    color: #d92d20;
+    margin: 0;
+}
+
+/* the submit: full-width dark gradient, orange dot flanking the label */
+.contact .normal-submit-button {
+    width: var(--100);
+    padding: var(--_responsive---margin--margin-xxsmall)
+        var(--_responsive---padding--padding-slim);
+    border-radius: var(--_responsive---border-radius--border-radius-xsmall);
+    color: var(--color--light);
+    font-size: var(--_typography---paragraph-02--font-size);
+    line-height: var(--_typography---paragraph-02--line-height);
+    font-weight: var(--_typography---paragraph-02--font-weight);
+    letter-spacing: var(--_typography---paragraph-02--latter-spaces);
+    background-image: linear-gradient(90deg, #393939, #282828);
+    border: 1px solid #000;
+    transition:
+        border-color 0.3s,
+        border-radius 0.4s;
+    box-shadow:
+        0 2px 1px rgba(255, 255, 255, 0.2),
+        inset 0 -2px #000;
+    justify-content: center;
+    align-items: center;
+    grid-column-gap: 6px;
+    grid-row-gap: 6px;
+    display: flex;
+    cursor: pointer;
+}
+
+.contact .normal-submit-button:hover {
+    border-color: var(--color--dark-orange);
+    border-radius: var(--_responsive---border-radius--border-radius-small);
+}
+
+.contact .normal-submit-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* success replaces the form's inner content (template w-form-done) */
+.contact .success-message {
+    padding: var(--_responsive---padding--padding-small);
+    border-radius: var(--_responsive---border-radius--border-radius-xsmall);
+    background-color: var(--color--dark-orange);
+    text-align: center;
+}
+
+/* the pale-red failure banner (template w-form-fail / error-message-v2) */
+.contact .error-message-v2 {
+    padding: var(--_responsive---padding--padding-small);
+    border-radius: var(--_responsive---border-radius--border-radius-xsmall);
+    background-color: #ffdede;
+    text-align: center;
+}
+
+/* ===================== responsive (template breakpoints) ===================== */
+@media screen and (max-width: 991px) {
+    .contact {
+        padding-bottom: var(--_responsive---padding--padding-slim);
+    }
+
+    .contact .contact-info-wrap {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .contact {
+        --contact-nav-clear: 80px;
+    }
+
+    .contact .contact-info-wrap {
+        grid-template-columns: 1fr;
+    }
+
+    .contact .text-field {
+        min-height: 44px;
+    }
+
+    .contact .text-area-field {
+        min-height: 100px;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .contact .plan-icon-wrap-02 {
+        width: 38px;
+        height: 38px;
+    }
+
+    .contact .form-feld-wrap {
+        flex-flow: column;
+    }
+
+    .contact .text-area-field {
+        min-height: 80px;
+    }
+}
+
+/* ===================== dark mode (app theme toggle) =====================
+   Same palette as works/clearview: #2e2e2e surfaces, #f8f8f8 titles,
+   #b3b3b3 greys, lifted borders. */
+.dark .contact .contact-info-box {
+    background-color: #2e2e2e;
+}
+
+.dark .contact .text-h3,
+.dark .contact .contact-info-box-text .col-h5 {
+    color: #f8f8f8;
+}
+
+.dark .contact .col-h1 {
+    color: #f8f8f8;
+}
+
+.dark .contact .button-text-wrap .paragraph-03,
+.dark .contact .text-field,
+.dark .contact .text-area-field {
+    color: #f8f8f8;
+}
+
+.dark .contact .form-feld label,
+.dark .contact .contact-info-box-text .paragraph-02 {
+    color: #b3b3b3;
+}
+
+.dark .contact .text-field,
+.dark .contact .text-area-field {
+    background-color: #232323;
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.dark .contact .text-field:focus,
+.dark .contact .text-area-field:focus {
+    border-color: var(--color--primary);
+    background-color: #2b2b2b;
+}
+
+.dark .contact .text-field::placeholder,
+.dark .contact .text-area-field::placeholder {
+    color: #6e6e6e;
+}
+
+.dark .contact .contact-field-error {
+    color: #ff9d97;
+}
+
+.dark .contact .error-message-v2 {
+    background-color: rgba(217, 45, 32, 0.16);
+}
+
+.dark .contact .error-message-v2 .paragraph-03 {
+    color: #ff9d97;
+}
+
+.dark .contact .tag-icon {
+    filter: invert(1);
+    opacity: 0.8;
+}

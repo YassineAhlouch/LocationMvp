@@ -63,7 +63,7 @@
                 {
                     "title": "Contact",
                     "value": "contact",
-                    "anchor": "contact"
+                    "route": "/contact"
                 }
             ]
         },
@@ -82,7 +82,7 @@
             "subtext": "Track every car, reservation, payment and inspection in one place — then let your team pick up tasks and share QR-coded reservations that actually stick.",
             "primaryCta": {
                 "label": "Get Started",
-                "href": "#contact"
+                "href": "/contact"
             },
             "secondaryCta": {
                 "label": "View Demo",
@@ -329,14 +329,8 @@
         },
         "footer": {
             "headingLines": [
-                [
-                    "Prenez de meilleures",
-                    "décisions"
-                ],
-                [
-                    "agissez sur",
-                    "vos données dès aujourd'hui."
-                ]
+                ["Prenez de meilleures", "décisions"],
+                ["agissez sur", "vos données dès aujourd'hui."]
             ],
             "subtext": "Simplifiez les défis complexes de durabilité grâce à des insights clairs, des rapports automatisés et des outils conçus pour générer un impact positif durable.",
             "cta": "Commencer le suivi",
@@ -474,6 +468,59 @@
                     "attribution": "Résolu par : les liens de réservation QR et en ligne"
                 }
             ]
+        },
+        "contactPage": {
+            "tag": "Nous contacter",
+            "heading": "Créons le lien. Nous sommes là.",
+            "subtext": "Tarifs, onboarding ou questions produit — une ligne directe vers l’équipe.",
+            "boxes": [
+                {
+                    "title": "Parler aux ventes",
+                    "text": "Un doute sur les tarifs, les offres ou un partenariat ? Voyons ce qui convient le mieux à votre agence.",
+                    "pill": "Contacter les ventes",
+                    "href": "wa:Bonjour ! Je dirige une agence de location et je voudrais parler des tarifs."
+                },
+                {
+                    "title": "Réserver une démo",
+                    "text": "Voyez la plateforme en direct : réservations, paiements et QR à imprimer — venez avec votre flotte, on configure tout avec vous.",
+                    "pill": "Demander une démo",
+                    "href": "#contact-form"
+                },
+                {
+                    "title": "Explorer les fonctionnalités",
+                    "text": "Parcourez toute la chaîne : réservations, flotte, paiements, rapports et réservation par QR.",
+                    "pill": "Voir les fonctionnalités",
+                    "href": "/#features"
+                }
+            ],
+            "formIntro": {
+                "tag": "Dites bonjour",
+                "heading": "On adore vous lire",
+                "subtext": "Une question ou juste pour dire bonjour ? Écrivez-nous quand vous voulez."
+            },
+            "form": {
+                "fullName": "Nom complet",
+                "phFullName": "Saisissez votre nom",
+                "phone": "Téléphone",
+                "phPhone": "+212 6 …",
+                "agency": "Agence",
+                "phAgency": "Le nom de votre agence",
+                "email": "Adresse e-mail",
+                "phEmail": "vous@exemple.com",
+                "message": "Message",
+                "phMessage": "Taille de votre flotte, ville, besoins…",
+                "submit": "Envoyer",
+                "sending": "Veuillez patienter…"
+            },
+            "successText": "Merci ! Votre message a bien été reçu !",
+            "errors": {
+                "name": "Merci d’indiquer votre nom complet.",
+                "phone": "Merci d’indiquer un numéro de téléphone.",
+                "unexpected": "Oups ! Une erreur est survenue pendant l’envoi du formulaire.",
+                "unreachable": "Le serveur est inaccessible. Vérifiez votre connexion et réessayez.",
+                "invalidFields": "Certains champs sont invalides.",
+                "server": "Erreur du serveur. Réessayez."
+            }
         }
     }
 }

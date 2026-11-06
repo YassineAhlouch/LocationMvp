@@ -1,5 +1,6 @@
-import { motion } from 'motion/react'
-import type { LandingPageContent, LandingStatSlot } from '../types'
+import { motion } from "motion/react";
+import { Link as RouterLink } from "react-router";
+import type { LandingPageContent, LandingStatSlot } from "../types";
 
 /**
  * Exact port of the Colonia template "values" section.
@@ -14,17 +15,17 @@ import type { LandingPageContent, LandingStatSlot } from '../types'
  * All styling lives in src/assets/styles/others/_colonia-values.css.
  */
 
-const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94]
+const EASE_OUT: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
 
 const rise = (delay: number) => ({
-    initial: { opacity: 0, y: 24, filter: 'blur(8px)' },
-    whileInView: { opacity: 1, y: 0, filter: 'blur(0px)' },
-    viewport: { once: true, margin: '-60px' },
+    initial: { opacity: 0, y: 24, filter: "blur(8px)" },
+    whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+    viewport: { once: true, margin: "-60px" },
     transition: { duration: 0.7, delay, ease: EASE_OUT },
-})
+});
 
 const Slot = ({ slot }: { slot: LandingStatSlot }) =>
-    slot.type === 'reel' ? (
+    slot.type === "reel" ? (
         <div className={`statistics-number-box ${slot.variant}`}>
             {[...slot.strip].map((digit, i) => (
                 <div className="text-h1" key={i}>
@@ -33,13 +34,17 @@ const Slot = ({ slot }: { slot: LandingStatSlot }) =>
             ))}
         </div>
     ) : (
-        <h1 className={slot.size === 'h1' ? 'text-h1 text-grey-01' : 'text-grey-01'}>
+        <h1
+            className={
+                slot.size === "h1" ? "text-h1 text-grey-01" : "text-grey-01"
+            }
+        >
             {slot.text}
         </h1>
-    )
+    );
 
 const Statistics = ({ content }: { content: LandingPageContent }) => {
-    const statistics = content.statistics
+    const statistics = content.statistics;
 
     return (
         <section className="values" dir="ltr">
@@ -63,7 +68,9 @@ const Statistics = ({ content }: { content: LandingPageContent }) => {
                                     className="heading-wrap mobile-heading"
                                     {...rise(0.15)}
                                 >
-                                    <h2 className="text-h3">{statistics.heading}</h2>
+                                    <h2 className="text-h3">
+                                        {statistics.heading}
+                                    </h2>
                                 </motion.div>
                                 <div className="sub-heading-wrap">
                                     <motion.p
@@ -75,8 +82,8 @@ const Statistics = ({ content }: { content: LandingPageContent }) => {
                                 </div>
                             </div>
                             <motion.div className="button-wrap" {...rise(0.35)}>
-                                <a
-                                    href="#contact"
+                                <RouterLink
+                                    to="/contact"
                                     className="button-01 w-inline-block"
                                 >
                                     <div className="button-dot" />
@@ -88,7 +95,7 @@ const Statistics = ({ content }: { content: LandingPageContent }) => {
                                             {statistics.buttonLabel}
                                         </div>
                                     </div>
-                                </a>
+                                </RouterLink>
                             </motion.div>
                         </div>
                         <div className="values-right">
@@ -157,7 +164,7 @@ const Statistics = ({ content }: { content: LandingPageContent }) => {
                 </div>
             </div>
         </section>
-    )
-}
+    );
+};
 
-export default Statistics
+export default Statistics;
