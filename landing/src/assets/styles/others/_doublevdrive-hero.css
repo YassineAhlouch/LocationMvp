@@ -675,6 +675,13 @@
 
 /* ===================== Mobile landscape (<= 767px) ===================== */
 @media screen and (max-width: 767px) {
+    /* App addition: the fixed navbar pill (top:12px, ≈52px tall → bottom
+       edge ≈64px) leaves only ~2px above the hero tag at this width —
+       padding-top keeps the tag/heading/subtext clear of the pill. */
+    .hero-wrap {
+        padding-top: calc(var(--_responsive---padding--padding-big) + 32px);
+    }
+
     .home-hero-bottom {
         padding-top: 10px;
         padding-left: 10px;
@@ -714,10 +721,12 @@
 /* ===================== Mobile portrait (<= 479px) ===================== */
 @media screen and (max-width: 479px) {
     /* App addition: the template hides its navbar entirely on small screens,
-       but the app keeps a fixed pill (≈52px tall at top:12px). Give the hero
-       text the same breathing room so the tag is not clipped by the pill. */
+       but the app keeps a fixed pill (≈52px tall at top:12px → bottom edge
+       ≈64px). +80px on top of the template spacing (padding-big = 40px at
+       this width → 120px total) leaves generous air between the pill and
+       the hero's tag/heading/subtext. */
     .hero-wrap {
-        padding-top: calc(var(--_responsive---padding--padding-big) + 24px);
+        padding-top: calc(var(--_responsive---padding--padding-big) + 80px);
     }
 
     .home-hero,

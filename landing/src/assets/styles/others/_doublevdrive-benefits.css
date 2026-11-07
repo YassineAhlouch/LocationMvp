@@ -240,6 +240,12 @@
         grid-column-gap: var(--_spacing---spacing-xxsmall);
         grid-row-gap: var(--_spacing---spacing-xxsmall);
     }
+
+    /* App addition: phones can't hover, so the hover-only gradient border
+       never shows — keep it permanently revealed on every card. */
+    .benefits-list-wrap .benefits-list-bg {
+        opacity: 1;
+    }
 }
 
 /* ===================== Mobile portrait (<= 479px) ===================== */

@@ -252,6 +252,12 @@
     color: #f8f8f8;
 }
 
+/* the intro heading ("A clear view of your business, at a glance.") — the
+   other ports flip it (#f8f8f8) in dark mode; clearview was missing it. */
+.dark .clearview .text-h3 {
+    color: #f8f8f8;
+}
+
 .dark .clearview .text-grey-01 {
     color: #b3b3b3;
 }

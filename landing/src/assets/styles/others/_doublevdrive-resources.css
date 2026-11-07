@@ -154,6 +154,10 @@
 .resources .tag-wrap {
     grid-column-gap: 5px;
     grid-row-gap: 5px;
+    /* app fix: resources-top only centers the text, the flex row itself
+       starts at the column's left edge — center the tag + glyph like the
+       heading and subtext (mobile and desktop). */
+    justify-content: center;
     align-items: center;
     display: flex;
 }

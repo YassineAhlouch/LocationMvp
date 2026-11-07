@@ -431,6 +431,11 @@
 @media screen and (max-width: 479px) {
     .values .heading-wrap.mobile-heading {
         max-width: 200px;
+        /* app fix: the benefits port centers this narrow wrap with auto
+           margins too — without them the capped box sits at the left edge
+           on phones while its lines center. */
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .values-wrap {

@@ -68,24 +68,24 @@
             ]
         },
         "hero": {
-            "badge": "Trusted by 500+ Rental Agencies",
+            "badge": "Adopté par plus de 500 agences de location",
             "heading": {
                 "top": {
-                    "before": "Run Your",
-                    "after": "Fleet,"
+                    "before": "Gérez votre",
+                    "after": "flotte,"
                 },
                 "bottom": {
-                    "before": "Grow Your",
-                    "emphasis": "Revenue"
+                    "before": "Boostez vos",
+                    "emphasis": "revenus"
                 }
             },
-            "subtext": "Track every car, reservation, payment and inspection in one place — then let your team pick up tasks and share QR-coded reservations that actually stick.",
+            "subtext": "Suivez chaque véhicule, réservation, paiement et inspection en un seul endroit, puis laissez votre équipe se charger des tâches et partager des réservations avec QR qui se concrétisent vraiment.",
             "primaryCta": {
-                "label": "Get Started",
+                "label": "Commencer",
                 "href": "/contact"
             },
             "secondaryCta": {
-                "label": "View Demo",
+                "label": "Voir la démo",
                 "href": "#tour"
             }
         },

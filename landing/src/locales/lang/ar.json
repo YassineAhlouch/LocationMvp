@@ -68,24 +68,24 @@
             ]
         },
         "hero": {
-            "badge": "Trusted by 500+ Companies",
+            "badge": "موثوق من أكثر من 500 شركة تأجير",
             "heading": {
                 "top": {
-                    "before": "Shrink Your",
-                    "after": "Footprint,"
+                    "before": "أدر",
+                    "after": "أسطولك،"
                 },
                 "bottom": {
-                    "before": "Grow Your",
-                    "emphasis": "Impact"
+                    "before": "عزّز",
+                    "emphasis": "إيراداتك"
                 }
             },
-            "subtext": "See where your emissions come from, spot what matters most, and make greener choices that actually stick.",
+            "subtext": "تابع كل سيارة وحجز ودفعة وفحص من مكان واحد، ثم دع فريقك يتولى المهام ويشارك حجوزات برمز QR تلتزم بها فعليًا.",
             "primaryCta": {
-                "label": "Get Started",
+                "label": "ابدأ الآن",
                 "href": "/contact"
             },
             "secondaryCta": {
-                "label": "View Demo",
+                "label": "شاهد العرض التوضيحي",
                 "href": "#tour"
             }
         },
