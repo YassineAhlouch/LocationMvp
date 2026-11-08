@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "motion/react";
 import { TbMenu2 } from "react-icons/tb";
 import NavList from "./NavList";
 import LanguageSelector from "./LanguageSelector";
-import Drawer from "@/components/ui/Drawer";
 import classNames from "@/utils/classNames";
 import type { Tab } from "./NavList";
 import type { Mode } from "../types";
@@ -38,7 +37,6 @@ const Navigation = ({
     toggleMode,
     mode,
     navMenu,
-    direction = "ltr",
     ctaHref = "#contact",
     ctaRoute,
     navActiveValue,
@@ -85,8 +83,9 @@ const Navigation = ({
 
                 <MobileNav className="lg:hidden w-full flex items-center justify-between gap-2">
                     <button
-                        onClick={() => setIsDrawerOpen(true)}
+                        onClick={() => setIsDrawerOpen(!isDrawerOpen)}
                         className="p-2 text-[#f8f8f8]"
+                        aria-expanded={isDrawerOpen}
                     >
                         <TbMenu2 size={20} />
                     </button>
@@ -104,23 +103,32 @@ const Navigation = ({
                     </div>
                 </MobileNav>
 
-                <Drawer
-                    title="Navigation"
-                    isOpen={isDrawerOpen}
-                    onClose={() => setIsDrawerOpen(false)}
-                    width={250}
-                    placement={direction === "rtl" ? "right" : "left"}
-                >
-                    <div className="flex flex-col gap-2">
-                        <NavList
-                            onTabClick={() => setIsDrawerOpen(false)}
-                            tabs={navMenu}
-                            activeValue={navActiveValue}
-                            layoutIdPrefix="drawer"
-                        />
-                    </div>
-                </Drawer>
             </div>
+            {/* Mobile menu panel: no longer a side drawer — it drops from the
+                bottom edge of the fixed navbar pill, styled like the pill
+                (black #171717, same radius/shadow) and taller. */}
+            <AnimatePresence>
+                {isDrawerOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -14 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -14 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                        className="pointer-events-auto lg:hidden mt-2 min-h-[300px] rounded-[16px] bg-[#171717] p-2 shadow-[0_8px_23.1px_rgba(23,23,23,0.25)]"
+                    >
+                        <nav className="flex flex-col gap-1 py-2">
+                            <NavList
+                                onTabClick={() => setIsDrawerOpen(false)}
+                                tabs={navMenu}
+                                onDark
+                                activeValue={navActiveValue}
+                                layoutIdPrefix="mobile"
+                                tabClassName="w-full text-left"
+                            />
+                        </nav>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
