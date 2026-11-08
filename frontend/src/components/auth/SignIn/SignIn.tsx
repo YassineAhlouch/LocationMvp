@@ -18,7 +18,7 @@ const SignInBase = ({
 
     return (
         <>
-            <div className="mb-10">
+            <div className="mb-10 text-center">
                 <h3 className="mb-2">Welcome back!</h3>
                 <p className="heading-text">
                     Please enter your credentials to sign in!
