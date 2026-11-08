@@ -3,6 +3,8 @@
         "apps": "Apps",
         "statistiques": "Statistics",
         "gestion": {
+            "documentation": "Documentation",
+            "documentationDesc": "How the car rental system works",
             "dashboard": "Dashboard",
             "dashboardDesc": "Car rental dashboard",
             "reservations": "Reservations",

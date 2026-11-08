@@ -297,6 +297,19 @@ const appsRoute: Routes = [
         },
     },
 
+    // ===== DOCUMENTATION =====
+    {
+        key: 'gestion.documentation',
+        path: `${APPS_PREFIX_PATH}/documentation`,
+        component: lazy(() => import('@/views/location/Documentation')),
+        authority: [ADMIN, USER],
+        access: 'protected',
+        meta: {
+            pageContainerType: 'gutterless',
+            footer: false,
+        },
+    },
+
     // ===== RAPPORTS =====
     {
         key: 'gestion.rapports.clients',

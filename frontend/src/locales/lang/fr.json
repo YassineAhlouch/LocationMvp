@@ -3,6 +3,8 @@
         "apps": "Apps",
         "statistiques": "Statistics",
         "gestion": {
+            "documentation": "Documentation",
+            "documentationDesc": "Fonctionnement du système de location",
             "dashboard": "Tableau de bord",
             "dashboardDesc": "Tableau de bord location de voitures",
             "reservations": "Réservations",

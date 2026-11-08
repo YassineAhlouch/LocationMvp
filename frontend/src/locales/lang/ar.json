@@ -3,6 +3,8 @@
         "apps": "التطبيقات",
         "statistiques": "الإحصائيات",
         "gestion": {
+            "documentation": "الدليل",
+            "documentationDesc": "كيف يعمل نظام كراء السيارات",
             "dashboard": "لوحة القيادة",
             "dashboardDesc": "لوحة قيادة تأجير السيارات",
             "reservations": "الحجوزات",
