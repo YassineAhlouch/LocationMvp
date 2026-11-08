@@ -15,16 +15,16 @@ import { ApiError, sendLandingContact } from "@/api/contact";
 
 /**
  * The dedicated /contact SPA route — a full port of the doublevdrive template's
- * contact section: a 470px centered intro (tag → h1 → subtext) over a row of
- * three grey info boxes (golden icon tile + h5 + text + the dark button-01
- * pill), then the 660px form block (contaict-title + Webflow-style form:
- * label + .text-field rows with the .form-feld-wrap two-column pairs, the
- * dark gradient submit with its orange dot and the orange success/red error
- * banners). The form POSTs to /api/v1/landing/contacts through api/contact.ts
- * (the pipeline behind the Transparency banner); client-side required checks
- * for name/phone, per-field 422 errors and the template's success/error
- * blocks in place. Content comes from the app's landing.locales under
- * `contactPage`;
+ * contact section: a 470px centered intro (tag → h1 → subtext), the 660px form
+ * block (Webflow-style form: label + .text-field rows with
+ * the .form-feld-wrap two-column pairs, the dark gradient submit with its
+ * orange dot and the orange success/red error banners) as the FIRST block
+ * after the intro, then a row of three grey info boxes (golden icon tile + h5
+ * + text + the dark button-01 pill). The form POSTs to /api/v1/landing/contacts
+ * through api/contact.ts (the pipeline behind the Transparency banner);
+ * client-side required checks for name/phone, per-field 422 errors and the
+ * template's success/error blocks in place. Content comes from the app's
+ * landing.locales under `contactPage`;
  * styling lives in src/assets/styles/others/_doublevdrive-contactpage.css.
  */
 
@@ -187,7 +187,7 @@ const ContactClient = ({ content }: { content: LandingPageContent }) => {
             />
             <section className="contact">
                 <div className="doublevdrive-container">
-                    {/* contact-top — heading + the three info boxes */}
+                    {/* contact-top — centered heading (the form follows) */}
                     <div className="contact-top-heading">
                         <motion.div className="tag-wrap" {...rise(0.05)}>
                             <img
@@ -214,87 +214,8 @@ const ContactClient = ({ content }: { content: LandingPageContent }) => {
                             </motion.div>
                         </div>
                     </div>
-                    <motion.div className="contact-info-wrap" {...rise(0.16)}>
-                        {page.boxes.map((box, index) => {
-                            const Icon = BOX_ICONS[index] ?? BOX_ICONS[0];
-                            const href = boxHref(box.href);
-                            const external = box.href.startsWith("wa:");
-
-                            return (
-                                <div
-                                    className="contact-info-box"
-                                    key={box.title}
-                                >
-                                    <span className="plan-icon-wrap-02">
-                                        <Icon size={20} />
-                                    </span>
-                                    <div className="contact-info-box-text">
-                                        <div className="col-h5">
-                                            {box.title}
-                                        </div>
-                                        <p className="paragraph-02">
-                                            {box.text}
-                                        </p>
-                                    </div>
-                                    <a
-                                        className="button-01"
-                                        href={href}
-                                        {...(external
-                                            ? {
-                                                  target: "_blank",
-                                                  rel: "noopener noreferrer",
-                                              }
-                                            : {})}
-                                    >
-                                        <span className="button-dot" />
-                                        <span className="button-text-wrap">
-                                            <span className="paragraph-03">
-                                                {box.pill}
-                                            </span>
-                                            <span
-                                                className="paragraph-03"
-                                                aria-hidden="true"
-                                            >
-                                                {box.pill}
-                                            </span>
-                                        </span>
-                                    </a>
-                                </div>
-                            );
-                        })}
-                    </motion.div>
-                    {/* contact-bottom — Say Hello title + the lead form */}
+                    {/* contact-bottom — the lead form */}
                     <div className="contact-bottom">
-                        <div className="contaict-title">
-                            <motion.div className="tag-wrap" {...rise(0.05)}>
-                                <img
-                                    src={TAG_ICONS.testimonials}
-                                    alt=""
-                                    className="tag-icon"
-                                />
-                                <div className="teg text-grey-02">
-                                    {page.formIntro.tag}
-                                </div>
-                            </motion.div>
-                            <div className="title-wrap">
-                                <motion.div
-                                    className="heading-wrap"
-                                    {...rise(0.08)}
-                                >
-                                    <h2 className="text-h3">
-                                        {page.formIntro.heading}
-                                    </h2>
-                                </motion.div>
-                                <motion.div
-                                    className="sub-heading-wrap"
-                                    {...rise(0.12)}
-                                >
-                                    <p className="paragraph-02 text-grey-01">
-                                        {page.formIntro.subtext}
-                                    </p>
-                                </motion.div>
-                            </div>
-                        </div>
                         <div className="form-block" id="contact-form">
                             {sent ? (
                                 <div className="success-message" role="status">
@@ -373,6 +294,57 @@ const ContactClient = ({ content }: { content: LandingPageContent }) => {
                             )}
                         </div>
                     </div>
+                    {/* the three info boxes below the form: Talk to Sales /
+                        Book a Demo / Explore Features */}
+                    <motion.div className="contact-info-wrap" {...rise(0.16)}>
+                        {page.boxes.map((box, index) => {
+                            const Icon = BOX_ICONS[index] ?? BOX_ICONS[0];
+                            const href = boxHref(box.href);
+                            const external = box.href.startsWith("wa:");
+
+                            return (
+                                <div
+                                    className="contact-info-box"
+                                    key={box.title}
+                                >
+                                    <span className="plan-icon-wrap-02">
+                                        <Icon size={20} />
+                                    </span>
+                                    <div className="contact-info-box-text">
+                                        <div className="col-h5">
+                                            {box.title}
+                                        </div>
+                                        <p className="paragraph-02">
+                                            {box.text}
+                                        </p>
+                                    </div>
+                                    <a
+                                        className="button-01"
+                                        href={href}
+                                        {...(external
+                                            ? {
+                                                  target: "_blank",
+                                                  rel: "noopener noreferrer",
+                                              }
+                                            : {})}
+                                    >
+                                        <span className="button-dot" />
+                                        <span className="button-text-wrap">
+                                            <span className="paragraph-03">
+                                                {box.pill}
+                                            </span>
+                                            <span
+                                                className="paragraph-03"
+                                                aria-hidden="true"
+                                            >
+                                                {box.pill}
+                                            </span>
+                                        </span>
+                                    </a>
+                                </div>
+                            );
+                        })}
+                    </motion.div>
                 </div>
             </section>
             <Footer content={content.footer} ctaHref="/#contact" />

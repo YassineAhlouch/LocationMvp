@@ -68,7 +68,7 @@
             ]
         },
         "hero": {
-            "badge": "Conçu pour les agences de location marocaines",
+            "badge": "Designed for Moroccan rental agencies",
             "heading": {
                 "top": {
                     "before": "Run Your",
@@ -329,8 +329,14 @@
         },
         "footer": {
             "headingLines": [
-                ["Make smarter", "decisions"],
-                ["act on", "your data today."]
+                [
+                    "Make smarter",
+                    "decisions"
+                ],
+                [
+                    "act on",
+                    "your data today."
+                ]
             ],
             "subtext": "Simplify complex sustainability challenges with clear insights, automated reporting, and tools designed to drive lasting positive impact.",
             "cta": "Start Tracking",
@@ -350,11 +356,6 @@
                             "type": "reel",
                             "variant": "upper",
                             "strip": "6304857600"
-                        },
-                        {
-                            "type": "text",
-                            "text": "K+",
-                            "size": "h1"
                         }
                     ],
                     "label": "Double Bookings"

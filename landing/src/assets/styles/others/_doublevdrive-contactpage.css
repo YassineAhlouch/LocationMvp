@@ -2,15 +2,15 @@
  * App-specific "Contact" page (Contact.tsx — the /contact SPA route).
  *
  * Faithful port of the doublevdrive template's contact section: a 470px centered
- * intro (.contact-top-heading: tag-wrap → col-h1 → paragraph-02 subtext), a
- * three-column grid of grey info boxes (.contact-info-box — the golden
- * gradient .plan-icon-wrap-02 tile, an h5 + text stack and the dark
- * .button-01 pill with its orange .button-dot / rolling label), then the
- * 660px .contact-bottom (.contaict-title + .form-block): label +
- * .text-field pairs inside .form-feld-wrap rows, the textarea, the dark
- * gradient .normal-submit-button (full width, orange dot, hover flips the
- * border to dark-orange), the orange .success-message and the pale-red
- * .error-message-v2 banner — measured from the template stylesheet.
+ * intro (.contact-top-heading: tag-wrap → col-h1 → paragraph-02 subtext), the
+ * 660px .contact-bottom (.form-block) as the FIRST block
+ * after the intro — label + .text-field pairs inside .form-feld-wrap rows, the
+ * textarea, the dark gradient .normal-submit-button (full width, orange dot,
+ * hover flips the border to dark-orange), the orange .success-message and the
+ * pale-red .error-message-v2 banner — then a three-column grid of grey info
+ * boxes (.contact-info-box — the golden gradient .plan-icon-wrap-02 tile, an
+ * h5 + text stack and the dark .button-01 pill), as measured from the
+ * template stylesheet.
  *
  * The form POSTs to /api/v1/landing/contacts (api/contact.ts): client-side
  * required checks (full name, phone) then the 422 field errors rendered under
@@ -116,7 +116,7 @@
     margin-bottom: 0;
 }
 
-/* ---- contact-top: centered intro + the three info boxes ---- */
+/* ---- contact-top: centered intro (the boxes moved below the form) ---- */
 .contact .contact-top-heading {
     grid-column-gap: var(--_spacing---spacing-slim);
     grid-row-gap: var(--_spacing---spacing-slim);
@@ -240,7 +240,7 @@
     transform: translateY(0);
 }
 
-/* ---- contact-bottom: Say Hello title + the 660px form block ---- */
+/* ---- contact-bottom: Say Hello title + the 660px form block (first) ---- */
 .contact .contact-bottom {
     margin-top: var(--_responsive---margin--margin-large);
     max-width: 660px;
@@ -257,7 +257,9 @@
 }
 
 .contact .form-block {
-    margin-top: var(--_responsive---margin--margin-large);
+    /* the Say-Hello intro above the form was removed: .contact-bottom's own
+       margin-top separates it from the page intro, so no extra gap here */
+    margin-top: 0;
     margin-bottom: 0;
     scroll-margin-top: 110px;
 }

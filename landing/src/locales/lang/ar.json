@@ -329,8 +329,14 @@
         },
         "footer": {
             "headingLines": [
-                ["اتخذ قرارات", "أذكى"],
-                ["اعمل على", "بياناتك اليوم."]
+                [
+                    "اتخذ قرارات",
+                    "أذكى"
+                ],
+                [
+                    "اعمل على",
+                    "بياناتك اليوم."
+                ]
             ],
             "subtext": "بسّط تحديات الاستدامة المعقدة من خلال رؤى واضحة وتقارير مؤتمتة وأدوات مصممة لدفع أثر إيجابي دائم.",
             "cta": "ابدأ التتبع",
@@ -349,12 +355,7 @@
                         {
                             "type": "reel",
                             "variant": "upper",
-                            "strip": "6304857605"
-                        },
-                        {
-                            "type": "text",
-                            "text": "K+",
-                            "size": "h1"
+                            "strip": "6304857600"
                         }
                     ],
                     "label": "حجوزات مزدوجة"
@@ -366,12 +367,12 @@
                         {
                             "type": "reel",
                             "variant": "upper",
-                            "strip": "6304857602"
+                            "strip": "6304857601"
                         },
                         {
                             "type": "reel",
                             "variant": "lower",
-                            "strip": "2304857605"
+                            "strip": "0304857602"
                         },
                         {
                             "type": "reel",
@@ -380,7 +381,7 @@
                         },
                         {
                             "type": "text",
-                            "text": "K+",
+                            "text": "%",
                             "size": "h1"
                         }
                     ],
@@ -393,17 +394,22 @@
                         {
                             "type": "reel",
                             "variant": "upper",
-                            "strip": "6304857609"
+                            "strip": "6304857602"
                         },
                         {
                             "type": "reel",
                             "variant": "lower",
-                            "strip": "8304857602"
+                            "strip": "4304857602"
                         },
                         {
                             "type": "text",
-                            "text": "%",
+                            "text": "/",
                             "size": "h1"
+                        },
+                        {
+                            "type": "reel",
+                            "variant": "upper",
+                            "strip": "6304857607"
                         }
                     ],
                     "label": "حجوزات عبر الإنترنت"
@@ -415,27 +421,7 @@
                         {
                             "type": "reel",
                             "variant": "upper",
-                            "strip": "6304857609"
-                        },
-                        {
-                            "type": "reel",
-                            "variant": "lower",
-                            "strip": "9304857602"
-                        },
-                        {
-                            "type": "text",
-                            "text": ".",
-                            "size": "dot"
-                        },
-                        {
-                            "type": "reel",
-                            "variant": "upper",
-                            "strip": "6304857609"
-                        },
-                        {
-                            "type": "text",
-                            "text": "%",
-                            "size": "h1"
+                            "strip": "6304857603"
                         }
                     ],
                     "label": "لغات"
