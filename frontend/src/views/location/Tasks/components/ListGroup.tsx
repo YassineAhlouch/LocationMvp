@@ -3,6 +3,8 @@ import Table from '@/components/ui/Table'
 import ListRow from './ListRow'
 import { groupColorMap } from '../utils'
 import classNames from '@/utils/classNames'
+import useTranslation from '@/utils/hooks/useTranslation'
+import localizeGroupName from '@/utils/localizeGroupName'
 import type { DragEvent } from 'react'
 import type { Group, Task } from '../types'
 
@@ -21,6 +23,7 @@ const ListGroup = ({
     onMoveTask,
     onDataChange,
 }: ListGroupProps) => {
+    const { t } = useTranslation()
     const [dropHover, setDropHover] = useState(false)
 
     // Whole group acts as the drop target: dropping a task row anywhere
@@ -68,7 +71,9 @@ const ListGroup = ({
                                 groupColorMap[group.color],
                             )}
                         ></span>
-                        <span className="leading-none">{group.name}</span>
+                        <span className="leading-none">
+                            {localizeGroupName(t, group.name)}
+                        </span>
                     </span>
                 </Table.Td>
             </Table.Tr>

@@ -23,6 +23,7 @@ import classNames from '@/utils/classNames'
 import useSWR from 'swr'
 import dayjs from 'dayjs'
 import ReactHtmlParser from 'html-react-parser'
+import useTranslation from '@/utils/hooks/useTranslation'
 import {
     LiClock,
     LiBookmark,
@@ -162,6 +163,7 @@ const TaskDetails = ({
     assigneeList,
     tagsList,
 }: TaskDetailsProps) => {
+    const { t } = useTranslation()
     const { data, mutate } = useSWR(
         [`/api/project/tasks/${taskId}`, { id: taskId }],
         ([, params]) => {
@@ -181,7 +183,7 @@ const TaskDetails = ({
 
     const priorityOptions = useMemo(() => {
         return Object.entries(priorityList).map(([key, value]) => ({
-            label: key,
+            label: t(`tasks.priority.${key.toLowerCase()}`, key),
             value: key,
             indicator: (
                 <span
@@ -192,7 +194,7 @@ const TaskDetails = ({
                 ></span>
             ),
         }))
-    }, [priorityList])
+    }, [priorityList, t])
 
     const assigneeOptions = useMemo(() => {
         return assigneeList.map((assignee) => ({
@@ -206,10 +208,10 @@ const TaskDetails = ({
         return Object.entries(tagsList).map(([key]) => {
             return {
                 value: key,
-                label: key,
+                label: t(`tasks.tag.${key.toLowerCase()}`, key),
             }
         })
-    }, [tagsList])
+    }, [tagsList, t])
 
     const handleCommentSubmit = ({ message }: { message: string }) => {
         if (data) {
@@ -387,12 +389,12 @@ const TaskDetails = ({
                             <div>{cornerContent}</div>
                         </div>
                         <div className="px-4">
-                            <Field label="Ticket" icon={<LiBookmark />}>
+                            <Field label={t('tasks.details.ticket')} icon={<LiBookmark />}>
                                 <SelectorWraper editable={false}>
                                     {data.id}
                                 </SelectorWraper>
                             </Field>
-                            <Field label="Priority" icon={<LiArrowUpDown />}>
+                            <Field label={t('tasks.details.priority')} icon={<LiArrowUpDown />}>
                                 <PrioritySelector
                                     value={data.priority}
                                     list={priorityOptions}
@@ -414,12 +416,15 @@ const TaskDetails = ({
                                                 ></span>
                                             }
                                         >
-                                            {data.priority}
+                                            {t(
+                                                `tasks.priority.${data.priority.toLowerCase()}`,
+                                                data.priority,
+                                            )}
                                         </Tag>
                                     </SelectorWraper>
                                 </PrioritySelector>
                             </Field>
-                            <Field label="Due date" icon={<LiClock />}>
+                            <Field label={t('tasks.details.dueDate')} icon={<LiClock />}>
                                 <DuedateSelector
                                     value={data.dueDate}
                                     onValueChange={(value) =>
@@ -433,7 +438,7 @@ const TaskDetails = ({
                                     </SelectorWraper>
                                 </DuedateSelector>
                             </Field>
-                            <Field label="Assigned to" icon={<LiUser />}>
+                            <Field label={t('tasks.details.assignedTo')} icon={<LiUser />}>
                                 <AssigneeSelector
                                     list={assigneeOptions}
                                     value={data.members.map(
@@ -470,7 +475,7 @@ const TaskDetails = ({
                                     </SelectorWraper>
                                 </AssigneeSelector>
                             </Field>
-                            <Field label="Tags" icon={<LiTag />}>
+                            <Field label={t('tasks.details.tags')} icon={<LiTag />}>
                                 <TagsSelector
                                     list={tagOptions}
                                     value={data.tags}
@@ -484,7 +489,10 @@ const TaskDetails = ({
                                                 className="py-0.5 px-1.5"
                                                 key={tag}
                                             >
-                                                {tag}
+                                                {t(
+                                                    `tasks.tag.${tag.toLowerCase()}`,
+                                                    tag,
+                                                )}
                                             </Tag>
                                         ))}
                                     </SelectorWraper>
@@ -494,7 +502,7 @@ const TaskDetails = ({
                         <div className="px-4">
                             {isEditingDescription ? (
                                 <>
-                                    <h6 className="mb-1">Description</h6>
+                                    <h6 className="mb-1">{t('tasks.details.description')}</h6>
                                     <div onClick={(e) => e.stopPropagation()}>
                                         <RichTextEditor
                                             content={editedDescription}
@@ -512,7 +520,7 @@ const TaskDetails = ({
                                                     setEditedDescription('')
                                                 }}
                                             >
-                                                Cancel
+                                                {t('common.cancel')}
                                             </Button>
                                             <Button
                                                 size="sm"
@@ -527,7 +535,7 @@ const TaskDetails = ({
                                                     )
                                                 }}
                                             >
-                                                Save
+                                                {t('common.save')}
                                             </Button>
                                         </div>
                                     </div>
@@ -548,14 +556,14 @@ const TaskDetails = ({
                                         }
                                     }}
                                 >
-                                    <h6 className="mb-1">Description</h6>
+                                    <h6 className="mb-1">{t('tasks.details.description')}</h6>
                                     <p
                                         className={classNames(
                                             !data.description && 'italic',
                                         )}
                                     >
                                         {ReactHtmlParser(data.description) ||
-                                            'Click to add description...'}
+                                            t('tasks.details.descriptionPlaceholder')}
                                     </p>
                                 </Card>
                             )}
@@ -565,13 +573,13 @@ const TaskDetails = ({
                                 <Tabs defaultValue="comments">
                                 <Tabs.TabList className="px-4">
                                     <Tabs.TabNav value="comments">
-                                        Comments
+                                        {t('tasks.details.comments')}
                                     </Tabs.TabNav>
                                     <Tabs.TabNav value="subtasks">
-                                        Subtasks
+                                        {t('tasks.details.subtasks')}
                                     </Tabs.TabNav>
                                     <Tabs.TabNav value="attachments">
-                                        Attachments
+                                        {t('tasks.details.attachments')}
                                     </Tabs.TabNav>
                                 </Tabs.TabList>
                                 <Scroll.FlexSize className="max-h-[600px]">
@@ -647,13 +655,10 @@ const TaskDetails = ({
                                                         >
                                                             <div className="text-center">
                                                                 <h5>
-                                                                    No comment
-                                                                    yet
+                                                                    {t('tasks.details.noCommentsYet')}
                                                                 </h5>
                                                                 <p className="max-w-[400px]">
-                                                                    Be the first
-                                                                    one to
-                                                                    comment
+                                                                    {t('tasks.details.beFirstComment')}
                                                                 </p>
                                                             </div>
                                                         </EmptyState>
@@ -685,7 +690,9 @@ const TaskDetails = ({
                                                         }
                                                     >
                                                         <div className="text-center">
-                                                            <h5>No subtasks</h5>
+                                                            <h5>
+                                                                {t('tasks.details.noSubtasks')}
+                                                            </h5>
                                                         </div>
                                                     </EmptyState>
                                                 </div>
@@ -778,7 +785,7 @@ const TaskDetails = ({
                                                     >
                                                         <div className="text-center">
                                                             <h5>
-                                                                No attachments
+                                                                {t('tasks.details.noAttachments')}
                                                             </h5>
                                                         </div>
                                                     </EmptyState>
@@ -829,13 +836,15 @@ const TaskDetails = ({
                             </div>
                         )}
                         <div className="flex justify-end items-center gap-2 px-4">
-                            <Button onClick={onCancel}>Cancel</Button>
+                            <Button onClick={onCancel}>
+                                {t('common.cancel')}
+                            </Button>
                             <Button
                                 variant="solid"
                                 loading={isSaving}
                                 onClick={handleSave}
                             >
-                                Save
+                                {t('common.save')}
                             </Button>
                         </div>
                     </div>

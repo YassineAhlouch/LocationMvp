@@ -12,6 +12,7 @@ import TagsSelectorListProvider from './TagsSelectorListProvider'
 import SubjectEdtitor from '@/components/view/TaskDetails/components/SubjectEditor'
 import { priorityMap } from '../utils'
 import classNames from '@/utils/classNames'
+import useTranslation from '@/utils/hooks/useTranslation'
 import dayjs from 'dayjs'
 import type { ComponentProps, DragEvent } from 'react'
 
@@ -51,6 +52,14 @@ const DraggablePresentation = memo(
         isDragging,
         onDataChange,
     }: BoardCardProps & { isDragging?: boolean }) => {
+        const { t } = useTranslation()
+
+        const priorityLabel = t(
+            `tasks.priority.${task.priority.toLowerCase()}`,
+            task.priority,
+        )
+        const tagLabel = (tag: string) =>
+            t(`tasks.tag.${tag.toLowerCase()}`, tag)
         const handleDueDateChange = (date: string) => {
             onDataChange?.({ key: 'dueDate', value: date, id: task.id })
         }
@@ -108,7 +117,7 @@ const DraggablePresentation = memo(
                             >
                                 <span className="py-2 px-2 w-full flex items-center gap-2 heading-text">
                                     {priorityMap[task.priority]?.icon}
-                                    <span>{task.priority}</span>
+                                    <span>{priorityLabel}</span>
                                 </span>
                             </PrioritySelector>
                         )}
@@ -139,7 +148,7 @@ const DraggablePresentation = memo(
                                             key={index}
                                             className="py-0.5 px-1.5"
                                         >
-                                            {label}
+                                            {tagLabel(label)}
                                         </Tag>
                                     ))}
                                 </span>

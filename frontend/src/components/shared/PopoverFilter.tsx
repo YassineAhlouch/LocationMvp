@@ -4,6 +4,7 @@ import Input from '@/components/ui/Input'
 import Checkbox from '@/components/ui/Checkbox'
 import Button from '@/components/ui/Button'
 import { LuSearch } from 'react-icons/lu'
+import useTranslation from '@/utils/hooks/useTranslation'
 import type { ReactNode } from 'react'
 
 type Data = Array<{ label: string; value: string }>
@@ -20,17 +21,20 @@ type PopoverFilterProps = {
     width?: number
 }
 const PopoverFilter = (props: PopoverFilterProps) => {
+    const { t } = useTranslation()
+    const { data = [] } = props
     const {
-        data = [],
         onChange,
         placement = 'bottom-start',
-        title = 'Filter',
-        inputPlaceholder = 'Search...',
+        title: titleProp,
+        inputPlaceholder: inputPlaceholderProp,
         value,
         showReset = true,
         renderTrigger,
         width = 220,
     } = props
+    const title = titleProp ?? t('tasks.header.filter')
+    const inputPlaceholder = inputPlaceholderProp ?? t('tasks.header.search')
 
     const [selected, setSelected] = useState<string[]>([])
     const [inputValue, setInputValue] = useState('')
@@ -91,7 +95,9 @@ const PopoverFilter = (props: PopoverFilterProps) => {
                             </Checkbox>
                         ))
                     ) : (
-                        <div className="text-center">No results found</div>
+                        <div className="text-center">
+                            {t('common.noResultsFound')}
+                        </div>
                     )}
                 </Checkbox.Group>
             </div>
@@ -102,7 +108,7 @@ const PopoverFilter = (props: PopoverFilterProps) => {
                         variant="ghost"
                         onClick={() => handleChange([])}
                     >
-                        Clear filters
+                        {t('tasks.header.clearFilters')}
                     </Button>
                 </div>
             )}

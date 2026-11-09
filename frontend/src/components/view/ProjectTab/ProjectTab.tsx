@@ -1,6 +1,7 @@
 import OverflowTabs from '@/components/shared/OverflowTabs'
 import classNames from '@/utils/classNames'
 import { useNavigate, useLocation } from 'react-router'
+import useTranslation from '@/utils/hooks/useTranslation'
 import type { ComponentProps } from 'react'
 
 type ProjectTabProps = ComponentProps<'div'> & {
@@ -10,6 +11,7 @@ type ProjectTabProps = ComponentProps<'div'> & {
 
 const ProjectTab = ({ children, tabListClass, className }: ProjectTabProps) => {
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     const location = useLocation()
     const currentPath = location.pathname.split('/').pop()
@@ -25,8 +27,8 @@ const ProjectTab = ({ children, tabListClass, className }: ProjectTabProps) => {
             className={classNames('flex justify-between items-end', className)}
             tabListClass={tabListClass}
             tabList={[
-                { label: 'Kanban', value: 'scrumboard' },
-                { label: 'Task', value: 'tasks' },
+                { label: t('tasks.projectTab.kanban', 'Kanban'), value: 'scrumboard' },
+                { label: t('tasks.projectTab.task', 'Task'), value: 'tasks' },
             ]}
         >
             {children}

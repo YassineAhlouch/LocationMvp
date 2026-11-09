@@ -7,6 +7,7 @@ import { priorityMap } from '../utils'
 import { LiClock, LiUser } from '@/icons'
 import dayjs from 'dayjs'
 import classNames from '@/utils/classNames'
+import useTranslation from '@/utils/hooks/useTranslation'
 import type { DragEvent } from 'react'
 import type { Task } from '../types'
 
@@ -21,6 +22,8 @@ type BoardCardProps = {
 const MAX_CHARACTERS = 70
 
 const DraggablePresentation = memo(({ task }: BoardCardProps) => {
+    const { t } = useTranslation()
+
     return (
         <>
             <div className="p-3">
@@ -45,7 +48,10 @@ const DraggablePresentation = memo(({ task }: BoardCardProps) => {
                         ></span>
                     }
                 >
-                    {task.priority}
+                    {t(
+                        `tasks.priority.${task.priority.toLowerCase()}`,
+                        task.priority,
+                    )}
                 </Tag>
                 <span className="flex items-center gap-1">
                     <LiClock className="text-base" />
@@ -64,7 +70,7 @@ const DraggablePresentation = memo(({ task }: BoardCardProps) => {
                     />
                 ) : (
                     <span
-                        title="Not assigned — click for details"
+                        title={t('tasks.board.notAssigned')}
                         className="flex items-center w-[25px] h-[25px] rounded-full border border-gray-300 dark:border-gray-600 border-dashed justify-center text-gray-400"
                     >
                         <LiUser className="text-sm" />

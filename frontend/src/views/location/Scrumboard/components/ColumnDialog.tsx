@@ -15,6 +15,7 @@ import {
 } from '@/services/TaskService'
 import { columnColorMap } from '../utils'
 import classNames from '@/utils/classNames'
+import useTranslation from '@/utils/hooks/useTranslation'
 import { LiGridEdit, LiAlignVertical2, LiCross } from '@/icons'
 import sleep from '@/utils/sleep'
 import { useForm, Controller } from 'react-hook-form'
@@ -26,12 +27,14 @@ type FormSchema = {
     color: string
 }
 
-const validationSchema = z.object({
-    name: z.string().min(1, 'Name is required'),
-    color: z.string().min(1, 'Color is required'),
-})
+const makeColumnDialogSchema = (t: ReturnType<typeof useTranslation>['t']) =>
+    z.object({
+        name: z.string().min(1, t('tasks.columnDialog.nameRequired')),
+        color: z.string().min(1, t('tasks.columnDialog.colorRequired')),
+    })
 
 const ColumnDialog = () => {
+    const { t } = useTranslation()
     const { columns, setColumns } = useScrumboard()
     const columnDialog = useScrumboardStore((state) => state.columnDialog)
     const displayedColumns = useScrumboardStore(
@@ -53,7 +56,7 @@ const ColumnDialog = () => {
         control,
     } = useForm<FormSchema>({
         defaultValues: { name: '', color: '' },
-        resolver: zodResolver(validationSchema),
+        resolver: zodResolver(makeColumnDialogSchema(t)),
     })
 
     // Prefill the form with the actual column values each time the edit
@@ -81,9 +84,9 @@ const ColumnDialog = () => {
     const colorOptions = useMemo(() => {
         return Object.entries(columnColorMap).map(([key]) => ({
             value: key,
-            label: key.replace(/\b\w/g, (char) => char.toUpperCase()),
+            label: t(`tasks.color.${key}`, key),
         }))
-    }, [])
+    }, [t])
 
     const handleClose = () => {
         setSelectedColumn('')
@@ -140,17 +143,17 @@ const ColumnDialog = () => {
                     </IconFrame>
                     {columnDialog.type === 'add' && (
                         <div>
-                            <h5>Add new column</h5>
+                            <h5>{t('tasks.columnDialog.addTitle')}</h5>
                             <p className="pr-12 hidden sm:block">
-                                Add a new column to the board
+                                {t('tasks.columnDialog.addSubtitle')}
                             </p>
                         </div>
                     )}
                     {columnDialog.type === 'edit' && (
                         <div>
-                            <h5>Edit column</h5>
+                            <h5>{t('tasks.board.editColumn')}</h5>
                             <p className="pr-12 hidden sm:block">
-                                Change the column name or color
+                                {t('tasks.columnDialog.editSubtitle')}
                             </p>
                         </div>
                     )}
@@ -165,20 +168,26 @@ const ColumnDialog = () => {
             </div>
             <div className="p-4">
                 <Form onSubmit={handleSubmit(handleFormSubmit)}>
-                    <FormItem label="Name" invalid={Boolean(errors.name)}>
+                    <FormItem
+                        label={t('tasks.columnDialog.name')}
+                        invalid={Boolean(errors.name)}
+                    >
                         <Controller
                             control={control}
                             name="name"
                             render={({ field }) => (
                                 <Input
                                     autoComplete="off"
-                                    placeholder="Enter column name"
+                                    placeholder={t('tasks.columnDialog.namePlaceholder')}
                                     {...field}
                                 />
                             )}
                         />
                     </FormItem>
-                    <FormItem label="Color" invalid={Boolean(errors.color)}>
+                    <FormItem
+                        label={t('tasks.columnDialog.color')}
+                        invalid={Boolean(errors.color)}
+                    >
                         <Controller
                             control={control}
                             name="color"
@@ -192,7 +201,7 @@ const ColumnDialog = () => {
                                     onChange={(option) =>
                                         field.onChange(option.value)
                                     }
-                                    placeholder="Select color"
+                                    placeholder={t('tasks.columnDialog.colorPlaceholder')}
                                     customInputDisplay={(selectedItem) => (
                                         <SelectInputWithPrefix
                                             label={selectedItem?.label}
@@ -238,14 +247,14 @@ const ColumnDialog = () => {
                     </FormItem>
                     <div className="flex justify-end gap-2">
                         <Button type="button" onClick={handleClose}>
-                            Cancel
+                            {t('common.cancel')}
                         </Button>
                         <Button
                             variant="solid"
                             type="submit"
                             loading={isSubmitting}
                         >
-                            Save
+                            {t('common.save')}
                         </Button>
                     </div>
                 </Form>

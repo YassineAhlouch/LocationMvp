@@ -3,9 +3,11 @@ import PeriodPicker from '@/components/shared/PeriodPicker'
 import ProjectTab from '@/components/view/ProjectTab'
 import useTasksData from '../hooks/useTasksData'
 import { useTasksStore } from '../store/tasksStore'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const TasksHeader = () => {
     const { projectMeta } = useTasksData()
+    const { t } = useTranslation()
 
     const dateRange = useTasksStore((state) => state.dateRange)
     const setDateRange = useTasksStore((state) => state.setDateRange)
@@ -16,8 +18,8 @@ const TasksHeader = () => {
                 <>
                     <div className="flex flex-col md:flex-row md:justify-between gap-4">
                         <div>
-                            <h4 className="">{projectMeta.title}</h4>
-                            <p className="mt-2">{projectMeta.description}</p>
+                            <h4 className="">{t('tasks.project.title')}</h4>
+                            <p className="mt-2">{t('tasks.project.subtitle')}</p>
                         </div>
                         <div className="flex items-center gap-2">
                             <UsersAvatarGroup

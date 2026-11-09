@@ -1,9 +1,11 @@
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
+import useTranslation from '@/utils/hooks/useTranslation'
 import { useScrumboardStore } from '../store/scrumboardStore'
 import useScrumboard from '../hooks/useScrumboardData'
 import { apiDeleteTaskGroup } from '@/services/TaskService'
 
 const DeleteColumnDialog = () => {
+    const { t } = useTranslation()
     const { mutate } = useScrumboard()
     const selectedColumn = useScrumboardStore((state) => state.selectedColumn)
     const setSelectedColumn = useScrumboardStore(
@@ -32,16 +34,12 @@ const DeleteColumnDialog = () => {
         <ConfirmDialog
             isOpen={deleteColumnDialogOpen}
             type="danger"
-            title="Remove columns"
+            title={t('tasks.deleteDialog.title')}
             onClose={handleCancel}
             onCancel={handleCancel}
             onConfirm={handleConfirmDelete}
         >
-            <p>
-                {' '}
-                Are you sure you want to remove this column? This action
-                can&apos;t be undo.{' '}
-            </p>
+            <p>{t('tasks.deleteDialog.message')}</p>
         </ConfirmDialog>
     )
 }

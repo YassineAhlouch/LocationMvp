@@ -16,6 +16,7 @@ import { LiTag, LiCross } from '@/icons'
 import classNames from '@/utils/classNames'
 import sleep from '@/utils/sleep'
 import dayjs from 'dayjs'
+import useTranslation from '@/utils/hooks/useTranslation'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -29,16 +30,21 @@ type FormSchema = {
     tags: string[]
 }
 
-const validationSchema = z.object({
-    subject: z.string().min(1, 'Please input subject!'),
-    description: z.string().min(1, 'Please input description!'),
-    priority: z.string().min(1, 'Please select priority!'),
-    dueDate: z.string().min(1, 'Please select due date!'),
-    tags: z.array(z.string()).nonempty('Select at least one tag!'),
-    assignee: z.string().min(1, 'Please select one assignee!'),
-})
+const makeTicketSchema = (t: ReturnType<typeof useTranslation>['t']) =>
+    z.object({
+        subject: z.string().min(1, t('tasks.addDialog.subjectRequired')),
+        description: z.string().min(
+            1,
+            t('tasks.ticketDialog.descriptionRequired'),
+        ),
+        priority: z.string().min(1, t('tasks.addDialog.priorityRequired')),
+        dueDate: z.string().min(1, t('tasks.ticketDialog.dueDateRequired')),
+        tags: z.array(z.string()).nonempty(t('tasks.ticketDialog.tagsRequired')),
+        assignee: z.string().min(1, t('tasks.ticketDialog.assigneeRequired')),
+    })
 
 const AddTicketDialog = () => {
+    const { t } = useTranslation()
     const selectedColumn = useScrumboardStore((state) => state.selectedColumn)
     const addTaskDialogOpen = useScrumboardStore(
         (state) => state.addTaskDialogOpen,
@@ -66,7 +72,7 @@ const AddTicketDialog = () => {
             tags: [],
             assignee: '',
         },
-        resolver: zodResolver(validationSchema),
+        resolver: zodResolver(makeTicketSchema(t)),
     })
 
     const handleClose = async () => {
@@ -80,19 +86,19 @@ const AddTicketDialog = () => {
         return Object.entries(priorityMap).map(([key]) => {
             return {
                 value: key,
-                label: key,
+                label: t(`tasks.priority.${key.toLowerCase()}`, key),
             }
         })
-    }, [])
+    }, [t])
 
     const tagOptions = useMemo(() => {
         return Object.entries(tagsMap).map(([key]) => {
             return {
                 value: key,
-                label: key,
+                label: t(`tasks.tag.${key.toLowerCase()}`, key),
             }
         })
-    }, [])
+    }, [t])
 
     const assigneeOptions = useMemo(() => {
         return (
@@ -137,9 +143,9 @@ const AddTicketDialog = () => {
                         <LiTag className="text-xl heading-text" />
                     </IconFrame>
                     <div>
-                        <h5>Add new ticket</h5>
+                        <h5>{t('tasks.ticketDialog.title')}</h5>
                         <p className="pr-12 hidden sm:block">
-                            Add a new ticket to the selected column
+                            {t('tasks.ticketDialog.subtitle')}
                         </p>
                     </div>
                 </div>
@@ -154,7 +160,7 @@ const AddTicketDialog = () => {
             <div className="p-4">
                 <Form onSubmit={handleSubmit(handleFormSubmit)}>
                     <FormItem
-                        label="Subject"
+                        label={t('tasks.addDialog.subject')}
                         invalid={Boolean(errors.subject)}
                         errorMessage={errors.subject?.message}
                     >
@@ -162,12 +168,12 @@ const AddTicketDialog = () => {
                             name="subject"
                             control={control}
                             render={({ field }) => (
-                                <Input placeholder="Enter Subject" {...field} />
+                                <Input placeholder={t('tasks.addDialog.subjectPlaceholder')} {...field} />
                             )}
                         />
                     </FormItem>
                     <FormItem
-                        label="Description"
+                        label={t('tasks.addDialog.description')}
                         invalid={Boolean(errors.description)}
                         errorMessage={errors.description?.message}
                     >
@@ -176,7 +182,7 @@ const AddTicketDialog = () => {
                             control={control}
                             render={({ field }) => (
                                 <Input
-                                    placeholder="Enter Description"
+                                    placeholder={t('tasks.addDialog.descriptionPlaceholder')}
                                     {...field}
                                     textArea
                                 />
@@ -184,7 +190,7 @@ const AddTicketDialog = () => {
                         />
                     </FormItem>
                     <FormItem
-                        label="Priority"
+                        label={t('tasks.addDialog.priority')}
                         invalid={Boolean(errors.priority)}
                         errorMessage={errors.priority?.message}
                     >
@@ -201,7 +207,7 @@ const AddTicketDialog = () => {
                                     onChange={(option) =>
                                         field.onChange(option.value)
                                     }
-                                    placeholder="Select priority"
+                                    placeholder={t('tasks.addDialog.priorityPlaceholder')}
                                     customInputDisplay={(selectedItem) => (
                                         <SelectInputWithPrefix
                                             label={selectedItem?.label}
@@ -212,7 +218,7 @@ const AddTicketDialog = () => {
                                                             'h-3.5 w-3.5 rounded-xs',
                                                             priorityMap[
                                                                 selectedItem
-                                                                    .label
+                                                                    .value
                                                             ].color,
                                                         )}
                                                     ></span>
@@ -234,7 +240,7 @@ const AddTicketDialog = () => {
                                                     className={classNames(
                                                         'h-3.5 w-3.5 rounded-xs',
                                                         priorityMap[
-                                                            option.label
+                                                            option.value
                                                         ].color,
                                                     )}
                                                 ></span>
@@ -246,7 +252,7 @@ const AddTicketDialog = () => {
                         />
                     </FormItem>
                     <FormItem
-                        label="Due Date"
+                        label={t('tasks.addDialog.dueDate')}
                         invalid={Boolean(errors.dueDate)}
                         errorMessage={errors.dueDate?.message}
                     >
@@ -255,7 +261,7 @@ const AddTicketDialog = () => {
                             control={control}
                             render={({ field }) => (
                                 <DatePicker
-                                    placeholder="Select Due Date"
+                                    placeholder={t('tasks.addDialog.dueDatePlaceholder')}
                                     value={
                                         field.value
                                             ? dayjs(field.value).toDate()
@@ -272,7 +278,7 @@ const AddTicketDialog = () => {
                         />
                     </FormItem>
                     <FormItem
-                        label="Assignee"
+                        label={t('tasks.addDialog.assignee')}
                         invalid={Boolean(errors.assignee)}
                         errorMessage={errors.assignee?.message}
                     >
@@ -289,7 +295,7 @@ const AddTicketDialog = () => {
                                         (option) =>
                                             option.value === field.value,
                                     )}
-                                    placeholder="Select Assignee"
+                                    placeholder={t('tasks.ticketDialog.assigneePlaceholder')}
                                     customInputDisplay={(selectedItem) => (
                                         <SelectInputWithPrefix
                                             label={selectedItem?.label}
@@ -332,7 +338,7 @@ const AddTicketDialog = () => {
                         />
                     </FormItem>
                     <FormItem
-                        label="Tags"
+                        label={t('tasks.addDialog.tags')}
                         invalid={Boolean(errors.tags)}
                         errorMessage={errors.tags?.message}
                     >
@@ -352,21 +358,21 @@ const AddTicketDialog = () => {
                                             ),
                                         )
                                     }
-                                    placeholder="Select tags"
+                                    placeholder={t('tasks.addDialog.tagsPlaceholder')}
                                 />
                             )}
                         />
                     </FormItem>
                     <div className="mt-4 flex justify-end gap-2">
                         <Button type="button" onClick={handleClose}>
-                            Cancel
+                            {t('common.cancel')}
                         </Button>
                         <Button
                             variant="solid"
                             loading={isSubmitting}
                             type="submit"
                         >
-                            Add Ticket
+                            {t('tasks.ticketDialog.addTicket')}
                         </Button>
                     </div>
                 </Form>

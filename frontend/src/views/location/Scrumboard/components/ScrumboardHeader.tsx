@@ -8,10 +8,13 @@ import ProjectTab from '@/components/view/ProjectTab'
 import { useScrumboardStore } from '../store/scrumboardStore'
 import useResponsive from '@/utils/hooks/useResponsive'
 import useScrumboard from '../hooks/useScrumboardData'
+import useTranslation from '@/utils/hooks/useTranslation'
+import localizeGroupName from '@/utils/localizeGroupName'
 import { LiSearch, LiSetting4, LiAdd } from '@/icons'
 
 const ScrumboardHeader = () => {
     const { projectMeta, columns } = useScrumboard()
+    const { t } = useTranslation()
 
     const { larger, smaller } = useResponsive()
 
@@ -27,8 +30,12 @@ const ScrumboardHeader = () => {
     const setDateRange = useScrumboardStore((state) => state.setDateRange)
 
     const columnOptions = useMemo(
-        () => columns.map((col) => ({ label: col.name, value: col.id })),
-        [columns],
+        () =>
+            columns.map((col) => ({
+                label: localizeGroupName(t, col.name),
+                value: col.id,
+            })),
+        [columns, t],
     )
 
     const handleAddColumn = () => {
@@ -41,7 +48,7 @@ const ScrumboardHeader = () => {
     const renderActionSection = () => (
         <div className="flex items-center gap-2 my-2">
             <DebouceInput
-                placeholder="Search"
+                placeholder={t('tasks.header.search')}
                 prefix={<LiSearch />}
                 onChange={(e) => setQuery(e.target.value)}
             />
@@ -50,7 +57,8 @@ const ScrumboardHeader = () => {
                 placement="bottom-end"
                 title={
                     <span className="flex items-center gap-2">
-                        <LiSetting4 className="text-lg" /> <span>Filter</span>
+                        <LiSetting4 className="text-lg" />{' '}
+                        <span>{t('tasks.header.filter')}</span>
                     </span>
                 }
                 value={displayedColumns}
@@ -59,7 +67,7 @@ const ScrumboardHeader = () => {
                 }}
             />
             <Button icon={<LiAdd />} variant="subtle" onClick={handleAddColumn}>
-                Add Column
+                {t('tasks.header.addColumn')}
             </Button>
         </div>
     )
@@ -70,8 +78,8 @@ const ScrumboardHeader = () => {
                 <>
                     <div className="flex flex-col md:flex-row md:justify-between gap-4">
                         <div>
-                            <h4 className="">{projectMeta.title}</h4>
-                            <p className="mt-2">{projectMeta.description}</p>
+                            <h4 className="">{t('tasks.project.title')}</h4>
+                            <p className="mt-2">{t('tasks.project.subtitle')}</p>
                         </div>
                         <div className="flex items-center gap-2">
                             <UsersAvatarGroup

@@ -8,6 +8,8 @@ import { columnColorMap } from '../utils'
 import classNames from '@/utils/classNames'
 import { LiAdd, LiTrash, LiSetting2 } from '@/icons'
 import { LiEllipsis } from '@/icons'
+import useTranslation from '@/utils/hooks/useTranslation'
+import localizeGroupName from '@/utils/localizeGroupName'
 import type { DragEvent } from 'react'
 import type { Column, Task } from '../types'
 
@@ -30,6 +32,7 @@ const BoardColumn = ({
     onDeleteColumn,
     onMoveTicket,
 }: BoardColumnProps) => {
+    const { t } = useTranslation()
     const [dropHover, setDropHover] = useState(false)
 
     const tasksIds = useMemo(() => {
@@ -84,7 +87,7 @@ const BoardColumn = ({
                             )}
                         ></span>
                         <h6 className="font-semibold leading-none">
-                            {column.name}
+                            {localizeGroupName(t, column.name)}
                         </h6>
                     </div>
                     <Dropdown
@@ -102,14 +105,14 @@ const BoardColumn = ({
                             onClick={() => onAddTask?.(column.id)}
                         >
                             <LiAdd className="text-base" />
-                            <span>Add ticket</span>
+                            <span>{t('tasks.board.addTicket')}</span>
                         </Dropdown.Item>
                         <Dropdown.Item
                             eventKey="config"
                             onClick={() => onEditColumn?.(column.id)}
                         >
                             <LiSetting2 className="text-base" />
-                            <span>Edit column</span>
+                            <span>{t('tasks.board.editColumn')}</span>
                         </Dropdown.Item>
                         <Dropdown.Item variant="divider" />
                         <Dropdown.Item
@@ -118,7 +121,9 @@ const BoardColumn = ({
                             onClick={() => onDeleteColumn?.(column.id)}
                         >
                             <LiTrash className="text-base" />
-                            <span className="text-error">Delete</span>
+                            <span className="text-error">
+                                {t('tasks.board.delete')}
+                            </span>
                         </Dropdown.Item>
                     </Dropdown>
                 </div>

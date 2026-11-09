@@ -16,6 +16,7 @@ import { LiTag, LiCross } from '@/icons'
 import classNames from '@/utils/classNames'
 import sleep from '@/utils/sleep'
 import dayjs from 'dayjs'
+import useTranslation from '@/utils/hooks/useTranslation'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -30,17 +31,19 @@ type FormSchema = {
     tags: string[]
 }
 
-const validationSchema = z.object({
-    subject: z.string().min(1, 'Please input subject!'),
-    description: z.string(),
-    column: z.string().min(1, 'Please select a column!'),
-    priority: z.string().min(1, 'Please select priority!'),
-    dueDate: z.string(),
-    tags: z.array(z.string()),
-    assignee: z.string(),
-})
+const makeAddTaskSchema = (t: ReturnType<typeof useTranslation>['t']) =>
+    z.object({
+        subject: z.string().min(1, t('tasks.addDialog.subjectRequired')),
+        description: z.string(),
+        column: z.string().min(1, t('tasks.addDialog.columnRequired')),
+        priority: z.string().min(1, t('tasks.addDialog.priorityRequired')),
+        dueDate: z.string(),
+        tags: z.array(z.string()),
+        assignee: z.string(),
+    })
 
 const AddTaskDialog = () => {
+    const { t } = useTranslation()
     const addTaskDialogOpen = useTasksStore((state) => state.addTaskDialogOpen)
     const setAddTaskDialogOpen = useTasksStore(
         (state) => state.setAddTaskDialogOpen,
@@ -63,22 +66,22 @@ const AddTaskDialog = () => {
             tags: [],
             assignee: '',
         },
-        resolver: zodResolver(validationSchema),
+        resolver: zodResolver(makeAddTaskSchema(t)),
     })
 
     const priorityOptions = useMemo(() => {
         return Object.entries(priorityMap).map(([key]) => ({
             value: key,
-            label: key,
+            label: t(`tasks.priority.${key.toLowerCase()}`, key),
         }))
-    }, [])
+    }, [t])
 
     const tagOptions = useMemo(() => {
         return Object.entries(tagsMap).map(([key]) => ({
             value: key,
-            label: key,
+            label: t(`tasks.tag.${key.toLowerCase()}`, key),
         }))
-    }, [])
+    }, [t])
 
     const columnOptions = useMemo(() => {
         return groups.map((group) => ({
@@ -135,10 +138,9 @@ const AddTaskDialog = () => {
                         <LiTag className="text-xl heading-text" />
                     </IconFrame>
                     <div>
-                        <h5>Add new task</h5>
+                        <h5>{t('tasks.addDialog.title', 'Add new task')}</h5>
                         <p className="pr-12 hidden sm:block">
-                            Create a task for the team. Leave assignee empty to
-                            share it with everyone.
+                            {t('tasks.addDialog.subtitle')}
                         </p>
                     </div>
                 </div>
@@ -153,7 +155,7 @@ const AddTaskDialog = () => {
             <div className="p-4">
                 <Form onSubmit={handleSubmit(handleFormSubmit)}>
                     <FormItem
-                        label="Subject"
+                        label={t('tasks.addDialog.subject')}
                         invalid={Boolean(errors.subject)}
                         errorMessage={errors.subject?.message}
                     >
@@ -161,12 +163,12 @@ const AddTaskDialog = () => {
                             name="subject"
                             control={control}
                             render={({ field }) => (
-                                <Input placeholder="Enter Subject" {...field} />
+                                <Input placeholder={t('tasks.addDialog.subjectPlaceholder')} {...field} />
                             )}
                         />
                     </FormItem>
                     <FormItem
-                        label="Description"
+                        label={t('tasks.addDialog.description')}
                         invalid={Boolean(errors.description)}
                         errorMessage={errors.description?.message}
                     >
@@ -175,7 +177,7 @@ const AddTaskDialog = () => {
                             control={control}
                             render={({ field }) => (
                                 <Input
-                                    placeholder="Enter Description"
+                                    placeholder={t('tasks.addDialog.descriptionPlaceholder')}
                                     {...field}
                                     textArea
                                 />
@@ -183,7 +185,7 @@ const AddTaskDialog = () => {
                         />
                     </FormItem>
                     <FormItem
-                        label="Column"
+                        label={t('tasks.addDialog.column')}
                         invalid={Boolean(errors.column)}
                         errorMessage={errors.column?.message}
                     >
@@ -199,13 +201,13 @@ const AddTaskDialog = () => {
                                     onChange={(option) =>
                                         field.onChange(option?.value)
                                     }
-                                    placeholder="Select column"
+                                    placeholder={t('tasks.addDialog.columnPlaceholder')}
                                 />
                             )}
                         />
                     </FormItem>
                     <FormItem
-                        label="Priority"
+                        label={t('tasks.addDialog.priority')}
                         invalid={Boolean(errors.priority)}
                         errorMessage={errors.priority?.message}
                     >
@@ -221,7 +223,7 @@ const AddTaskDialog = () => {
                                     onChange={(option) =>
                                         field.onChange(option?.value)
                                     }
-                                    placeholder="Select priority"
+                                    placeholder={t('tasks.addDialog.priorityPlaceholder')}
                                     customInputDisplay={(selectedItem) => (
                                         <SelectInputWithPrefix
                                             label={selectedItem?.label}
@@ -232,7 +234,7 @@ const AddTaskDialog = () => {
                                                             'h-3.5 w-3.5 rounded-xs',
                                                             priorityMap[
                                                                 selectedItem
-                                                                    .label
+                                                                    .value
                                                             ].color,
                                                         )}
                                                     ></span>
@@ -254,7 +256,7 @@ const AddTaskDialog = () => {
                                                     className={classNames(
                                                         'h-3.5 w-3.5 rounded-xs',
                                                         priorityMap[
-                                                            option.label
+                                                            option.value
                                                         ].color,
                                                     )}
                                                 ></span>
@@ -266,7 +268,7 @@ const AddTaskDialog = () => {
                         />
                     </FormItem>
                     <FormItem
-                        label="Due Date"
+                        label={t('tasks.addDialog.dueDate')}
                         invalid={Boolean(errors.dueDate)}
                         errorMessage={errors.dueDate?.message}
                     >
@@ -275,7 +277,7 @@ const AddTaskDialog = () => {
                             control={control}
                             render={({ field }) => (
                                 <DatePicker
-                                    placeholder="Select Due Date"
+                                    placeholder={t('tasks.addDialog.dueDatePlaceholder')}
                                     value={
                                         field.value
                                             ? dayjs(field.value).toDate()
@@ -294,7 +296,7 @@ const AddTaskDialog = () => {
                         />
                     </FormItem>
                     <FormItem
-                        label="Assignee"
+                        label={t('tasks.addDialog.assignee')}
                         invalid={Boolean(errors.assignee)}
                         errorMessage={errors.assignee?.message}
                     >
@@ -310,7 +312,7 @@ const AddTaskDialog = () => {
                                     value={assigneeOptions.find(
                                         (option) => option.value === field.value,
                                     )}
-                                    placeholder="Select Assignee (optional)"
+                                    placeholder={t('tasks.addDialog.assigneePlaceholder')}
                                     customInputDisplay={(selectedItem) => (
                                         <SelectInputWithPrefix
                                             label={selectedItem?.label}
@@ -353,7 +355,7 @@ const AddTaskDialog = () => {
                         />
                     </FormItem>
                     <FormItem
-                        label="Tags"
+                        label={t('tasks.addDialog.tags')}
                         invalid={Boolean(errors.tags)}
                         errorMessage={errors.tags?.message}
                     >
@@ -373,21 +375,21 @@ const AddTaskDialog = () => {
                                             ),
                                         )
                                     }
-                                    placeholder="Select tags"
+                                    placeholder={t('tasks.addDialog.tagsPlaceholder')}
                                 />
                             )}
                         />
                     </FormItem>
                     <div className="mt-4 flex justify-end gap-2">
                         <Button type="button" onClick={handleClose}>
-                            Cancel
+                            {t('common.cancel')}
                         </Button>
                         <Button
                             variant="solid"
                             loading={isSubmitting}
                             type="submit"
                         >
-                            Add Task
+                            {t('tasks.addTask')}
                         </Button>
                     </div>
                 </Form>
