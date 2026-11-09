@@ -10,6 +10,7 @@ import { LuSearch } from 'react-icons/lu'
 import { LiEdit2 } from '@/icons'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 import usePermissions from '@/utils/hooks/usePermissions'
+import useTranslation from '@/utils/hooks/useTranslation'
 import { apiGetReservations } from '@/services/LocationService'
 import {
     money,
@@ -26,13 +27,9 @@ type CarReservationsProps = {
     carId: number
 }
 
-const statusOptions: SelectOption<string>[] = [
-    { value: '', label: 'All statuses' },
-    ...reservationStatusOptions,
-]
-
 const CarReservations = ({ carId }: CarReservationsProps) => {
     const { can } = usePermissions()
+    const { t } = useTranslation()
     const [rows, setRows] = useState<Reservation[]>([])
     const [loading, setLoading] = useState(true)
     const [total, setTotal] = useState(0)
@@ -72,10 +69,29 @@ const CarReservations = ({ carId }: CarReservationsProps) => {
         fetchData()
     }, [fetchData])
 
+    const statusOptions = useMemo<SelectOption<string>[]>(() => {
+        const options: SelectOption<string>[] = [
+            {
+                value: '',
+                label: t('cars.overview.allStatuses', 'All statuses'),
+            },
+        ]
+        reservationStatusOptions.forEach((option) => {
+            options.push({
+                value: option.value,
+                label: t(
+                    `reservations.status.${option.value}`,
+                    option.label,
+                ),
+            })
+        })
+        return options
+    }, [t])
+
     const columns = useMemo<ColumnDef<Reservation>[]>(
         () => [
             {
-                header: 'Reservation',
+                header: t('cars.overview.table.reservation', 'Reservation'),
                 accessorKey: 'reservation_number',
                 cell: (props) => (
                     <Link
@@ -89,7 +105,7 @@ const CarReservations = ({ carId }: CarReservationsProps) => {
                 ),
             },
             {
-                header: 'Client',
+                header: t('cars.overview.table.client', 'Client'),
                 id: 'client',
                 cell: (props) => (
                     <span className="text-gray-700 dark:text-gray-200">
@@ -98,7 +114,7 @@ const CarReservations = ({ carId }: CarReservationsProps) => {
                 ),
             },
             {
-                header: 'Pickup',
+                header: t('cars.overview.table.pickup', 'Pickup'),
                 accessorKey: 'pickup_datetime',
                 cell: (props) => (
                     <span className="whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
@@ -107,7 +123,7 @@ const CarReservations = ({ carId }: CarReservationsProps) => {
                 ),
             },
             {
-                header: 'Return',
+                header: t('cars.overview.table.return', 'Return'),
                 accessorKey: 'expected_return_datetime',
                 cell: (props) => (
                     <span className="whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
@@ -118,7 +134,7 @@ const CarReservations = ({ carId }: CarReservationsProps) => {
                 ),
             },
             {
-                header: 'Status',
+                header: t('cars.overview.table.status', 'Status'),
                 accessorKey: 'status',
                 cell: (props) => {
                     const status = props.row.original.status
@@ -126,13 +142,16 @@ const CarReservations = ({ carId }: CarReservationsProps) => {
                         <Tag
                             className={`capitalize ${tagToneClass[reservationStatusTone[status]]}`}
                         >
-                            {status.replace('_', ' ')}
+                            {t(
+                                `reservations.status.${status}`,
+                                status.replace('_', ' '),
+                            )}
                         </Tag>
                     )
                 },
             },
             {
-                header: 'Payment',
+                header: t('cars.overview.table.payment', 'Payment'),
                 accessorKey: 'payment_status',
                 cell: (props) => {
                     const status = props.row.original.payment_status
@@ -140,13 +159,16 @@ const CarReservations = ({ carId }: CarReservationsProps) => {
                         <Tag
                             className={`capitalize ${tagToneClass[paymentStatusTone[status]]}`}
                         >
-                            {status}
+                            {t(
+                                `reservations.payment.${status}`,
+                                status.replace('_', ' '),
+                            )}
                         </Tag>
                     )
                 },
             },
             {
-                header: 'Total',
+                header: t('cars.overview.table.total', 'Total'),
                 accessorKey: 'total_amount',
                 cell: (props) => (
                     <span className="whitespace-nowrap font-semibold dark:text-gray-100">
@@ -169,7 +191,7 @@ const CarReservations = ({ carId }: CarReservationsProps) => {
                             <Button
                                 size="sm"
                                 variant="link"
-                                title="Open reservation"
+                                title={t('cars.actions.view', 'View details')}
                                 icon={<LiEdit2 className="text-base" />}
                             />
                         </Link>
@@ -177,22 +199,26 @@ const CarReservations = ({ carId }: CarReservationsProps) => {
                 ),
             },
         ],
-        [can],
+        [can, t],
     )
 
     return (
         <Card bodyClass="p-0">
             <div className="flex flex-wrap items-center justify-between gap-3 p-4">
                 <div>
-                    <h6>Reservations</h6>
+                    <h6>
+                        {t('cars.overview.tabs.reservations', 'Reservations')}
+                    </h6>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {total} reservation{total === 1 ? '' : 's'} for this
-                        vehicle
+                        {t('cars.overview.reservationsCount', { n: total })}
                     </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                     <DebouceInput
-                        placeholder="Search client, number…"
+                        placeholder={t(
+                            'cars.overview.searchReservations',
+                            'Search client, number…',
+                        )}
                         prefix={<LuSearch className="text-lg" />}
                         onChange={(e) => {
                             setQ(e.target.value)

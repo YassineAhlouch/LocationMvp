@@ -9,6 +9,7 @@ import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 import { useSessionUser } from '@/store/authStore'
 import { LiChevronLeft } from '@/icons'
 import { isVerbGranted } from './PermissionChecklist'
+import useTranslation from '@/utils/hooks/useTranslation'
 import type { Car } from '@/@types/location'
 
 const CarOverview = lazy(() => import('./CarOverview'))
@@ -17,19 +18,13 @@ const CarExpenses = lazy(() => import('./CarExpenses'))
 const CarHistory = lazy(() => import('./CarHistory'))
 const CarStatistics = lazy(() => import('./CarStatistics'))
 
-const baseTabList = [
-    { label: 'Overview', value: 'overview' },
-    { label: 'Reservations', value: 'reservations' },
-    { label: 'Expenses', value: 'expenses' },
-    { label: 'History', value: 'history' },
-]
-
 const CarDetails = () => {
     const params = useParams()
     const navigate = useNavigate()
     const carId = params.id
     const rawSegment = params['*'] || ''
     const activeTab = rawSegment || 'overview'
+    const { t } = useTranslation()
 
     const { user } = useSessionUser()
     const canViewFinancing = isVerbGranted(
@@ -37,12 +32,32 @@ const CarDetails = () => {
         'financing',
         'view',
     )
+
+    const baseTabList = [
+        {
+            label: t('cars.overview.tabs.overview', 'Overview'),
+            value: 'overview',
+        },
+        {
+            label: t('cars.overview.tabs.reservations', 'Reservations'),
+            value: 'reservations',
+        },
+        {
+            label: t('cars.overview.tabs.expenses', 'Expenses'),
+            value: 'expenses',
+        },
+        { label: t('cars.overview.tabs.history', 'History'), value: 'history' },
+    ]
+
     const tabList = canViewFinancing
         ? [
               baseTabList[0],
               baseTabList[1],
               baseTabList[2],
-              { label: 'Statistics', value: 'statistics' },
+              {
+                  label: t('cars.overview.tabs.statistics', 'Statistics'),
+                  value: 'statistics',
+              },
               baseTabList[3],
           ]
         : baseTabList
@@ -103,12 +118,18 @@ const CarDetails = () => {
     if (failed || !car) {
         return (
             <div className="flex min-h-[50vh] flex-col items-center justify-center gap-3 text-center">
-                <h5 className="dark:text-gray-100">Vehicle not found</h5>
+                <h5 className="dark:text-gray-100">
+                    {t('cars.notFound.title', 'Vehicle not found')}
+                </h5>
                 <p className="text-sm text-gray-400 dark:text-gray-500">
-                    It may have been deleted or you don&apos;t have access to
-                    it.
+                    {t(
+                        'cars.notFound.description',
+                        "It may have been deleted or you don't have access to it.",
+                    )}
                 </p>
-                <Button onClick={goToListe}>Back to vehicles</Button>
+                <Button onClick={goToListe}>
+                    {t('cars.notFound.back', 'Back to vehicles')}
+                </Button>
             </div>
         )
     }
@@ -121,7 +142,7 @@ const CarDetails = () => {
                 icon={<LiChevronLeft />}
                 onClick={goToListe}
             >
-                Back to vehicles
+                {t('cars.notFound.back', 'Back to vehicles')}
             </Button>
 
             <div className="flex flex-col xl:flex-row gap-4 h-full">

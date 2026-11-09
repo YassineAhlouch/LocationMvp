@@ -33,6 +33,7 @@ import {
 } from '@/services/LocationService'
 import { isVerbGranted } from './PermissionChecklist'
 import CarFinancingDialog from './CarFinancingDialog'
+import useTranslation from '@/utils/hooks/useTranslation'
 import { money, currencyCode, apiErrorMessage, formatDate, tagToneClass } from './shared'
 import type {
     CarInstallment,
@@ -47,12 +48,6 @@ const { Tr, Th, Td, THead, TBody } = Table
 type CarStatisticsProps = {
     carId: number
 }
-
-const periodOptions: SelectOption<string>[] = [
-    { value: '6', label: 'Last 6 months' },
-    { value: '12', label: 'Last 12 months' },
-    { value: '24', label: 'Last 24 months' },
-]
 
 const installmentStatusTone: Record<InstallmentStatus, TagTone> = {
     paid: 'success',
@@ -182,6 +177,7 @@ const DonutCard = ({
     totalLabel,
     formatValue,
 }: DonutCardProps) => {
+    const { t } = useTranslation()
     const visible = segments.filter((segment) => segment.value > 0)
 
     return (
@@ -206,7 +202,7 @@ const DonutCard = ({
         >
             {visible.length === 0 ? (
                 <p className="py-8 text-center text-sm text-gray-400 dark:text-gray-500">
-                    No data to chart yet.
+                    {t('cars.overview.statistics.noData', 'No data to chart yet.')}
                 </p>
             ) : (
                 <div className="flex items-center gap-4">
@@ -272,11 +268,21 @@ const DonutCard = ({
 }
 
 const CarStatistics = ({ carId }: CarStatisticsProps) => {
+    const { t } = useTranslation()
     const { user } = useSessionUser()
     const canManage = isVerbGranted(
         user?.role?.permissions ?? [],
         'financing',
         'manage',
+    )
+
+    const periodOptions = useMemo<SelectOption<string>[]>(
+        () => [
+            { value: '6', label: t('cars.overview.statistics.period6', 'Last 6 months') },
+            { value: '12', label: t('cars.overview.statistics.period12', 'Last 12 months') },
+            { value: '24', label: t('cars.overview.statistics.period24', 'Last 24 months') },
+        ],
+        [t],
     )
 
     const [data, setData] = useState<CarStatisticsData | null>(null)
@@ -354,7 +360,10 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
             toast.push(
                 <Notification
                     type="danger"
-                    title="Enter a valid paid amount"
+                    title={t(
+                        'cars.overview.statistics.invalidPaidAmount',
+                        'Enter a valid paid amount',
+                    )}
                 />,
             )
             return
@@ -371,8 +380,14 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                     type="success"
                     title={
                         payTarget.status === 'paid'
-                            ? 'Installment payment updated!'
-                            : 'Installment paid!'
+                            ? t(
+                                  'cars.overview.statistics.installmentUpdated',
+                                  'Installment payment updated!',
+                              )
+                            : t(
+                                  'cars.overview.statistics.installmentPaid',
+                                  'Installment paid!',
+                              )
                     }
                 />,
             )
@@ -382,7 +397,13 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
             toast.push(
                 <Notification
                     type="danger"
-                    title={apiErrorMessage(error, 'Something went wrong')}
+                    title={apiErrorMessage(
+                        error,
+                        t(
+                            'cars.overview.statistics.genericError',
+                            'Something went wrong',
+                        ),
+                    )}
                 />,
             )
         } finally {
@@ -395,7 +416,13 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
         try {
             await apiDeleteCarFinancing(carId)
             toast.push(
-                <Notification type="success" title="Financing removed" />,
+                <Notification
+                    type="success"
+                    title={t(
+                        'cars.overview.statistics.financingRemoved',
+                        'Financing removed',
+                    )}
+                />,
             )
             setDeleteOpen(false)
             load()
@@ -403,7 +430,13 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
             toast.push(
                 <Notification
                     type="danger"
-                    title={apiErrorMessage(error, 'Something went wrong')}
+                    title={apiErrorMessage(
+                        error,
+                        t(
+                            'cars.overview.statistics.genericError',
+                            'Something went wrong',
+                        ),
+                    )}
                 />,
             )
         } finally {
@@ -417,11 +450,16 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                 <div className="flex flex-col items-center justify-center gap-3 text-center">
                     <LiBank className="text-4xl text-gray-400" />
                     <h5 className="dark:text-gray-100">
-                        Financial data is restricted
+                        {t(
+                            'cars.overview.statistics.restrictedTitle',
+                            'Financial data is restricted',
+                        )}
                     </h5>
                     <p className="max-w-md text-sm text-gray-500 dark:text-gray-400">
-                        Your role does not have access to this vehicle&apos;s
-                        financing and profitability figures.
+                        {t(
+                            'cars.overview.statistics.restrictedDesc',
+                            "Your role does not have access to this vehicle's financing and profitability figures.",
+                        )}
                     </p>
                 </div>
             </Card>
@@ -460,17 +498,17 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
 
     const utilizationSegments: DonutSegment[] = [
         {
-            name: 'Rented',
+            name: t('cars.status.rented', 'Rented'),
             value: utilization.rented_days,
             color: colors.emerald.chart,
         },
         {
-            name: 'Maintenance',
+            name: t('cars.status.maintenance', 'Maintenance'),
             value: utilization.maintenance_days,
             color: colors.orange.chart,
         },
         {
-            name: 'Idle',
+            name: t('cars.overview.statistics.idle', 'Idle'),
             value: utilization.idle_days,
             color: colors.gray.chart,
         },
@@ -478,7 +516,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
 
     const expenseSegments: DonutSegment[] = data.expenses_by_type.map(
         (item, index) => ({
-            name: humanize(item.type),
+            name: t(`expenses.type.${item.type}`, humanize(item.type)),
             value: item.amount,
             color: donutPalette[index % donutPalette.length],
         }),
@@ -488,36 +526,47 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
         <div className="space-y-4">
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 <KpiGroupCard
-                    title="Profitability"
+                    title={t('cars.overview.statistics.profitability', 'Profitability')}
                     tone="success"
                     Icon={LuTrendingUp}
                     metrics={[
                         {
-                            label: 'Revenue (paid)',
+                            label: t('cars.overview.revenuePaid', 'Revenue (paid)'),
                             value: money(kpis.total_revenue),
-                            hint: `${kpis.payback_percent.toFixed(0)}% of purchase paid back`,
+                            hint: t('cars.overview.statistics.payback', {
+                                n: kpis.payback_percent.toFixed(0),
+                            }),
                         },
                         {
-                            label: 'Operating profit',
+                            label: t(
+                                'cars.overview.statistics.operatingProfit',
+                                'Operating profit',
+                            ),
                             value: money(kpis.operating_profit),
-                            hint: `${money(kpis.profit_per_day)} / day`,
+                            hint: `${money(kpis.profit_per_day)} / ${t('cars.overview.statistics.day', 'day')}`,
                         },
                     ]}
                 />
                 <KpiGroupCard
-                    title="Cash & financing"
+                    title={t('cars.overview.statistics.cashFinancing', 'Cash & financing')}
                     tone="primary"
                     Icon={LuWallet}
                     metrics={[
                         {
-                            label: 'Net cash position',
+                            label: t(
+                                'cars.overview.statistics.netCashPosition',
+                                'Net cash position',
+                            ),
                             value: money(kpis.net_cash_position),
-                            hint: `${kpis.days_in_service} days in service`,
+                            hint: `${kpis.days_in_service} ${t('cars.overview.statistics.daysInService', 'days in service')}`,
                         },
                         {
-                            label: 'Installments paid',
+                            label: t(
+                                'cars.overview.statistics.installmentsPaid',
+                                'Installments paid',
+                            ),
                             value: money(kpis.installments_paid),
-                            hint: `${money(kpis.down_payment)} down payment`,
+                            hint: `${money(kpis.down_payment)} ${t('cars.overview.statistics.downPayment', 'down payment')}`,
                         },
                     ]}
                 />
@@ -535,11 +584,16 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                 </div>
                                 <div>
                                     <h6 className="font-semibold">
-                                        Financing progress
+                                        {t(
+                                            'cars.overview.statistics.financingProgress',
+                                            'Financing progress',
+                                        )}
                                     </h6>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        Installments settled and capital paid
-                                        back
+                                        {t(
+                                            'cars.overview.statistics.financingSub',
+                                            'Installments settled and capital paid back',
+                                        )}
                                     </p>
                                 </div>
                             </div>
@@ -554,7 +608,10 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                                     setFinancingOpen(true)
                                                 }
                                             >
-                                                Edit
+                                                {t(
+                                                    'cars.actions.edit',
+                                                    'Edit',
+                                                )}
                                             </Button>
                                             <Button
                                                 variant="default"
@@ -564,7 +621,10 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                                     setDeleteOpen(true)
                                                 }
                                             >
-                                                Remove
+                                                {t(
+                                                    'cars.overview.statistics.remove',
+                                                    'Remove',
+                                                )}
                                             </Button>
                                         </>
                                     ) : (
@@ -574,7 +634,10 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                                 setFinancingOpen(true)
                                             }
                                         >
-                                            Add financing
+                                            {t(
+                                                'cars.overview.statistics.addFinancing',
+                                                'Add financing',
+                                            )}
                                         </Button>
                                     )}
                                 </div>
@@ -588,11 +651,16 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                         <LiBank className="text-3xl text-gray-400" />
                         <div>
                             <p className="font-medium heading-text dark:text-gray-100">
-                                No financing set up yet
+                                {t(
+                                    'cars.overview.statistics.noFinancingTitle',
+                                    'No financing set up yet',
+                                )}
                             </p>
                             <p className="text-sm text-gray-500 dark:text-gray-400">
-                                Record the purchase and its installment plan to
-                                track payback.
+                                {t(
+                                    'cars.overview.statistics.noFinancingDesc',
+                                    'Record the purchase and its installment plan to track payback.',
+                                )}
                             </p>
                         </div>
                         {canManage && (
@@ -600,7 +668,10 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                 icon={<LiAdd />}
                                 onClick={() => setFinancingOpen(true)}
                             >
-                                Add financing
+                                {t(
+                                    'cars.overview.statistics.addFinancing',
+                                    'Add financing',
+                                )}
                             </Button>
                         )}
                     </div>
@@ -609,7 +680,10 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
                                 <span className="font-medium">
-                                    Installments settled
+                                    {t(
+                                        'cars.overview.statistics.installmentsSettled',
+                                        'Installments settled',
+                                    )}
                                 </span>
                                 <span className="text-lg font-bold heading-text">
                                     {financing.progress_percent}%
@@ -624,22 +698,33 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                             />
                             <div className="flex flex-wrap items-center justify-between gap-1 text-xs text-gray-500 dark:text-gray-400">
                                 <span>
-                                    {financing.installments_paid_count} of{' '}
-                                    {financing.installments_count} paid ·{' '}
+                                    {financing.installments_paid_count} /{' '}
+                                    {financing.installments_count}{' '}
+                                    {t(
+                                        'cars.overview.statistics.paidWord',
+                                        'paid',
+                                    )}{' '}
+                                    ·{' '}
                                     {money(financing.installments_paid_amount)}
                                 </span>
                                 <span>
                                     {money(
                                         financing.installments_remaining_amount,
                                     )}{' '}
-                                    remaining
+                                    {t(
+                                        'cars.overview.statistics.remaining',
+                                        'remaining',
+                                    )}
                                 </span>
                             </div>
                         </div>
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
                                 <span className="font-medium">
-                                    Capital paid back
+                                    {t(
+                                        'cars.overview.statistics.capitalPaidBack',
+                                        'Capital paid back',
+                                    )}
                                 </span>
                                 <span className="text-lg font-bold heading-text">
                                     {financing.payback_percent}%
@@ -657,18 +742,19 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                             />
                             <div className="flex flex-wrap items-center justify-between gap-1 text-xs text-gray-500 dark:text-gray-400">
                                 <span>
-                                    {money(kpis.total_revenue)} of{' '}
+                                    {money(kpis.total_revenue)} /{' '}
                                     {money(kpis.purchase_price)}
                                 </span>
                                 <span>
-                                    {money(kpis.remaining_to_payback)} to go
+                                    {money(kpis.remaining_to_payback)}{' '}
+                                    {t('cars.overview.statistics.toGo', 'to go')}
                                 </span>
                             </div>
                         </div>
                         <div className="grid grid-cols-1 gap-3 border-t border-gray-200 pt-3 sm:grid-cols-3 dark:border-gray-700">
                             <div>
                                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                                    Lender
+                                    {t('activity.field.lender', 'Lender')}
                                 </p>
                                 <p className="text-sm font-medium heading-text">
                                     {financing.lender ?? '—'}
@@ -676,7 +762,10 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                             </div>
                             <div>
                                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                                    Purchase date
+                                    {t(
+                                        'activity.field.purchase_date',
+                                        'Purchase date',
+                                    )}
                                 </p>
                                 <p className="text-sm font-medium heading-text">
                                     {formatDate(financing.purchase_date)}
@@ -684,12 +773,18 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                             </div>
                             <div>
                                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                                    Next installment
+                                    {t(
+                                        'cars.overview.statistics.nextInstallment',
+                                        'Next installment',
+                                    )}
                                 </p>
                                 <p className="text-sm font-medium heading-text">
                                     {financing.next_installment
                                         ? `${money(financing.next_installment.amount)} · ${formatDate(financing.next_installment.due_date)}`
-                                        : 'Fully paid'}
+                                        : t(
+                                              'cars.overview.statistics.fullyPaid',
+                                              'Fully paid',
+                                          )}
                                 </p>
                             </div>
                         </div>
@@ -709,11 +804,13 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                 </div>
                                 <div>
                                     <h6 className="font-semibold">
-                                        Cash flow
+                                        {t('cars.overview.statistics.cashFlow', 'Cash flow')}
                                     </h6>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        Revenue, expenses and installments per
-                                        month
+                                        {t(
+                                            'cars.overview.statistics.cashFlowSub',
+                                            'Revenue, expenses and installments per month',
+                                        )}
                                     </p>
                                 </div>
                             </div>
@@ -742,7 +839,10 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                         <div className="flex items-baseline gap-2">
                             <h3>{money(periodRevenue)}</h3>
                             <span className="text-sm text-gray-500 dark:text-gray-400">
-                                revenue this period
+                                {t(
+                                    'cars.overview.statistics.revenueThisPeriod',
+                                    'revenue this period',
+                                )}
                             </span>
                         </div>
                         <div className="flex items-baseline gap-2">
@@ -752,7 +852,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                 {money(periodNet)}
                             </span>
                             <span className="text-sm text-gray-500 dark:text-gray-400">
-                                net cash
+                                {t('cars.overview.statistics.netCash', 'net cash')}
                             </span>
                         </div>
                     </div>
@@ -763,17 +863,20 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                         barConfig={[
                             {
                                 dataKey: 'revenue',
-                                name: 'Revenue',
+                                name: t('dashboard.revenue', 'Revenue'),
                                 fill: colors.emerald.chart,
                             },
                             {
                                 dataKey: 'expenses',
-                                name: 'Expenses',
+                                name: t('dashboard.expenses', 'Expenses'),
                                 fill: colors.rose.chart,
                             },
                             {
                                 dataKey: 'installments',
-                                name: 'Installments',
+                                name: t(
+                                    'cars.overview.statistics.seriesInstallments',
+                                    'Installments',
+                                ),
                                 fill: colors.blue.chart,
                             },
                         ]}
@@ -784,7 +887,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                         <Line
                             type="monotone"
                             dataKey="net"
-                            name="Net"
+                            name={t('cars.overview.statistics.seriesNet', 'Net')}
                             stroke={colors.purple.chart}
                             strokeWidth={2}
                             dot={false}
@@ -795,34 +898,49 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
 
             <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
                 <DonutCard
-                    title="Utilization"
-                    subtitle="How the service window was spent"
+                    title={t('cars.overview.statistics.utilization', 'Utilization')}
+                    subtitle={t(
+                        'cars.overview.statistics.utilizationSub',
+                        'How the service window was spent',
+                    )}
                     Icon={LiTask}
                     segments={utilizationSegments}
                     total={utilization.days_in_service}
-                    totalLabel="Days in service"
-                    formatValue={(value) => `${value} d`}
+                    totalLabel={t(
+                        'cars.overview.statistics.daysInServiceLabel',
+                        'Days in service',
+                    )}
+                    formatValue={(value) => `${value} ${t('cars.overview.statistics.dayShort', 'd')}`}
                 />
                 <DonutCard
-                    title="Expenses by type"
-                    subtitle="Costs booked to this vehicle"
+                    title={t('cars.overview.statistics.expensesByType', 'Expenses by type')}
+                    subtitle={t(
+                        'cars.overview.statistics.expensesByTypeSub',
+                        'Costs booked to this vehicle',
+                    )}
                     Icon={LiReceipt}
                     segments={expenseSegments}
                     total={expenseSegments.reduce(
                         (sum, segment) => sum + segment.value,
                         0,
                     )}
-                    totalLabel="Total expenses"
+                    totalLabel={t('cars.overview.statistics.totalExpenses', 'Total expenses')}
                     formatValue={(value) => money(value)}
                 />
             </div>
 
             <Card bodyClass="p-0">
                 <div className="border-b border-gray-200 p-4 dark:border-gray-700">
-                    <h6>Installment schedule</h6>
+                    <h6>
+                        {t(
+                            'cars.overview.statistics.installmentSchedule',
+                            'Installment schedule',
+                        )}
+                    </h6>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {installments.length} installment
-                        {installments.length === 1 ? '' : 's'}
+                        {t('cars.overview.statistics.installmentsCount', {
+                            n: installments.length,
+                        })}
                     </p>
                 </div>
                 <div className="max-h-[420px] overflow-auto">
@@ -830,14 +948,34 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                         <THead>
                             <Tr>
                                 <Th>#</Th>
-                                <Th>Due date</Th>
-                                <Th className="text-right">Amount</Th>
-                                <Th className="text-right">Paid amount</Th>
-                                <Th>Status</Th>
-                                <Th>Paid date</Th>
-                                <Th>Reference</Th>
+                                <Th>
+                                    {t(
+                                        'cars.overview.table.dueDate',
+                                        'Due date',
+                                    )}
+                                </Th>
+                                <Th className="text-right">
+                                    {t('cars.overview.table.amount', 'Amount')}
+                                </Th>
+                                <Th className="text-right">
+                                    {t('activity.field.paid_amount', 'Paid amount')}
+                                </Th>
+                                <Th>
+                                    {t('cars.overview.table.status', 'Status')}
+                                </Th>
+                                <Th>
+                                    {t(
+                                        'cars.overview.table.paidDate',
+                                        'Paid date',
+                                    )}
+                                </Th>
+                                <Th>
+                                    {t('activity.field.reference', 'Reference')}
+                                </Th>
                                 {canManage && (
-                                    <Th className="text-right">Action</Th>
+                                    <Th className="text-right">
+                                        {t('activity.columns.action', 'Action')}
+                                    </Th>
                                 )}
                             </Tr>
                         </THead>
@@ -846,7 +984,10 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                 <Tr>
                                     <Td colSpan={canManage ? 8 : 7}>
                                         <span className="block py-6 text-center text-sm text-gray-400 dark:text-gray-500">
-                                            No installments yet.
+                                            {t(
+                                                'cars.overview.statistics.noInstallments',
+                                                'No installments yet.',
+                                            )}
                                         </span>
                                     </Td>
                                 </Tr>
@@ -891,7 +1032,10 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                             <Tag
                                                 className={`capitalize ${tagToneClass[installmentStatusTone[installment.status]]}`}
                                             >
-                                                {installment.status}
+                                                {t(
+                                                    `expenses.status.${installment.status}`,
+                                                    installment.status,
+                                                )}
                                             </Tag>
                                         </Td>
                                         <Td>
@@ -923,8 +1067,14 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                                                 >
                                                     {installment.status ===
                                                     'paid'
-                                                        ? 'Edit'
-                                                        : 'Mark paid'}
+                                                        ? t(
+                                                              'cars.actions.edit',
+                                                              'Edit',
+                                                          )
+                                                        : t(
+                                                              'cars.overview.statistics.markPaid',
+                                                              'Mark paid',
+                                                          )}
                                                 </Button>
                                             </Td>
                                         )}
@@ -943,7 +1093,11 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                 className="max-h-[90vh] overflow-y-auto"
             >
                 <h5 className="mb-6 text-base font-bold dark:text-gray-100">
-                    {hasFinancing ? 'Edit financing' : 'Add financing'}
+                    {t(
+                        'cars.overview.statistics.' +
+                            (hasFinancing ? 'editFinancing' : 'addFinancing'),
+                        hasFinancing ? 'Edit financing' : 'Add financing',
+                    )}
                 </h5>
                 <CarFinancingDialog
                     carId={carId}
@@ -960,17 +1114,21 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                 width={440}
             >
                 <h5 className="mb-2 text-base font-bold dark:text-gray-100">
-                    Record installment payment
+                    {t(
+                        'cars.overview.statistics.recordPayment',
+                        'Record installment payment',
+                    )}
                 </h5>
                 <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
                     {payTarget
-                        ? `#${payTarget.installment_number} · ${money(payTarget.amount)} scheduled · due ${formatDate(payTarget.due_date)}`
+                        ? `#${payTarget.installment_number} · ${money(payTarget.amount)} ${t('cars.overview.statistics.scheduled', 'scheduled')} · ${t('cars.overview.statistics.due', 'due')} ${formatDate(payTarget.due_date)}`
                         : ''}
                 </p>
                 <div className="space-y-4">
                     <div>
                         <label className="mb-1 block text-sm font-medium">
-                            Paid amount ({currencyCode()})
+                            {t('activity.field.paid_amount', 'Paid amount')} (
+                            {currencyCode()})
                         </label>
                         <Input
                             type="number"
@@ -983,15 +1141,21 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                             Number.isFinite(Number(payAmount)) &&
                             Number(payAmount) < payTarget.amount && (
                                 <p className="mt-1 text-xs text-warning">
-                                    Less than the scheduled{' '}
-                                    {money(payTarget.amount)} — the difference
-                                    still counts as unpaid financing.
+                                    {t(
+                                        'cars.overview.statistics.lessThanScheduled',
+                                        'Less than the scheduled',
+                                    )}{' '}
+                                    {money(payTarget.amount)}{' '}
+                                    {t(
+                                        'cars.overview.statistics.unpaidRemainder',
+                                        '— the difference still counts as unpaid financing.',
+                                    )}
                                 </p>
                             )}
                     </div>
                     <div>
                         <label className="mb-1 block text-sm font-medium">
-                            Paid date
+                            {t('cars.overview.table.paidDate', 'Paid date')}
                         </label>
                         <Input
                             type="date"
@@ -1001,10 +1165,16 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                     </div>
                     <div>
                         <label className="mb-1 block text-sm font-medium">
-                            Reference (optional)
+                            {t(
+                                'cars.overview.statistics.referenceOptional',
+                                'Reference (optional)',
+                            )}
                         </label>
                         <Input
-                            placeholder="Cheque or receipt number"
+                            placeholder={t(
+                                'cars.overview.statistics.chequePlaceholder',
+                                'Cheque or receipt number',
+                            )}
                             value={payReference}
                             onChange={(e) => setPayReference(e.target.value)}
                         />
@@ -1016,7 +1186,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                         variant="ghost"
                         onClick={() => setPayTarget(null)}
                     >
-                        Cancel
+                        {t('common.cancel', 'Cancel')}
                     </Button>
                     <Button
                         type="button"
@@ -1025,7 +1195,10 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                         disabled={!payDate || payAmount.trim() === ''}
                         onClick={submitPay}
                     >
-                        Save payment
+                        {t(
+                            'cars.overview.statistics.savePayment',
+                            'Save payment',
+                        )}
                     </Button>
                 </div>
             </Dialog>
@@ -1036,11 +1209,16 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                 width={420}
             >
                 <h5 className="mb-2 text-base font-bold dark:text-gray-100">
-                    Remove financing
+                    {t(
+                        'cars.overview.statistics.removeFinancing',
+                        'Remove financing',
+                    )}
                 </h5>
                 <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
-                    This deletes the financing record and its installment
-                    schedule. This cannot be undone.
+                    {t(
+                        'cars.overview.statistics.deleteFinancingDesc',
+                        'This deletes the financing record and its installment schedule. This cannot be undone.',
+                    )}
                 </p>
                 <div className="flex justify-end gap-2">
                     <Button
@@ -1048,7 +1226,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                         variant="ghost"
                         onClick={() => setDeleteOpen(false)}
                     >
-                        Cancel
+                        {t('common.cancel', 'Cancel')}
                     </Button>
                     <Button
                         type="button"
@@ -1057,7 +1235,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                         loading={deleting}
                         onClick={submitDelete}
                     >
-                        Remove
+                        {t('cars.overview.statistics.remove', 'Remove')}
                     </Button>
                 </div>
             </Dialog>

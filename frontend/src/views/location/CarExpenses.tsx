@@ -6,6 +6,7 @@ import DebouceInput from '@/components/shared/DebouceInput'
 import DataTable from '@/components/shared/DataTable'
 import { LuSearch } from 'react-icons/lu'
 import { apiGetExpenses } from '@/services/LocationService'
+import useTranslation from '@/utils/hooks/useTranslation'
 import {
     money,
     expenseStatusTone,
@@ -20,19 +21,8 @@ type CarExpensesProps = {
     carId: number
 }
 
-const statusOptions: SelectOption<string>[] = [
-    { value: '', label: 'All statuses' },
-    { value: 'pending', label: 'Pending' },
-    { value: 'paid', label: 'Paid' },
-    { value: 'overdue', label: 'Overdue' },
-]
-
-const typeOptions: SelectOption<string>[] = [
-    { value: '', label: 'All types' },
-    ...expenseTypeOptions,
-]
-
 const CarExpenses = ({ carId }: CarExpensesProps) => {
+    const { t } = useTranslation()
     const [rows, setRows] = useState<Expense[]>([])
     const [loading, setLoading] = useState(true)
     const [total, setTotal] = useState(0)
@@ -76,10 +66,39 @@ const CarExpenses = ({ carId }: CarExpensesProps) => {
         fetchData()
     }, [fetchData])
 
+    const statusOptions = useMemo<SelectOption<string>[]>(() => {
+        const options: SelectOption<string>[] = [
+            {
+                value: '',
+                label: t('cars.overview.allStatuses', 'All statuses'),
+            },
+        ]
+        ;['pending', 'paid', 'overdue'].forEach((value) => {
+            options.push({
+                value,
+                label: t(`expenses.status.${value}`, value),
+            })
+        })
+        return options
+    }, [t])
+
+    const typeOptions = useMemo<SelectOption<string>[]>(() => {
+        const options: SelectOption<string>[] = [
+            { value: '', label: t('cars.overview.allTypes', 'All types') },
+        ]
+        expenseTypeOptions.forEach((option) => {
+            options.push({
+                value: option.value,
+                label: t(`expenses.type.${option.value}`, option.label),
+            })
+        })
+        return options
+    }, [t])
+
     const columns = useMemo<ColumnDef<Expense>[]>(
         () => [
             {
-                header: 'Expense',
+                header: t('cars.overview.table.expense', 'Expense'),
                 accessorKey: 'title',
                 cell: (props) => (
                     <div className="flex flex-col">
@@ -95,16 +114,19 @@ const CarExpenses = ({ carId }: CarExpensesProps) => {
                 ),
             },
             {
-                header: 'Type',
+                header: t('cars.overview.table.type', 'Type'),
                 accessorKey: 'type',
                 cell: (props) => (
                     <span className="capitalize text-gray-700 dark:text-gray-200">
-                        {props.row.original.type.replace('_', ' ')}
+                        {t(
+                            `expenses.type.${props.row.original.type}`,
+                            props.row.original.type.replace('_', ' '),
+                        )}
                     </span>
                 ),
             },
             {
-                header: 'Due date',
+                header: t('cars.overview.table.dueDate', 'Due date'),
                 accessorKey: 'due_date',
                 cell: (props) => (
                     <span className="whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
@@ -113,7 +135,7 @@ const CarExpenses = ({ carId }: CarExpensesProps) => {
                 ),
             },
             {
-                header: 'Paid date',
+                header: t('cars.overview.table.paidDate', 'Paid date'),
                 accessorKey: 'paid_date',
                 cell: (props) => (
                     <span className="whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
@@ -122,7 +144,7 @@ const CarExpenses = ({ carId }: CarExpensesProps) => {
                 ),
             },
             {
-                header: 'Status',
+                header: t('cars.overview.table.status', 'Status'),
                 id: 'status',
                 cell: (props) => {
                     const status = props.row.original.is_overdue
@@ -132,13 +154,18 @@ const CarExpenses = ({ carId }: CarExpensesProps) => {
                         <Tag
                             className={`capitalize ${tagToneClass[expenseStatusTone[status]]}`}
                         >
-                            {status}
+                            {props.row.original.is_overdue
+                                ? t('expenses.status.overdue', 'Overdue')
+                                : t(
+                                      `expenses.status.${props.row.original.status}`,
+                                      status,
+                                  )}
                         </Tag>
                     )
                 },
             },
             {
-                header: 'Amount',
+                header: t('cars.overview.table.amount', 'Amount'),
                 accessorKey: 'amount',
                 cell: (props) => (
                     <span className="whitespace-nowrap font-semibold dark:text-gray-100">
@@ -147,22 +174,24 @@ const CarExpenses = ({ carId }: CarExpensesProps) => {
                 ),
             },
         ],
-        [],
+        [t],
     )
 
     return (
         <Card bodyClass="p-0">
             <div className="flex flex-wrap items-center justify-between gap-3 p-4">
                 <div>
-                    <h6>Expenses</h6>
+                    <h6>{t('cars.overview.tabs.expenses', 'Expenses')}</h6>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {total} expense{total === 1 ? '' : 's'} booked to this
-                        vehicle
+                        {t('cars.overview.expensesCount', { n: total })}
                     </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                     <DebouceInput
-                        placeholder="Search title, vendor…"
+                        placeholder={t(
+                            'cars.overview.searchExpenses',
+                            'Search title, vendor…',
+                        )}
                         prefix={<LuSearch className="text-lg" />}
                         onChange={(e) => {
                             setQ(e.target.value)

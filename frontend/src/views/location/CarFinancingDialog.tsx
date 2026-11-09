@@ -8,6 +8,7 @@ import { useForm, Controller } from 'react-hook-form'
 import type { Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import useTranslation from '@/utils/hooks/useTranslation'
 import {
     apiCreateCarFinancing,
     apiUpdateCarFinancing,
@@ -35,25 +36,63 @@ type CarFinancingFormValues = {
     notes?: string
 }
 
-const numberString = (message: string) =>
+/** Number-field validation; messages are supplied by the caller (localized). */
+const numberString = (
+    requiredMessage: string,
+    invalidMessage: string,
+) =>
     z
         .string()
-        .min(1, message)
+        .min(1, requiredMessage)
         .refine((value) => Number.isFinite(Number(value)), {
-            message: 'Enter a valid number',
+            message: invalidMessage,
         })
 
-const financingSchema = z.object({
-    purchase_date: z.string().min(1, 'Purchase date is required'),
-    purchase_price: numberString('Purchase price is required'),
-    down_payment: numberString('Down payment is required'),
-    financed_amount: z.string().optional(),
-    installment_amount: numberString('Installment amount is required'),
-    installments_count: numberString('Number of installments is required'),
-    first_due_date: z.string().min(1, 'First due date is required'),
-    lender: z.string().optional(),
-    notes: z.string().optional(),
-})
+/** Builders that resolve at render time so labels follow the active locale. */
+const makeFinancingSchema = (
+    t: (key: string, fallback?: string, options?: Record<string, unknown>) => string,
+) => {
+    const required = (key: string, fallbackText: string) =>
+        `${t(key, fallbackText)} ${t('cars.overview.financing.isRequired', 'is required')}`
+    const invalidNumber = t('cars.overview.financing.invalidNumber', 'Enter a valid number')
+
+    return z.object({
+        purchase_date: z
+            .string()
+            .min(
+                1,
+                required('activity.field.purchase_date', 'Purchase date'),
+            ),
+        purchase_price: numberString(
+            required('activity.field.purchase_price', 'Purchase price'),
+            invalidNumber,
+        ),
+        down_payment: numberString(
+            required('activity.field.down_payment', 'Down payment'),
+            invalidNumber,
+        ),
+        financed_amount: z.string().optional(),
+        installment_amount: numberString(
+            required('activity.field.installment_amount', 'Installment amount'),
+            invalidNumber,
+        ),
+        installments_count: numberString(
+            required(
+                'cars.overview.financing.installmentsCountLabel',
+                'Number of installments',
+            ),
+            invalidNumber,
+        ),
+        first_due_date: z
+            .string()
+            .min(
+                1,
+                required('activity.field.first_due_date', 'First due date'),
+            ),
+        lender: z.string().optional(),
+        notes: z.string().optional(),
+    })
+}
 
 const toDateInput = (value?: string | null) => (value ? value.slice(0, 10) : '')
 
@@ -95,6 +134,7 @@ const CarFinancingDialog = ({
     onClose,
     onSaved,
 }: CarFinancingDialogProps) => {
+    const { t } = useTranslation()
     const [submitting, setSubmitting] = useState(false)
 
     const {
@@ -104,7 +144,9 @@ const CarFinancingDialog = ({
         reset,
         formState: { errors },
     } = useForm<CarFinancingFormValues>({
-        resolver: zodResolver(financingSchema) as unknown as Resolver<
+        resolver: zodResolver(
+            makeFinancingSchema(t),
+        ) as unknown as Resolver<
             CarFinancingFormValues
         >,
         defaultValues: defaultFormValues(financing),
@@ -129,7 +171,10 @@ const CarFinancingDialog = ({
                 toast.push(
                     <Notification
                         type="success"
-                        title="Financing updated successfully!"
+                        title={t(
+                            'cars.overview.statistics.financingUpdated',
+                            'Financing updated successfully!',
+                        )}
                     />,
                 )
             } else {
@@ -137,7 +182,10 @@ const CarFinancingDialog = ({
                 toast.push(
                     <Notification
                         type="success"
-                        title="Financing added successfully!"
+                        title={t(
+                            'cars.overview.statistics.financingAdded',
+                            'Financing added successfully!',
+                        )}
                     />,
                 )
             }
@@ -147,7 +195,13 @@ const CarFinancingDialog = ({
             toast.push(
                 <Notification
                     type="danger"
-                    title={apiErrorMessage(error, 'Something went wrong')}
+                    title={apiErrorMessage(
+                        error,
+                        t(
+                            'cars.overview.statistics.genericError',
+                            'Something went wrong',
+                        ),
+                    )}
                 />,
             )
         } finally {
@@ -159,7 +213,7 @@ const CarFinancingDialog = ({
         <Form onSubmit={onSubmit}>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <FormItem
-                    label="Purchase date"
+                    label={`${t('activity.field.purchase_date', 'Purchase date')}`}
                     invalid={Boolean(errors.purchase_date)}
                     errorMessage={errors.purchase_date?.message}
                 >
@@ -172,7 +226,7 @@ const CarFinancingDialog = ({
                     />
                 </FormItem>
                 <FormItem
-                    label={`Purchase price (${currencyCode()})`}
+                    label={`${t('activity.field.purchase_price', 'Purchase price')} (${currencyCode()})`}
                     invalid={Boolean(errors.purchase_price)}
                     errorMessage={errors.purchase_price?.message}
                 >
@@ -185,7 +239,7 @@ const CarFinancingDialog = ({
                     />
                 </FormItem>
                 <FormItem
-                    label={`Down payment (${currencyCode()})`}
+                    label={`${t('activity.field.down_payment', 'Down payment')} (${currencyCode()})`}
                     invalid={Boolean(errors.down_payment)}
                     errorMessage={errors.down_payment?.message}
                 >
@@ -198,7 +252,7 @@ const CarFinancingDialog = ({
                     />
                 </FormItem>
                 <FormItem
-                    label={`Financed amount (${currencyCode()})`}
+                    label={`${t('activity.field.financed_amount', 'Financed amount')} (${currencyCode()})`}
                     invalid={Boolean(errors.financed_amount)}
                     errorMessage={errors.financed_amount?.message}
                 >
@@ -215,11 +269,12 @@ const CarFinancingDialog = ({
                         )}
                     />
                     <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        Leave blank to finance {money(derivedFinanced)}
+                        {t('cars.overview.financing.leaveBlank', 'Leave blank to finance')}{' '}
+                        {money(derivedFinanced)}
                     </p>
                 </FormItem>
                 <FormItem
-                    label={`Installment amount (${currencyCode()})`}
+                    label={`${t('activity.field.installment_amount', 'Installment amount')} (${currencyCode()})`}
                     invalid={Boolean(errors.installment_amount)}
                     errorMessage={errors.installment_amount?.message}
                 >
@@ -232,7 +287,10 @@ const CarFinancingDialog = ({
                     />
                 </FormItem>
                 <FormItem
-                    label="Number of installments"
+                    label={t(
+                        'cars.overview.financing.installmentsCountLabel',
+                        'Number of installments',
+                    )}
                     invalid={Boolean(errors.installments_count)}
                     errorMessage={errors.installments_count?.message}
                 >
@@ -245,7 +303,7 @@ const CarFinancingDialog = ({
                     />
                 </FormItem>
                 <FormItem
-                    label="First due date"
+                    label={t('activity.field.first_due_date', 'First due date')}
                     invalid={Boolean(errors.first_due_date)}
                     errorMessage={errors.first_due_date?.message}
                 >
@@ -257,18 +315,24 @@ const CarFinancingDialog = ({
                         )}
                     />
                 </FormItem>
-                <FormItem label="Lender">
+                <FormItem label={t('activity.field.lender', 'Lender')}>
                     <Controller
                         name="lender"
                         control={control}
                         render={({ field }) => (
-                            <Input placeholder="Bank or lender" {...field} />
+                            <Input
+                                placeholder={t(
+                                    'cars.overview.financing.lenderPlaceholder',
+                                    'Bank or lender',
+                                )}
+                                {...field}
+                            />
                         )}
                     />
                 </FormItem>
             </div>
 
-            <FormItem label="Notes" className="mt-4">
+            <FormItem label={t('activity.field.notes', 'Notes')} className="mt-4">
                 <Controller
                     name="notes"
                     control={control}
@@ -276,7 +340,10 @@ const CarFinancingDialog = ({
                         <Input
                             textArea
                             rows={3}
-                            placeholder="Optional notes about this financing"
+                            placeholder={t(
+                                'cars.overview.financing.notesPlaceholder',
+                                'Optional notes about this financing',
+                            )}
                             {...field}
                         />
                     )}
@@ -285,10 +352,18 @@ const CarFinancingDialog = ({
 
             <div className="mt-6 flex justify-end gap-2">
                 <Button type="button" variant="ghost" onClick={onClose}>
-                    Cancel
+                    {t('common.cancel', 'Cancel')}
                 </Button>
                 <Button type="submit" variant="solid" loading={submitting}>
-                    {financing ? 'Save changes' : 'Add financing'}
+                    {financing
+                        ? t(
+                              'cars.overview.financing.saveChanges',
+                              'Save changes',
+                          )
+                        : t(
+                              'cars.overview.statistics.addFinancing',
+                              'Add financing',
+                          )}
                 </Button>
             </div>
         </Form>

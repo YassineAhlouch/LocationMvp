@@ -6,9 +6,9 @@ import Card from '@/components/ui/Card'
 import Tag from '@/components/ui/Tag'
 import Table from '@/components/ui/Table'
 import Loading from '@/components/shared/Loading'
-import { LineChart } from '@/components/shared/Chart'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 import usePermissions from '@/utils/hooks/usePermissions'
+import useTranslation from '@/utils/hooks/useTranslation'
 import { LiCalendar } from '@/icons'
 import {
     LuArrowRightLeft,
@@ -16,6 +16,7 @@ import {
     LuWallet,
 } from 'react-icons/lu'
 import { apiGetCarOverview } from '@/services/LocationService'
+import FinancialOverviewChart from './FinancialOverviewChart'
 import {
     money,
     expenseStatusTone,
@@ -76,6 +77,7 @@ const EmptyRow = ({ columns, label }: { columns: number; label: string }) => (
 
 const CarOverview = ({ carId }: CarOverviewProps) => {
     const { can } = usePermissions()
+    const { t } = useTranslation()
     const [overview, setOverview] = useState<CarOverviewData | null>(null)
     const [loading, setLoading] = useState(true)
     const [failed, setFailed] = useState(false)
@@ -110,7 +112,7 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
             return []
         }
         return overview.stats.timeline.labels.map((label, index) => ({
-            month: dayjs(label).format('MMM YY'),
+            month: dayjs(label).format('MMM'),
             revenue: overview.stats.timeline.revenue[index] ?? 0,
             expenses: overview.stats.timeline.expenses[index] ?? 0,
         }))
@@ -128,7 +130,10 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
         return (
             <Card bodyClass="p-6">
                 <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                    Could not load this vehicle&apos;s overview.
+                    {t(
+                        'cars.overview.failed',
+                        "Could not load this vehicle's overview.",
+                    )}
                 </p>
             </Card>
         )
@@ -144,30 +149,30 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
         <div className="space-y-4">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <KpiCard
-                    label="Reservations"
+                    label={t('cars.overview.reservations', 'Reservations')}
                     value={String(stats.reservations.total)}
-                    hint={`${stats.reservations.active} active · ${stats.reservations.upcoming} upcoming`}
+                    hint={`${stats.reservations.active} ${t('cars.overview.active', 'active')} · ${stats.reservations.upcoming} ${t('cars.overview.upcoming', 'upcoming')}`}
                     tone="primary"
                     Icon={LiCalendar}
                 />
                 <KpiCard
-                    label="Revenue (paid)"
+                    label={t('cars.overview.revenuePaid', 'Revenue (paid)')}
                     value={money(stats.revenue.paid)}
-                    hint={`${money(stats.revenue.pending)} pending`}
+                    hint={`${money(stats.revenue.pending)} ${t('cars.overview.pending', 'pending')}`}
                     tone="success"
                     Icon={LuWallet}
                 />
                 <KpiCard
-                    label="Expenses (paid)"
+                    label={t('cars.overview.expensesPaid', 'Expenses (paid)')}
                     value={money(stats.expenses.paid)}
-                    hint={`${stats.expenses.overdue_count} overdue · ${money(stats.expenses.pending)} pending`}
+                    hint={`${stats.expenses.overdue_count} ${t('cars.overview.overdue', 'overdue')} · ${money(stats.expenses.pending)} ${t('cars.overview.pending', 'pending')}`}
                     tone="warning"
                     Icon={LuArrowRightLeft}
                 />
                 <KpiCard
-                    label="Net margin"
+                    label={t('cars.overview.netMargin', 'Net margin')}
                     value={money(stats.net)}
-                    hint={`${stats.reservations.booked_days} days booked`}
+                    hint={`${stats.reservations.booked_days} ${t('cars.overview.daysBooked', 'days booked')}`}
                     tone={stats.net >= 0 ? 'success' : 'error'}
                     Icon={LuTrendingUp}
                 />
@@ -176,63 +181,70 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
             <Card bodyClass="p-4">
                 <div className="mb-4 flex items-center justify-between">
                     <div>
-                        <h6>Revenue &amp; expenses</h6>
+                        <h6>
+                            {t(
+                                'cars.overview.revenueExpenses',
+                                'Revenue & Expenses',
+                            )}
+                        </h6>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                            Last 12 months · paid cash-basis
+                            {t(
+                                'cars.overview.chartSubtitle',
+                                'Last 12 months · paid cash-basis',
+                            )}
                         </p>
                     </div>
                 </div>
-                <LineChart
-                    data={chartData}
-                    height={300}
-                    xAxisConfig={{ dataKey: 'month' }}
-                    lineConfig={[
-                        {
-                            type: 'monotone',
-                            dataKey: 'revenue',
-                            name: 'Revenue',
-                            stroke: 'var(--success)',
-                            strokeWidth: 2,
-                            dot: false,
-                        },
-                        {
-                            type: 'monotone',
-                            dataKey: 'expenses',
-                            name: 'Expenses',
-                            stroke: 'var(--error)',
-                            strokeWidth: 2,
-                            dot: false,
-                        },
-                    ]}
-                    tooltipContentConfig={{
-                        valueFormatter: (value: number) => money(value),
-                    }}
-                />
+                <FinancialOverviewChart data={chartData} height={280} />
             </Card>
 
             <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
                 <Card bodyClass="p-0">
                     <div className="border-b border-gray-200 p-4 dark:border-gray-700">
-                        <h6>Recent reservations</h6>
+                        <h6>
+                            {t(
+                                'cars.overview.recentReservations',
+                                'Recent reservations',
+                            )}
+                        </h6>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                            Latest bookings for this vehicle
+                            {t(
+                                'cars.overview.recentReservationsSub',
+                                'Latest bookings for this vehicle',
+                            )}
                         </p>
                     </div>
                     <Table className="text-nowrap">
                         <THead>
                             <Tr>
-                                <Th>Reservation</Th>
-                                <Th>Client</Th>
-                                <Th>Pickup</Th>
-                                <Th>Status</Th>
-                                <Th className="text-right">Total</Th>
+                                <Th>
+                                    {t(
+                                        'cars.overview.table.reservation',
+                                        'Reservation',
+                                    )}
+                                </Th>
+                                <Th>
+                                    {t('cars.overview.table.client', 'Client')}
+                                </Th>
+                                <Th>
+                                    {t('cars.overview.table.pickup', 'Pickup')}
+                                </Th>
+                                <Th>
+                                    {t('cars.overview.table.status', 'Status')}
+                                </Th>
+                                <Th className="text-right">
+                                    {t('cars.overview.table.total', 'Total')}
+                                </Th>
                             </Tr>
                         </THead>
                         <TBody>
                             {overview.recent_reservations.length === 0 ? (
                                 <EmptyRow
                                     columns={5}
-                                    label="No reservations yet"
+                                    label={t(
+                                        'cars.overview.noReservations',
+                                        'No reservations yet',
+                                    )}
                                 />
                             ) : (
                                 overview.recent_reservations.map(
@@ -271,9 +283,12 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
                                                 <Tag
                                                     className={`capitalize ${tagToneClass[reservationStatusTone[reservation.status]]}`}
                                                 >
-                                                    {reservation.status.replace(
-                                                        '_',
-                                                        ' ',
+                                                    {t(
+                                                        `reservations.status.${reservation.status}`,
+                                                        reservation.status.replace(
+                                                            '_',
+                                                            ' ',
+                                                        ),
                                                     )}
                                                 </Tag>
                                             </Td>
@@ -294,26 +309,50 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
 
                 <Card bodyClass="p-0">
                     <div className="border-b border-gray-200 p-4 dark:border-gray-700">
-                        <h6>Recent expenses</h6>
+                        <h6>
+                            {t(
+                                'cars.overview.recentExpenses',
+                                'Recent expenses',
+                            )}
+                        </h6>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                            Latest costs booked to this vehicle
+                            {t(
+                                'cars.overview.recentExpensesSub',
+                                'Latest costs booked to this vehicle',
+                            )}
                         </p>
                     </div>
                     <Table className="text-nowrap">
                         <THead>
                             <Tr>
-                                <Th>Expense</Th>
-                                <Th>Type</Th>
-                                <Th>Date</Th>
-                                <Th>Status</Th>
-                                <Th className="text-right">Amount</Th>
+                                <Th>
+                                    {t(
+                                        'cars.overview.table.expense',
+                                        'Expense',
+                                    )}
+                                </Th>
+                                <Th>
+                                    {t('cars.overview.table.type', 'Type')}
+                                </Th>
+                                <Th>
+                                    {t('cars.overview.table.date', 'Date')}
+                                </Th>
+                                <Th>
+                                    {t('cars.overview.table.status', 'Status')}
+                                </Th>
+                                <Th className="text-right">
+                                    {t('cars.overview.table.amount', 'Amount')}
+                                </Th>
                             </Tr>
                         </THead>
                         <TBody>
                             {overview.recent_expenses.length === 0 ? (
                                 <EmptyRow
                                     columns={5}
-                                    label="No expenses yet"
+                                    label={t(
+                                        'cars.overview.noExpenses',
+                                        'No expenses yet',
+                                    )}
                                 />
                             ) : (
                                 overview.recent_expenses.map((expense) => {
@@ -329,9 +368,12 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
                                             </Td>
                                             <Td>
                                                 <span className="capitalize text-gray-700 dark:text-gray-200">
-                                                    {expense.type.replace(
-                                                        '_',
-                                                        ' ',
+                                                    {t(
+                                                        `expenses.type.${expense.type}`,
+                                                        expense.type.replace(
+                                                            '_',
+                                                            ' ',
+                                                        ),
                                                     )}
                                                 </span>
                                             </Td>
@@ -347,7 +389,18 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
                                                 <Tag
                                                     className={`capitalize ${tagToneClass[expenseStatusTone[status]]}`}
                                                 >
-                                                    {status.replace('_', ' ')}
+                                                    {expense.is_overdue
+                                                        ? t(
+                                                              'expenses.status.overdue',
+                                                              'Overdue',
+                                                          )
+                                                        : t(
+                                                              `expenses.status.${expense.status}`,
+                                                              expense.status.replace(
+                                                                  '_',
+                                                                  ' ',
+                                                              ),
+                                                          )}
                                                 </Tag>
                                             </Td>
                                             <Td className="text-right">
@@ -366,22 +419,36 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
 
             <Card bodyClass="p-4">
                 <div className="mb-4">
-                    <h6>Spending by type</h6>
+                    <h6>
+                        {t(
+                            'cars.overview.spendingByType',
+                            'Spending by type',
+                        )}
+                    </h6>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                        Lifetime paid + pending expenses
+                        {t(
+                            'cars.overview.spendingSub',
+                            'Paid + pending expenses over the vehicle\'s lifetime',
+                        )}
                     </p>
                 </div>
                 {stats.expenses.by_type.length === 0 ? (
                     <p className="text-sm text-gray-400 dark:text-gray-500">
-                        No expenses recorded for this vehicle.
+                        {t(
+                            'cars.overview.noSpending',
+                            'No expenses recorded for this vehicle.',
+                        )}
                     </p>
                 ) : (
                     <div className="space-y-3">
                         {stats.expenses.by_type.map((item) => (
                             <div key={item.type}>
                                 <div className="mb-1 flex items-center justify-between text-sm">
-                                    <span className="capitalize text-gray-700 dark:text-gray-200">
-                                        {item.type.replace('_', ' ')}
+                                    <span className="text-gray-700 dark:text-gray-200">
+                                        {t(
+                                            `expenses.type.${item.type}`,
+                                            item.type.replace('_', ' '),
+                                        )}
                                         <span className="ml-1 text-xs text-gray-400">
                                             ({item.count})
                                         </span>

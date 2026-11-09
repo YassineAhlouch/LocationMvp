@@ -7,6 +7,7 @@ import InputGroup from '@/components/ui/InputGroup'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 import { LiCar } from '@/icons'
 import { apiGetCarHistory } from '@/services/LocationService'
+import useTranslation from '@/utils/hooks/useTranslation'
 import {
     changeTypeMeta,
     fallbackMeta,
@@ -22,21 +23,8 @@ type CarHistoryProps = {
 
 type HistoryFilter = 'all' | 'car' | 'reservation'
 
-const carActionLabel = (action: string): string => {
-    const labels: Record<string, string> = {
-        created: 'Vehicle created',
-        updated: 'Vehicle updated',
-        deleted: 'Vehicle deleted',
-    }
-    return (
-        labels[action] ??
-        action
-            .replace(/_/g, ' ')
-            .replace(/\b\w/g, (char) => char.toUpperCase())
-    )
-}
-
 const CarHistory = ({ carId }: CarHistoryProps) => {
+    const { t } = useTranslation()
     const [entries, setEntries] = useState<CarHistoryEntry[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
@@ -75,15 +63,43 @@ const CarHistory = ({ carId }: CarHistoryProps) => {
         [entries, filter],
     )
 
+    /** Exercise/vehicle actions, localized with a humanized fallback. */
+    const carActionLabel = (action: string): string =>
+        t(
+            `cars.overview.history.carAction.${action}`,
+            action
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, (char) => char.toUpperCase()),
+        )
+
+    /** Change values: status fields go through the locale keys. */
+    const formatLocalValue = (value: string | null, field: string) => {
+        const base = formatValue(value, field)
+        if (!base) {
+            return null
+        }
+        const raw = String(value ?? '').trim()
+        if (field === 'status') {
+            return t(`reservations.status.${raw}`, base)
+        }
+        if (field === 'payment_status') {
+            return t(`reservations.payment.${raw}`, base)
+        }
+        return base
+    }
+
     return (
         <Card bodyClass="p-4">
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                 <div>
                     <h6 className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                        History
+                        {t('cars.overview.history.title', 'History')}
                     </h6>
                     <p className="mt-0.5 text-xs text-gray-400 dark:text-gray-500">
-                        Vehicle activity and reservation changes
+                        {t(
+                            'cars.overview.history.subtitle',
+                            'Vehicle activity and reservation changes',
+                        )}
                     </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -94,7 +110,7 @@ const CarHistory = ({ carId }: CarHistoryProps) => {
                             clickFeedback={false}
                             onClick={() => setFilter('all')}
                         >
-                            All
+                            {t('cars.overview.history.all', 'All')}
                         </Button>
                         <Button
                             size="sm"
@@ -102,7 +118,7 @@ const CarHistory = ({ carId }: CarHistoryProps) => {
                             clickFeedback={false}
                             onClick={() => setFilter('car')}
                         >
-                            Vehicle
+                            {t('cars.overview.history.vehicle', 'Vehicle')}
                         </Button>
                         <Button
                             size="sm"
@@ -110,7 +126,7 @@ const CarHistory = ({ carId }: CarHistoryProps) => {
                             clickFeedback={false}
                             onClick={() => setFilter('reservation')}
                         >
-                            Reservations
+                            {t('cars.overview.history.reservations', 'Reservations')}
                         </Button>
                     </InputGroup>
                     {!loading && !error && (
@@ -135,7 +151,7 @@ const CarHistory = ({ carId }: CarHistoryProps) => {
                 <p className="text-sm text-error">{error}</p>
             ) : visible.length === 0 ? (
                 <p className="text-sm text-gray-400 dark:text-gray-500">
-                    No history recorded yet.
+                    {t('cars.overview.history.empty', 'No history recorded yet.')}
                 </p>
             ) : (
                 <ol>
@@ -146,16 +162,22 @@ const CarHistory = ({ carId }: CarHistoryProps) => {
                         const tone = isCar ? 'primary' : meta!.tone
                         const label = isCar
                             ? carActionLabel(entry.action)
-                            : meta!.label
+                            : t(
+                                  `cars.overview.history.changeType.${entry.change_type}`,
+                                  meta!.label,
+                              )
                         const field = isCar
                             ? undefined
-                            : fieldLabels[entry.field_name]
+                            : t(
+                                  `activity.field.${entry.field_name}`,
+                                  fieldLabels[entry.field_name] ?? '',
+                              )
                         const oldValue = isCar
                             ? null
-                            : formatValue(entry.old_value, entry.field_name)
+                            : formatLocalValue(entry.old_value, entry.field_name)
                         const newValue = isCar
                             ? null
-                            : formatValue(entry.new_value, entry.field_name)
+                            : formatLocalValue(entry.new_value, entry.field_name)
 
                         return (
                             <li
@@ -185,7 +207,7 @@ const CarHistory = ({ carId }: CarHistoryProps) => {
                                             <p className="text-xs text-gray-400 dark:text-gray-500">
                                                 {entry.description}
                                                 {entry.user?.full_name &&
-                                                    ` · by ${entry.user.full_name}`}
+                                                    ` · ${t('cars.overview.history.by', 'by')} ${entry.user.full_name}`}
                                             </p>
                                         )
                                     ) : (
@@ -211,7 +233,7 @@ const CarHistory = ({ carId }: CarHistoryProps) => {
                                                     </span>
                                                 )}
                                                 {entry.user?.full_name &&
-                                                    ` · by ${entry.user.full_name}`}
+                                                    ` · ${t('cars.overview.history.by', 'by')} ${entry.user.full_name}`}
                                             </p>
                                             {(oldValue || newValue) && (
                                                 <p className="mt-1 flex flex-wrap items-center gap-1 text-sm">
