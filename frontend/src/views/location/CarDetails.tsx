@@ -11,7 +11,7 @@ import CarDetailsInfo from './CarDetailsInfo'
 import { apiGetCar } from '@/services/LocationService'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 import { useSessionUser } from '@/store/authStore'
-import { LiChevronLeft } from '@/icons'
+import { LiChevronLeft, LiChevronRight } from '@/icons'
 import { isVerbGranted } from './PermissionChecklist'
 import useTranslation from '@/utils/hooks/useTranslation'
 import type { Car } from '@/@types/location'
@@ -72,6 +72,9 @@ const CarDetails = () => {
     // One period for the whole vehicle dossier: every tab scopes its data to
     // it (defaulting to the current month).
     const [range, setRange] = useState<DateRange>(currentMonthRange)
+    // The specs panel (image + characteristics) can be tucked away so the
+    // tabs take the full width.
+    const [specsOpen, setSpecsOpen] = useState(true)
 
     const goToListe = () => navigate(`${APPS_PREFIX_PATH}/vehicules/liste`)
 
@@ -153,12 +156,24 @@ const CarDetails = () => {
             </Button>
 
             <div className="flex flex-col xl:flex-row gap-4 h-full">
-                <div className="flex w-full xl:w-[300px] xl:min-w-[300px]">
-                    <CarDetailsInfo car={car} />
-                </div>
+                {specsOpen && (
+                    <div className="flex w-full xl:w-[300px] xl:min-w-[300px]">
+                        <CarDetailsInfo car={car} />
+                    </div>
+                )}
 
                 <div className="w-full flex-1 min-w-0 space-y-4">
-                    <div className="flex items-center justify-end">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                        <Button
+                            size="sm"
+                            variant="ghost"
+                            icon={specsOpen ? <LiChevronLeft /> : <LiChevronRight />}
+                            onClick={() => setSpecsOpen((open) => !open)}
+                        >
+                            {specsOpen
+                                ? t('cars.overview.hideSpecs', 'Hide specs')
+                                : t('cars.overview.showSpecs', 'Show specs')}
+                        </Button>
                         <PeriodPicker value={range} onChange={setRange} />
                     </div>
                     <OverflowTabs

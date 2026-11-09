@@ -752,7 +752,9 @@
             "chartSubtitleRange": "{{range}} · encaissé (base trésorerie)",
             "recentReservationsSubRange": "Dernières réservations de la période sélectionnée",
             "recentExpensesSubRange": "Derniers coûts enregistrés sur la période sélectionnée",
-            "spendingSubRange": "Dépenses payées + en attente sur la période sélectionnée"
+            "spendingSubRange": "Dépenses payées + en attente sur la période sélectionnée",
+            "hideSpecs": "Masquer la fiche",
+            "showSpecs": "Afficher la fiche"
         },
         "actions": {
             "view": "Voir les détails",

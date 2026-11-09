@@ -752,7 +752,9 @@
             "chartSubtitleRange": "{{range}} · paid cash-basis",
             "recentReservationsSubRange": "Latest bookings within the selected period",
             "recentExpensesSubRange": "Latest costs booked within the selected period",
-            "spendingSubRange": "Paid + pending expenses within the selected period"
+            "spendingSubRange": "Paid + pending expenses within the selected period",
+            "hideSpecs": "Hide specs",
+            "showSpecs": "Show specs"
         },
         "actions": {
             "view": "View details",

@@ -752,7 +752,9 @@
             "chartSubtitleRange": "{{range}} · المحصّل فعليًا (تدفق نقدي)",
             "recentReservationsSubRange": "أحدث الحجوزات خلال الفترة المحددة",
             "recentExpensesSubRange": "أحدث التكاليف المسجلة خلال الفترة المحددة",
-            "spendingSubRange": "مصروفات مدفوعة + قيد الانتظار خلال الفترة المحددة"
+            "spendingSubRange": "مصروفات مدفوعة + قيد الانتظار خلال الفترة المحددة",
+            "hideSpecs": "إخفاء بطاقة المركبة",
+            "showSpecs": "عرض بطاقة المركبة"
         },
         "actions": {
             "view": "عرض التفاصيل",
