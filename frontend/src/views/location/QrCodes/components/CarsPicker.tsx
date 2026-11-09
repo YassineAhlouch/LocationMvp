@@ -123,7 +123,10 @@ const CarsPicker = ({ cars, selected, isLoading, max, onToggle }: CarsPickerProp
                                             : 'bg-gray-400 dark:bg-gray-500'
                                     }
                                 >
-                                    {car.status}
+                                    {t(
+                                        `cars.status.${car.status}`,
+                                        car.status,
+                                    )}
                                 </Tag>
                                 <Checkbox
                                     checked={selected.includes(car.id)}
