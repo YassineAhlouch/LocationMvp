@@ -376,7 +376,8 @@ const RevenueBar = ({ x = 0, y = 0, width = 0, height = 0 }: BarShapeProps) => (
         y={y}
         width={width}
         height={height}
-        fill={colors.blue.chart}
+        // Scheme-driven: follows the picked color scheme via --primary.
+        fill="var(--primary)"
         radius={[4, 4, 0, 0]}
     />
 )
@@ -462,8 +463,11 @@ const AvgRevenuePerRental = ({
                                                 <div
                                                     className="shrink-0 rounded-[2px] h-2.5 w-2.5"
                                                     style={{
+                                                        // Matches the bar
+                                                        // fill: the picked
+                                                        // color scheme.
                                                         backgroundColor:
-                                                            colors.blue.chart,
+                                                            'var(--primary)',
                                                     }}
                                                 />
                                                 <div className="flex flex-1 justify-between items-center gap-x-3">

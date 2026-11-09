@@ -111,17 +111,17 @@ const cyanTheme: ThemeVariables = {
 
 const goldTheme: ThemeVariables = {
     light: {
-        primary: '#f3a027',
-        primaryDeep: '#c2801f',
-        primaryMild: '#f5b352',
-        primarySubtle: '#f3a0271a',
+        primary: '#fa7c28',
+        primaryDeep: '#c86320',
+        primaryMild: '#fc8f53',
+        primarySubtle: '#fa7c281a',
         muted: '#ffffff',
     },
     dark: {
-        primary: '#f3a027',
-        primaryDeep: '#c2801f',
-        primaryMild: '#f5b352',
-        primarySubtle: '#f3a0271a',
+        primary: '#fa7c28',
+        primaryDeep: '#c86320',
+        primaryMild: '#fc8f53',
+        primarySubtle: '#fa7c281a',
         muted: '#ffffff',
     },
 }
