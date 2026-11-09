@@ -294,7 +294,8 @@
         "comparison": "Comparison",
         "cancel": "Cancel",
         "save": "Save",
-        "close": "Close"
+        "close": "Close",
+        "noResultsFound": "No results found"
     },
     "period": {
         "today": "Today",
@@ -603,6 +604,156 @@
         "stats": {
             "total": "Total"
         },
+        "overview": {
+            "failed": "Could not load this vehicle's overview.",
+            "reservations": "Reservations",
+            "active": "active",
+            "upcoming": "upcoming",
+            "daysBooked": "days booked",
+            "revenuePaid": "Revenue (paid)",
+            "expensesPaid": "Expenses (paid)",
+            "netMargin": "Net margin",
+            "pending": "pending",
+            "overdue": "overdue",
+            "revenueExpenses": "Revenue & Expenses",
+            "chartSubtitle": "Last 12 months · paid cash-basis",
+            "recentReservations": "Recent reservations",
+            "recentReservationsSub": "Latest bookings for this vehicle",
+            "noReservations": "No reservations yet",
+            "recentExpenses": "Recent expenses",
+            "recentExpensesSub": "Latest costs booked to this vehicle",
+            "noExpenses": "No expenses yet",
+            "spendingByType": "Spending by type",
+            "spendingSub": "Paid + pending expenses over the vehicle's lifetime",
+            "noSpending": "No expenses recorded for this vehicle.",
+            "table": {
+                "reservation": "Reservation",
+                "client": "Client",
+                "pickup": "Pickup",
+                "status": "Status",
+                "total": "Total",
+                "expense": "Expense",
+                "type": "Type",
+                "date": "Date",
+                "amount": "Amount",
+                "return": "Return",
+                "payment": "Payment",
+                "dueDate": "Due date",
+                "paidDate": "Paid date"
+            },
+            "allStatuses": "All statuses",
+            "allTypes": "All types",
+            "searchReservations": "Search client, number…",
+            "searchExpenses": "Search title, vendor…",
+            "reservationsCount": "{{n}} reservation(s) for this vehicle",
+            "expensesCount": "{{n}} expense(s) booked to this vehicle",
+            "tabs": {
+                "overview": "Overview",
+                "reservations": "Reservations",
+                "expenses": "Expenses",
+                "statistics": "Statistics",
+                "history": "History"
+            },
+            "history": {
+                "title": "History",
+                "subtitle": "Vehicle activity and reservation changes",
+                "all": "All",
+                "vehicle": "Vehicle",
+                "reservations": "Reservations",
+                "empty": "No history recorded yet.",
+                "error": "Could not load the history",
+                "by": "by",
+                "changeType": {
+                    "creation": "Created",
+                    "status_change": "Status change",
+                    "extension": "Extended",
+                    "discount": "Discount",
+                    "date_change": "Date change",
+                    "manual_edit": "Manual edit",
+                    "pricing_update": "Pricing update",
+                    "payment": "Payment"
+                },
+                "carAction": {
+                    "created": "Vehicle created",
+                    "updated": "Vehicle updated",
+                    "deleted": "Vehicle deleted"
+                }
+            },
+            "statistics": {
+                "period6": "Last 6 months",
+                "period12": "Last 12 months",
+                "period24": "Last 24 months",
+                "profitability": "Profitability",
+                "cashFinancing": "Cash & financing",
+                "operatingProfit": "Operating profit",
+                "netCashPosition": "Net cash position",
+                "installmentsPaid": "Installments paid",
+                "payback": "{{n}}% of purchase paid back",
+                "day": "day",
+                "daysInService": "days in service",
+                "downPayment": "down payment",
+                "financingProgress": "Financing progress",
+                "financingSub": "Installments settled and capital paid back",
+                "remove": "Remove",
+                "addFinancing": "Add financing",
+                "editFinancing": "Edit financing",
+                "noFinancingTitle": "No financing set up yet",
+                "noFinancingDesc": "Record the purchase and its installment plan to track payback.",
+                "installmentsSettled": "Installments settled",
+                "paidWord": "paid",
+                "remaining": "remaining",
+                "capitalPaidBack": "Capital paid back",
+                "toGo": "to go",
+                "nextInstallment": "Next installment",
+                "fullyPaid": "Fully paid",
+                "cashFlow": "Cash flow",
+                "cashFlowSub": "Revenue, expenses and installments per month",
+                "revenueThisPeriod": "revenue this period",
+                "netCash": "net cash",
+                "seriesInstallments": "Installments",
+                "seriesNet": "Net",
+                "utilization": "Utilization",
+                "utilizationSub": "How the service window was spent",
+                "dayShort": "d",
+                "expensesByType": "Expenses by type",
+                "expensesByTypeSub": "Costs booked to this vehicle",
+                "totalExpenses": "Total expenses",
+                "noData": "No data to chart yet.",
+                "installmentSchedule": "Installment schedule",
+                "installmentsCount": "{{n}} installment(s)",
+                "noInstallments": "No installments yet.",
+                "markPaid": "Mark paid",
+                "recordPayment": "Record installment payment",
+                "scheduled": "scheduled",
+                "due": "due",
+                "referenceOptional": "Reference (optional)",
+                "chequePlaceholder": "Cheque or receipt number",
+                "lessThanScheduled": "Less than the scheduled",
+                "unpaidRemainder": "— the difference still counts as unpaid financing.",
+                "savePayment": "Save payment",
+                "removeFinancing": "Remove financing",
+                "deleteFinancingDesc": "This deletes the financing record and its installment schedule. This cannot be undone.",
+                "restrictedTitle": "Financial data is restricted",
+                "restrictedDesc": "Your role does not have access to this vehicle's financing and profitability figures.",
+                "failed": "Could not load this vehicle's statistics.",
+                "invalidPaidAmount": "Enter a valid paid amount",
+                "installmentUpdated": "Installment payment updated!",
+                "installmentPaid": "Installment paid!",
+                "financingRemoved": "Financing removed",
+                "genericError": "Something went wrong",
+                "idle": "Idle",
+                "daysInServiceLabel": "Days in service"
+            },
+            "financing": {
+                "installmentsCountLabel": "Number of installments",
+                "lenderPlaceholder": "Bank or lender",
+                "notesPlaceholder": "Optional notes about this financing",
+                "leaveBlank": "Leave blank to finance",
+                "isRequired": "is required",
+                "invalidNumber": "Enter a valid number",
+                "saveChanges": "Save changes"
+            }
+        },
         "actions": {
             "view": "View details",
             "edit": "Edit",
@@ -649,7 +800,8 @@
         },
         "notFound": {
             "title": "Vehicle not found",
-            "description": "It may have been deleted or you don't have access to it."
+            "description": "It may have been deleted or you don't have access to it.",
+            "back": "Back to vehicles"
         },
         "form": {
             "editTitle": "Edit car",
@@ -711,6 +863,27 @@
                 "created": "Car added successfully!",
                 "error": "Something went wrong"
             }
+        },
+        "info": {
+            "category": "Category",
+            "year": "Year",
+            "color": "Color",
+            "transmission": "Transmission",
+            "fuel": "Fuel",
+            "seatsDoors": "Seats / Doors",
+            "dailyPrice": "Daily price",
+            "purchasePrice": "Purchase price",
+            "currentMileage": "Current mileage",
+            "nextService": "Next service",
+            "fuelLevel": "Fuel level",
+            "insurance": "Insurance",
+            "policy": "Policy",
+            "insuranceExpiry": "Insurance expiry",
+            "inspectionExpiry": "Inspection expiry",
+            "vin": "VIN",
+            "notes": "Notes",
+            "inactive": "Inactive",
+            "edit": "Edit vehicle"
         }
     },
     "clients": {
@@ -1768,6 +1941,202 @@
         "toasts": {
             "updated": "Status updated",
             "couldNotUpdate": "Could not update status"
+        }
+    },
+    "tasks": {
+        "title": "Tasks",
+        "addTask": "Add Task",
+        "columns": {
+            "ticket": "Ticket",
+            "subject": "Subject",
+            "priority": "Priority",
+            "dueDate": "Due Date",
+            "labels": "Labels",
+            "assignee": "Assignee"
+        },
+        "priority": {
+            "low": "Low",
+            "medium": "Medium",
+            "high": "High"
+        },
+        "tag": {
+            "design": "Design",
+            "development": "Development",
+            "bug": "Bug",
+            "documentation": "Documentation",
+            "devops": "DevOps",
+            "research": "Research",
+            "performance": "Performance",
+            "refactor": "Refactor"
+        },
+        "addDialog": {
+            "title": "Add new task",
+            "subtitle": "Create a task for the team. Leave assignee empty to share it with everyone.",
+            "subject": "Subject",
+            "description": "Description",
+            "column": "Column",
+            "priority": "Priority",
+            "dueDate": "Due Date",
+            "assignee": "Assignee",
+            "tags": "Tags",
+            "subjectPlaceholder": "Enter Subject",
+            "descriptionPlaceholder": "Enter Description",
+            "columnPlaceholder": "Select column",
+            "priorityPlaceholder": "Select priority",
+            "dueDatePlaceholder": "Select Due Date",
+            "assigneePlaceholder": "Select Assignee (optional)",
+            "tagsPlaceholder": "Select tags",
+            "subjectRequired": "Please input subject!",
+            "columnRequired": "Please select a column!",
+            "priorityRequired": "Please select priority!"
+        },
+        "details": {
+            "ticket": "Ticket",
+            "priority": "Priority",
+            "dueDate": "Due date",
+            "assignedTo": "Assigned to",
+            "tags": "Tags",
+            "description": "Description",
+            "descriptionPlaceholder": "Click to add description...",
+            "comments": "Comments",
+            "subtasks": "Subtasks",
+            "attachments": "Attachments",
+            "noCommentsYet": "No comment yet",
+            "beFirstComment": "Be the first one to comment",
+            "noSubtasks": "No subtasks",
+            "noAttachments": "No attachments"
+        },
+        "projectTab": {
+            "kanban": "Kanban",
+            "task": "Task"
+        },
+        "project": {
+            "title": "Tasks",
+            "subtitle": "Shared tasks"
+        },
+        "group": {
+            "toDo": "To Do",
+            "inProgress": "In Progress",
+            "underReview": "Under Review",
+            "done": "Done"
+        },
+        "header": {
+            "search": "Search",
+            "filter": "Filter",
+            "addColumn": "Add Column",
+            "clearFilters": "Clear filters"
+        },
+        "board": {
+            "addTicket": "Add ticket",
+            "editColumn": "Edit column",
+            "delete": "Delete",
+            "notAssigned": "Not assigned — click for details"
+        },
+        "color": {
+            "blue": "Blue",
+            "green": "Green",
+            "red": "Red",
+            "yellow": "Yellow",
+            "orange": "Orange",
+            "indigo": "Indigo",
+            "purple": "Purple",
+            "pink": "Pink",
+            "teal": "Teal",
+            "cyan": "Cyan",
+            "amber": "Amber"
+        },
+        "columnDialog": {
+            "addTitle": "Add new column",
+            "addSubtitle": "Add a new column to the board",
+            "editSubtitle": "Change the column name or color",
+            "name": "Name",
+            "namePlaceholder": "Enter column name",
+            "color": "Color",
+            "colorPlaceholder": "Select color",
+            "nameRequired": "Name is required",
+            "colorRequired": "Color is required"
+        },
+        "ticketDialog": {
+            "title": "Add new ticket",
+            "subtitle": "Add a new ticket to the selected column",
+            "descriptionRequired": "Please input description!",
+            "dueDateRequired": "Please select due date!",
+            "tagsRequired": "Select at least one tag!",
+            "assigneeRequired": "Please select one assignee!",
+            "addTicket": "Add Ticket",
+            "assigneePlaceholder": "Select Assignee"
+        },
+        "deleteDialog": {
+            "title": "Remove column",
+            "message": "Are you sure you want to remove this column? This action can't be undo."
+        }
+    },
+    "qrCodes": {
+        "qr": {
+            "title": "QR code",
+            "carsCount": "{{count}} vehicle(s)",
+            "copied": "Landing link copied",
+            "copyFailed": "Could not copy the link",
+            "preview": "Preview",
+            "printed": "Printed link",
+            "download": "Download PNG",
+            "copyLink": "Copy link"
+        },
+        "list": {
+            "title": "QR codes",
+            "count": "{{n}} QR code(s)",
+            "create": "New QR",
+            "search": "Search QR codes…",
+            "selected": "selected",
+            "columns": {
+                "code": "QR code",
+                "vehicles": "Vehicles",
+                "landingLink": "Landing page",
+                "updated": "Updated"
+            },
+            "actions": {
+                "copy": "Copy landing link",
+                "edit": "Edit",
+                "delete": "Delete"
+            },
+            "toast": {
+                "deleted": "QR code deleted",
+                "deleteFailed": "Could not delete the QR code",
+                "bulkDeleted": "{{n}} QR code(s) deleted",
+                "bulkDeleteFailed": "{{n}} deletion(s) failed"
+            },
+            "deleteTitle": "Delete {{name}}?",
+            "deleteMessage": "The printed link /r/{{slug}} will stop opening a page. This cannot be undone.",
+            "bulkDeleteTitle": "Delete QR codes",
+            "bulkDeleteMessage": "Are you sure you want to remove {{n}} QR code(s)? Their printed links will stop opening a page.",
+            "vehicles": "{{count}} vehicle(s)"
+        },
+        "editor": {
+            "title": {
+                "create": "Create a QR code",
+                "edit": "Edit QR code"
+            },
+            "subtitle": "The name becomes the public /r/{slug} link — the slug is the poster identity",
+            "name": "Poster name",
+            "namePlaceholder": "e.g. Showroom — Casablanca",
+            "nameRequired": "The name is required",
+            "slugHint": "Landing link encoded in the QR: /r/{slug}",
+            "empty": "Enter a name to generate the landing link",
+            "cancel": "Cancel",
+            "save": "Save changes",
+            "create": "Create QR code",
+            "toast": {
+                "created": "QR code created",
+                "updated": "QR code updated",
+                "error": "Something went wrong"
+            }
+        },
+        "pick": {
+            "title": "Select vehicles",
+            "selected": "{{count}} selected",
+            "search": "Search fleet",
+            "empty": "No vehicle matches your search",
+            "perDay": "day"
         }
     }
 }

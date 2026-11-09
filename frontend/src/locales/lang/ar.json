@@ -294,7 +294,8 @@
         "comparison": "مقارنة",
         "cancel": "إلغاء",
         "save": "حفظ",
-        "close": "إغلاق"
+        "close": "إغلاق",
+        "noResultsFound": "لا نتائج"
     },
     "period": {
         "today": "اليوم",
@@ -603,6 +604,156 @@
         "stats": {
             "total": "الإجمالي"
         },
+        "overview": {
+            "failed": "تعذّر تحميل نظرة عامة على هذه المركبة.",
+            "reservations": "الحجوزات",
+            "active": "نشط",
+            "upcoming": "قادم",
+            "daysBooked": "أيام محجوزة",
+            "revenuePaid": "الإيرادات (المحصّلة)",
+            "expensesPaid": "المصروفات (مدفوعة)",
+            "netMargin": "الهامش الصافي",
+            "pending": "قيد الانتظار",
+            "overdue": "متأخر",
+            "revenueExpenses": "الإيرادات والمصروفات",
+            "chartSubtitle": "آخر 12 شهرًا · المحصّل فعليًا (تدفق نقدي)",
+            "recentReservations": "أحدث الحجوزات",
+            "recentReservationsSub": "أحدث حجوزات هذه المركبة",
+            "noReservations": "لا توجد حجوزات بعد",
+            "recentExpenses": "أحدث المصروفات",
+            "recentExpensesSub": "أحدث التكاليف المسجلة لهذه المركبة",
+            "noExpenses": "لا توجد مصروفات بعد",
+            "spendingByType": "المصروفات حسب النوع",
+            "spendingSub": "مصروفات مدفوعة + قيد الانتظار على مدى عمر المركبة",
+            "noSpending": "لا توجد مصروفات مسجلة لهذه المركبة.",
+            "table": {
+                "reservation": "الحجز",
+                "client": "العميل",
+                "pickup": "الاستلام",
+                "status": "الحالة",
+                "total": "الإجمالي",
+                "expense": "المصروف",
+                "type": "النوع",
+                "date": "التاريخ",
+                "amount": "المبلغ",
+                "return": "الإرجاع",
+                "payment": "الدفع",
+                "dueDate": "تاريخ الاستحقاق",
+                "paidDate": "تاريخ الدفع"
+            },
+            "allStatuses": "جميع الحالات",
+            "allTypes": "جميع الأنواع",
+            "searchReservations": "بحث بالعميل أو الرقم…",
+            "searchExpenses": "بحث بالعنوان أو المورّد…",
+            "reservationsCount": "{{n}} حجز لهذه المركبة",
+            "expensesCount": "{{n}} مصروف لهذه المركبة",
+            "tabs": {
+                "overview": "نظرة عامة",
+                "reservations": "الحجوزات",
+                "expenses": "المصروفات",
+                "statistics": "الإحصائيات",
+                "history": "السجل"
+            },
+            "history": {
+                "title": "السجل",
+                "subtitle": "نشاط المركبة وتغييرات الحجوزات",
+                "all": "الكل",
+                "vehicle": "المركبة",
+                "reservations": "الحجوزات",
+                "empty": "لا يوجد سجل بعد.",
+                "error": "تعذّر تحميل السجل",
+                "by": "بواسطة",
+                "changeType": {
+                    "creation": "إنشاء",
+                    "status_change": "تغيير الحالة",
+                    "extension": "تمديد",
+                    "discount": "خصم",
+                    "date_change": "تغيير التواريخ",
+                    "manual_edit": "تعديل يدوي",
+                    "pricing_update": "تحديث التسعير",
+                    "payment": "دفع"
+                },
+                "carAction": {
+                    "created": "تم إنشاء المركبة",
+                    "updated": "تم تحديث المركبة",
+                    "deleted": "تم حذف المركبة"
+                }
+            },
+            "statistics": {
+                "period6": "آخر 6 أشهر",
+                "period12": "آخر 12 شهرًا",
+                "period24": "آخر 24 شهرًا",
+                "profitability": "الربحية",
+                "cashFinancing": "الخزينة والتمويل",
+                "operatingProfit": "الربح التشغيلي",
+                "netCashPosition": "الوضع النقدي الصافي",
+                "installmentsPaid": "الأقساط المدفوعة",
+                "payback": "تم استرجاع {{n}}% من سعر الشراء",
+                "day": "يوم",
+                "daysInService": "أيام في الخدمة",
+                "downPayment": "دفعة أولى",
+                "financingProgress": "تقدم التمويل",
+                "financingSub": "الأقساط المسددة ورأس المال المسترد",
+                "remove": "حذف",
+                "addFinancing": "إضافة تمويل",
+                "editFinancing": "تعديل التمويل",
+                "noFinancingTitle": "لا يوجد تمويل بعد",
+                "noFinancingDesc": "سجّل الشراء وخطة الأقساط لتتبع الاسترداد.",
+                "installmentsSettled": "الأقساط المسددة",
+                "paidWord": "مدفوعة",
+                "remaining": "متبقٍ",
+                "capitalPaidBack": "رأس المال المسترد",
+                "toGo": "متبقٍ",
+                "nextInstallment": "القسط القادم",
+                "fullyPaid": "سُدد بالكامل",
+                "cashFlow": "التدفق النقدي",
+                "cashFlowSub": "الإيرادات والمصروفات والأقساط شهريًا",
+                "revenueThisPeriod": "إيرادات الفترة",
+                "netCash": "الصافي النقدي",
+                "seriesInstallments": "الأقساط",
+                "seriesNet": "الصافي",
+                "utilization": "الاستخدام",
+                "utilizationSub": "كيف صُرفت فترة الخدمة",
+                "dayShort": "ي",
+                "expensesByType": "المصروفات حسب النوع",
+                "expensesByTypeSub": "التكاليف المسجلة لهذه المركبة",
+                "totalExpenses": "إجمالي المصروفات",
+                "noData": "لا توجد بيانات للعرض.",
+                "installmentSchedule": "جدول الأقساط",
+                "installmentsCount": "{{n}} قسط",
+                "noInstallments": "لا توجد أقساط بعد.",
+                "markPaid": "تحديد كمدفوع",
+                "recordPayment": "تسجيل دفعة قسط",
+                "scheduled": "مجدول",
+                "due": "يستحق",
+                "referenceOptional": "المرجع (اختياري)",
+                "chequePlaceholder": "رقم الشيك أو الإيصال",
+                "lessThanScheduled": "أقل من المبلغ المجدول",
+                "unpaidRemainder": "— يبقى الفرق محسوبًا كتمويل غير مسدد.",
+                "savePayment": "حفظ الدفعة",
+                "removeFinancing": "حذف التمويل",
+                "deleteFinancingDesc": "سيتم حذف سجل التمويل وجدول أقساطه. لا يمكن التراجع عن ذلك.",
+                "restrictedTitle": "البيانات المالية محظورة",
+                "restrictedDesc": "دورك لا يملك صلاحية الوصول إلى أرقام التمويل والربحية لهذه المركبة.",
+                "failed": "تعذّر تحميل إحصائيات هذه المركبة.",
+                "invalidPaidAmount": "أدخل مبلغًا مدفوعًا صحيحًا",
+                "installmentUpdated": "تم تحديث دفعة القسط!",
+                "installmentPaid": "تم دفع القسط!",
+                "financingRemoved": "تم حذف التمويل",
+                "genericError": "حدث خطأ ما",
+                "idle": "متوقفة",
+                "daysInServiceLabel": "أيام الخدمة"
+            },
+            "financing": {
+                "installmentsCountLabel": "عدد الأقساط",
+                "lenderPlaceholder": "البنك أو الممول",
+                "notesPlaceholder": "ملاحظات اختيارية عن هذا التمويل",
+                "leaveBlank": "اتركه فارغًا لتمويل",
+                "isRequired": "مطلوب",
+                "invalidNumber": "أدخل رقمًا صحيحًا",
+                "saveChanges": "حفظ التغييرات"
+            }
+        },
         "actions": {
             "view": "عرض التفاصيل",
             "edit": "تعديل",
@@ -648,8 +799,9 @@
             "subtitle": "تحديث معلومات هذه السيارة"
         },
         "notFound": {
-            "title": "السيارة غير موجودة",
-            "description": "ربما تم حذفها أو ليس لديك صلاحية الوصول إليها."
+            "title": "المركبة غير موجودة",
+            "description": "ربما تم حذفها أو أنه لا تملك صلاحية الوصول إليها.",
+            "back": "العودة إلى المركبات"
         },
         "form": {
             "editTitle": "تعديل السيارة",
@@ -711,6 +863,27 @@
                 "created": "تمت إضافة السيارة بنجاح!",
                 "error": "حدث خطأ ما"
             }
+        },
+        "info": {
+            "category": "الفئة",
+            "year": "السنة",
+            "color": "اللون",
+            "transmission": "ناقل الحركة",
+            "fuel": "الوقود",
+            "seatsDoors": "المقاعد / الأبواب",
+            "dailyPrice": "السعر اليومي",
+            "purchasePrice": "سعر الشراء",
+            "currentMileage": "عداد المسافة الحالي",
+            "nextService": "الصيانة القادمة",
+            "fuelLevel": "مستوى الوقود",
+            "insurance": "التأمين",
+            "policy": "رقم الوثيقة",
+            "insuranceExpiry": "انتهاء التأمين",
+            "inspectionExpiry": "انتهاء الفحص التقني",
+            "vin": "رقم الهيكل (VIN)",
+            "notes": "ملاحظات",
+            "inactive": "غير نشطة",
+            "edit": "تعديل المركبة"
         }
     },
     "clients": {
@@ -1768,6 +1941,202 @@
         "toasts": {
             "updated": "تم تحديث الحالة",
             "couldNotUpdate": "تعذر تحديث الحالة"
+        }
+    },
+    "tasks": {
+        "title": "المهام",
+        "addTask": "إضافة مهمة",
+        "columns": {
+            "ticket": "التذكرة",
+            "subject": "الموضوع",
+            "priority": "الأولوية",
+            "dueDate": "تاريخ الاستحقاق",
+            "labels": "التسميات",
+            "assignee": "المكلَّف"
+        },
+        "priority": {
+            "low": "منخفضة",
+            "medium": "متوسطة",
+            "high": "عالية"
+        },
+        "tag": {
+            "design": "تصميم",
+            "development": "تطوير",
+            "bug": "خطأ",
+            "documentation": "توثيق",
+            "devops": "DevOps",
+            "research": "بحث",
+            "performance": "أداء",
+            "refactor": "إعادة هيكلة"
+        },
+        "addDialog": {
+            "title": "مهمة جديدة",
+            "subtitle": "أنشئ مهمة للفريق. اترك المكلَّف فارغًا لمشاركتها مع الجميع.",
+            "subject": "الموضوع",
+            "description": "الوصف",
+            "column": "العمود",
+            "priority": "الأولوية",
+            "dueDate": "تاريخ الاستحقاق",
+            "assignee": "المكلَّف",
+            "tags": "التسميات",
+            "subjectPlaceholder": "أدخل الموضوع",
+            "descriptionPlaceholder": "أدخل الوصف",
+            "columnPlaceholder": "اختر عمودًا",
+            "priorityPlaceholder": "اختر أولوية",
+            "dueDatePlaceholder": "اختر تاريخ الاستحقاق",
+            "assigneePlaceholder": "اختر مكلَّفًا (اختياري)",
+            "tagsPlaceholder": "اختر التسميات",
+            "subjectRequired": "يرجى إدخال الموضوع !",
+            "columnRequired": "يرجى اختيار عمود !",
+            "priorityRequired": "يرجى اختيار أولوية !"
+        },
+        "details": {
+            "ticket": "التذكرة",
+            "priority": "الأولوية",
+            "dueDate": "تاريخ الاستحقاق",
+            "assignedTo": "مكَّلَف إلى",
+            "tags": "التسميات",
+            "description": "الوصف",
+            "descriptionPlaceholder": "انقر لإضافة وصف…",
+            "comments": "التعليقات",
+            "subtasks": "المهام الفرعية",
+            "attachments": "المرفقات",
+            "noCommentsYet": "لا تعليقات بعد",
+            "beFirstComment": "كن أول من يعلّق",
+            "noSubtasks": "لا مهام فرعية",
+            "noAttachments": "لا مرفقات"
+        },
+        "projectTab": {
+            "kanban": "كانبان",
+            "task": "المهام"
+        },
+        "project": {
+            "title": "المهام",
+            "subtitle": "مهام مشتركة"
+        },
+        "group": {
+            "toDo": "قائمة المهام",
+            "inProgress": "قيد التنفيذ",
+            "underReview": "قيد المراجعة",
+            "done": "مكتملة"
+        },
+        "header": {
+            "search": "بحث",
+            "filter": "تصفية",
+            "addColumn": "إضافة عمود",
+            "clearFilters": "مسح عوامل التصفية"
+        },
+        "board": {
+            "addTicket": "إضافة تذكرة",
+            "editColumn": "تعديل العمود",
+            "delete": "حذف",
+            "notAssigned": "غير مكلَّف — انقر للتفاصيل"
+        },
+        "color": {
+            "blue": "أزرق",
+            "green": "أخضر",
+            "red": "أحمر",
+            "yellow": "أصفر",
+            "orange": "برتقالي",
+            "indigo": "نيلي",
+            "purple": "بنفسجي",
+            "pink": "وردي",
+            "teal": "تركوازي",
+            "cyan": "سماوي",
+            "amber": "كهرماني"
+        },
+        "columnDialog": {
+            "addTitle": "إضافة عمود جديد",
+            "addSubtitle": "أضف عمودًا جديدًا إلى اللوحة",
+            "editSubtitle": "غيّر اسم العمود أو لونه",
+            "name": "الاسم",
+            "namePlaceholder": "أدخل اسم العمود",
+            "color": "اللون",
+            "colorPlaceholder": "اختر لونًا",
+            "nameRequired": "الاسم مطلوب",
+            "colorRequired": "اللون مطلوب"
+        },
+        "ticketDialog": {
+            "title": "تذكرة جديدة",
+            "subtitle": "أضف تذكرة جديدة إلى العمود المحدد",
+            "descriptionRequired": "يرجى إدخال الوصف !",
+            "dueDateRequired": "يرجى اختيار تاريخ الاستحقاق !",
+            "tagsRequired": "اختر تسمية واحدة على الأقل !",
+            "assigneeRequired": "يرجى اختيار مكلَّف واحد !",
+            "addTicket": "إضافة التذكرة",
+            "assigneePlaceholder": "اختر مكلَّفًا"
+        },
+        "deleteDialog": {
+            "title": "حذف العمود",
+            "message": "هل أنت متأكد من حذف هذا العمود ؟ لا يمكن التراجع عن هذا الإجراء."
+        }
+    },
+    "qrCodes": {
+        "qr": {
+            "title": "رمز QR",
+            "carsCount": "{{count}} مركبة",
+            "copied": "تم نسخ الرابط",
+            "copyFailed": "لا يمكن نسخ الرابط",
+            "preview": "معاينة",
+            "printed": "رابط مطبوع",
+            "download": "تنزيل PNG",
+            "copyLink": "نسخ الرابط"
+        },
+        "list": {
+            "title": "رموز QR",
+            "count": "{{n}} رمز QR",
+            "create": "رمز QR جديد",
+            "search": "ابحث في رموز QR…",
+            "selected": "محدد",
+            "columns": {
+                "code": "رمز QR",
+                "vehicles": "المركبات",
+                "landingLink": "صفحة الوصول",
+                "updated": "آخر تحديث"
+            },
+            "actions": {
+                "copy": "نسخ الرابط",
+                "edit": "تعديل",
+                "delete": "حذف"
+            },
+            "toast": {
+                "deleted": "تم حذف رمز QR",
+                "deleteFailed": "لا يمكن حذف رمز QR",
+                "bulkDeleted": "تم حذف {{n}} رمز QR",
+                "bulkDeleteFailed": "فشل حذف {{n}}"
+            },
+            "deleteTitle": "حذف {{name}} ؟",
+            "deleteMessage": "الرابط المطبوع /r/{{slug}} سيتوقف عن العمل. لا يمكن التراجع عن هذا الإجراء.",
+            "bulkDeleteTitle": "حذف رموز QR",
+            "bulkDeleteMessage": "هل أنت متأكد من حذف {{n}} رمز QR ؟ ستتوقف الروابط المطبوعة عن العمل.",
+            "vehicles": "{{count}} مركبة"
+        },
+        "editor": {
+            "title": {
+                "create": "إنشاء رمز QR",
+                "edit": "تعديل رمز QR"
+            },
+            "subtitle": "الاسم يصبح الرابط العام /r/{slug} — الرابط هو هوية الملصق",
+            "name": "اسم الملصق",
+            "namePlaceholder": "مثال: صالة العرض — الدار البيضاء",
+            "nameRequired": "الاسم مطلوب",
+            "slugHint": "الرابط المشفر في الرمز: /r/{slug}",
+            "empty": "أدخل اسمًا لإنشاء الرابط",
+            "cancel": "إلغاء",
+            "save": "حفظ التغييرات",
+            "create": "إنشاء الرمز",
+            "toast": {
+                "created": "تم إنشاء رمز QR",
+                "updated": "تم تحديث رمز QR",
+                "error": "حدث خطأ ما"
+            }
+        },
+        "pick": {
+            "title": "اختيار المركبات",
+            "selected": "{{count}} محدد",
+            "search": "ابحث في الأسطول",
+            "empty": "لا توجد مركبة مطابقة لبحثك",
+            "perDay": "يوم"
         }
     }
 }

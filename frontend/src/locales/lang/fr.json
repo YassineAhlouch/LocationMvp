@@ -294,7 +294,8 @@
         "comparison": "Comparaison",
         "cancel": "Annuler",
         "save": "Enregistrer",
-        "close": "Fermer"
+        "close": "Fermer",
+        "noResultsFound": "Aucun résultat"
     },
     "period": {
         "today": "Aujourd'hui",
@@ -603,6 +604,156 @@
         "stats": {
             "total": "Total"
         },
+        "overview": {
+            "failed": "Impossible de charger la vue d'ensemble de ce véhicule.",
+            "reservations": "Réservations",
+            "active": "active",
+            "upcoming": "à venir",
+            "daysBooked": "jours réservés",
+            "revenuePaid": "Chiffre d'affaires (encaissé)",
+            "expensesPaid": "Dépenses (payées)",
+            "netMargin": "Marge nette",
+            "pending": "en attente",
+            "overdue": "en retard",
+            "revenueExpenses": "Chiffre d'affaires & Dépenses",
+            "chartSubtitle": "12 derniers mois · encaissé (base trésorerie)",
+            "recentReservations": "Réservations récentes",
+            "recentReservationsSub": "Dernières réservations pour ce véhicule",
+            "noReservations": "Aucune réservation",
+            "recentExpenses": "Dépenses récentes",
+            "recentExpensesSub": "Derniers coûts enregistrés pour ce véhicule",
+            "noExpenses": "Aucune dépense",
+            "spendingByType": "Dépenses par type",
+            "spendingSub": "Dépenses payées + en attente sur la vie du véhicule",
+            "noSpending": "Aucune dépense enregistrée pour ce véhicule.",
+            "table": {
+                "reservation": "Réservation",
+                "client": "Client",
+                "pickup": "Départ",
+                "status": "Statut",
+                "total": "Total",
+                "expense": "Dépense",
+                "type": "Type",
+                "date": "Date",
+                "amount": "Montant",
+                "return": "Retour",
+                "payment": "Paiement",
+                "dueDate": "Échéance",
+                "paidDate": "Payé le"
+            },
+            "allStatuses": "Tous les statuts",
+            "allTypes": "Tous les types",
+            "searchReservations": "Rechercher un client, un numéro…",
+            "searchExpenses": "Rechercher un titre, un fournisseur…",
+            "reservationsCount": "{{n}} réservation(s) pour ce véhicule",
+            "expensesCount": "{{n}} dépense(s) enregistrée(s) pour ce véhicule",
+            "tabs": {
+                "overview": "Vue d'ensemble",
+                "reservations": "Réservations",
+                "expenses": "Dépenses",
+                "statistics": "Statistiques",
+                "history": "Historique"
+            },
+            "history": {
+                "title": "Historique",
+                "subtitle": "Activité du véhicule et changements de réservation",
+                "all": "Tout",
+                "vehicle": "Véhicule",
+                "reservations": "Réservations",
+                "empty": "Aucun historique enregistré.",
+                "error": "Impossible de charger l'historique",
+                "by": "par",
+                "changeType": {
+                    "creation": "Création",
+                    "status_change": "Changement de statut",
+                    "extension": "Prolongation",
+                    "discount": "Remise",
+                    "date_change": "Changement de dates",
+                    "manual_edit": "Édition manuelle",
+                    "pricing_update": "Mise à jour du prix",
+                    "payment": "Paiement"
+                },
+                "carAction": {
+                    "created": "Véhicule créé",
+                    "updated": "Véhicule mis à jour",
+                    "deleted": "Véhicule supprimé"
+                }
+            },
+            "statistics": {
+                "period6": "6 derniers mois",
+                "period12": "12 derniers mois",
+                "period24": "24 derniers mois",
+                "profitability": "Rentabilité",
+                "cashFinancing": "Trésorerie & financement",
+                "operatingProfit": "Bénéfice d'exploitation",
+                "netCashPosition": "Position de trésorerie nette",
+                "installmentsPaid": "Échéances payées",
+                "payback": "{{n}}% du prix d'achat remboursé",
+                "day": "jour",
+                "daysInService": "jours en service",
+                "downPayment": "acompte",
+                "financingProgress": "Progression du financement",
+                "financingSub": "Échéances réglées et capital remboursé",
+                "remove": "Supprimer",
+                "addFinancing": "Ajouter un financement",
+                "editFinancing": "Modifier le financement",
+                "noFinancingTitle": "Aucun financement configuré",
+                "noFinancingDesc": "Enregistrez l'achat et son échéancier pour suivre le remboursement.",
+                "installmentsSettled": "Échéances réglées",
+                "paidWord": "payées",
+                "remaining": "restant",
+                "capitalPaidBack": "Capital remboursé",
+                "toGo": "restant",
+                "nextInstallment": "Prochaine échéance",
+                "fullyPaid": "Totalement payé",
+                "cashFlow": "Flux de trésorerie",
+                "cashFlowSub": "Revenus, dépenses et échéances par mois",
+                "revenueThisPeriod": "chiffre d'affaires sur la période",
+                "netCash": "trésorerie nette",
+                "seriesInstallments": "Échéances",
+                "seriesNet": "Net",
+                "utilization": "Utilisation",
+                "utilizationSub": "Répartition de la fenêtre de service",
+                "dayShort": "j",
+                "expensesByType": "Dépenses par type",
+                "expensesByTypeSub": "Coûts enregistrés pour ce véhicule",
+                "totalExpenses": "Dépenses totales",
+                "noData": "Aucune donnée à afficher.",
+                "installmentSchedule": "Échéancier",
+                "installmentsCount": "{{n}} échéance(s)",
+                "noInstallments": "Aucune échéance.",
+                "markPaid": "Marquer payée",
+                "recordPayment": "Enregistrer un paiement",
+                "scheduled": "prévue",
+                "due": "échéance",
+                "referenceOptional": "Référence (facultatif)",
+                "chequePlaceholder": "N° de chèque ou de reçu",
+                "lessThanScheduled": "Moins que la somme prévue",
+                "unpaidRemainder": "— la différence reste comptée comme financement impayé.",
+                "savePayment": "Enregistrer le paiement",
+                "removeFinancing": "Supprimer le financement",
+                "deleteFinancingDesc": "Cela supprime le financement et son échéancier. Action irréversible.",
+                "restrictedTitle": "Données financières restreintes",
+                "restrictedDesc": "Votre rôle n'a pas accès aux chiffres de financement et de rentabilité de ce véhicule.",
+                "failed": "Impossible de charger les statistiques de ce véhicule.",
+                "invalidPaidAmount": "Saisissez un montant payé valide",
+                "installmentUpdated": "Paiement de l'échéance mis à jour !",
+                "installmentPaid": "Échéance payée !",
+                "financingRemoved": "Financement supprimé",
+                "genericError": "Une erreur est survenue",
+                "idle": "Au repos",
+                "daysInServiceLabel": "Jours en service"
+            },
+            "financing": {
+                "installmentsCountLabel": "Nombre d'échéances",
+                "lenderPlaceholder": "Banque ou prêteur",
+                "notesPlaceholder": "Notes facultatives sur ce financement",
+                "leaveBlank": "Laissez vide pour financer",
+                "isRequired": "est obligatoire",
+                "invalidNumber": "Saisissez un nombre valide",
+                "saveChanges": "Enregistrer les modifications"
+            }
+        },
         "actions": {
             "view": "Voir les détails",
             "edit": "Modifier",
@@ -649,7 +800,8 @@
         },
         "notFound": {
             "title": "Véhicule introuvable",
-            "description": "Il a peut-être été supprimé ou vous n’y avez pas accès."
+            "description": "Il a peut-être été supprimé ou vous n'y avez pas accès.",
+            "back": "Retour aux véhicules"
         },
         "form": {
             "editTitle": "Modifier le véhicule",
@@ -711,6 +863,27 @@
                 "created": "Véhicule ajouté avec succès !",
                 "error": "Une erreur s’est produite"
             }
+        },
+        "info": {
+            "category": "Catégorie",
+            "year": "Année",
+            "color": "Couleur",
+            "transmission": "Transmission",
+            "fuel": "Carburant",
+            "seatsDoors": "Places / Portes",
+            "dailyPrice": "Prix par jour",
+            "purchasePrice": "Prix d'achat",
+            "currentMileage": "Kilométrage actuel",
+            "nextService": "Prochain entretien",
+            "fuelLevel": "Niveau de carburant",
+            "insurance": "Assurance",
+            "policy": "N° de police",
+            "insuranceExpiry": "Expiration assurance",
+            "inspectionExpiry": "Expiration contrôle technique",
+            "vin": "N° de châssis (VIN)",
+            "notes": "Notes",
+            "inactive": "Inactif",
+            "edit": "Modifier le véhicule"
         }
     },
     "clients": {
@@ -1768,6 +1941,202 @@
         "toasts": {
             "updated": "Statut mis à jour",
             "couldNotUpdate": "Mise à jour du statut impossible"
+        }
+    },
+    "tasks": {
+        "title": "Tâches",
+        "addTask": "Ajouter une tâche",
+        "columns": {
+            "ticket": "Ticket",
+            "subject": "Sujet",
+            "priority": "Priorité",
+            "dueDate": "Échéance",
+            "labels": "Étiquettes",
+            "assignee": "Responsable"
+        },
+        "priority": {
+            "low": "Basse",
+            "medium": "Moyenne",
+            "high": "Haute"
+        },
+        "tag": {
+            "design": "Design",
+            "development": "Développement",
+            "bug": "Bug",
+            "documentation": "Documentation",
+            "devops": "DevOps",
+            "research": "Recherche",
+            "performance": "Performance",
+            "refactor": "Refactorisation"
+        },
+        "addDialog": {
+            "title": "Nouvelle tâche",
+            "subtitle": "Créez une tâche pour l'équipe. Laissez le responsable vide pour la partager avec tout le monde.",
+            "subject": "Sujet",
+            "description": "Description",
+            "column": "Colonne",
+            "priority": "Priorité",
+            "dueDate": "Échéance",
+            "assignee": "Responsable",
+            "tags": "Étiquettes",
+            "subjectPlaceholder": "Saisir un sujet",
+            "descriptionPlaceholder": "Saisir une description",
+            "columnPlaceholder": "Choisir une colonne",
+            "priorityPlaceholder": "Choisir une priorité",
+            "dueDatePlaceholder": "Choisir une échéance",
+            "assigneePlaceholder": "Choisir un responsable (facultatif)",
+            "tagsPlaceholder": "Choisir des étiquettes",
+            "subjectRequired": "Veuillez saisir un sujet !",
+            "columnRequired": "Veuillez choisir une colonne !",
+            "priorityRequired": "Veuillez choisir une priorité !"
+        },
+        "details": {
+            "ticket": "Ticket",
+            "priority": "Priorité",
+            "dueDate": "Échéance",
+            "assignedTo": "Assigné à",
+            "tags": "Étiquettes",
+            "description": "Description",
+            "descriptionPlaceholder": "Cliquez pour ajouter une description…",
+            "comments": "Commentaires",
+            "subtasks": "Sous-tâches",
+            "attachments": "Pièces jointes",
+            "noCommentsYet": "Aucun commentaire",
+            "beFirstComment": "Soyez le premier à commenter",
+            "noSubtasks": "Aucune sous-tâche",
+            "noAttachments": "Aucune pièce jointe"
+        },
+        "projectTab": {
+            "kanban": "Kanban",
+            "task": "Tâches"
+        },
+        "project": {
+            "title": "Tâches",
+            "subtitle": "Tâches partagées"
+        },
+        "group": {
+            "toDo": "À faire",
+            "inProgress": "En cours",
+            "underReview": "En révision",
+            "done": "Terminé"
+        },
+        "header": {
+            "search": "Rechercher",
+            "filter": "Filtrer",
+            "addColumn": "Ajouter une colonne",
+            "clearFilters": "Effacer les filtres"
+        },
+        "board": {
+            "addTicket": "Ajouter un ticket",
+            "editColumn": "Modifier la colonne",
+            "delete": "Supprimer",
+            "notAssigned": "Non assigné — cliquez pour les détails"
+        },
+        "color": {
+            "blue": "Bleu",
+            "green": "Vert",
+            "red": "Rouge",
+            "yellow": "Jaune",
+            "orange": "Orange",
+            "indigo": "Indigo",
+            "purple": "Violet",
+            "pink": "Rose",
+            "teal": "Turquoise",
+            "cyan": "Cyan",
+            "amber": "Ambre"
+        },
+        "columnDialog": {
+            "addTitle": "Nouvelle colonne",
+            "addSubtitle": "Ajoutez une nouvelle colonne au tableau",
+            "editSubtitle": "Modifiez le nom ou la couleur de la colonne",
+            "name": "Nom",
+            "namePlaceholder": "Saisir le nom de la colonne",
+            "color": "Couleur",
+            "colorPlaceholder": "Choisir une couleur",
+            "nameRequired": "Le nom est requis",
+            "colorRequired": "La couleur est requise"
+        },
+        "ticketDialog": {
+            "title": "Nouveau ticket",
+            "subtitle": "Ajoutez un nouveau ticket à la colonne sélectionnée",
+            "descriptionRequired": "Veuillez saisir une description !",
+            "dueDateRequired": "Veuillez choisir une échéance !",
+            "tagsRequired": "Veuillez choisir au moins une étiquette !",
+            "assigneeRequired": "Veuillez choisir un responsable !",
+            "addTicket": "Ajouter le ticket",
+            "assigneePlaceholder": "Choisir un responsable"
+        },
+        "deleteDialog": {
+            "title": "Supprimer la colonne",
+            "message": "Voulez-vous vraiment supprimer cette colonne ? Cette action est irréversible."
+        }
+    },
+    "qrCodes": {
+        "qr": {
+            "title": "Code QR",
+            "carsCount": "{{count}} véhicule(s)",
+            "copied": "Lien copié",
+            "copyFailed": "Impossible de copier le lien",
+            "preview": "Aperçu",
+            "printed": "Lien imprimé",
+            "download": "Télécharger le PNG",
+            "copyLink": "Copier le lien"
+        },
+        "list": {
+            "title": "Codes QR",
+            "count": "{{n}} code(s) QR",
+            "create": "Nouveau QR",
+            "search": "Rechercher des codes QR…",
+            "selected": "sélectionné(s)",
+            "columns": {
+                "code": "Code QR",
+                "vehicles": "Véhicules",
+                "landingLink": "Page de destination",
+                "updated": "Mis à jour"
+            },
+            "actions": {
+                "copy": "Copier le lien",
+                "edit": "Modifier",
+                "delete": "Supprimer"
+            },
+            "toast": {
+                "deleted": "Code QR supprimé",
+                "deleteFailed": "Impossible de supprimer le code QR",
+                "bulkDeleted": "{{n}} code(s) QR supprimé(s)",
+                "bulkDeleteFailed": "{{n}} suppression(s) en échec"
+            },
+            "deleteTitle": "Supprimer {{name}} ?",
+            "deleteMessage": "Le lien imprimé /r/{{slug}} cessera d’ouvrir une page. Action irréversible.",
+            "bulkDeleteTitle": "Supprimer les codes QR",
+            "bulkDeleteMessage": "Voulez-vous vraiment supprimer {{n}} code(s) QR ? Leurs liens imprimés cesseront d’ouvrir une page.",
+            "vehicles": "{{count}} véhicule(s)"
+        },
+        "editor": {
+            "title": {
+                "create": "Créer un code QR",
+                "edit": "Modifier le code QR"
+            },
+            "subtitle": "Le nom devient le lien public /r/{slug} — le slug est l’identité de l’affiche",
+            "name": "Nom de l’affiche",
+            "namePlaceholder": "ex. Showroom — Casablanca",
+            "nameRequired": "Le nom est requis",
+            "slugHint": "Lien encodé dans le QR : /r/{slug}",
+            "empty": "Saisissez un nom pour générer le lien",
+            "cancel": "Annuler",
+            "save": "Enregistrer les modifications",
+            "create": "Créer le code QR",
+            "toast": {
+                "created": "Code QR créé",
+                "updated": "Code QR mis à jour",
+                "error": "Une erreur est survenue"
+            }
+        },
+        "pick": {
+            "title": "Sélectionner les véhicules",
+            "selected": "{{count}} sélectionné(s)",
+            "search": "Rechercher dans la flotte",
+            "empty": "Aucun véhicule ne correspond à votre recherche",
+            "perDay": "jour"
         }
     }
 }
