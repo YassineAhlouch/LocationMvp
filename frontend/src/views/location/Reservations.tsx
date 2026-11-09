@@ -226,7 +226,7 @@ const CancelDialog = ({
     const [submitting, setSubmitting] = useState(false)
 
     const handleCancel = async () => {
-        if (!reservation || !reason.trim()) {
+        if (!reservation || !reason.trim() || submitting) {
             return
         }
         setSubmitting(true)
@@ -271,14 +271,13 @@ const CancelDialog = ({
                     />
                 </FormItem>
                 <div className="mt-6 flex justify-end gap-2">
-                    <Button variant="ghost" onClick={onClose}>
+                    <Button type="button" variant="ghost" onClick={onClose}>
                         {t('reservations.form.back', 'Back')}
                     </Button>
                     <Button
                         variant="solid"
                         loading={submitting}
                         disabled={!reason.trim()}
-                        onClick={handleCancel}
                     >
                         {t('reservations.actions.cancel', 'Cancel reservation')}
                     </Button>
@@ -304,7 +303,7 @@ const NoShowDialog = ({
     const [submitting, setSubmitting] = useState(false)
 
     const handleNoShow = async () => {
-        if (!reservation || !reason.trim()) {
+        if (!reservation || !reason.trim() || submitting) {
             return
         }
         setSubmitting(true)
@@ -352,16 +351,15 @@ const NoShowDialog = ({
                     />
                 </FormItem>
                 <div className="mt-6 flex justify-end gap-2">
-                    <Button variant="ghost" onClick={onClose}>
+                    <Button type="button" variant="ghost" onClick={onClose}>
                         {t('reservations.form.back', 'Back')}
                     </Button>
                     <Button
                         variant="solid"
                         loading={submitting}
                         disabled={!reason.trim()}
-                        onClick={handleNoShow}
                     >
-                        Mark as no show
+                        {t('reservations.dialogs.noShowSubmit', 'Mark as no show')}
                     </Button>
                 </div>
             </Form>
@@ -395,7 +393,7 @@ const ActivateDialog = ({
     }, [reservation])
 
     const handleActivate = async () => {
-        if (!reservation) {
+        if (!reservation || submitting) {
             return
         }
         setSubmitting(true)
@@ -464,15 +462,14 @@ const ActivateDialog = ({
                 </div>
 
                 <div className="mt-6 flex justify-end gap-2">
-                    <Button variant="ghost" onClick={onClose}>
+                    <Button type="button" variant="ghost" onClick={onClose}>
                         {t('reservations.form.back', 'Back')}
                     </Button>
                     <Button
                         variant="solid"
                         loading={submitting}
-                        onClick={handleActivate}
                     >
-                        Activate reservation
+                        {t('reservations.dialogs.activateSubmit', 'Activate reservation')}
                     </Button>
                 </div>
             </Form>
@@ -508,7 +505,7 @@ const CompleteDialog = ({
     }, [reservation])
 
     const handleComplete = async () => {
-        if (!reservation) {
+        if (!reservation || submitting) {
             return
         }
         setSubmitting(true)
@@ -588,15 +585,14 @@ const CompleteDialog = ({
                 </div>
 
                 <div className="mt-6 flex justify-end gap-2">
-                    <Button variant="ghost" onClick={onClose}>
+                    <Button type="button" variant="ghost" onClick={onClose}>
                         {t('reservations.form.back', 'Back')}
                     </Button>
                     <Button
                         variant="solid"
                         loading={submitting}
-                        onClick={handleComplete}
                     >
-                        Complete reservation
+                        {t('reservations.dialogs.completeSubmit', 'Complete reservation')}
                     </Button>
                 </div>
             </Form>

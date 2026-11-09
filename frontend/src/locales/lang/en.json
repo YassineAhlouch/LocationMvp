@@ -531,7 +531,10 @@
             "reportedIssues": "Reported issues",
             "reportedIssuesPlaceholder": "Any damage or issues found on return (optional)",
             "cancelTitle": "Cancel reservation {{number}}",
-            "noShowTitle": "Mark as no show"
+            "noShowTitle": "Mark as no show",
+            "activateSubmit": "Activate reservation",
+            "completeSubmit": "Complete reservation",
+            "noShowSubmit": "Mark as no show"
         },
         "csv": {
             "pickup": "Pickup",

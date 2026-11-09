@@ -531,7 +531,10 @@
             "reportedIssues": "المشاكل المُبلّغ عنها",
             "reportedIssuesPlaceholder": "أي أضرار أو مشاكل عند الإرجاع (اختياري)",
             "cancelTitle": "إلغاء الحجز {{number}}",
-            "noShowTitle": "تسجيل كعدم حضور"
+            "noShowTitle": "تسجيل كعدم حضور",
+            "activateSubmit": "تفعيل الحجز",
+            "completeSubmit": "إتمام الحجز",
+            "noShowSubmit": "تسجيل عدم الحضور"
         },
         "csv": {
             "pickup": "الاستلام",

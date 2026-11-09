@@ -531,7 +531,10 @@
             "reportedIssues": "Problèmes signalés",
             "reportedIssuesPlaceholder": "Tout dommage ou problème constaté au retour (facultatif)",
             "cancelTitle": "Annuler la réservation {{number}}",
-            "noShowTitle": "Marquer comme non présenté"
+            "noShowTitle": "Marquer comme non présenté",
+            "activateSubmit": "Activer la réservation",
+            "completeSubmit": "Clôturer la réservation",
+            "noShowSubmit": "Marquer non présenté"
         },
         "csv": {
             "pickup": "Départ",
