@@ -18,6 +18,8 @@ class CarStatisticsRequest extends FormRequest
     {
         return [
             'months' => ['sometimes', 'integer', 'min:1', 'max:24'],
+            'from' => ['sometimes', 'date'],
+            'to' => ['sometimes', 'date', 'after_or_equal:from'],
         ];
     }
 }

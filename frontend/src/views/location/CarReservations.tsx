@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
+import dayjs from 'dayjs'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Tag from '@/components/ui/Tag'
@@ -21,13 +22,15 @@ import {
     tagToneClass,
 } from './shared'
 import type { Reservation, SelectOption } from '@/@types/location'
+import type { DateRange } from '@/components/shared/PeriodPicker'
 import type { ColumnDef } from '@tanstack/react-table'
 
 type CarReservationsProps = {
     carId: number
+    range: DateRange
 }
 
-const CarReservations = ({ carId }: CarReservationsProps) => {
+const CarReservations = ({ carId, range }: CarReservationsProps) => {
     const { can } = usePermissions()
     const { t } = useTranslation()
     const [rows, setRows] = useState<Reservation[]>([])
@@ -46,6 +49,8 @@ const CarReservations = ({ carId }: CarReservationsProps) => {
             per_page: pageSize,
             sort_by: 'pickup_datetime',
             sort_dir: 'desc',
+            pickup_from: dayjs(range.from).format('YYYY-MM-DD'),
+            pickup_to: dayjs(range.to).format('YYYY-MM-DD'),
         }
         if (q.trim()) {
             params.q = q.trim()
@@ -63,11 +68,16 @@ const CarReservations = ({ carId }: CarReservationsProps) => {
                 setTotal(0)
             })
             .finally(() => setLoading(false))
-    }, [carId, pageIndex, pageSize, q, statusFilter])
+    }, [carId, pageIndex, pageSize, q, statusFilter, range])
 
     useEffect(() => {
         fetchData()
     }, [fetchData])
+
+    // A new window invalidates the current page.
+    useEffect(() => {
+        setPageIndex(1)
+    }, [range])
 
     const statusOptions = useMemo<SelectOption<string>[]>(() => {
         const options: SelectOption<string>[] = [

@@ -13,6 +13,7 @@ use App\Models\Car;
 use App\Models\CarInstallment;
 use App\Services\Cars\CarFinancingService;
 use App\Services\Cars\CarStatisticsService;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -36,15 +37,24 @@ class CarFinancingController extends Controller
     /**
      * kpis, financing_progress, monthly_series, utilization and
      * expenses_by_type for one car, plus its full installment schedule.
+     * An optional from/to window scopes the flows to the picked period.
      */
     public function statistics(CarStatisticsRequest $request, Car $car): JsonResponse
     {
         $months = (int) $request->validated('months', 12);
+        $fromParam = $request->validated('from');
+        $toParam = $request->validated('to');
+        $from = $fromParam !== null
+            ? CarbonImmutable::parse($fromParam)->startOfDay()
+            : null;
+        $to = $toParam !== null
+            ? CarbonImmutable::parse($toParam)->endOfDay()
+            : null;
 
         $financing = $car->financing()->first();
 
         return response()->json(array_merge(
-            $this->statistics->statistics($car, $months),
+            $this->statistics->statistics($car, $months, $from, $to),
             [
                 'financing' => $financing === null
                     ? null

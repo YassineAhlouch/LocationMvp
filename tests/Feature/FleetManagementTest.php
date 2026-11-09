@@ -590,6 +590,98 @@ class FleetManagementTest extends TestCase
             ->assertNotFound();
     }
 
+    public function test_overview_scopes_figures_to_a_requested_period(): void
+    {
+        $actor = $this->actor(['fleet.view']);
+        $car = $this->car();
+        $client = $this->client();
+
+        $active = Reservation::factory()->active()->create([
+            'agency_id' => $this->agency->id,
+            'car_id' => $car->id,
+            'primary_client_id' => $client->id,
+            'created_by' => $actor->id,
+            'pickup_datetime' => now()->startOfMonth()->setTime(9, 0),
+            'rental_days' => 2,
+            'total_amount' => 600,
+        ]);
+        Reservation::factory()->completed()->create([
+            'agency_id' => $this->agency->id,
+            'car_id' => $car->id,
+            'primary_client_id' => $client->id,
+            'created_by' => $actor->id,
+            'pickup_datetime' => now()->subMonths(2)->setTime(9, 0),
+        ]);
+
+        Payment::factory()->create([
+            'agency_id' => $this->agency->id,
+            'reservation_id' => $active->id,
+            'amount' => 400,
+            'status' => PaymentRecordStatus::Paid,
+            'payment_date' => now(),
+        ]);
+        Payment::factory()->create([
+            'agency_id' => $this->agency->id,
+            'reservation_id' => $active->id,
+            'amount' => 700,
+            'status' => PaymentRecordStatus::Paid,
+            'payment_date' => now()->subMonth(),
+        ]);
+
+        CarExpense::factory()->create([
+            'agency_id' => $this->agency->id,
+            'car_id' => $car->id,
+            'type' => ExpenseType::Maintenance,
+            'amount' => 100,
+            'status' => ExpenseStatus::Paid,
+            'paid_date' => now(),
+        ]);
+        CarExpense::factory()->create([
+            'agency_id' => $this->agency->id,
+            'car_id' => $car->id,
+            'type' => ExpenseType::Repair,
+            'amount' => 250,
+            'status' => ExpenseStatus::Paid,
+            'paid_date' => now()->subMonth(),
+        ]);
+
+        // The current window holds one reservation, one payment, one expense.
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/cars/'.$car->id.'/overview'.sprintf(
+                '?from=%s&to=%s',
+                now()->startOfMonth()->format('Y-m-d'),
+                now()->endOfMonth()->format('Y-m-d'),
+            ))
+            ->assertOk()
+            ->assertJsonPath('stats.reservations.total', 1)
+            ->assertJsonPath('stats.reservations.active', 1)
+            ->assertJsonPath('stats.reservations.booked_days', 2)
+            ->assertJsonPath('stats.revenue.paid', 400)
+            ->assertJsonPath('stats.revenue.net', 400)
+            ->assertJsonPath('stats.expenses.paid', 100)
+            ->assertJsonPath('stats.expenses.total', 100)
+            ->assertJsonPath('stats.net', 300)
+            ->assertJsonCount(1, 'stats.timeline.labels')
+            ->assertJsonPath('stats.timeline.labels.0', now()->format('Y-m'))
+            ->assertJsonCount(1, 'recent_reservations')
+            ->assertJsonCount(1, 'recent_expenses');
+
+        // Without a window the lifetime figures are unchanged.
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/cars/'.$car->id.'/overview')
+            ->assertOk()
+            ->assertJsonPath('stats.reservations.total', 2)
+            ->assertJsonPath('stats.revenue.paid', 1100)
+            ->assertJsonPath('stats.expenses.paid', 350)
+            ->assertJsonCount(12, 'stats.timeline.labels')
+            ->assertJsonCount(2, 'recent_reservations');
+
+        // Reversed windows are rejected.
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/cars/'.$car->id.'/overview?from='.now()->format('Y-m-d').'&to='.now()->subWeek()->format('Y-m-d'))
+            ->assertUnprocessable();
+    }
+
     public function test_history_merges_car_activity_and_reservation_changes(): void
     {
         $outsider = $this->actor(['reservations.view']);

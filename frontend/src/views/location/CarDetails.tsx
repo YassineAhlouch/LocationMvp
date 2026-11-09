@@ -3,6 +3,10 @@ import { Route, Routes, useNavigate, useParams } from 'react-router'
 import Button from '@/components/ui/Button'
 import Spinner from '@/components/ui/Spinner'
 import OverflowTabs from '@/components/shared/OverflowTabs'
+import PeriodPicker, {
+    currentMonthRange,
+} from '@/components/shared/PeriodPicker'
+import type { DateRange } from '@/components/shared/PeriodPicker'
 import CarDetailsInfo from './CarDetailsInfo'
 import { apiGetCar } from '@/services/LocationService'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
@@ -65,6 +69,9 @@ const CarDetails = () => {
     const [car, setCar] = useState<Car | null>(null)
     const [loading, setLoading] = useState(true)
     const [failed, setFailed] = useState(false)
+    // One period for the whole vehicle dossier: every tab scopes its data to
+    // it (defaulting to the current month).
+    const [range, setRange] = useState<DateRange>(currentMonthRange)
 
     const goToListe = () => navigate(`${APPS_PREFIX_PATH}/vehicules/liste`)
 
@@ -150,7 +157,10 @@ const CarDetails = () => {
                     <CarDetailsInfo car={car} />
                 </div>
 
-                <div className="w-full flex-1 min-w-0">
+                <div className="w-full flex-1 min-w-0 space-y-4">
+                    <div className="flex items-center justify-end">
+                        <PeriodPicker value={range} onChange={setRange} />
+                    </div>
                     <OverflowTabs
                         tabList={tabList}
                         value={activeTab}
@@ -160,31 +170,55 @@ const CarDetails = () => {
                             )
                         }
                     />
-                    <div className="mt-4 h-full">
+                    <div className="h-full">
                         <Routes>
                             <Route
                                 path="/overview"
-                                element={<CarOverview carId={car.id} />}
+                                element={
+                                    <CarOverview
+                                        carId={car.id}
+                                        range={range}
+                                    />
+                                }
                             />
                             <Route
                                 path="/reservations"
-                                element={<CarReservations carId={car.id} />}
+                                element={
+                                    <CarReservations
+                                        carId={car.id}
+                                        range={range}
+                                    />
+                                }
                             />
                             <Route
                                 path="/expenses"
-                                element={<CarExpenses carId={car.id} />}
+                                element={
+                                    <CarExpenses carId={car.id} range={range} />
+                                }
                             />
                             <Route
                                 path="/history"
-                                element={<CarHistory carId={car.id} />}
+                                element={
+                                    <CarHistory carId={car.id} range={range} />
+                                }
                             />
                             <Route
                                 path="/statistics"
-                                element={<CarStatistics carId={car.id} />}
+                                element={
+                                    <CarStatistics
+                                        carId={car.id}
+                                        range={range}
+                                    />
+                                }
                             />
                             <Route
                                 path="*"
-                                element={<CarOverview carId={car.id} />}
+                                element={
+                                    <CarOverview
+                                        carId={car.id}
+                                        range={range}
+                                    />
+                                }
                             />
                         </Routes>
                     </div>

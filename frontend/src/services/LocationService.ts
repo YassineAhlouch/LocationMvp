@@ -118,16 +118,21 @@ export const apiGetCar = (id: number) =>
         method: 'get',
     })
 
-export const apiGetCarOverview = (id: number) =>
+export const apiGetCarOverview = (id: number, params?: { from: string; to: string }) =>
     ApiService.fetchDataWithAxios<CarOverview>({
         url: `/v1/cars/${id}/overview`,
         method: 'get',
+        params,
     })
 
-export const apiGetCarHistory = (id: number) =>
+export const apiGetCarHistory = (
+    id: number,
+    params?: { from: string; to: string },
+) =>
     ApiService.fetchDataWithAxios<CarHistoryEntry[]>({
         url: `/v1/cars/${id}/history`,
         method: 'get',
+        params,
     })
 
 export const apiCreateCar = (data: CarPayload) =>
@@ -197,11 +202,14 @@ export const apiDeleteQrCode = (id: number) =>
 
 // ---- Car financing & profitability ---------------------------------------
 
-export const apiGetCarStatistics = (id: number, months = 12) =>
+export const apiGetCarStatistics = (
+    id: number,
+    params?: { from: string; to: string },
+) =>
     ApiService.fetchDataWithAxios<CarStatistics>({
         url: `/v1/cars/${id}/statistics`,
         method: 'get',
-        params: { months },
+        params,
     })
 
 export const apiCreateCarFinancing = (id: number, data: CarFinancingPayload) =>

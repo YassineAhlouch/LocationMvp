@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import dayjs from 'dayjs'
 import Card from '@/components/ui/Card'
 import Tag from '@/components/ui/Tag'
 import Select from '@/components/ui/Select'
@@ -15,13 +16,15 @@ import {
     tagToneClass,
 } from './shared'
 import type { Expense, SelectOption } from '@/@types/location'
+import type { DateRange } from '@/components/shared/PeriodPicker'
 import type { ColumnDef } from '@tanstack/react-table'
 
 type CarExpensesProps = {
     carId: number
+    range: DateRange
 }
 
-const CarExpenses = ({ carId }: CarExpensesProps) => {
+const CarExpenses = ({ carId, range }: CarExpensesProps) => {
     const { t } = useTranslation()
     const [rows, setRows] = useState<Expense[]>([])
     const [loading, setLoading] = useState(true)
@@ -40,6 +43,8 @@ const CarExpenses = ({ carId }: CarExpensesProps) => {
             per_page: pageSize,
             sort_by: 'created_at',
             sort_dir: 'desc',
+            date_from: dayjs(range.from).format('YYYY-MM-DD'),
+            date_to: dayjs(range.to).format('YYYY-MM-DD'),
         }
         if (q.trim()) {
             params.q = q.trim()
@@ -60,11 +65,16 @@ const CarExpenses = ({ carId }: CarExpensesProps) => {
                 setTotal(0)
             })
             .finally(() => setLoading(false))
-    }, [carId, pageIndex, pageSize, q, statusFilter, typeFilter])
+    }, [carId, pageIndex, pageSize, q, statusFilter, typeFilter, range])
 
     useEffect(() => {
         fetchData()
     }, [fetchData])
+
+    // A new window invalidates the current page.
+    useEffect(() => {
+        setPageIndex(1)
+    }, [range])
 
     const statusOptions = useMemo<SelectOption<string>[]>(() => {
         const options: SelectOption<string>[] = [

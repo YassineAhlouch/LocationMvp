@@ -619,15 +619,11 @@
             "pending": "en attente",
             "overdue": "en retard",
             "revenueExpenses": "Chiffre d'affaires & Dépenses",
-            "chartSubtitle": "12 derniers mois · encaissé (base trésorerie)",
             "recentReservations": "Réservations récentes",
-            "recentReservationsSub": "Dernières réservations pour ce véhicule",
             "noReservations": "Aucune réservation",
             "recentExpenses": "Dépenses récentes",
-            "recentExpensesSub": "Derniers coûts enregistrés pour ce véhicule",
             "noExpenses": "Aucune dépense",
             "spendingByType": "Dépenses par type",
-            "spendingSub": "Dépenses payées + en attente sur la vie du véhicule",
             "noSpending": "Aucune dépense enregistrée pour ce véhicule.",
             "table": {
                 "reservation": "Réservation",
@@ -683,9 +679,6 @@
                 }
             },
             "statistics": {
-                "period6": "6 derniers mois",
-                "period12": "12 derniers mois",
-                "period24": "24 derniers mois",
                 "profitability": "Rentabilité",
                 "cashFinancing": "Trésorerie & financement",
                 "operatingProfit": "Bénéfice d'exploitation",
@@ -716,10 +709,10 @@
                 "seriesInstallments": "Échéances",
                 "seriesNet": "Net",
                 "utilization": "Utilisation",
-                "utilizationSub": "Répartition de la fenêtre de service",
+                "utilizationSub": "Comment la période sélectionnée a été occupée",
                 "dayShort": "j",
                 "expensesByType": "Dépenses par type",
-                "expensesByTypeSub": "Coûts enregistrés pour ce véhicule",
+                "expensesByTypeSub": "Coûts enregistrés sur la période sélectionnée",
                 "totalExpenses": "Dépenses totales",
                 "noData": "Aucune donnée à afficher.",
                 "installmentSchedule": "Échéancier",
@@ -755,7 +748,11 @@
                 "isRequired": "est obligatoire",
                 "invalidNumber": "Saisissez un nombre valide",
                 "saveChanges": "Enregistrer les modifications"
-            }
+            },
+            "chartSubtitleRange": "{{range}} · encaissé (base trésorerie)",
+            "recentReservationsSubRange": "Dernières réservations de la période sélectionnée",
+            "recentExpensesSubRange": "Derniers coûts enregistrés sur la période sélectionnée",
+            "spendingSubRange": "Dépenses payées + en attente sur la période sélectionnée"
         },
         "actions": {
             "view": "Voir les détails",

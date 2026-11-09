@@ -13,6 +13,7 @@ use App\Models\CarFinancing;
 use App\Models\CarInstallment;
 use App\Models\Payment;
 use App\Models\Reservation;
+use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
 
@@ -26,6 +27,8 @@ use Illuminate\Support\Collection;
  *  - installments_paid is the sum of settled financing rows;
  *  - the service window starts at the financing purchase date (or the car's
  *    creation) and runs to today, so per-day ratios have a real denominator.
+ *    When the caller passes a from/to window every flow above is scoped to it
+ *    instead; only the payback comparison stays lifetime.
  *
  * All queries ride the agency global scope where the model has one, and are
  * always driven from the agency-scoped car, so nothing leaks across tenants.
@@ -35,34 +38,57 @@ final class CarStatisticsService
     /**
      * @return array<string, mixed>
      */
-    public function statistics(Car $car, int $months = 12): array
-    {
+    public function statistics(
+        Car $car,
+        int $months = 12,
+        ?CarbonImmutable $from = null,
+        ?CarbonImmutable $to = null,
+    ): array {
+        $ranged = $from !== null && $to !== null;
+
         $financing = $car->financing()->with('installments')->first();
 
         $serviceStart = $this->serviceStart($car, $financing);
         $today = today()->startOfDay();
-        $daysInService = max(1, (int) abs($serviceStart->diffInDays($today)));
 
-        $revenue = $this->money($this->revenue($car));
-        $expenses = $this->money($this->expenses($car));
-        $installmentsPaid = $this->money($this->installmentsPaid($car));
+        // Without a window the analytics cover the vehicle's whole life (the
+        // financing purchase date onward). With one, every flow is scoped to
+        // it: revenue by payment date (falling back to creation), expenses by
+        // paid date, then due date, then creation and settled installments by
+        // paid date. The payback comparison (revenue vs. purchase price) stays
+        // lifetime — a window cannot "pay back" the car.
+        $windowStart = $ranged ? $from : $serviceStart;
+        $windowEnd = $ranged ? $to : $today;
+        $daysInService = $ranged
+            ? max(1, (int) $windowStart->diffInDays($windowEnd) + 1)
+            : max(1, (int) abs($serviceStart->diffInDays($today)));
 
-        $downPayment = $this->money((float) ($financing?->down_payment ?? 0));
+        $revenue = $this->money($this->revenue($car, $from, $to));
+        $expenses = $this->money($this->expenses($car, $from, $to));
+        $installmentsPaid = $this->money($this->installmentsPaid($car, $from, $to));
+        $downPayment = $ranged
+            ? (($financing?->purchase_date !== null
+                && $financing->purchase_date->between($from, $to))
+                ? $this->money((float) ($financing?->down_payment ?? 0))
+                : 0.0)
+            : $this->money((float) ($financing?->down_payment ?? 0));
+        $revenueLifetime = $ranged ? $this->money($this->revenue($car)) : $revenue;
+
         $purchasePrice = $this->money((float) ($financing?->purchase_price ?? $car->purchase_price ?? 0));
 
         $operatingProfit = $this->money($revenue - $expenses);
         $netCashPosition = $this->money($revenue - $expenses - $downPayment - $installmentsPaid);
         $profitPerDay = $this->money($operatingProfit / $daysInService);
 
-        $rentedDays = $this->rentedDays($car, $serviceStart, $today);
+        $rentedDays = $this->rentedDays($car, $windowStart, $windowEnd);
         $utilizationRate = $daysInService > 0 ? round(min(1, $rentedDays / $daysInService), 4) : 0.0;
-        $paybackPercent = $purchasePrice > 0 ? round($revenue / $purchasePrice * 100, 2) : 0.0;
+        $paybackPercent = $purchasePrice > 0 ? round($revenueLifetime / $purchasePrice * 100, 2) : 0.0;
 
         return [
             'period' => [
                 'months' => $months,
-                'from' => $serviceStart->toDateString(),
-                'to' => $today->toDateString(),
+                'from' => $windowStart->toDateString(),
+                'to' => $windowEnd->toDateString(),
             ],
             'kpis' => [
                 'total_revenue' => $revenue,
@@ -77,13 +103,13 @@ final class CarStatisticsService
                 'utilization_rate' => $utilizationRate,
                 'payback_percent' => $paybackPercent,
                 'is_profitable' => $operatingProfit > 0,
-                'is_paid_off' => $purchasePrice > 0 && $revenue >= $purchasePrice,
-                'remaining_to_payback' => $this->money(max(0, $purchasePrice - $revenue)),
+                'is_paid_off' => $purchasePrice > 0 && $revenueLifetime >= $purchasePrice,
+                'remaining_to_payback' => $this->money(max(0, $purchasePrice - $revenueLifetime)),
             ],
             'financing_progress' => $this->financingProgress($financing, $paybackPercent),
-            'monthly_series' => $this->monthlySeries($car, $months),
-            'utilization' => $this->utilization($car, $serviceStart, $today, $daysInService, $rentedDays, $utilizationRate),
-            'expenses_by_type' => $this->expensesByType($car),
+            'monthly_series' => $this->monthlySeries($car, $months, $from, $to),
+            'utilization' => $this->utilization($car, $windowStart, $windowEnd, $daysInService, $rentedDays, $utilizationRate),
+            'expenses_by_type' => $this->expensesByType($car, $from, $to),
         ];
     }
 
@@ -94,29 +120,48 @@ final class CarStatisticsService
             ?? today()->startOfDay();
     }
 
-    private function revenue(Car $car): float
-    {
+    private function revenue(
+        Car $car,
+        ?CarbonImmutable $from = null,
+        ?CarbonImmutable $to = null,
+    ): float {
         return (float) Payment::query()
             ->where('status', PaymentRecordStatus::Paid)
             ->whereHas('reservation', fn ($query) => $query->where('car_id', $car->id))
+            ->when($from !== null && $to !== null, fn ($query) => $query->whereRaw(
+                'COALESCE(payment_date, created_at) BETWEEN ? AND ?',
+                [$from->toDateTimeString(), $to->toDateTimeString()],
+            ))
             ->sum('amount');
     }
 
-    private function expenses(Car $car): float
-    {
+    private function expenses(
+        Car $car,
+        ?CarbonImmutable $from = null,
+        ?CarbonImmutable $to = null,
+    ): float {
         return (float) CarExpense::query()
             ->where('car_id', $car->id)
             ->where('status', ExpenseStatus::Paid)
+            ->when($from !== null && $to !== null, fn ($query) => $query->whereRaw(
+                'COALESCE(paid_date, due_date, created_at) BETWEEN ? AND ?',
+                [$from->toDateTimeString(), $to->toDateTimeString()],
+            ))
             ->sum('amount');
     }
 
-    private function installmentsPaid(Car $car): float
-    {
+    private function installmentsPaid(
+        Car $car,
+        ?CarbonImmutable $from = null,
+        ?CarbonImmutable $to = null,
+    ): float {
         // Settled rows count their real paid_amount; COALESCE keeps any legacy
         // paid row (settled before paid_amount existed) valued at its schedule.
         return (float) CarInstallment::query()
             ->where('car_id', $car->id)
             ->where('status', InstallmentStatus::Paid)
+            ->when($from !== null && $to !== null, fn ($query) => $query->whereNotNull('paid_date')
+                ->whereBetween('paid_date', [$from->toDateString(), $to->toDateString()]))
             ->selectRaw('SUM(COALESCE(paid_amount, amount)) as total')
             ->value('total');
     }
@@ -182,14 +227,28 @@ final class CarStatisticsService
 
     /**
      * Zero-filled monthly series (oldest → newest): paid revenue, paid
-     * expenses and settled installments as bars, net cash as the line.
+     * expenses and settled installments as bars, net cash as the line. With a
+     * window the months cover it (capped at 24); without, the last $months.
      *
      * @return array<int, array<string, mixed>>
      */
-    private function monthlySeries(Car $car, int $months): array
-    {
-        $months = max(1, min(24, $months));
-        $start = today()->startOfMonth()->subMonths($months - 1);
+    private function monthlySeries(
+        Car $car,
+        int $months,
+        ?CarbonImmutable $from = null,
+        ?CarbonImmutable $to = null,
+    ): array {
+        $ranged = $from !== null && $to !== null;
+        $months = $ranged
+            ? (int) min(
+                24,
+                max(1, (int) $from->startOfMonth()->diffInMonths($to->startOfMonth()) + 1),
+            )
+            : max(1, min(24, $months));
+        $start = $ranged
+            ? $from->startOfMonth()
+            : today()->startOfMonth()->subMonths($months - 1);
+        $end = $ranged ? $to->endOfDay() : null;
 
         $index = [];
         $series = [];
@@ -205,6 +264,7 @@ final class CarStatisticsService
             ->whereHas('reservation', fn ($query) => $query->where('car_id', $car->id))
             ->whereNotNull('payment_date')
             ->where('payment_date', '>=', $start)
+            ->when($ranged, fn ($query) => $query->where('payment_date', '<=', $end))
             ->get(['payment_date', 'amount']) as $payment) {
             $label = $payment->payment_date->format('Y-m');
 
@@ -218,6 +278,7 @@ final class CarStatisticsService
             ->where('status', ExpenseStatus::Paid)
             ->whereNotNull('paid_date')
             ->where('paid_date', '>=', $start->toDateString())
+            ->when($ranged, fn ($query) => $query->where('paid_date', '<=', $end->toDateString()))
             ->get(['paid_date', 'amount']) as $expense) {
             $label = $expense->paid_date->format('Y-m');
 
@@ -231,6 +292,7 @@ final class CarStatisticsService
             ->where('status', InstallmentStatus::Paid)
             ->whereNotNull('paid_date')
             ->where('paid_date', '>=', $start->toDateString())
+            ->when($ranged, fn ($query) => $query->where('paid_date', '<=', $end->toDateString()))
             ->get(['paid_date', 'amount', 'paid_amount']) as $installment) {
             $label = $installment->paid_date->format('Y-m');
 
@@ -281,10 +343,17 @@ final class CarStatisticsService
     /**
      * @return array<int, array<string, mixed>>
      */
-    private function expensesByType(Car $car): array
-    {
+    private function expensesByType(
+        Car $car,
+        ?CarbonImmutable $from = null,
+        ?CarbonImmutable $to = null,
+    ): array {
         return CarExpense::query()
             ->where('car_id', $car->id)
+            ->when($from !== null && $to !== null, fn ($query) => $query->whereRaw(
+                'COALESCE(paid_date, due_date, created_at) BETWEEN ? AND ?',
+                [$from->toDateTimeString(), $to->toDateTimeString()],
+            ))
             ->get(['type', 'amount', 'status'])
             ->groupBy(fn (CarExpense $expense) => $expense->type->value)
             ->map(fn (Collection $group, string $type) => [

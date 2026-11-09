@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
+import dayjs from 'dayjs'
 import Card from '@/components/ui/Card'
 import Tag from '@/components/ui/Tag'
 import Button from '@/components/ui/Button'
@@ -16,14 +17,16 @@ import {
 } from './ReservationHistory'
 import { apiErrorMessage, formatDateTime, tagToneClass } from './shared'
 import type { CarHistoryEntry } from '@/@types/location'
+import type { DateRange } from '@/components/shared/PeriodPicker'
 
 type CarHistoryProps = {
     carId: number
+    range: DateRange
 }
 
 type HistoryFilter = 'all' | 'car' | 'reservation'
 
-const CarHistory = ({ carId }: CarHistoryProps) => {
+const CarHistory = ({ carId, range }: CarHistoryProps) => {
     const { t } = useTranslation()
     const [entries, setEntries] = useState<CarHistoryEntry[]>([])
     const [loading, setLoading] = useState(true)
@@ -34,7 +37,10 @@ const CarHistory = ({ carId }: CarHistoryProps) => {
         let active = true
         setLoading(true)
         setError(null)
-        apiGetCarHistory(carId)
+        apiGetCarHistory(carId, {
+            from: dayjs(range.from).format('YYYY-MM-DD'),
+            to: dayjs(range.to).format('YYYY-MM-DD'),
+        })
             .then((list) => {
                 if (active) {
                     setEntries(list)
@@ -53,7 +59,7 @@ const CarHistory = ({ carId }: CarHistoryProps) => {
         return () => {
             active = false
         }
-    }, [carId])
+    }, [carId, range])
 
     const visible = useMemo(
         () =>

@@ -33,6 +33,8 @@ class ExpenseQueryService
      *     car_id?: int,
      *     due_from?: string,
      *     due_to?: string,
+     *     date_from?: string,
+     *     date_to?: string,
      *     sort_by?: string,
      *     sort_dir?: string,
      *     per_page?: int,
@@ -72,6 +74,18 @@ class ExpenseQueryService
             ->when($filters['car_id'] ?? null, fn ($query, $carId) => $query->where('car_id', $carId))
             ->when($filters['due_from'] ?? null, fn ($query, $date) => $query->whereDate('due_date', '>=', $date))
             ->when($filters['due_to'] ?? null, fn ($query, $date) => $query->whereDate('due_date', '<=', $date))
+            // Cash-basis date window (paid date, then due date, then creation)
+            // matching the vehicle overview, so the picked period shows the
+            // same records on the list and in the summary. An inclusive end
+            // date must not exclude rows dated later that same day.
+            ->when($filters['date_from'] ?? null, fn ($query, $date) => $query->whereRaw(
+                'COALESCE(paid_date, due_date, created_at) >= ?',
+                [$date.' 00:00:00'],
+            ))
+            ->when($filters['date_to'] ?? null, fn ($query, $date) => $query->whereRaw(
+                'COALESCE(paid_date, due_date, created_at) <= ?',
+                [$date.' 23:59:59'],
+            ))
             ->when($filters['q'] ?? null, fn ($query, $term) => $query->where(function ($builder) use ($term) {
                 $like = '%'.trim($term).'%';
 

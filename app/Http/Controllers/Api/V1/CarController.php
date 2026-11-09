@@ -13,6 +13,7 @@ use App\Http\Resources\ReservationResource;
 use App\Models\Car;
 use App\Services\Activity\LogsActivity;
 use App\Services\Cars\CarQueryService;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -61,19 +62,32 @@ class CarController extends Controller
     }
 
     /**
-     * Car dossier summary: lifetime financials + operations, a 12-month
-     * revenue/expense trend and the most recent reservations and expenses.
-     * Gated by fleet.view like the car it describes.
+     * Car dossier summary: lifetime financials + operations (or a from/to
+     * window when the client asks for one), a revenue/expense trend for the
+     * requested window and the most recent reservations and expenses inside
+     * it. Gated by fleet.view like the car it describes.
      */
-    public function overview(Car $car): JsonResponse
+    public function overview(Request $request, Car $car): JsonResponse
     {
+        $params = $request->validate([
+            'from' => ['sometimes', 'date'],
+            'to' => ['sometimes', 'date', 'after_or_equal:from'],
+        ]);
+
+        $from = isset($params['from'])
+            ? CarbonImmutable::parse($params['from'])->startOfDay()
+            : null;
+        $to = isset($params['to'])
+            ? CarbonImmutable::parse($params['to'])->endOfDay()
+            : null;
+
         return response()->json([
-            'stats' => $this->cars->overview($car),
+            'stats' => $this->cars->overview($car, $from, $to),
             'recent_reservations' => ReservationResource::collection(
-                $this->cars->recentReservations($car),
+                $this->cars->recentReservations($car, $from, $to),
             )->resolve(),
             'recent_expenses' => ExpenseResource::collection(
-                $this->cars->recentExpenses($car),
+                $this->cars->recentExpenses($car, $from, $to),
             )->resolve(),
         ]);
     }
@@ -82,9 +96,21 @@ class CarController extends Controller
      * Merged audit trail for the car: vehicle edits plus every business change
      * on its reservations, newest first.
      */
-    public function history(Car $car): JsonResponse
+    public function history(Request $request, Car $car): JsonResponse
     {
-        return response()->json($this->cars->history($car));
+        $params = $request->validate([
+            'from' => ['sometimes', 'date'],
+            'to' => ['sometimes', 'date', 'after_or_equal:from'],
+        ]);
+
+        $from = isset($params['from'])
+            ? CarbonImmutable::parse($params['from'])->startOfDay()
+            : null;
+        $to = isset($params['to'])
+            ? CarbonImmutable::parse($params['to'])->endOfDay()
+            : null;
+
+        return response()->json($this->cars->history($car, 200, $from, $to));
     }
 
     public function update(UpdateCarRequest $request, Car $car): CarResource

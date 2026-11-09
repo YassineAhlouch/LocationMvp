@@ -32,6 +32,8 @@ class IndexExpenseRequest extends FormRequest
             'car_id' => ['sometimes', 'integer'],
             'due_from' => ['sometimes', 'date'],
             'due_to' => ['sometimes', 'date'],
+            'date_from' => ['sometimes', 'date'],
+            'date_to' => ['sometimes', 'date', 'after_or_equal:date_from'],
             'sort_by' => ['sometimes', 'string', Rule::in(['due_date', 'amount', 'created_at', 'title'])],
             'sort_dir' => ['sometimes', 'string', Rule::in(['asc', 'desc'])],
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:100'],

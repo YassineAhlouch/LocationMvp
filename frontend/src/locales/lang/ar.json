@@ -619,15 +619,11 @@
             "pending": "قيد الانتظار",
             "overdue": "متأخر",
             "revenueExpenses": "الإيرادات والمصروفات",
-            "chartSubtitle": "آخر 12 شهرًا · المحصّل فعليًا (تدفق نقدي)",
             "recentReservations": "أحدث الحجوزات",
-            "recentReservationsSub": "أحدث حجوزات هذه المركبة",
             "noReservations": "لا توجد حجوزات بعد",
             "recentExpenses": "أحدث المصروفات",
-            "recentExpensesSub": "أحدث التكاليف المسجلة لهذه المركبة",
             "noExpenses": "لا توجد مصروفات بعد",
             "spendingByType": "المصروفات حسب النوع",
-            "spendingSub": "مصروفات مدفوعة + قيد الانتظار على مدى عمر المركبة",
             "noSpending": "لا توجد مصروفات مسجلة لهذه المركبة.",
             "table": {
                 "reservation": "الحجز",
@@ -683,9 +679,6 @@
                 }
             },
             "statistics": {
-                "period6": "آخر 6 أشهر",
-                "period12": "آخر 12 شهرًا",
-                "period24": "آخر 24 شهرًا",
                 "profitability": "الربحية",
                 "cashFinancing": "الخزينة والتمويل",
                 "operatingProfit": "الربح التشغيلي",
@@ -716,10 +709,10 @@
                 "seriesInstallments": "الأقساط",
                 "seriesNet": "الصافي",
                 "utilization": "الاستخدام",
-                "utilizationSub": "كيف صُرفت فترة الخدمة",
+                "utilizationSub": "كيف مُضِيَّت الفترة المحددة",
                 "dayShort": "ي",
                 "expensesByType": "المصروفات حسب النوع",
-                "expensesByTypeSub": "التكاليف المسجلة لهذه المركبة",
+                "expensesByTypeSub": "التكاليف المسجلة خلال الفترة المحددة",
                 "totalExpenses": "إجمالي المصروفات",
                 "noData": "لا توجد بيانات للعرض.",
                 "installmentSchedule": "جدول الأقساط",
@@ -755,7 +748,11 @@
                 "isRequired": "مطلوب",
                 "invalidNumber": "أدخل رقمًا صحيحًا",
                 "saveChanges": "حفظ التغييرات"
-            }
+            },
+            "chartSubtitleRange": "{{range}} · المحصّل فعليًا (تدفق نقدي)",
+            "recentReservationsSubRange": "أحدث الحجوزات خلال الفترة المحددة",
+            "recentExpensesSubRange": "أحدث التكاليف المسجلة خلال الفترة المحددة",
+            "spendingSubRange": "مصروفات مدفوعة + قيد الانتظار خلال الفترة المحددة"
         },
         "actions": {
             "view": "عرض التفاصيل",

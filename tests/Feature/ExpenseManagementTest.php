@@ -132,6 +132,44 @@ class ExpenseManagementTest extends TestCase
             ->assertJsonPath('data.0.title', 'Late bill');
     }
 
+    public function test_date_filter_scopes_by_the_cash_basis_pivot_date(): void
+    {
+        $actor = $this->actor(['expenses.view']);
+        $car = $this->car();
+
+        // Pivot = paid date, in window.
+        $this->expense($car, [
+            'title' => 'Paid today',
+            'status' => ExpenseStatus::Paid,
+            'paid_date' => today()->toDateString(),
+        ], $actor);
+        // Pivot = due date next week, out of window.
+        $this->expense($car, [
+            'title' => 'Due next week',
+            'status' => ExpenseStatus::Pending,
+            'due_date' => now()->addWeek()->toDateString(),
+        ], $actor);
+        // Pivot = due date already passed, out of window.
+        $this->expense($car, [
+            'title' => 'Due long ago',
+            'status' => ExpenseStatus::Pending,
+            'due_date' => now()->subMonth()->toDateString(),
+        ], $actor);
+
+        // A single-day window still keeps the record dated that exact day.
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/expenses?date_from='.today()->toDateString().'&date_to='.today()->toDateString())
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.title', 'Paid today');
+
+        // Widening to both months picks up the far-out due-date row as well.
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/expenses?date_from='.now()->subMonth()->toDateString().'&date_to='.now()->addWeek()->toDateString())
+            ->assertOk()
+            ->assertJsonCount(3, 'data');
+    }
+
     public function test_search_finds_by_title_and_car_plate(): void
     {
         $actor = $this->actor(['expenses.view']);

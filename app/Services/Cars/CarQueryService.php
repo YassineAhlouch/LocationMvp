@@ -14,6 +14,7 @@ use App\Models\CarExpense;
 use App\Models\Payment;
 use App\Models\Reservation;
 use App\Models\ReservationChange;
+use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -75,17 +76,27 @@ class CarQueryService
     }
 
     /**
-     * Lifetime operational + financial summary for one car, plus a zero-filled
-     * 12-month paid revenue vs. paid expenses trend. Same money conventions as
-     * ReportingService: cash-basis, paid records only, with pending and
-     * refunded amounts exposed separately rather than mixed into "in".
+     * Operational + financial summary for one car, plus a zero-filled paid
+     * revenue vs. paid expenses trend. When no window is given the summary is
+     * the vehicle's lifetime and the trend covers the last 12 months. With a
+     * from/to window every figure is scoped to it: reservations by pickup,
+     * payments by payment date (falling back to creation) and expenses by
+     * paid date, then due date, then creation — the cash-basis pivot dates.
+     * Same money conventions as ReportingService: paid records only, with
+     * pending and refunded amounts exposed separately rather than mixed.
      *
      * @return array<string, mixed>
      */
-    public function overview(Car $car): array
+    public function overview(Car $car, ?CarbonImmutable $from = null, ?CarbonImmutable $to = null): array
     {
+        $ranged = $from !== null && $to !== null;
+
         $reservations = Reservation::query()
             ->where('car_id', $car->id)
+            ->when($ranged, fn ($query) => $query->whereBetween(
+                'pickup_datetime',
+                [$from->toDateTimeString(), $to->toDateTimeString()],
+            ))
             ->get(['id', 'status', 'rental_days', 'pickup_datetime']);
 
         $byStatus = [];
@@ -113,6 +124,10 @@ class CarQueryService
 
         $payments = Payment::query()
             ->whereHas('reservation', fn ($query) => $query->where('car_id', $car->id))
+            ->when($ranged, fn ($query) => $query->whereRaw(
+                'COALESCE(payment_date, created_at) BETWEEN ? AND ?',
+                [$from->toDateTimeString(), $to->toDateTimeString()],
+            ))
             ->get(['amount', 'status', 'payment_date']);
 
         $revenue = ['paid' => 0.0, 'pending' => 0.0, 'refunded' => 0.0];
@@ -132,6 +147,10 @@ class CarQueryService
 
         $expenses = CarExpense::query()
             ->where('car_id', $car->id)
+            ->when($ranged, fn ($query) => $query->whereRaw(
+                'COALESCE(paid_date, due_date, created_at) BETWEEN ? AND ?',
+                [$from->toDateTimeString(), $to->toDateTimeString()],
+            ))
             ->get(['amount', 'status', 'type', 'paid_date', 'due_date']);
 
         $expensesPaid = 0.0;
@@ -193,19 +212,28 @@ class CarQueryService
                 'by_type' => $byType,
             ],
             'net' => round($revenue['net'] - ($expensesPaid + $expensesPending), 2),
-            'timeline' => $this->carTimeline($monthlyRevenue, $monthlyExpenses),
+            'timeline' => $this->carTimeline($monthlyRevenue, $monthlyExpenses, $from, $to),
         ];
     }
 
     /**
      * Latest reservations for the car (newest pickup first) for the overview.
+     * When a window is given only pickups inside it are listed.
      *
      * @return Collection<int, Reservation>
      */
-    public function recentReservations(Car $car, int $limit = 5): Collection
-    {
+    public function recentReservations(
+        Car $car,
+        ?CarbonImmutable $from = null,
+        ?CarbonImmutable $to = null,
+        int $limit = 5,
+    ): Collection {
         return Reservation::query()
             ->where('car_id', $car->id)
+            ->when($from !== null && $to !== null, fn ($query) => $query->whereBetween(
+                'pickup_datetime',
+                [$from->toDateTimeString(), $to->toDateTimeString()],
+            ))
             ->with(['car', 'primaryClient', 'secondaryClient', 'createdBy', 'approvedBy'])
             ->orderByDesc('pickup_datetime')
             ->limit($limit)
@@ -213,14 +241,24 @@ class CarQueryService
     }
 
     /**
-     * Latest expenses for the car (newest first) for the overview.
+     * Latest expenses for the car for the overview. When a window is given
+     * only expenses whose cash-basis pivot date (paid date, then due date,
+     * then creation) falls inside it are listed, matching the scoped stats.
      *
      * @return Collection<int, CarExpense>
      */
-    public function recentExpenses(Car $car, int $limit = 5): Collection
-    {
+    public function recentExpenses(
+        Car $car,
+        ?CarbonImmutable $from = null,
+        ?CarbonImmutable $to = null,
+        int $limit = 5,
+    ): Collection {
         return CarExpense::query()
             ->where('car_id', $car->id)
+            ->when($from !== null && $to !== null, fn ($query) => $query->whereRaw(
+                'COALESCE(paid_date, due_date, created_at) BETWEEN ? AND ?',
+                [$from->toDateTimeString(), $to->toDateTimeString()],
+            ))
             ->with(['car', 'createdBy'])
             ->orderByDesc('created_at')
             ->limit($limit)
@@ -231,16 +269,27 @@ class CarQueryService
      * Merged, newest-first audit trail for one car: the vehicle's own activity
      * (fleet module) plus every business change recorded on its reservations
      * (reservation_changes). Both shapes are normalised so the UI renders a
-     * single timeline.
+     * single timeline. When a window is given only entries created inside it
+     * are kept.
      *
      * @return array<int, array<string, mixed>>
      */
-    public function history(Car $car, int $limit = 200): array
-    {
+    public function history(
+        Car $car,
+        int $limit = 200,
+        ?CarbonImmutable $from = null,
+        ?CarbonImmutable $to = null,
+    ): array {
+        $ranged = $from !== null && $to !== null;
+
         $activity = ActivityLog::query()
             ->where('module', 'fleet')
             ->where('entity_type', $car->getMorphClass())
             ->where('entity_id', $car->id)
+            ->when($ranged, fn ($query) => $query->whereBetween(
+                'created_at',
+                [$from->toDateTimeString(), $to->toDateTimeString()],
+            ))
             ->with('user:id,first_name,last_name')
             ->get()
             ->map(fn (ActivityLog $log) => [
@@ -257,6 +306,10 @@ class CarQueryService
 
         $changes = ReservationChange::query()
             ->whereHas('reservation', fn ($query) => $query->where('car_id', $car->id))
+            ->when($ranged, fn ($query) => $query->whereBetween(
+                'created_at',
+                [$from->toDateTimeString(), $to->toDateTimeString()],
+            ))
             ->with(['createdBy:id,first_name,last_name', 'reservation:id,reservation_number'])
             ->get()
             ->map(fn (ReservationChange $change) => [
@@ -294,16 +347,27 @@ class CarQueryService
      * @param  array<string, float>  $expenses
      * @return array{labels: array<int, string>, revenue: array<int, float>, expenses: array<int, float>}
      */
-    private function carTimeline(array $revenue, array $expenses, int $months = 12): array
-    {
-        $start = now()->startOfMonth()->subMonths($months - 1);
+    private function carTimeline(
+        array $revenue,
+        array $expenses,
+        ?CarbonImmutable $from = null,
+        ?CarbonImmutable $to = null,
+    ): array {
+        $ranged = $from !== null && $to !== null;
+        $start = ($ranged ? $from : now())->startOfMonth();
+        $months = $ranged
+            ? (int) min(
+                24,
+                max(1, (int) $from->startOfMonth()->diffInMonths($to->startOfMonth()) + 1),
+            )
+            : 12;
 
         $labels = [];
         $revenueSeries = [];
         $expensesSeries = [];
 
         for ($i = 0; $i < $months; $i++) {
-            $label = $start->copy()->addMonths($i)->format('Y-m');
+            $label = $start->addMonths($i)->format('Y-m');
             $labels[] = $label;
             $revenueSeries[] = round($revenue[$label] ?? 0.0, 2);
             $expensesSeries[] = round($expenses[$label] ?? 0.0, 2);

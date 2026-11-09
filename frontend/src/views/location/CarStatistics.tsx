@@ -6,7 +6,6 @@ import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Tag from '@/components/ui/Tag'
 import Table from '@/components/ui/Table'
-import Select from '@/components/ui/Select'
 import Dialog from '@/components/ui/Dialog'
 import Input from '@/components/ui/Input'
 import SegmentedProgressBar from '@/components/shared/SegmentProgressBar'
@@ -39,14 +38,15 @@ import type {
     CarInstallment,
     CarStatistics as CarStatisticsData,
     InstallmentStatus,
-    SelectOption,
 } from '@/@types/location'
+import type { DateRange } from '@/components/shared/PeriodPicker'
 import type { TagTone } from './shared'
 
 const { Tr, Th, Td, THead, TBody } = Table
 
 type CarStatisticsProps = {
     carId: number
+    range: DateRange
 }
 
 const installmentStatusTone: Record<InstallmentStatus, TagTone> = {
@@ -205,8 +205,8 @@ const DonutCard = ({
                     {t('cars.overview.statistics.noData', 'No data to chart yet.')}
                 </p>
             ) : (
-                <div className="flex items-center gap-4">
-                    <div className="flex-shrink-0">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                    <div className="flex-shrink-0 self-center">
                         <PieChart
                             data={visible.map((segment) => ({
                                 name: segment.name,
@@ -229,32 +229,34 @@ const DonutCard = ({
                             }))}
                         />
                     </div>
-                    <div className="flex-1 space-y-4">
+                    <div className="min-w-0 flex-1 space-y-4">
                         <div>
                             <div className="mb-1 font-medium heading-text">
                                 {totalLabel}
                             </div>
-                            <h3>{formatValue(total)}</h3>
+                            <h3 className="break-all tabular-nums">
+                                {formatValue(total)}
+                            </h3>
                         </div>
                         <div className="space-y-2">
                             {segments.map((segment) => (
                                 <div
                                     key={segment.name}
-                                    className="flex items-center justify-between"
+                                    className="flex min-w-0 items-center justify-between gap-3"
                                 >
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex min-w-0 items-center gap-2">
                                         <div
-                                            className="h-2.5 w-2.5 rounded-full"
+                                            className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
                                             style={{
                                                 backgroundColor:
                                                     segment.color,
                                             }}
                                         />
-                                        <span className="font-medium">
+                                        <span className="truncate font-medium">
                                             {segment.name}
                                         </span>
                                     </div>
-                                    <span className="font-medium heading-text">
+                                    <span className="min-w-0 break-all text-right font-medium heading-text">
                                         {formatValue(segment.value)}
                                     </span>
                                 </div>
@@ -267,7 +269,7 @@ const DonutCard = ({
     )
 }
 
-const CarStatistics = ({ carId }: CarStatisticsProps) => {
+const CarStatistics = ({ carId, range }: CarStatisticsProps) => {
     const { t } = useTranslation()
     const { user } = useSessionUser()
     const canManage = isVerbGranted(
@@ -276,20 +278,10 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
         'manage',
     )
 
-    const periodOptions = useMemo<SelectOption<string>[]>(
-        () => [
-            { value: '6', label: t('cars.overview.statistics.period6', 'Last 6 months') },
-            { value: '12', label: t('cars.overview.statistics.period12', 'Last 12 months') },
-            { value: '24', label: t('cars.overview.statistics.period24', 'Last 24 months') },
-        ],
-        [t],
-    )
-
     const [data, setData] = useState<CarStatisticsData | null>(null)
     const [loading, setLoading] = useState(true)
     const [failed, setFailed] = useState(false)
     const [forbidden, setForbidden] = useState(false)
-    const [months, setMonths] = useState(12)
 
     const [financingOpen, setFinancingOpen] = useState(false)
     const [deleteOpen, setDeleteOpen] = useState(false)
@@ -305,7 +297,10 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
         setLoading(true)
         setFailed(false)
         setForbidden(false)
-        apiGetCarStatistics(carId, months)
+        apiGetCarStatistics(carId, {
+            from: dayjs(range.from).format('YYYY-MM-DD'),
+            to: dayjs(range.to).format('YYYY-MM-DD'),
+        })
             .then((res) => setData(res))
             .catch((error: unknown) => {
                 const status = (error as { response?: { status?: number } })
@@ -317,7 +312,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                 }
             })
             .finally(() => setLoading(false))
-    }, [carId, months])
+    }, [carId, range])
 
     useEffect(() => {
         load()
@@ -796,41 +791,25 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                 header={{
                     content: (
                         <div className="flex flex-wrap items-center justify-between gap-3">
-                            <div className="flex items-center gap-2">
-                                <div className="inline-flex rounded-lg border border-gray-300 p-0.5">
-                                    <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-300 heading-text">
-                                        <LiSpeedometer className="text-xl" />
-                                    </div>
-                                </div>
-                                <div>
-                                    <h6 className="font-semibold">
-                                        {t('cars.overview.statistics.cashFlow', 'Cash flow')}
-                                    </h6>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        {t(
-                                            'cars.overview.statistics.cashFlowSub',
-                                            'Revenue, expenses and installments per month',
-                                        )}
-                                    </p>
+                        <div className="flex items-center gap-2">
+                            <div className="inline-flex rounded-lg border border-gray-300 p-0.5">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-300 heading-text">
+                                    <LiSpeedometer className="text-xl" />
                                 </div>
                             </div>
-                            <div className="w-44">
-                                <Select
-                                    options={periodOptions}
-                                    value={
-                                        periodOptions.find(
-                                            (option) =>
-                                                option.value === String(months),
-                                        ) ?? null
-                                    }
-                                    onChange={(option) =>
-                                        setMonths(
-                                            Number(option?.value ?? '12'),
-                                        )
-                                    }
-                                />
+                            <div>
+                                <h6 className="font-semibold">
+                                    {t('cars.overview.statistics.cashFlow', 'Cash flow')}
+                                </h6>
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    {t(
+                                        'cars.overview.statistics.cashFlowSub',
+                                        'Revenue, expenses and installments per month',
+                                    )}
+                                </p>
                             </div>
                         </div>
+                    </div>
                     ),
                 }}
             >
@@ -901,7 +880,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                     title={t('cars.overview.statistics.utilization', 'Utilization')}
                     subtitle={t(
                         'cars.overview.statistics.utilizationSub',
-                        'How the service window was spent',
+                        'How the selected period was spent',
                     )}
                     Icon={LiTask}
                     segments={utilizationSegments}
@@ -916,7 +895,7 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                     title={t('cars.overview.statistics.expensesByType', 'Expenses by type')}
                     subtitle={t(
                         'cars.overview.statistics.expensesByTypeSub',
-                        'Costs booked to this vehicle',
+                        'Costs booked within the selected period',
                     )}
                     Icon={LiReceipt}
                     segments={expenseSegments}
@@ -925,7 +904,11 @@ const CarStatistics = ({ carId }: CarStatisticsProps) => {
                         0,
                     )}
                     totalLabel={t('cars.overview.statistics.totalExpenses', 'Total expenses')}
-                    formatValue={(value) => money(value)}
+                    /* fr-MA groups amounts with NBSP; real spaces let a big
+                       total wrap at the group boundaries instead of bleeding. */
+                    formatValue={(value) =>
+                        money(value).replace(/\u202F|\u00A0/g, ' ')
+                    }
                 />
             </div>
 

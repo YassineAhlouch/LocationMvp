@@ -26,12 +26,14 @@ import {
     tagToneClass,
 } from './shared'
 import type { CarOverview as CarOverviewData } from '@/@types/location'
+import type { DateRange } from '@/components/shared/PeriodPicker'
 import type { TagTone } from './shared'
 
 const { Tr, Th, Td, THead, TBody } = Table
 
 type CarOverviewProps = {
     carId: number
+    range: DateRange
 }
 
 type KpiCardProps = {
@@ -75,7 +77,7 @@ const EmptyRow = ({ columns, label }: { columns: number; label: string }) => (
     </Tr>
 )
 
-const CarOverview = ({ carId }: CarOverviewProps) => {
+const CarOverview = ({ carId, range }: CarOverviewProps) => {
     const { can } = usePermissions()
     const { t } = useTranslation()
     const [overview, setOverview] = useState<CarOverviewData | null>(null)
@@ -86,7 +88,10 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
         let active = true
         setLoading(true)
         setFailed(false)
-        apiGetCarOverview(carId)
+        apiGetCarOverview(carId, {
+            from: dayjs(range.from).format('YYYY-MM-DD'),
+            to: dayjs(range.to).format('YYYY-MM-DD'),
+        })
             .then((res) => {
                 if (active) {
                     setOverview(res)
@@ -105,7 +110,7 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
         return () => {
             active = false
         }
-    }, [carId])
+    }, [carId, range])
 
     const chartData = useMemo(() => {
         if (!overview) {
@@ -189,8 +194,11 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
                         </h6>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
                             {t(
-                                'cars.overview.chartSubtitle',
-                                'Last 12 months · paid cash-basis',
+                                'cars.overview.chartSubtitleRange',
+                                '{{range}} · paid cash-basis',
+                                {
+                                    range: `${dayjs(range.from).format('DD MMM YYYY')} – ${dayjs(range.to).format('DD MMM YYYY')}`,
+                                },
                             )}
                         </p>
                     </div>
@@ -209,8 +217,8 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
                         </h6>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
                             {t(
-                                'cars.overview.recentReservationsSub',
-                                'Latest bookings for this vehicle',
+                                'cars.overview.recentReservationsSubRange',
+                                'Latest bookings within the selected period',
                             )}
                         </p>
                     </div>
@@ -317,8 +325,8 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
                         </h6>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
                             {t(
-                                'cars.overview.recentExpensesSub',
-                                'Latest costs booked to this vehicle',
+                                'cars.overview.recentExpensesSubRange',
+                                'Latest costs booked within the selected period',
                             )}
                         </p>
                     </div>
@@ -427,8 +435,8 @@ const CarOverview = ({ carId }: CarOverviewProps) => {
                     </h6>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                         {t(
-                            'cars.overview.spendingSub',
-                            'Paid + pending expenses over the vehicle\'s lifetime',
+                            'cars.overview.spendingSubRange',
+                            'Paid + pending expenses within the selected period',
                         )}
                     </p>
                 </div>

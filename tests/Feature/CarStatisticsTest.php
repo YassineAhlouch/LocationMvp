@@ -212,6 +212,84 @@ class CarStatisticsTest extends TestCase
         $this->assertEqualsWithDelta(5000, $last['installments'], 0.01);
     }
 
+    public function test_statistics_scopes_flows_to_a_requested_window(): void
+    {
+        $actor = $this->actor(['financing.view']);
+        $car = $this->car();
+
+        $reservation = $this->reservation($car);
+
+        // In window (this month): paid 4000 + expense 500.
+        Payment::factory()->create([
+            'agency_id' => $this->agency->id,
+            'reservation_id' => $reservation->id,
+            'amount' => 4000,
+            'status' => PaymentRecordStatus::Paid,
+            'payment_date' => today(),
+        ]);
+        $this->carExpense($car, [
+            'type' => ExpenseType::Maintenance,
+            'amount' => 500,
+            'status' => ExpenseStatus::Paid,
+            'paid_date' => today()->toDateString(),
+        ]);
+
+        // Out of window (last month): paid 700 + expense 250.
+        Payment::factory()->create([
+            'agency_id' => $this->agency->id,
+            'reservation_id' => $reservation->id,
+            'amount' => 700,
+            'status' => PaymentRecordStatus::Paid,
+            'payment_date' => today()->subMonth(),
+        ]);
+        $this->carExpense($car, [
+            'type' => ExpenseType::Repair,
+            'amount' => 250,
+            'status' => ExpenseStatus::Paid,
+            'paid_date' => today()->subMonth()->toDateString(),
+        ]);
+
+        $data = $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/cars/'.$car->id.'/statistics'.sprintf(
+                '?from=%s&to=%s',
+                now()->startOfMonth()->format('Y-m-d'),
+                now()->endOfMonth()->format('Y-m-d'),
+            ))
+            ->assertOk()
+            ->json();
+
+        $kpis = $data['kpis'];
+        $this->assertEqualsWithDelta(4000, $kpis['total_revenue'], 0.01);
+        $this->assertEqualsWithDelta(500, $kpis['total_expenses'], 0.01);
+        $this->assertEqualsWithDelta(3500, $kpis['operating_profit'], 0.01);
+        // Payback stays lifetime: (4000 + 700) against the purchase price.
+        $this->assertEqualsWithDelta(4.7, $kpis['payback_percent'], 0.01);
+
+        $series = $data['monthly_series'];
+        $this->assertCount(1, $series);
+        $this->assertEqualsWithDelta(4000, $series[0]['revenue'], 0.01);
+        $this->assertEqualsWithDelta(3500, $series[0]['net'], 0.01);
+
+        $maintenance = collect($data['expenses_by_type'])->firstWhere('type', 'maintenance');
+        $this->assertEqualsWithDelta(500, $maintenance['amount'], 0.01);
+        $this->assertNull(collect($data['expenses_by_type'])->firstWhere('type', 'repair'));
+
+        // Lifetime call keeps both flows.
+        $lifetime = $this->actingAs($actor, 'sanctum')
+            ->getJson("/api/v1/cars/{$car->id}/statistics?months=1")
+            ->assertOk()
+            ->json();
+        $this->assertEqualsWithDelta(4700, $lifetime['kpis']['total_revenue'], 0.01);
+        $this->assertEqualsWithDelta(750, $lifetime['kpis']['total_expenses'], 0.01);
+        $this->assertCount(1, $lifetime['monthly_series']);
+        $this->assertEqualsWithDelta(4000, end($lifetime['monthly_series'])['revenue'], 0.01);
+
+        // Reversed windows are rejected.
+        $this->actingAs($actor, 'sanctum')
+            ->getJson('/api/v1/cars/'.$car->id.'/statistics?from='.now()->format('Y-m-d').'&to='.now()->subWeek()->format('Y-m-d'))
+            ->assertUnprocessable();
+    }
+
     public function test_statistics_without_financing_or_reservations_is_empty_not_error(): void
     {
         $actor = $this->actor(['financing.view']);

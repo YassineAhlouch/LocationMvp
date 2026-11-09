@@ -619,15 +619,11 @@
             "pending": "pending",
             "overdue": "overdue",
             "revenueExpenses": "Revenue & Expenses",
-            "chartSubtitle": "Last 12 months · paid cash-basis",
             "recentReservations": "Recent reservations",
-            "recentReservationsSub": "Latest bookings for this vehicle",
             "noReservations": "No reservations yet",
             "recentExpenses": "Recent expenses",
-            "recentExpensesSub": "Latest costs booked to this vehicle",
             "noExpenses": "No expenses yet",
             "spendingByType": "Spending by type",
-            "spendingSub": "Paid + pending expenses over the vehicle's lifetime",
             "noSpending": "No expenses recorded for this vehicle.",
             "table": {
                 "reservation": "Reservation",
@@ -683,9 +679,6 @@
                 }
             },
             "statistics": {
-                "period6": "Last 6 months",
-                "period12": "Last 12 months",
-                "period24": "Last 24 months",
                 "profitability": "Profitability",
                 "cashFinancing": "Cash & financing",
                 "operatingProfit": "Operating profit",
@@ -716,10 +709,10 @@
                 "seriesInstallments": "Installments",
                 "seriesNet": "Net",
                 "utilization": "Utilization",
-                "utilizationSub": "How the service window was spent",
+                "utilizationSub": "How the selected period was spent",
                 "dayShort": "d",
                 "expensesByType": "Expenses by type",
-                "expensesByTypeSub": "Costs booked to this vehicle",
+                "expensesByTypeSub": "Costs booked within the selected period",
                 "totalExpenses": "Total expenses",
                 "noData": "No data to chart yet.",
                 "installmentSchedule": "Installment schedule",
@@ -755,7 +748,11 @@
                 "isRequired": "is required",
                 "invalidNumber": "Enter a valid number",
                 "saveChanges": "Save changes"
-            }
+            },
+            "chartSubtitleRange": "{{range}} · paid cash-basis",
+            "recentReservationsSubRange": "Latest bookings within the selected period",
+            "recentExpensesSubRange": "Latest costs booked within the selected period",
+            "spendingSubRange": "Paid + pending expenses within the selected period"
         },
         "actions": {
             "view": "View details",
