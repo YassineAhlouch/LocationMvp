@@ -1,18 +1,15 @@
 import appsNavigationConfig from './apps.navigation.config'
-import uiComponentNavigationConfig from './ui-components.navigation.config'
-import authDemoNavigationConfig from './auth-demo.navigation.config'
-import othersNavigationConfig from './others.navigation.config'
-import guideNavigationConfig from './guide.navigation.config'
 import parametrageNavigationConfig from './parametrage.navigation.config'
+import documentationNavigationConfig from './documentation.navigation.config'
 import type { NavigationTree } from '@/@types/navigation'
 
+// The Elstar template's demo menus (UI components showcase, Authentication
+// demos, Others and Guide) are intentionally not composed here — the sidebar
+// shows only the real car-rental menus, with Documentation pinned last.
 const navigationConfig: NavigationTree[] = [
     ...appsNavigationConfig,
-    ...uiComponentNavigationConfig,
-    ...authDemoNavigationConfig,
-    ...othersNavigationConfig,
-    ...guideNavigationConfig,
     ...parametrageNavigationConfig,
+    ...documentationNavigationConfig,
 ]
 
 export default navigationConfig

@@ -433,23 +433,6 @@ const appsNavigationConfig: NavigationTree[] = [
                     },
                 ],
             },
-            // ===== DOCUMENTATION =====
-            {
-                key: 'gestion.documentation',
-                path: `${APPS_PREFIX_PATH}/documentation`,
-                title: 'Documentation',
-                translateKey: 'nav.gestion.documentation',
-                icon: 'documentation',
-                type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
-                meta: {
-                    description: {
-                        translateKey: 'nav.gestion.documentationDesc',
-                        label: 'How the car system works',
-                    },
-                },
-                subMenu: [],
-            },
         ],
     },
     // ===== STATISTIQUES =====
