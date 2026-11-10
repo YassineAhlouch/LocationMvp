@@ -99,9 +99,10 @@ const Centred = ({ children }: CommonProps) => {
                                 </h2>
                                 <p className="opacity-80 mx-auto mt-4 text-base heading-text">
                                     From elegant UI components to thoughtful
-                                    page designs, Eyris gives you all the tools
-                                    to build scalable, high-performance web app
-                                    experiences with ease.
+                                    page designs, Double V Drive gives you all
+                                    the tools to build scalable,
+                                    high-performance web app experiences with
+                                    ease.
                                 </p>
                             </div>
                             <div className="flex items-end justify-end h-full overflow-hidden z-10">

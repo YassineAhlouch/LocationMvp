@@ -16,7 +16,7 @@ const fr: DocsContent = {
             kind: 'introduction',
             title: 'Introduction',
             paras: [
-                'Eyris est le système de gestion de l’agence de location de voitures. La flotte, les réservations, l’argent, l’équipe et les demandes du public vivent au même endroit, pour piloter l’activité quotidienne sans tableurs.',
+                'Double V Drive est le système de gestion de l’agence de location de voitures. La flotte, les réservations, l’argent, l’équipe et les demandes du public vivent au même endroit, pour piloter l’activité quotidienne sans tableurs.',
                 'Tout tourne autour d’un objet : la réservation. Une voiture garde ses dates bloquées tant que la réservation est en attente, confirmée, réservée ou en cours — impossible de double-réserver. Les paiements se rattachent à la réservation, les coûts à la voiture, et chaque action est consignée dans le journal d’audit. Le tableau de bord, les KPIs et les rapports lisent cette même source.',
             ],
             listHeading: 'Ce que le système regroupe',

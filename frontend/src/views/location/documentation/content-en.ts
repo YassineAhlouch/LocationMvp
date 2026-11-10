@@ -16,7 +16,7 @@ const en: DocsContent = {
             kind: 'introduction',
             title: 'Introduction',
             paras: [
-                'Eyris is the operating system of the car rental agency. The fleet, the bookings, the money, the staff and the public lead flow all live in one place, so the agency runs its daily business without spreadsheets.',
+                'Double V Drive is the operating system of the car rental agency. The fleet, the bookings, the money, the staff and the public lead flow all live in one place, so the agency runs its daily business without spreadsheets.',
                 'Everything revolves around one object: the reservation. A car keeps its dates held while a reservation is pending, confirmed, reserved or active — double booking is not possible. Payments attach to the reservation, costs attach to the car, and every change lands in the audit log. The dashboard, KPIs and reports read from that same source of truth.',
             ],
             listHeading: 'What runs inside',
