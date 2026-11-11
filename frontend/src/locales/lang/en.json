@@ -904,7 +904,13 @@
                 "updated": "Car updated successfully!",
                 "created": "Car added successfully!",
                 "error": "Something went wrong"
-            }
+            },
+            "lockedInitialMileage": "Locked after creation — reservations update the mileage automatically.",
+            "createInitialMileage": "Enter the real odometer reading — it cannot be changed after the vehicle is created.",
+            "lockedInsuranceExpiry": "Locked after creation — record an insurance expense and the date updates automatically.",
+            "createInsuranceExpiry": "Enter the real expiry date — it cannot be changed after the vehicle is created; insurance expenses keep it up to date.",
+            "lockedInspectionExpiry": "Locked after creation — record a technical inspection expense and the date updates automatically.",
+            "createInspectionExpiry": "Enter the real expiry date — it cannot be changed after the vehicle is created; inspection expenses keep it up to date."
         },
         "info": {
             "category": "Category",

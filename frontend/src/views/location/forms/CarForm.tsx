@@ -187,40 +187,54 @@ const defaultFormValues = (car?: Car | null): CarFormValues => ({
 const buildPayload = (
     values: CarFormValues,
     images: CarImageDraft[],
-): CarPayload => ({
-    brand_id: values.brand_id as number,
-    model_id: values.model_id as number,
-    category_id: values.category_id as number,
-    registration_number: values.registration_number.trim(),
-    vin: values.vin?.trim() || null,
-    year: toNumberOrNull(values.year),
-    color: values.color?.trim() || null,
-    seats_count: toNumberOrNull(values.seats_count),
-    doors_count: toNumberOrNull(values.doors_count),
-    transmission_type: (values.transmission_type as TransmissionType) || null,
-    fuel_type: (values.fuel_type as FuelType) || null,
-    daily_price: Number(values.daily_price),
-    purchase_price: toNumberOrNull(values.purchase_price),
-    initial_mileage: toNumberOrNull(values.initial_mileage),
-    current_mileage: toNumberOrNull(values.current_mileage),
-    current_fuel_level: toNumberOrNull(values.current_fuel_level),
-    insurance_company: values.insurance_company?.trim() || null,
-    insurance_policy_number: values.insurance_policy_number?.trim() || null,
-    insurance_expiry_date: values.insurance_expiry_date || null,
-    technical_inspection_expiry: values.technical_inspection_expiry || null,
-    next_service_mileage: toNumberOrNull(values.next_service_mileage),
-    last_maintenance_at: values.last_maintenance_at || null,
-    status: (values.status as CarPayload['status']) || 'available',
-    is_active: values.is_active,
-    notes: values.notes?.trim() || null,
-    images: images
-        .filter((img) => !img.uploading)
-        .map((img) => ({
-            image: img.url,
-            is_primary: img.is_primary,
-            sort_order: img.sort_order,
-        })),
-})
+    isEdit: boolean,
+): CarPayload => {
+    const payload: CarPayload = {
+        brand_id: values.brand_id as number,
+        model_id: values.model_id as number,
+        category_id: values.category_id as number,
+        registration_number: values.registration_number.trim(),
+        vin: values.vin?.trim() || null,
+        year: toNumberOrNull(values.year),
+        color: values.color?.trim() || null,
+        seats_count: toNumberOrNull(values.seats_count),
+        doors_count: toNumberOrNull(values.doors_count),
+        transmission_type: (values.transmission_type as TransmissionType) || null,
+        fuel_type: (values.fuel_type as FuelType) || null,
+        daily_price: Number(values.daily_price),
+        purchase_price: toNumberOrNull(values.purchase_price),
+        initial_mileage: toNumberOrNull(values.initial_mileage),
+        current_mileage: toNumberOrNull(values.current_mileage),
+        current_fuel_level: toNumberOrNull(values.current_fuel_level),
+        insurance_company: values.insurance_company?.trim() || null,
+        insurance_policy_number: values.insurance_policy_number?.trim() || null,
+        insurance_expiry_date: values.insurance_expiry_date || null,
+        technical_inspection_expiry: values.technical_inspection_expiry || null,
+        next_service_mileage: toNumberOrNull(values.next_service_mileage),
+        last_maintenance_at: values.last_maintenance_at || null,
+        status: (values.status as CarPayload['status']) || 'available',
+        is_active: values.is_active,
+        notes: values.notes?.trim() || null,
+        images: images
+            .filter((img) => !img.uploading)
+            .map((img) => ({
+                image: img.url,
+                is_primary: img.is_primary,
+                sort_order: img.sort_order,
+            })),
+    }
+
+    if (isEdit) {
+        // Locked after creation: reservations move the mileage and the car's
+        // own insurance/inspection expenses move the expiry dates, so the
+        // edit form must not send them (the backend strips them anyway).
+        delete payload.initial_mileage
+        delete payload.insurance_expiry_date
+        delete payload.technical_inspection_expiry
+    }
+
+    return payload
+}
 
 type CarFormProps = {
     car: Car | null
@@ -235,6 +249,10 @@ const MAX_IMAGE_BYTES = 5 * 1024 * 1024
 
 const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
     const { t } = useTranslation()
+    // Once the vehicle exists, the odometer baseline and the document expiry
+    // dates become read-only — reservations and the car's own expenses are
+    // the writers after that, so manual edits would only desync them.
+    const isEdit = car !== null
     const [brands, setBrands] = useState<{ value: number; label: string }[]>([])
     const [models, setModels] = useState<{ value: number; label: string }[]>([])
     const [categories, setCategories] = useState<
@@ -405,7 +423,7 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
 
     const onSubmit = handleSubmit(async (values) => {
         setSubmitting(true)
-        const payload = buildPayload(values, images)
+        const payload = buildPayload(values, images, car !== null)
         try {
             if (car) {
                 await apiUpdateCar(car.id, payload)
@@ -648,10 +666,26 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                             <Input
                                 type="number"
                                 placeholder="10000"
+                                readOnly={isEdit}
                                 {...field}
                             />
                         )}
                     />
+                    {isEdit ? (
+                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            {t(
+                                'cars.form.lockedInitialMileage',
+                                'Locked after creation — reservations update the mileage automatically.',
+                            )}
+                        </p>
+                    ) : (
+                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            {t(
+                                'cars.form.createInitialMileage',
+                                'Enter the real odometer reading — it cannot be changed after the vehicle is created.',
+                            )}
+                        </p>
+                    )}
                 </FormItem>
                 <FormItem label={t('cars.form.currentMileage', 'Current mileage')}>
                     <Controller
@@ -688,15 +722,49 @@ const CarForm = ({ car, isOpen = true, onCancel, onSaved }: CarFormProps) => {
                     <Controller
                         name="insurance_expiry_date"
                         control={control}
-                        render={({ field }) => <Input type="date" {...field} />}
+                        render={({ field }) => (
+                            <Input type="date" readOnly={isEdit} {...field} />
+                        )}
                     />
+                    {isEdit ? (
+                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            {t(
+                                'cars.form.lockedInsuranceExpiry',
+                                'Locked after creation — record an insurance expense and the date updates automatically.',
+                            )}
+                        </p>
+                    ) : (
+                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            {t(
+                                'cars.form.createInsuranceExpiry',
+                                'Enter the real expiry date — it cannot be changed after the vehicle is created; insurance expenses keep it up to date.',
+                            )}
+                        </p>
+                    )}
                 </FormItem>
                 <FormItem label={t('cars.form.technicalInspectionExpiry', 'Technical inspection expiry')}>
                     <Controller
                         name="technical_inspection_expiry"
                         control={control}
-                        render={({ field }) => <Input type="date" {...field} />}
+                        render={({ field }) => (
+                            <Input type="date" readOnly={isEdit} {...field} />
+                        )}
                     />
+                    {isEdit ? (
+                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            {t(
+                                'cars.form.lockedInspectionExpiry',
+                                'Locked after creation — record a technical inspection expense and the date updates automatically.',
+                            )}
+                        </p>
+                    ) : (
+                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            {t(
+                                'cars.form.createInspectionExpiry',
+                                'Enter the real expiry date — it cannot be changed after the vehicle is created; inspection expenses keep it up to date.',
+                            )}
+                        </p>
+                    )}
                 </FormItem>
                 <FormItem label={t('cars.form.status', 'Status')}>
                     <Controller

@@ -24,6 +24,17 @@ class CarController extends Controller
 {
     use LogsActivity;
 
+    /**
+     * Vehicle facts the update endpoint may never rewrite: they are entered
+     * at creation and afterwards maintained by the system itself (reservations
+     * advance the mileage, insurance/inspection expenses move the dates).
+     */
+    private const LOCKED_AFTER_CREATION = [
+        'initial_mileage',
+        'insurance_expiry_date',
+        'technical_inspection_expiry',
+    ];
+
     public function __construct(private readonly CarQueryService $cars) {}
 
     public function index(IndexCarRequest $request): AnonymousResourceCollection
@@ -115,7 +126,11 @@ class CarController extends Controller
 
     public function update(UpdateCarRequest $request, Car $car): CarResource
     {
-        $validated = $request->validated();
+        // The odometer baseline and the document expiry dates are frozen once
+        // the vehicle exists: reservations move the mileage and the car's own
+        // insurance/inspection expenses move the dates, so the update endpoint
+        // can no longer write them (creation is the only manual entry point).
+        $validated = Arr::except($request->validated(), self::LOCKED_AFTER_CREATION);
         $keys = array_values(array_diff(array_keys($validated), ['images']));
         $old = $this->auditValues($car, $keys);
 

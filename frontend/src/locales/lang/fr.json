@@ -904,7 +904,13 @@
                 "updated": "Véhicule mis à jour avec succès !",
                 "created": "Véhicule ajouté avec succès !",
                 "error": "Une erreur s’est produite"
-            }
+            },
+            "lockedInitialMileage": "Verrouillé après la création — les réservations mettent le kilométrage à jour automatiquement.",
+            "createInitialMileage": "Saisissez le kilométrage réel — il ne peut plus être modifié après la création du véhicule.",
+            "lockedInsuranceExpiry": "Verrouillé après la création — enregistrez une dépense d'assurance et la date se met à jour automatiquement.",
+            "createInsuranceExpiry": "Saisissez la date d'expiration réelle — elle ne peut plus être modifiée après la création du véhicule ; les dépenses d'assurance la maintiennent à jour.",
+            "lockedInspectionExpiry": "Verrouillé après la création — enregistrez une dépense de contrôle technique et la date se met à jour automatiquement.",
+            "createInspectionExpiry": "Saisissez la date d'expiration réelle — elle ne peut plus être modifiée après la création du véhicule ; les dépenses de contrôle technique la maintiennent à jour."
         },
         "info": {
             "category": "Catégorie",

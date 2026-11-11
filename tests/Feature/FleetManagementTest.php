@@ -441,6 +441,35 @@ class FleetManagementTest extends TestCase
             ->assertJsonValidationErrors(['model_id']);
     }
 
+    public function test_update_cannot_rewrite_the_locked_creation_facts(): void
+    {
+        $actor = $this->actor(['fleet.update']);
+        $car = $this->car([
+            'initial_mileage' => 10000,
+            'insurance_expiry_date' => '2027-01-15',
+            'technical_inspection_expiry' => '2027-06-01',
+        ]);
+
+        // The odometer baseline and document expiries are entered at creation
+        // only — afterwards reservations and the car's own expenses maintain
+        // them, so an edit attempting to rewrite them changes nothing.
+        $this->actingAs($actor, 'sanctum')
+            ->patchJson('/api/v1/cars/'.$car->id, [
+                'daily_price' => 350,
+                'initial_mileage' => 15000,
+                'insurance_expiry_date' => '2028-03-20',
+                'technical_inspection_expiry' => null,
+            ])
+            ->assertOk()
+            ->assertJsonPath('daily_price', 350);
+
+        $fresh = $car->fresh();
+
+        $this->assertSame(10000, $fresh->initial_mileage);
+        $this->assertSame('2027-01-15', $fresh->insurance_expiry_date->toDateString());
+        $this->assertSame('2027-06-01', $fresh->technical_inspection_expiry->toDateString());
+    }
+
     public function test_destroy_soft_deletes_and_is_blocked_by_reservations(): void
     {
         $actor = $this->actor(['fleet.*']);
