@@ -1,5 +1,6 @@
 <?php
 
+use App\Console\Commands\FleetExpiryAlerts;
 use App\Console\Commands\MarkOverdueInstallments;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -11,3 +12,6 @@ Artisan::command('inspire', function () {
 
 // Car-financing sweep: a pending "traite" past its due date becomes overdue.
 Schedule::command(MarkOverdueInstallments::class)->daily();
+
+// Fleet documents: insurance and technical-inspection expiry reminders.
+Schedule::command(FleetExpiryAlerts::class)->daily();

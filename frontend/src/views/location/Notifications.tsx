@@ -27,12 +27,30 @@ import useTranslation from '@/utils/hooks/useTranslation'
 const typeTone: Record<string, TagTone> = {
     announcement: 'primary',
     payment: 'success',
+    car_insurance: 'warning',
+    car_inspection: 'primary',
+    car_fuel: 'error',
 }
 
-const notificationTypeLabel = (t: Translator, type: string) =>
-    type === 'payment'
-        ? t('notifications.types.payment', 'Payment')
-        : t('notifications.types.announcement', 'Announcement')
+const carAlertTypeLabelKeys: Record<string, string> = {
+    car_insurance: 'carInsurance',
+    car_inspection: 'carInspection',
+    car_fuel: 'carFuel',
+}
+
+const notificationTypeLabel = (t: Translator, type: string) => {
+    if (type === 'payment') {
+        return t('notifications.types.payment', 'Payment')
+    }
+    if (type === 'announcement') {
+        return t('notifications.types.announcement', 'Announcement')
+    }
+    const labelKey = carAlertTypeLabelKeys[type]
+    if (labelKey) {
+        return t(`notifications.types.${labelKey}`, 'Alert')
+    }
+    return t('notifications.types.announcement', 'Announcement')
+}
 
 const Notifications = () => {
     const { t } = useTranslation()
@@ -98,6 +116,18 @@ const Notifications = () => {
             {
                 value: 'payment',
                 label: t('notifications.types.payment', 'Payment'),
+            },
+            {
+                value: 'car_insurance',
+                label: t('notifications.types.carInsurance', 'Insurance'),
+            },
+            {
+                value: 'car_inspection',
+                label: t('notifications.types.carInspection', 'Technical inspection'),
+            },
+            {
+                value: 'car_fuel',
+                label: t('notifications.types.carFuel', 'Fuel'),
             },
         ],
         [t],

@@ -729,12 +729,67 @@ class FleetManagementTest extends TestCase
             'entity_type' => Car::class,
             'entity_id' => $car->id,
             'description' => 'Car updated',
+            'old_values' => ['daily_price' => '300.00'],
+            'new_values' => ['daily_price' => '350.00'],
+        ]);
+
+        // A price change on the car shows as a field diff on its row.
+        $expense = CarExpense::factory()->create([
+            'agency_id' => $this->agency->id,
+            'car_id' => $car->id,
+            'title' => 'Vidange',
+            'type' => 'maintenance',
+            'amount' => 600,
+        ]);
+
+        ActivityLog::create([
+            'agency_id' => $this->agency->id,
+            'user_id' => $actor->id,
+            'module' => 'expenses',
+            'action' => 'updated',
+            'entity_type' => CarExpense::class,
+            'entity_id' => $expense->id,
+            'description' => 'Expense updated',
+            'old_values' => ['amount' => '600.00'],
+            'new_values' => ['amount' => '750.00'],
+        ]);
+
+        // A payment movement on the car's reservation lands in the trail too.
+        $payment = Payment::factory()->create([
+            'agency_id' => $this->agency->id,
+            'reservation_id' => $reservation->id,
+            'amount' => 500,
+        ]);
+
+        ActivityLog::create([
+            'agency_id' => $this->agency->id,
+            'user_id' => $actor->id,
+            'module' => 'payments',
+            'action' => 'recorded',
+            'entity_type' => Payment::class,
+            'entity_id' => $payment->id,
+            'description' => 'Payment of 500.00 recorded via cash',
+            'new_values' => ['amount' => '500.00', 'method' => 'cash', 'status' => 'paid'],
+        ]);
+
+        // Movements on another car's expenses/payments must never leak in.
+        $otherExpense = CarExpense::factory()->create([
+            'agency_id' => $this->agency->id,
+            'car_id' => $otherCar->id,
+        ]);
+        ActivityLog::create([
+            'agency_id' => $this->agency->id,
+            'user_id' => $actor->id,
+            'module' => 'expenses',
+            'action' => 'updated',
+            'entity_type' => CarExpense::class,
+            'entity_id' => $otherExpense->id,
         ]);
 
         $response = $this->actingAs($actor, 'sanctum')
             ->getJson('/api/v1/cars/'.$car->id.'/history')
             ->assertOk()
-            ->assertJsonCount(2);
+            ->assertJsonCount(4);
 
         $entries = collect($response->json());
 
@@ -742,6 +797,9 @@ class FleetManagementTest extends TestCase
         $this->assertNotNull($carEntry);
         $this->assertSame('updated', $carEntry['action']);
         $this->assertSame($actor->full_name, $carEntry['user']['full_name']);
+        $this->assertSame([
+            ['field' => 'daily_price', 'old' => '300.00', 'new' => '350.00'],
+        ], $carEntry['changes']);
 
         $reservationEntry = $entries->firstWhere('source', 'reservation');
         $this->assertNotNull($reservationEntry);
@@ -749,6 +807,20 @@ class FleetManagementTest extends TestCase
         $this->assertSame($reservation->id, $reservationEntry['reservation']['id']);
         $this->assertSame($reservation->reservation_number, $reservationEntry['reservation']['reservation_number']);
         $this->assertSame($actor->full_name, $reservationEntry['user']['full_name']);
+
+        $expenseEntry = $entries->firstWhere('source', 'expense');
+        $this->assertNotNull($expenseEntry);
+        $this->assertSame('updated', $expenseEntry['action']);
+        $this->assertSame('Vidange', $expenseEntry['expense']['title']);
+        $this->assertSame([
+            ['field' => 'amount', 'old' => '600.00', 'new' => '750.00'],
+        ], $expenseEntry['changes']);
+
+        $paymentEntry = $entries->firstWhere('source', 'payment');
+        $this->assertNotNull($paymentEntry);
+        $this->assertSame('recorded', $paymentEntry['action']);
+        $this->assertSame($reservation->reservation_number, $paymentEntry['payment']['reservation_number']);
+        $this->assertSame('cash', $paymentEntry['changes'][1]['new']);
 
         $foreign = Car::factory()->create([
             'agency_id' => Agency::factory(),

@@ -10,6 +10,7 @@ import NotificationToggle from './NotificationToggle'
 import NotificationMessage from './NotificationMessage'
 import EmptyState from '@/components/shared/EmptyState'
 import Elements from '@/components/svg/Elements'
+import { APPS_PREFIX_PATH } from '@/constants/route.constant'
 import {
     apiGetNotifications,
     apiGetNotificationUnreadCount,
@@ -31,7 +32,9 @@ dayjs.extend(relativeTime)
 
 const { TabList, TabNav, TabContent } = Tabs
 
-type NotificationFilter = 'all' | 'unread' | 'announcement' | 'payment'
+type NotificationFilter = 'all' | 'unread' | 'alerts' | 'announcement' | 'payment'
+
+const isCarAlert = (type: string) => type.startsWith('car_')
 
 const NOTIFICATIONS_ROUTE = '/apps/notifications'
 const DRAWER_PAGE_SIZE = 20
@@ -180,6 +183,8 @@ const Notification = ({ className }: { className?: string }) => {
         switch (activeTab) {
             case 'unread':
                 return notifications.filter((item) => !item.read)
+            case 'alerts':
+                return notifications.filter((item) => isCarAlert(item.type))
             case 'announcement':
             case 'payment':
                 return notifications.filter((item) => item.type === activeTab)
@@ -198,7 +203,16 @@ const Notification = ({ className }: { className?: string }) => {
         setIsOpen(false)
     }
 
+    /**
+     * A fleet alert is actionable: open the car's expense tab where the
+     * renewal is recorded. Read-state is still updated first so the badge
+     * reconciles; navigation errors leave nothing behind.
+     */
     const handleSelect = async (item: AppNotification) => {
+        if (item.data.car_id) {
+            setIsOpen(false)
+            navigate(`${APPS_PREFIX_PATH}/vehicules/${item.data.car_id}/expenses`)
+        }
         if (item.read) {
             return
         }
@@ -232,6 +246,10 @@ const Notification = ({ className }: { className?: string }) => {
     const tabs: { value: NotificationFilter; label: string }[] = [
         { value: 'all', label: t('notifications.tabs.all', 'All') },
         { value: 'unread', label: t('notifications.tabs.unread', 'Unread') },
+        {
+            value: 'alerts',
+            label: t('notifications.tabs.alerts', 'Alerts'),
+        },
         {
             value: 'announcement',
             label: t('notifications.tabs.announcements', 'Announcements'),

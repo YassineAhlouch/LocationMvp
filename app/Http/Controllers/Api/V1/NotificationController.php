@@ -7,6 +7,7 @@ use App\Http\Requests\Notifications\IndexNotificationRequest;
 use App\Http\Requests\Notifications\StoreNotificationRequest;
 use App\Http\Resources\NotificationResource;
 use App\Services\Activity\LogsActivity;
+use App\Services\Cars\CarExpirySweeper;
 use App\Services\Notifications\NotificationDispatcher;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,7 +17,10 @@ class NotificationController extends Controller
 {
     use LogsActivity;
 
-    public function __construct(private readonly NotificationDispatcher $notifications) {}
+    public function __construct(
+        private readonly NotificationDispatcher $notifications,
+        private readonly CarExpirySweeper $sweeper,
+    ) {}
 
     /**
      * Your inbox — resolved through the authenticated user's own
@@ -45,6 +49,10 @@ class NotificationController extends Controller
 
     public function unreadCount(Request $request): JsonResponse
     {
+        // Freshness check before the count: the fleet document sweep runs
+        // here, cached per agency, so alerts land without a cron worker.
+        $this->sweeper->sweepCached($request->user()->agency_id);
+
         return response()->json([
             'unread_count' => $request->user()->unreadNotifications()->count(),
         ]);

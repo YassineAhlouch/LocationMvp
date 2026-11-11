@@ -14,6 +14,7 @@ use App\Models\CarExpense;
 use App\Models\Payment;
 use App\Models\Reservation;
 use App\Models\ReservationChange;
+use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -33,6 +34,16 @@ class CarQueryService
         'year',
         'created_at',
         'registration_number',
+    ];
+
+    /**
+     * Creation/deletion audit rows snapshot the whole entity; these are the
+     * fields worth showing so such a row stays one glance tall.
+     */
+    private const HISTORY_HEADLINE_FIELDS = [
+        'fleet' => ['registration_number', 'daily_price', 'purchase_price', 'status'],
+        'expenses' => ['type', 'title', 'amount', 'status', 'due_date'],
+        'payments' => ['amount', 'method', 'status'],
     ];
 
     /**
@@ -267,8 +278,10 @@ class CarQueryService
 
     /**
      * Merged, newest-first audit trail for one car: the vehicle's own activity
-     * (fleet module) plus every business change recorded on its reservations
-     * (reservation_changes). Both shapes are normalised so the UI renders a
+     * (fleet module, with the exact field diffs), every expense movement on it
+     * (expenses module), every payment event on its reservations (payments
+     * module) and every business change recorded on its reservations
+     * (reservation_changes). All shapes are normalised so the UI renders a
      * single timeline. When a window is given only entries created inside it
      * are kept.
      *
@@ -281,35 +294,99 @@ class CarQueryService
         ?CarbonImmutable $to = null,
     ): array {
         $ranged = $from !== null && $to !== null;
+        $window = fn ($query) => $ranged
+            ? $query->whereBetween('created_at', [$from->toDateTimeString(), $to->toDateTimeString()])
+            : $query;
 
+        $withUser = fn ($query) => $query->with('user:id,first_name,last_name');
+
+        // Movements on the vehicle itself: creation, edits (with the exact
+        // field diff), retirement.
         $activity = ActivityLog::query()
             ->where('module', 'fleet')
             ->where('entity_type', $car->getMorphClass())
             ->where('entity_id', $car->id)
-            ->when($ranged, fn ($query) => $query->whereBetween(
-                'created_at',
-                [$from->toDateTimeString(), $to->toDateTimeString()],
-            ))
-            ->with('user:id,first_name,last_name')
+            ->when($ranged, $window)
+            ->tap($withUser)
             ->get()
             ->map(fn (ActivityLog $log) => [
                 'id' => 'car-'.$log->id,
                 'source' => 'car',
                 'action' => $log->action,
+                'changes' => $this->diffChanges('fleet', $log->action, $log->old_values, $log->new_values),
                 'description' => $log->description,
-                'user' => $log->user !== null ? [
-                    'id' => $log->user->id,
-                    'full_name' => $log->user->full_name,
-                ] : null,
+                'user' => $this->entryUser($log->user),
                 'created_at' => $log->created_at?->toIso8601String(),
             ]);
 
+        // Money spent on this car: expense creations and edits (with diffs).
+        $expenseIds = CarExpense::query()
+            ->where('car_id', $car->id)
+            ->pluck('id');
+        $expenseTitles = CarExpense::query()
+            ->whereKey($expenseIds)
+            ->pluck('title', 'id');
+
+        $expenseActivity = $expenseIds->isEmpty()
+            ? collect()
+            : ActivityLog::query()
+                ->where('module', 'expenses')
+                ->where('entity_type', (new CarExpense)->getMorphClass())
+                ->whereIn('entity_id', $expenseIds)
+                ->when($ranged, $window)
+                ->tap($withUser)
+                ->get()
+                ->map(fn (ActivityLog $log) => [
+                    'id' => 'expense-'.$log->id,
+                    'source' => 'expense',
+                    'action' => $log->action,
+                    'expense' => [
+                        'id' => (int) $log->entity_id,
+                        'title' => $expenseTitles[$log->entity_id] ?? null,
+                    ],
+                    'changes' => $this->diffChanges('expenses', $log->action, $log->old_values, $log->new_values),
+                    'user' => $this->entryUser($log->user),
+                    'created_at' => $log->created_at?->toIso8601String(),
+                ]);
+
+        // Money received for this car: payment events on its reservations.
+        $reservations = Reservation::query()
+            ->where('car_id', $car->id)
+            ->get(['id', 'reservation_number']);
+        $paymentNumbers = $reservations->pluck('reservation_number', 'id');
+        $paymentReservations = $reservations->pluck('id', 'id');
+        $paymentIds = $paymentReservations->isEmpty()
+            ? collect()
+            : Payment::query()->whereIn('reservation_id', $paymentReservations)->pluck('id');
+
+        $paymentActivity = $paymentIds->isEmpty()
+            ? collect()
+            : ActivityLog::query()
+                ->where('module', 'payments')
+                ->where('entity_type', (new Payment)->getMorphClass())
+                ->whereIn('entity_id', $paymentIds)
+                ->when($ranged, $window)
+                ->tap($withUser)
+                ->get()
+                ->map(fn (ActivityLog $log) => [
+                    'id' => 'payment-'.$log->id,
+                    'source' => 'payment',
+                    'action' => $log->action,
+                    'payment' => [
+                        'id' => (int) $log->entity_id,
+                        'reservation_id' => $paymentReservations->get((int) $log->entity_id),
+                        'reservation_number' => $paymentNumbers->get((int) $log->entity_id),
+                    ],
+                    'changes' => $this->diffChanges('payments', $log->action, $log->old_values, $log->new_values),
+                    'user' => $this->entryUser($log->user),
+                    'created_at' => $log->created_at?->toIso8601String(),
+                ]);
+
+        // Business changes recorded on the car's reservations (pricing edits,
+        // extensions, status moves...) with their field-level detail.
         $changes = ReservationChange::query()
             ->whereHas('reservation', fn ($query) => $query->where('car_id', $car->id))
-            ->when($ranged, fn ($query) => $query->whereBetween(
-                'created_at',
-                [$from->toDateTimeString(), $to->toDateTimeString()],
-            ))
+            ->when($ranged, $window)
             ->with(['createdBy:id,first_name,last_name', 'reservation:id,reservation_number'])
             ->get()
             ->map(fn (ReservationChange $change) => [
@@ -332,11 +409,74 @@ class CarQueryService
             ]);
 
         return $activity
+            ->concat($expenseActivity)
+            ->concat($paymentActivity)
             ->concat($changes)
             ->sortByDesc('created_at')
             ->take($limit)
             ->values()
             ->all();
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $old
+     * @param  array<string, mixed>|null  $new
+     * @return array<int, array{field: string, old: string|null, new: string|null}>
+     */
+    private function diffChanges(string $module, string $action, ?array $old, ?array $new): array
+    {
+        if ($old === null && $new === null) {
+            return [];
+        }
+
+        $fields = array_values(array_unique(array_merge(
+            array_keys($old ?? []),
+            array_keys($new ?? []),
+        )));
+
+        // Creations and deletions snapshot the whole row — keep only the
+        // headline fields so a created/removed entry stays one glance tall.
+        // Updates carry only the touched keys, so the full diff is shown.
+        if ($action !== 'updated') {
+            $headline = self::HISTORY_HEADLINE_FIELDS[$module] ?? [];
+
+            if ($headline !== []) {
+                $fields = array_values(array_intersect($fields, $headline));
+            }
+        }
+
+        $changes = [];
+
+        foreach ($fields as $field) {
+            $before = array_key_exists($field, $old ?? []) ? $old[$field] : null;
+            $after = array_key_exists($field, $new ?? []) ? $new[$field] : null;
+
+            if ($before === null && $after === null) {
+                continue;
+            }
+
+            if ($action === 'updated' && $before === $after) {
+                continue;
+            }
+
+            $changes[] = [
+                'field' => $field,
+                'old' => $before === null ? null : (string) $before,
+                'new' => $after === null ? null : (string) $after,
+            ];
+        }
+
+        return $changes;
+    }
+
+    /**
+     * @return array{id: int, full_name: string}|null
+     */
+    private function entryUser(?User $user): ?array
+    {
+        return $user !== null
+            ? ['id' => $user->id, 'full_name' => $user->full_name]
+            : null;
     }
 
     /**

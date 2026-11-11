@@ -5,6 +5,8 @@ namespace App\Services\Reservations;
 use App\Enums\CarStatus;
 use App\Models\Car;
 use App\Models\Reservation;
+use App\Models\User;
+use App\Services\Notifications\NotificationDispatcher;
 
 /**
  * The car's status is derived state of its reservation lifecycle:
@@ -19,7 +21,10 @@ use App\Models\Reservation;
  */
 class CarLifecycleService
 {
-    public function __construct(private readonly AvailabilityService $availability) {}
+    public function __construct(
+        private readonly AvailabilityService $availability,
+        private readonly NotificationDispatcher $notifications,
+    ) {}
 
     public function onConfirmed(Car $car): void
     {
@@ -36,7 +41,7 @@ class CarLifecycleService
         }
     }
 
-    public function onCompleted(Car $car, Reservation $reservation): void
+    public function onCompleted(Car $car, Reservation $reservation, ?User $actor = null): void
     {
         $attributes = [];
 
@@ -56,6 +61,20 @@ class CarLifecycleService
         $attributes['status'] = $serviceDue ? CarStatus::Maintenance : CarStatus::Available;
 
         $car->update($attributes);
+
+        // A return that lands at or below the low-fuel threshold alerts the
+        // fleet managers — the actor who recorded the return already knows.
+        $threshold = (int) config('alerts.fuel_low_percent', 20);
+
+        if ($reservation->return_fuel_level !== null
+            && (int) $reservation->return_fuel_level <= $threshold) {
+            $this->notifications->carFuelLow(
+                $car,
+                (int) $reservation->return_fuel_level,
+                $reservation,
+                $actor,
+            );
+        }
     }
 
     public function onCancelled(Car $car, int $cancelledReservationId): void

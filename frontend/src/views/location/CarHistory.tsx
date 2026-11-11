@@ -6,7 +6,7 @@ import Tag from '@/components/ui/Tag'
 import Button from '@/components/ui/Button'
 import InputGroup from '@/components/ui/InputGroup'
 import { APPS_PREFIX_PATH } from '@/constants/route.constant'
-import { LiCar } from '@/icons'
+import { LiBank, LiCar, LiWalletMoney } from '@/icons'
 import { apiGetCarHistory } from '@/services/LocationService'
 import useTranslation from '@/utils/hooks/useTranslation'
 import {
@@ -15,8 +15,14 @@ import {
     fieldLabels,
     formatValue,
 } from './ReservationHistory'
-import { apiErrorMessage, formatDateTime, tagToneClass } from './shared'
-import type { CarHistoryEntry } from '@/@types/location'
+import { money } from './shared'
+import {
+    apiErrorMessage,
+    formatDate,
+    formatDateTime,
+    tagToneClass,
+} from './shared'
+import type { CarHistoryEntry, HistoryChange } from '@/@types/location'
 import type { DateRange } from '@/components/shared/PeriodPicker'
 
 type CarHistoryProps = {
@@ -24,7 +30,59 @@ type CarHistoryProps = {
     range: DateRange
 }
 
-type HistoryFilter = 'all' | 'car' | 'reservation'
+type HistoryFilter = 'all' | 'car' | 'reservation' | 'expense' | 'payment'
+
+type AuditSource = 'car' | 'expense' | 'payment'
+
+/** Human fallbacks for car/expense/payment field names. */
+const historyFieldLabels: Record<string, string> = {
+    registration_number: 'Registration',
+    daily_price: 'Daily price',
+    purchase_price: 'Purchase price',
+    insurance_company: 'Insurer',
+    insurance_policy_number: 'Policy number',
+    insurance_expiry_date: 'Insurance expiry',
+    technical_inspection_expiry: 'Technical inspection',
+    current_mileage: 'Mileage',
+    current_fuel_level: 'Fuel level',
+    next_service_mileage: 'Next service (km)',
+    last_maintenance_at: 'Last maintenance',
+    is_active: 'Active',
+    notes: 'Notes',
+    type: 'Type',
+    title: 'Title',
+    amount: 'Amount',
+    vendor: 'Vendor',
+    start_date: 'Start date',
+    due_date: 'Due date',
+    paid_date: 'Paid date',
+    method: 'Method',
+    reference: 'Reference',
+    status: 'Status',
+}
+
+const moneyFields = new Set([
+    'daily_price',
+    'purchase_price',
+    'amount',
+    'daily_rate',
+    'total_amount',
+    'deposit_amount',
+    'discount_amount',
+    'paid_amount',
+])
+
+const dateFields = new Set([
+    'insurance_expiry_date',
+    'technical_inspection_expiry',
+    'start_date',
+    'due_date',
+    'paid_date',
+    'last_maintenance_at',
+    'pickup_datetime',
+    'expected_return_datetime',
+    'actual_return_datetime',
+])
 
 const CarHistory = ({ carId, range }: CarHistoryProps) => {
     const { t } = useTranslation()
@@ -69,29 +127,103 @@ const CarHistory = ({ carId, range }: CarHistoryProps) => {
         [entries, filter],
     )
 
-    /** Exercise/vehicle actions, localized with a humanized fallback. */
-    const carActionLabel = (action: string): string =>
+    /** Audit actions, localized with a humanized fallback. */
+    const actionLabel = (source: AuditSource, action: string): string =>
         t(
-            `cars.overview.history.carAction.${action}`,
+            `cars.overview.history.${source}Action.${action}`,
             action
                 .replace(/_/g, ' ')
                 .replace(/\b\w/g, (char) => char.toUpperCase()),
         )
 
-    /** Change values: status fields go through the locale keys. */
-    const formatLocalValue = (value: string | null, field: string) => {
+    /** Field names for audit diffs, localized with a humanized fallback. */
+    const fieldLabel = (field: string): string =>
+        t(
+            `cars.overview.history.fields.${field}`,
+            historyFieldLabels[field] ??
+                field
+                    .replace(/_/g, ' ')
+                    .replace(/\b\w/g, (char) => char.toUpperCase()),
+        )
+
+    /** Values: money, dates and status labels go through their locale keys. */
+    const formatChangeValue = (
+        value: string | null,
+        field: string,
+        source: AuditSource | 'reservation',
+    ): string | null => {
         const base = formatValue(value, field)
         if (!base) {
             return null
         }
         const raw = String(value ?? '').trim()
-        if (field === 'status') {
-            return t(`reservations.status.${raw}`, base)
+        if (moneyFields.has(field)) {
+            return money(Number(raw))
         }
-        if (field === 'payment_status') {
+        if (dateFields.has(field)) {
+            return formatDate(raw)
+        }
+        if (field === 'type') {
+            return t(`expenses.type.${raw}`, base)
+        }
+        if (field === 'method') {
+            return t(`payments.method.${raw}`, base)
+        }
+        if (field === 'is_active') {
+            const on = raw === '1' || raw.toLowerCase() === 'true'
+            return on ? t('common.yes', 'Yes') : t('common.no', 'No')
+        }
+        if (field === 'status') {
+            if (source === 'expense') {
+                return t(`expenses.status.${raw}`, base)
+            }
+            if (source === 'payment') {
+                return t(`payments.status.${raw}`, base)
+            }
+            if (source === 'reservation') {
+                return t(`reservations.status.${raw}`, base)
+            }
+            return t(`cars.status.${raw}`, base)
+        }
+        if (field === 'payment_status' && source === 'reservation') {
             return t(`reservations.payment.${raw}`, base)
         }
         return base
+    }
+
+    /** One field movement: label + old (struck) → new. */
+    const ChangeLine = ({
+        change,
+        source,
+    }: {
+        change: HistoryChange
+        source: AuditSource
+    }) => {
+        const oldValue = formatChangeValue(change.old, change.field, source)
+        const newValue = formatChangeValue(change.new, change.field, source)
+
+        return (
+            <div className="flex flex-wrap items-center gap-1 text-sm">
+                <span className="text-xs text-gray-400 dark:text-gray-500">
+                    {fieldLabel(change.field)}
+                </span>
+                {oldValue && (
+                    <span className="text-gray-400 line-through dark:text-gray-500">
+                        {oldValue}
+                    </span>
+                )}
+                {oldValue && newValue && (
+                    <span className="text-gray-400 dark:text-gray-500">→</span>
+                )}
+                {newValue ? (
+                    <span className="font-semibold text-gray-700 dark:text-gray-200">
+                        {newValue}
+                    </span>
+                ) : (
+                    <span className="text-gray-400 dark:text-gray-500">—</span>
+                )}
+            </div>
+        )
     }
 
     return (
@@ -104,7 +236,7 @@ const CarHistory = ({ carId, range }: CarHistoryProps) => {
                     <p className="mt-0.5 text-xs text-gray-400 dark:text-gray-500">
                         {t(
                             'cars.overview.history.subtitle',
-                            'Vehicle activity and reservation changes',
+                            'Every movement on this vehicle — updates, expenses, payments and reservations',
                         )}
                     </p>
                 </div>
@@ -134,6 +266,22 @@ const CarHistory = ({ carId, range }: CarHistoryProps) => {
                         >
                             {t('cars.overview.history.reservations', 'Reservations')}
                         </Button>
+                        <Button
+                            size="sm"
+                            active={filter === 'expense'}
+                            clickFeedback={false}
+                            onClick={() => setFilter('expense')}
+                        >
+                            {t('cars.overview.history.expenses', 'Expenses')}
+                        </Button>
+                        <Button
+                            size="sm"
+                            active={filter === 'payment'}
+                            clickFeedback={false}
+                            onClick={() => setFilter('payment')}
+                        >
+                            {t('cars.overview.history.payments', 'Payments')}
+                        </Button>
                     </InputGroup>
                     {!loading && !error && (
                         <Tag className="rounded-full">{visible.length}</Tag>
@@ -162,28 +310,61 @@ const CarHistory = ({ carId, range }: CarHistoryProps) => {
             ) : (
                 <ol>
                     {visible.map((entry, index) => {
-                        const isCar = entry.source === 'car'
-                        const meta = isCar ? null : changeTypeMeta[entry.change_type] ?? fallbackMeta
-                        const Icon = isCar ? LiCar : meta!.Icon
-                        const tone = isCar ? 'primary' : meta!.tone
-                        const label = isCar
-                            ? carActionLabel(entry.action)
+                        const audit =
+                            entry.source === 'car' ||
+                            entry.source === 'expense' ||
+                            entry.source === 'payment'
+                        const meta = !audit
+                            ? changeTypeMeta[entry.change_type] ?? fallbackMeta
+                            : null
+                        const Icon = entry.source === 'car'
+                            ? LiCar
+                            : entry.source === 'expense'
+                                ? LiWalletMoney
+                                : entry.source === 'payment'
+                                    ? LiBank
+                                    : meta!.Icon
+                        const tone = entry.source === 'car'
+                            ? 'primary'
+                            : entry.source === 'expense'
+                                ? 'warning'
+                                : entry.source === 'payment'
+                                    ? 'success'
+                                    : meta!.tone
+                        const label = audit
+                            ? actionLabel(entry.source, entry.action)
                             : t(
                                   `cars.overview.history.changeType.${entry.change_type}`,
                                   meta!.label,
                               )
-                        const field = isCar
-                            ? undefined
-                            : t(
-                                  `activity.field.${entry.field_name}`,
-                                  fieldLabels[entry.field_name] ?? '',
+                        const by = entry.user?.full_name
+                            ? ` · ${t('cars.overview.history.by', 'by')} ${entry.user.full_name}`
+                            : ''
+
+                        // Context line: what the movement is about — the
+                        // expense title, the reservation number, or the raw
+                        // audit description as a fallback.
+                        const contextTitle =
+                            entry.source === 'expense'
+                                ? entry.expense?.title
+                                : entry.source === 'payment'
+                                    ? entry.payment?.reservation_number
+                                    : null
+
+                        const oldValue = !audit
+                            ? formatChangeValue(
+                                  entry.old_value,
+                                  entry.field_name,
+                                  'reservation',
                               )
-                        const oldValue = isCar
-                            ? null
-                            : formatLocalValue(entry.old_value, entry.field_name)
-                        const newValue = isCar
-                            ? null
-                            : formatLocalValue(entry.new_value, entry.field_name)
+                            : null
+                        const newValue = !audit
+                            ? formatChangeValue(
+                                  entry.new_value,
+                                  entry.field_name,
+                                  'reservation',
+                              )
+                            : null
 
                         return (
                             <li
@@ -208,14 +389,50 @@ const CarHistory = ({ carId, range }: CarHistoryProps) => {
                                         </span>
                                     </div>
 
-                                    {isCar ? (
-                                        entry.description && (
-                                            <p className="text-xs text-gray-400 dark:text-gray-500">
-                                                {entry.description}
-                                                {entry.user?.full_name &&
-                                                    ` · ${t('cars.overview.history.by', 'by')} ${entry.user.full_name}`}
-                                            </p>
-                                        )
+                                    {audit ? (
+                                        <>
+                                            {contextTitle ? (
+                                                <p className="text-xs text-gray-400 dark:text-gray-500">
+                                                    {entry.source ===
+                                                        'payment' &&
+                                                    entry.payment ? (
+                                                        <Link
+                                                            to={`${APPS_PREFIX_PATH}/reservations/${entry.payment.reservation_id}/modifier`}
+                                                            className="font-medium text-primary hover:underline"
+                                                        >
+                                                            {contextTitle}
+                                                        </Link>
+                                                    ) : (
+                                                        contextTitle
+                                                    )}
+                                                    {by}
+                                                </p>
+                                            ) : null}
+                                            {entry.changes.length > 0 && (
+                                                <div className="mt-1.5 space-y-1">
+                                                    {entry.changes.map(
+                                                        (change) => (
+                                                            <ChangeLine
+                                                                key={
+                                                                    change.field
+                                                                }
+                                                                change={change}
+                                                                source={
+                                                                    entry.source
+                                                                }
+                                                            />
+                                                        ),
+                                                    )}
+                                                </div>
+                                            )}
+                                            {entry.changes.length === 0 &&
+                                                entry.description && (
+                                                    <p className="text-xs text-gray-400 dark:text-gray-500">
+                                                        {entry.description}
+                                                        {by}
+                                                    </p>
+                                                )}
+                                        </>
                                     ) : (
                                         <>
                                             <p className="text-xs text-gray-400 dark:text-gray-500">
@@ -230,16 +447,20 @@ const CarHistory = ({ carId, range }: CarHistoryProps) => {
                                                         }
                                                     </Link>
                                                 )}
-                                                {field && (
+                                                {entry.field_name && (
                                                     <span>
                                                         {entry.reservation
                                                             ? ' · '
                                                             : ''}
-                                                        {field}
+                                                        {t(
+                                                            `activity.field.${entry.field_name}`,
+                                                            fieldLabels[
+                                                                entry.field_name
+                                                            ] ?? '',
+                                                        )}
                                                     </span>
                                                 )}
-                                                {entry.user?.full_name &&
-                                                    ` · ${t('cars.overview.history.by', 'by')} ${entry.user.full_name}`}
+                                                {by}
                                             </p>
                                             {(oldValue || newValue) && (
                                                 <p className="mt-1 flex flex-wrap items-center gap-1 text-sm">

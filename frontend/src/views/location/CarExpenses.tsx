@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import dayjs from 'dayjs'
 import Card from '@/components/ui/Card'
+import Button from '@/components/ui/Button'
 import Tag from '@/components/ui/Tag'
 import Select from '@/components/ui/Select'
 import DebouceInput from '@/components/shared/DebouceInput'
@@ -8,6 +9,7 @@ import DataTable from '@/components/shared/DataTable'
 import { LuSearch } from 'react-icons/lu'
 import { apiGetExpenses } from '@/services/LocationService'
 import useTranslation from '@/utils/hooks/useTranslation'
+import usePermissions from '@/utils/hooks/usePermissions'
 import {
     money,
     expenseStatusTone,
@@ -15,17 +17,21 @@ import {
     formatDate,
     tagToneClass,
 } from './shared'
+import ExpenseFormDialog from './ExpenseFormDialog'
 import type { Expense, SelectOption } from '@/@types/location'
 import type { DateRange } from '@/components/shared/PeriodPicker'
 import type { ColumnDef } from '@tanstack/react-table'
 
 type CarExpensesProps = {
     carId: number
+    /** Registration + brand/model label, for the locked car in the dialog. */
+    carLabel: string
     range: DateRange
 }
 
-const CarExpenses = ({ carId, range }: CarExpensesProps) => {
+const CarExpenses = ({ carId, carLabel, range }: CarExpensesProps) => {
     const { t } = useTranslation()
+    const { can } = usePermissions()
     const [rows, setRows] = useState<Expense[]>([])
     const [loading, setLoading] = useState(true)
     const [total, setTotal] = useState(0)
@@ -34,6 +40,7 @@ const CarExpenses = ({ carId, range }: CarExpensesProps) => {
     const [q, setQ] = useState('')
     const [statusFilter, setStatusFilter] = useState('')
     const [typeFilter, setTypeFilter] = useState('')
+    const [dialogOpen, setDialogOpen] = useState(false)
 
     const fetchData = useCallback(() => {
         setLoading(true)
@@ -197,6 +204,15 @@ const CarExpenses = ({ carId, range }: CarExpensesProps) => {
                     </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
+                    {can('expenses.create') ? (
+                        <Button
+                            size="sm"
+                            variant="solid"
+                            onClick={() => setDialogOpen(true)}
+                        >
+                            {t('expenses.addExpense', 'Add expense')}
+                        </Button>
+                    ) : null}
                     <DebouceInput
                         placeholder={t(
                             'cars.overview.searchExpenses',
@@ -252,6 +268,13 @@ const CarExpenses = ({ carId, range }: CarExpensesProps) => {
                     setPageSize(size)
                     setPageIndex(1)
                 }}
+            />
+            <ExpenseFormDialog
+                open={dialogOpen}
+                expense={null}
+                onClose={() => setDialogOpen(false)}
+                onSaved={fetchData}
+                defaultCar={{ id: carId, label: carLabel }}
             />
         </Card>
     )

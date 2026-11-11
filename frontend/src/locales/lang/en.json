@@ -295,7 +295,9 @@
         "cancel": "Cancel",
         "save": "Save",
         "close": "Close",
-        "noResultsFound": "No results found"
+        "noResultsFound": "No results found",
+        "yes": "Yes",
+        "no": "No"
     },
     "period": {
         "today": "Today",
@@ -655,7 +657,7 @@
             },
             "history": {
                 "title": "History",
-                "subtitle": "Vehicle activity and reservation changes",
+                "subtitle": "Every movement on this vehicle — updates, expenses, payments and reservations",
                 "all": "All",
                 "vehicle": "Vehicle",
                 "reservations": "Reservations",
@@ -676,6 +678,44 @@
                     "created": "Vehicle created",
                     "updated": "Vehicle updated",
                     "deleted": "Vehicle deleted"
+                },
+                "expenses": "Expenses",
+                "payments": "Payments",
+                "expenseAction": {
+                    "created": "Expense created",
+                    "updated": "Expense updated",
+                    "deleted": "Expense deleted"
+                },
+                "paymentAction": {
+                    "recorded": "Payment recorded",
+                    "confirmed": "Payment confirmed",
+                    "refunded": "Payment refunded",
+                    "deleted": "Payment deleted"
+                },
+                "fields": {
+                    "registration_number": "Registration",
+                    "daily_price": "Daily price",
+                    "purchase_price": "Purchase price",
+                    "insurance_company": "Insurer",
+                    "insurance_policy_number": "Policy number",
+                    "insurance_expiry_date": "Insurance expiry",
+                    "technical_inspection_expiry": "Technical inspection",
+                    "current_mileage": "Mileage",
+                    "current_fuel_level": "Fuel level",
+                    "next_service_mileage": "Next service (km)",
+                    "last_maintenance_at": "Last maintenance",
+                    "is_active": "Active",
+                    "notes": "Notes",
+                    "type": "Type",
+                    "title": "Title",
+                    "amount": "Amount",
+                    "vendor": "Vendor",
+                    "start_date": "Start date",
+                    "due_date": "Due date",
+                    "paid_date": "Paid date",
+                    "method": "Method",
+                    "reference": "Reference",
+                    "status": "Status"
                 }
             },
             "statistics": {
@@ -1040,7 +1080,9 @@
             "placeholderVendor": "Garage name",
             "placeholderDescription": "Description",
             "saveChanges": "Save changes",
-            "addExpense": "Add expense"
+            "addExpense": "Add expense",
+            "dueDateInsuranceHint": "For an insurance expense, the due date becomes the car's insurance expiry date.",
+            "dueDateInspectionHint": "For an inspection expense, the due date becomes the car's next technical inspection date."
         },
         "validation": {
             "carRequired": "Car is required",
@@ -1718,7 +1760,8 @@
             "all": "All",
             "unread": "Unread",
             "announcements": "Announcements",
-            "payments": "Payments"
+            "payments": "Payments",
+            "alerts": "Alerts"
         },
         "filters": {
             "type": "Type",
@@ -1732,7 +1775,10 @@
         },
         "types": {
             "announcement": "Announcement",
-            "payment": "Payment"
+            "payment": "Payment",
+            "carInsurance": "Insurance",
+            "carInspection": "Technical inspection",
+            "carFuel": "Fuel"
         },
         "columns": {
             "notification": "Notification",
@@ -1758,7 +1804,17 @@
             "send": "Send",
             "sent": "Announcement sent to {{n}} recipient(s)",
             "sendError": "Could not send the announcement"
-        }
+        },
+        "insuranceExpiring": "Insurance of {{car}} expires in {{days}} days",
+        "insuranceExpired": "Insurance of {{car}} expired {{days}} days ago",
+        "inspectionExpiring": "Technical inspection of {{car}} expires in {{days}} days",
+        "inspectionExpired": "Technical inspection of {{car}} expired {{days}} days ago",
+        "insuranceAction": "Record the renewal as an expense — the due date updates the car automatically.",
+        "inspectionAction": "Record the inspection as an expense — the due date updates the car automatically.",
+        "expiryOn": "Expiry: {{date}}",
+        "carFuelLow": "{{car}} returned with {{level}}% fuel",
+        "fuelAction": "Refuel before the next rental.",
+        "fallbackCar": "A vehicle"
     },
     "kpi": {
         "backToDashboard": "Back to the dashboard",

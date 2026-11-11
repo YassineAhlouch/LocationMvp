@@ -295,7 +295,9 @@
         "cancel": "Annuler",
         "save": "Enregistrer",
         "close": "Fermer",
-        "noResultsFound": "Aucun résultat"
+        "noResultsFound": "Aucun résultat",
+        "yes": "Oui",
+        "no": "Non"
     },
     "period": {
         "today": "Aujourd'hui",
@@ -655,7 +657,7 @@
             },
             "history": {
                 "title": "Historique",
-                "subtitle": "Activité du véhicule et changements de réservation",
+                "subtitle": "Tout ce qui touche le véhicule — mises à jour, dépenses, paiements et réservations",
                 "all": "Tout",
                 "vehicle": "Véhicule",
                 "reservations": "Réservations",
@@ -676,6 +678,44 @@
                     "created": "Véhicule créé",
                     "updated": "Véhicule mis à jour",
                     "deleted": "Véhicule supprimé"
+                },
+                "expenses": "Dépenses",
+                "payments": "Paiements",
+                "expenseAction": {
+                    "created": "Dépense créée",
+                    "updated": "Dépense mise à jour",
+                    "deleted": "Dépense supprimée"
+                },
+                "paymentAction": {
+                    "recorded": "Paiement enregistré",
+                    "confirmed": "Paiement confirmé",
+                    "refunded": "Paiement remboursé",
+                    "deleted": "Paiement supprimé"
+                },
+                "fields": {
+                    "registration_number": "Immatriculation",
+                    "daily_price": "Prix journalier",
+                    "purchase_price": "Prix d'achat",
+                    "insurance_company": "Assureur",
+                    "insurance_policy_number": "N° de police",
+                    "insurance_expiry_date": "Expiration d'assurance",
+                    "technical_inspection_expiry": "Contrôle technique",
+                    "current_mileage": "Kilométrage",
+                    "current_fuel_level": "Niveau de carburant",
+                    "next_service_mileage": "Prochaine révision (km)",
+                    "last_maintenance_at": "Dernier entretien",
+                    "is_active": "Actif",
+                    "notes": "Notes",
+                    "type": "Type",
+                    "title": "Intitulé",
+                    "amount": "Montant",
+                    "vendor": "Prestataire",
+                    "start_date": "Date de début",
+                    "due_date": "Date d'échéance",
+                    "paid_date": "Date de paiement",
+                    "method": "Moyen",
+                    "reference": "Référence",
+                    "status": "Statut"
                 }
             },
             "statistics": {
@@ -1040,7 +1080,9 @@
             "placeholderVendor": "Nom du garage",
             "placeholderDescription": "Description",
             "saveChanges": "Enregistrer les modifications",
-            "addExpense": "Ajouter la dépense"
+            "addExpense": "Ajouter la dépense",
+            "dueDateInsuranceHint": "Pour une dépense d'assurance, la date d'échéance devient la date d'expiration d'assurance du véhicule.",
+            "dueDateInspectionHint": "Pour une dépense de contrôle technique, la date d'échéance devient la date du prochain contrôle du véhicule."
         },
         "validation": {
             "carRequired": "Le véhicule est requis",
@@ -1718,7 +1760,8 @@
             "all": "Toutes",
             "unread": "Non lues",
             "announcements": "Annonces",
-            "payments": "Paiements"
+            "payments": "Paiements",
+            "alerts": "Alertes"
         },
         "filters": {
             "type": "Type",
@@ -1732,7 +1775,10 @@
         },
         "types": {
             "announcement": "Annonce",
-            "payment": "Paiement"
+            "payment": "Paiement",
+            "carInsurance": "Assurance",
+            "carInspection": "Contrôle technique",
+            "carFuel": "Carburant"
         },
         "columns": {
             "notification": "Notification",
@@ -1758,7 +1804,17 @@
             "send": "Envoyer",
             "sent": "Annonce envoyée à {{n}} destinataire(s)",
             "sendError": "Impossible d'envoyer l'annonce"
-        }
+        },
+        "insuranceExpiring": "L'assurance de {{car}} expire dans {{days}} jours",
+        "insuranceExpired": "L'assurance de {{car}} a expiré il y a {{days}} jours",
+        "inspectionExpiring": "Le contrôle technique de {{car}} expire dans {{days}} jours",
+        "inspectionExpired": "Le contrôle technique de {{car}} a expiré il y a {{days}} jours",
+        "insuranceAction": "Enregistrez le renouvellement comme dépense — son échéance met le véhicule à jour automatiquement.",
+        "inspectionAction": "Enregistrez le contrôle comme dépense — son échéance met le véhicule à jour automatiquement.",
+        "expiryOn": "Échéance : {{date}}",
+        "carFuelLow": "{{car}} restituée avec {{level}}% de carburant",
+        "fuelAction": "Faites le plein avant la prochaine location.",
+        "fallbackCar": "Un véhicule"
     },
     "kpi": {
         "backToDashboard": "Retour au tableau de bord",

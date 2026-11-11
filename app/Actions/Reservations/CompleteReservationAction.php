@@ -62,7 +62,7 @@ class CompleteReservationAction
 
                 $this->repriceLateReturn($fresh, $actor);
 
-                $this->lifecycle->onCompleted($car, $fresh);
+                $this->lifecycle->onCompleted($car, $fresh, $actor);
 
                 $this->inspections->record($fresh, ReservationInspectionType::Return, $data['inspection'] ?? [], $actor);
             },

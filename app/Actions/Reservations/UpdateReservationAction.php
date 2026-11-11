@@ -229,7 +229,7 @@ class UpdateReservationAction
                         $target,
                         $actor,
                         $data['status_reason'] ?? null,
-                        $this->carHookFor($target),
+                        $this->carHookFor($target, $actor),
                     );
                 }
             }
@@ -244,13 +244,13 @@ class UpdateReservationAction
      *
      * @return (callable(Car, Reservation): void)|null
      */
-    private function carHookFor(ReservationStatus $target): ?callable
+    private function carHookFor(ReservationStatus $target, User $actor): ?callable
     {
         return match ($target) {
             ReservationStatus::Confirmed, ReservationStatus::Reserved => fn (Car $car) => $this->lifecycle->onConfirmed($car),
             ReservationStatus::Active => fn (Car $car) => $this->lifecycle->onActivated($car),
             ReservationStatus::Cancelled, ReservationStatus::NoShow => fn (Car $car, Reservation $fresh) => $this->lifecycle->onCancelled($car, $fresh->id),
-            ReservationStatus::Completed => fn (Car $car, Reservation $fresh) => $this->lifecycle->onCompleted($car, $fresh),
+            ReservationStatus::Completed => fn (Car $car, Reservation $fresh) => $this->lifecycle->onCompleted($car, $fresh, $actor),
             ReservationStatus::Pending => null,
         };
     }

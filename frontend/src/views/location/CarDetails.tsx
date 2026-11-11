@@ -208,7 +208,16 @@ const CarDetails = () => {
                             <Route
                                 path="/expenses"
                                 element={
-                                    <CarExpenses carId={car.id} range={range} />
+                                    <CarExpenses
+                                        carId={car.id}
+                                        carLabel={`${car.registration_number} · ${
+                                            [car.brand?.name, car.model?.name]
+                                                .filter(Boolean)
+                                                .join(' ') ||
+                                            car.registration_number
+                                        }`}
+                                        range={range}
+                                    />
                                 }
                             />
                             <Route

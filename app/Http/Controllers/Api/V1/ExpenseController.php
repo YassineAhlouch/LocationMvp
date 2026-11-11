@@ -9,6 +9,7 @@ use App\Http\Requests\Expenses\UpdateExpenseRequest;
 use App\Http\Resources\ExpenseResource;
 use App\Models\CarExpense;
 use App\Services\Activity\LogsActivity;
+use App\Services\Expenses\CarDocumentSyncService;
 use App\Services\Expenses\ExpenseQueryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -17,7 +18,10 @@ class ExpenseController extends Controller
 {
     use LogsActivity;
 
-    public function __construct(private readonly ExpenseQueryService $expenses) {}
+    public function __construct(
+        private readonly ExpenseQueryService $expenses,
+        private readonly CarDocumentSyncService $documents,
+    ) {}
 
     public function index(IndexExpenseRequest $request): AnonymousResourceCollection
     {
@@ -34,6 +38,8 @@ class ExpenseController extends Controller
         // create() carries only the attributes passed in — refresh so the
         // response reflects the DB default (status=pending).
         $expense->refresh();
+
+        $this->documents->sync($expense);
 
         $this->loadRelations($expense);
 
@@ -56,6 +62,8 @@ class ExpenseController extends Controller
 
         $expense->fill($request->validated());
         $expense->save();
+
+        $this->documents->sync($expense);
 
         $this->loadRelations($expense);
 

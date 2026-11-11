@@ -295,7 +295,9 @@
         "cancel": "إلغاء",
         "save": "حفظ",
         "close": "إغلاق",
-        "noResultsFound": "لا نتائج"
+        "noResultsFound": "لا نتائج",
+        "yes": "نعم",
+        "no": "لا"
     },
     "period": {
         "today": "اليوم",
@@ -655,7 +657,7 @@
             },
             "history": {
                 "title": "السجل",
-                "subtitle": "نشاط المركبة وتغييرات الحجوزات",
+                "subtitle": "كل ما يخص هذه السيارة — التحديثات، المصاريف، المدفوعات والحجوزات",
                 "all": "الكل",
                 "vehicle": "المركبة",
                 "reservations": "الحجوزات",
@@ -676,6 +678,44 @@
                     "created": "تم إنشاء المركبة",
                     "updated": "تم تحديث المركبة",
                     "deleted": "تم حذف المركبة"
+                },
+                "expenses": "المصاريف",
+                "payments": "المدفوعات",
+                "expenseAction": {
+                    "created": "أُنشئ مصروف",
+                    "updated": "حُدِّث مصروف",
+                    "deleted": "حُذف مصروف"
+                },
+                "paymentAction": {
+                    "recorded": "سُجّلت دفعة",
+                    "confirmed": "أُكّدت دفعة",
+                    "refunded": "أُرجعت دفعة",
+                    "deleted": "حُذفت دفعة"
+                },
+                "fields": {
+                    "registration_number": "رقم التسجيل",
+                    "daily_price": "السعر اليومي",
+                    "purchase_price": "سعر الشراء",
+                    "insurance_company": "شركة التأمين",
+                    "insurance_policy_number": "رقم الوثيقة",
+                    "insurance_expiry_date": "انتهاء التأمين",
+                    "technical_inspection_expiry": "المراقبة التقنية",
+                    "current_mileage": "عدد الكيلومترات",
+                    "current_fuel_level": "مستوى الوقود",
+                    "next_service_mileage": "الصيانة القادمة (كم)",
+                    "last_maintenance_at": "آخر صيانة",
+                    "is_active": "نشط",
+                    "notes": "ملاحظات",
+                    "type": "النوع",
+                    "title": "العنوان",
+                    "amount": "المبلغ",
+                    "vendor": "المزود",
+                    "start_date": "تاريخ البداية",
+                    "due_date": "تاريخ الاستحقاق",
+                    "paid_date": "تاريخ الدفع",
+                    "method": "الوسيلة",
+                    "reference": "المرجع",
+                    "status": "الحالة"
                 }
             },
             "statistics": {
@@ -1040,7 +1080,9 @@
             "placeholderVendor": "اسم الورشة",
             "placeholderDescription": "الوصف",
             "saveChanges": "حفظ التعديلات",
-            "addExpense": "إضافة المصروف"
+            "addExpense": "إضافة المصروف",
+            "dueDateInsuranceHint": "لمصروف التأمين، يصبح تاريخ الاستحقاق هو تاريخ انتهاء تأمين السيارة.",
+            "dueDateInspectionHint": "لمصروف المراقبة التقنية، يصبح تاريخ الاستحقاق هو تاريخ المراقبة التقنية القادمة للسيارة."
         },
         "validation": {
             "carRequired": "السيارة مطلوبة",
@@ -1718,7 +1760,8 @@
             "all": "الكل",
             "unread": "غير المقروءة",
             "announcements": "الإعلانات",
-            "payments": "المدفوعات"
+            "payments": "المدفوعات",
+            "alerts": "التنبيهات"
         },
         "filters": {
             "type": "النوع",
@@ -1732,7 +1775,10 @@
         },
         "types": {
             "announcement": "إعلان",
-            "payment": "دفعة"
+            "payment": "دفعة",
+            "carInsurance": "التأمين",
+            "carInspection": "المراقبة التقنية",
+            "carFuel": "الوقود"
         },
         "columns": {
             "notification": "الإشعار",
@@ -1758,7 +1804,17 @@
             "send": "إرسال",
             "sent": "تم إرسال الإعلان إلى {{n}} مستلم",
             "sendError": "تعذّر إرسال الإعلان"
-        }
+        },
+        "insuranceExpiring": "تأمين {{car}} ينتهي بعد {{days}} يوماً",
+        "insuranceExpired": "تأمين {{car}} منتهٍ منذ {{days}} يوماً",
+        "inspectionExpiring": "المراقبة التقنية لـ {{car}} تنتهي بعد {{days}} يوماً",
+        "inspectionExpired": "المراقبة التقنية لـ {{car}} منتهية منذ {{days}} يوماً",
+        "insuranceAction": "سجّل التجديد كمصروف — تاريخ الاستحقاق يحدّث السيارة تلقائياً.",
+        "inspectionAction": "سجّل المراقبة كمصروف — تاريخ الاستحقاق يحدّث السيارة تلقائياً.",
+        "expiryOn": "تاريخ الانتهاء: {{date}}",
+        "carFuelLow": "أُعيدت {{car}} بـ {{level}}% من الوقود",
+        "fuelAction": "املأ الخزان قبل الكراء القادم.",
+        "fallbackCar": "سيارة"
     },
     "kpi": {
         "backToDashboard": "العودة إلى لوحة التحكم",

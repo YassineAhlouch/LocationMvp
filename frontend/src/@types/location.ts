@@ -302,12 +302,42 @@ export type CarOverview = {
  * (CarQueryService::history): the vehicle's own activity or a business
  * change recorded against one of its reservations.
  */
+/** One field movement inside an audit row (old → new). */
+export type HistoryChange = {
+    field: string
+    old: string | null
+    new: string | null
+}
+
 export type CarHistoryEntry =
     | {
           id: string
           source: 'car'
           action: string
+          changes: HistoryChange[]
           description: string | null
+          user: { id: number; full_name: string } | null
+          created_at: string | null
+      }
+    | {
+          id: string
+          source: 'expense'
+          action: string
+          expense: { id: number; title: string | null } | null
+          changes: HistoryChange[]
+          user: { id: number; full_name: string } | null
+          created_at: string | null
+      }
+    | {
+          id: string
+          source: 'payment'
+          action: string
+          payment: {
+              id: number
+              reservation_id: number | null
+              reservation_number: string | null
+          } | null
+          changes: HistoryChange[]
           user: { id: number; full_name: string } | null
           created_at: string | null
       }
@@ -1187,6 +1217,14 @@ export type AppNotificationData = {
     reservation_number?: string
     amount?: number
     method?: string | null
+    /** Fleet alert payloads (car_insurance / car_inspection / car_fuel). */
+    car_id?: number
+    car_label?: string
+    registration_number?: string
+    expiry_date?: string
+    days_left?: number
+    stage?: string
+    fuel_level?: number
 }
 
 /** One inbox row (GET /api/v1/notifications). */
